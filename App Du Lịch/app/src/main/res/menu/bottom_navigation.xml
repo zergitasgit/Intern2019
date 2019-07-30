@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_category"
+        android:title="Category"
+        android:icon="@mipmap/ic_icon_category"
+        ></item>
+    <item android:id="@+id/nav_place"
+        android:title="Place"
+        android:icon="@mipmap/ic_icon_place"
+        ></item>
+    <item android:id="@+id/nav_contact"
+        android:title="Contact"
+        android:icon="@mipmap/ic_icon_contact"
+        ></item>
+    <item android:id="@+id/nav_promotion"
+        android:title="Promotion"
+        android:icon="@mipmap/ic_icon_promotion"
+        ></item>
+
+
+
+
+</menu>

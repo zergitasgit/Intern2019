@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="#404040"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_contact_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="name"
+        android:textColor="#ff8c00"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_contact_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:text="000"
+        android:textColor="#fec400"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+</LinearLayout>

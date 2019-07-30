@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+            android:id="@+id/cv_main"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:layout_marginTop="3dp"
+            android:background="#fff"
+            android:elevation="8dp"
+            app:cardCornerRadius="5dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+            <ImageView
+                    android:id="@+id/img_main"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:scaleType="centerCrop" />
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:text="Title Song" />
+
+                <TextView
+                        android:id="@+id/tv_singer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/img_main"
+                        android:text="Title singer"
+                        android:textColor="#FF4545" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:orientation="horizontal">
+
+
+                <ImageView
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/img_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_more" />
+
+
+                <CheckBox
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/cb_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

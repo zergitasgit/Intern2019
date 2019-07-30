@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <EditText
+        android:id="@+id/edt_data"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:ems="10"
+        android:gravity="top|left"
+        android:inputType="textMultiLine">
+
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/tv_data"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="15dp"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_load_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Load Data" />
+
+    <Button
+        android:id="@+id/btn_save_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Data" />
+
+
+</LinearLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CheckNetwork</string>
+    <string name="check_mang">
+        Không có kết nối mạng, Xin vui lòng kiểm tra kết nối và
+        thử lại
+    </string>
+</resources>

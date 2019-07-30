@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".WonderVN.PlaceInformationActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_place_information"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorOrange"
+        android:minHeight="?attr/actionBarSize">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="베트남에 오신 것을 환영합니다."
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.RecyclerView
+
+        android:id="@+id/rv_place_information"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+</LinearLayout>
