@@ -21,7 +21,11 @@ import android.widget.Switch
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
-
+/**
+* đặt lại tên 
+* kiểm tra lại thuộc tính khi nào private/ public/protected,đặt lại tên một số thuộc tính tường minh hơn
+* cmt đầu function ns rõ chức năng của function
+**/
 class MyService : Service() {
     private var wm: WindowManager? = null
     private var mView: MyGroupView? = null
