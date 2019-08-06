@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 // Display the current progress of SeekBar
+                //tạo một class quản lý việc lưu và ghi SharedPreferences
                 val sharedPreference = getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
                 var editor = sharedPreference.edit()
                 editor.putInt("size", i)
