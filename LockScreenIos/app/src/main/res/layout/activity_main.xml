@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="match_parent" android:layout_width="match_parent">
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".screens.main.MainActivity"
+android:orientation="vertical"
+android:background="#F0E9E9">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="200dp">
+
+<ImageView android:layout_width="match_parent"
+           android:layout_height="200dp"
+           android:src="@drawable/icon_main"
+           android:scaleType="fitXY"/>
+        <Switch
+                android:id="@+id/switch_main"
+                android:layout_width="100dp" android:layout_height="50dp"
+
+               />
+    </FrameLayout>
+<RelativeLayout
+        android:id="@+id/rl_password"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:background="@drawable/button_selector"
+        android:clickable="true"
+>
+    <ImageView
+            android:padding="4dp"
+            android:src="@drawable/icon_password"
+            android:id="@+id/img_icon_main"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+    />
+    <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/img_icon_main" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:textColor="#000"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"/>
+    <ImageView
+            android:padding="5dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_next"
+            android:layout_centerVertical="true" android:layout_width="40dp" android:layout_height="40dp"
+            android:layout_alignParentRight="true"/>
+</RelativeLayout>
+<RelativeLayout
+
+        android:id="@+id/rl_wallpaer"
+        android:layout_marginTop="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_selector"
+        android:clickable="true">
+    <ImageView
+            android:padding="7dp"
+            android:src="@drawable/icon_wallpaper"
+            android:id="@+id/img_icon_main1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+    />
+    <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/img_icon_main1" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wallpaper"
+            android:textColor="#000"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"/>
+    <ImageView
+            android:padding="5dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_next"
+            android:layout_centerVertical="true" android:layout_width="40dp" android:layout_height="40dp"
+            android:layout_alignParentRight="true"/>
+</RelativeLayout>
+<RelativeLayout
+        android:id="@+id/rl_noti"
+        android:layout_marginTop="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_selector"
+        android:clickable="true">
+    <ImageView
+            android:padding="5dp"
+            android:src="@drawable/icon_noti"
+            android:id="@+id/img_icon_main2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+    />
+    <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/img_icon_main2" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification"
+            android:textColor="#000"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"/>
+    <ImageView
+            android:padding="5dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_next"
+            android:layout_centerVertical="true" android:layout_width="40dp" android:layout_height="40dp"
+            android:layout_alignParentRight="true"/>
+</RelativeLayout>
+<RelativeLayout
+        android:id="@+id/rl_cancle_lock"
+        android:layout_marginTop="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_selector"
+        android:clickable="true">
+    <ImageView
+            android:src="@drawable/icon_cancle"
+            android:id="@+id/img_icon_main3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+    />
+    <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/img_icon_main3" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disable system lock"
+            android:textColor="#000"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"/>
+    <ImageView
+            android:padding="5dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_next"
+            android:layout_centerVertical="true" android:layout_width="40dp" android:layout_height="40dp"
+            android:layout_alignParentRight="true"/>
+</RelativeLayout>
+<RelativeLayout
+        android:id="@+id/rl_feedback"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_selector"
+        android:clickable="true">
+    <ImageView
+            android:padding="7dp"
+            android:src="@drawable/icon_feedback"
+            android:id="@+id/img_icon_main4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+    />
+    <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/img_icon_main4" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feedback"
+            android:textColor="#000"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"/>
+    <ImageView
+            android:padding="5dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_next"
+            android:layout_centerVertical="true" android:layout_width="40dp" android:layout_height="40dp"
+            android:layout_alignParentRight="true"/>
+</RelativeLayout>
+<RelativeLayout
+        android:id="@+id/rl_shae"
+        android:layout_marginTop="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_selector"
+        android:clickable="true">
+    <ImageView
+            android:src="@drawable/icon_share"
+            android:id="@+id/img_icon_main5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+    />
+    <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/img_icon_main5" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share"
+            android:textColor="#000"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"/>
+    <ImageView
+            android:padding="5dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_next"
+            android:layout_centerVertical="true" android:layout_width="40dp" android:layout_height="40dp"
+            android:layout_alignParentRight="true"/>
+</RelativeLayout>
+</LinearLayout>
+        </ScrollView>
