@@ -5,19 +5,25 @@ import android.bluetooth.BluetoothAdapter
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Camera
 import android.graphics.PixelFormat
+import android.hardware.camera2.CameraManager
 import android.net.wifi.WifiManager
 import android.os.IBinder
+import android.provider.Settings
 import android.util.Log
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.Switch
+import android.widget.ToggleButton
 import androidx.core.app.ActivityCompat.startActivityForResult
 import com.example.controlcenter.R
 import com.example.controlcenter.scenes.ControlCenterGroupView
 import com.example.controlcenter.utils.Utils
+import java.lang.reflect.Parameter
 
 class ControlCenterService : Service() {
     private var windowManager: WindowManager? = null
@@ -28,10 +34,11 @@ class ControlCenterService : Service() {
     private lateinit var lncontrol: LinearLayout
     private lateinit var lnBottom: LinearLayout
     private lateinit var animUp: Animation
-    private lateinit var swWifi: Switch
-    private lateinit var swPlane: Switch
-    private lateinit var swSync: Switch
-    private lateinit var swBluetooth: Switch
+    private lateinit var tbWifi: ToggleButton
+    private lateinit var tbPlane: ToggleButton
+    private lateinit var tbSync: ToggleButton
+    private lateinit var tbBluetooth: ToggleButton
+    private lateinit var tbFlashLight: ToggleButton
 
     var wifiManager: WifiManager? = null
 
@@ -95,10 +102,11 @@ class ControlCenterService : Service() {
         controlParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         //-------------- Ánh xạ các view trong control view
         lncontrol = view.findViewById(R.id.ln_control)
-        swWifi = view.findViewById(R.id.sw_wifi)
-        swPlane = view.findViewById(R.id.sw_plane)
-        swSync = view.findViewById(R.id.sw_sync)
-        swBluetooth = view.findViewById(R.id.sw_bluetooth)
+        tbWifi = view.findViewById(R.id.tb_wifi)
+        tbPlane = view.findViewById(R.id.tb_plane)
+        tbSync = view.findViewById(R.id.tb_sync)
+        tbBluetooth = view.findViewById(R.id.tb_bluetooth)
+        tbFlashLight = view.findViewById(R.id.tb_flash_light)
 
 
         //--------
@@ -127,13 +135,13 @@ class ControlCenterService : Service() {
         wifiManager = application.getSystemService(Context.WIFI_SERVICE) as WifiManager?
         if (Utils.CheckWifi(this) == true) {
             println("Đã bật wifi")
-            swWifi.isChecked = true
+            tbWifi.isChecked = true
         } else {
             println("Chưa bật wifi")
-            swWifi.isChecked = false
+            tbWifi.isChecked = false
         }
         // sự kiện khi switch wifi
-        swWifi.setOnCheckedChangeListener { buttonView, isChecked ->
+        tbWifi.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked == true) {
                 wifiManager!!.isWifiEnabled = true
             } else {
@@ -142,20 +150,32 @@ class ControlCenterService : Service() {
         }
         // check xem chế độ máy bay on hay off rồi set vào switch
         if (Utils.CheckPlane(this) == true) {
+            tbPlane.isChecked = true
             println("đang bật chế độ máy bay")
         } else {
+            tbPlane.isChecked = false
             println("Chưa bật chế độ máy bay")
         }
-        swPlane.setOnCheckedChangeListener { buttonView, isChecked ->
+        tbPlane.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked == true) {
-                println("bật chế độ máy bay")
+                var intent: Intent = Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent)
+
+
             } else {
-                println("Chưa bật chế độ máy bay")
+                var intent: Intent = Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent)
             }
+            windowManager!!.removeView(viewControl)
+            windowManager!!.addView(viewBottom, bottomParams)
+
         }
 
         // check xem đồng bộ on hay off rồi set vào switch
-        swSync.setOnCheckedChangeListener { buttonView, isChecked ->
+
+        tbSync.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked == true) {
                 ContentResolver.setMasterSyncAutomatically(true)
                 println("sync on")
@@ -166,16 +186,32 @@ class ControlCenterService : Service() {
         }
 
         // check xem bluetooth on hay off rồi set vào switch
-        swBluetooth.setOnCheckedChangeListener { buttonView, isChecked ->
-            var mBtAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-            var isOn: Boolean = mBtAdapter.isEnabled
+        var mBtAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        if (Utils.CheckBluetooth(this)) {
+            tbBluetooth.isChecked = true
+            println("bluetooth on")
+        } else {
+            tbBluetooth.isChecked = false
+            println("bluetooth off")
+        }
+        tbBluetooth.setOnCheckedChangeListener { buttonView, isChecked ->
+
             if (isChecked == true) {
                 mBtAdapter.enable()
 
-                println("bluetooth on")
             } else {
                 mBtAdapter.disable()
-                println("bluetooth off")
+            }
+        }
+        // check flashLight
+        tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (isChecked == true) {
+                println("FlashLight on")
+
+            } else {
+                println("FlashLight off")
+
             }
         }
 
@@ -191,8 +227,15 @@ class ControlCenterService : Service() {
         bottomParams!!.gravity = Gravity.BOTTOM
         bottomParams!!.format = PixelFormat.TRANSLUCENT
         bottomParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
-        bottomParams!!.flags = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        bottomParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            bottomParams!!.flags = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            PixelFormat.TRANSLUCENT
+
+        } else {
+            bottomParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            PixelFormat.TRANSLUCENT
+        }
+
 
         //--------------
         lnBottom = view.findViewById(R.id.ln_Bottom)
