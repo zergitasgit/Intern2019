@@ -2,13 +2,13 @@ package com.example.controlcenter.services
 
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
+import android.content.ComponentName
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Camera
 import android.graphics.PixelFormat
-import android.hardware.camera2.CameraManager
+import android.hardware.Camera
 import android.net.wifi.WifiManager
 import android.os.IBinder
 import android.provider.Settings
@@ -16,14 +16,13 @@ import android.util.Log
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.Switch
+import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.core.app.ActivityCompat.startActivityForResult
 import com.example.controlcenter.R
 import com.example.controlcenter.scenes.ControlCenterGroupView
 import com.example.controlcenter.utils.Utils
-import java.lang.reflect.Parameter
 
 class ControlCenterService : Service() {
     private var windowManager: WindowManager? = null
@@ -39,11 +38,20 @@ class ControlCenterService : Service() {
     private lateinit var tbSync: ToggleButton
     private lateinit var tbBluetooth: ToggleButton
     private lateinit var tbFlashLight: ToggleButton
-
+    private lateinit var btnClock: Button
+    private lateinit var btnCalculator: Button
+    private lateinit var tbCamera: ToggleButton
+    var y: Int = 0
+    var touchY: Float = 0.0f
+    private var touchToMove: Boolean = false
+    private var isShowing = false
     var wifiManager: WifiManager? = null
+    private lateinit var camera: Camera
 
 
-    override fun onBind(intent: Intent): IBinder {
+    override
+
+    fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
     }
 
@@ -107,6 +115,9 @@ class ControlCenterService : Service() {
         tbSync = view.findViewById(R.id.tb_sync)
         tbBluetooth = view.findViewById(R.id.tb_bluetooth)
         tbFlashLight = view.findViewById(R.id.tb_flash_light)
+        btnCalculator = view.findViewById(R.id.btn_calculator)
+        tbCamera = view.findViewById(R.id.tb_camera)
+        btnClock = view.findViewById(R.id.btn_clock)
 
 
         //--------
@@ -128,6 +139,7 @@ class ControlCenterService : Service() {
 
 
     }
+
 
     private fun setState() {
 
@@ -159,13 +171,12 @@ class ControlCenterService : Service() {
         tbPlane.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked == true) {
                 var intent: Intent = Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
-
 
             } else {
                 var intent: Intent = Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
             windowManager!!.removeView(viewControl)
@@ -184,7 +195,6 @@ class ControlCenterService : Service() {
                 println("sync off")
             }
         }
-
         // check xem bluetooth on hay off rồi set vào switch
         var mBtAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         if (Utils.CheckBluetooth(this)) {
@@ -205,18 +215,52 @@ class ControlCenterService : Service() {
         }
         // check flashLight
         tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
-
             if (isChecked == true) {
-                println("FlashLight on")
-
+                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+                    camera = Camera.open()
+                    var p = camera!!.getParameters()
+                    p!!.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
+                    camera!!.setParameters(p)
+                    camera!!.startPreview()
+                }
             } else {
+                camera.stopPreview()
+                camera.release()
                 println("FlashLight off")
+            }
+        }
+        btnClock.setOnClickListener {
+            Toast.makeText(this, "chua phat trien", Toast.LENGTH_SHORT).show()
+        }
+        btnCalculator.setOnClickListener {
+            val intent: Intent = Intent()
+            intent.setClassName("com.android.calculator2", "com.android.calculator2.Calculator")
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            windowManager!!.removeView(viewControl)
+            showIcon()
+
+        }
+        tbCamera.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked == true) {
+                val intent = Intent("android.media.action.IMAGE_CAPTURE")
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                windowManager!!.removeView(viewControl)
+                showIcon()
+            } else {
+                val intent = Intent("android.media.action.IMAGE_CAPTURE")
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                windowManager!!.removeView(viewControl)
+                showIcon()
 
             }
         }
 
 
     }
+
 
     private fun createIconView() {
         viewBottom = ControlCenterGroupView(this)
@@ -230,32 +274,53 @@ class ControlCenterService : Service() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             bottomParams!!.flags = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             PixelFormat.TRANSLUCENT
-
         } else {
             bottomParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
             PixelFormat.TRANSLUCENT
         }
 
-
         //--------------
         lnBottom = view.findViewById(R.id.ln_Bottom)
+        moveControl()
+    }
+
+    private fun moveControl() {
         lnBottom.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    Log.d("test", "ACTION_DOWN")
+                    y = bottomParams!!.y
+                    touchY = motionEvent.rawY
+                    touchToMove = false
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val delY = motionEvent.rawY - touchY
+                    bottomParams!!.y = (y - delY).toInt()
+                    windowManager!!.updateViewLayout(viewBottom, bottomParams)
+                    if (delY * delY > 1) {
+                        bottomParams!!.y = 0
+                        windowManager!!.updateViewLayout(viewBottom, bottomParams)
+                    }
+
+                    if (delY * delY > 200) {
+                        touchToMove = true
+                        bottomParams!!.y = 0
+                        windowManager!!.updateViewLayout(viewBottom, bottomParams)
+                    }
 
                 }
                 MotionEvent.ACTION_UP -> {
-                    Log.d("test", "ACTION_UP")
-                    lncontrol.animation = animUp
-                    lncontrol.animation.start()
-                    showControl()
-                    setState()
+                    if (touchToMove == true) {
+                        lncontrol.animation = animUp
+                        lncontrol.animation.start()
+                        showControl()
+                        setState()
+                    }
                 }
             }
             return@OnTouchListener true
         })
     }
+
 
     override fun onDestroy() {
         windowManager!!.removeView(viewBottom)

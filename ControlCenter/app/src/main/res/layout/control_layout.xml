@@ -101,6 +101,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="15dp"
                 android:layout_marginHorizontal="5dp"
                 android:orientation="vertical"
                 android:weightSum="2">
@@ -221,12 +222,40 @@
 
         <ToggleButton
             android:id="@+id/tb_flash_light"
-            android:layout_width="120dp"
-            android:layout_height="100dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginLeft="15dp"
             android:background="@drawable/custom_flash_light"
             android:textOff=""
             android:textOn="" />
+
+        <Button
+            android:id="@+id/btn_clock"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/ic_clock"
+            android:textOff=""
+            android:textOn="" />
+
+        <Button
+            android:id="@+id/btn_calculator"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/ic_calculator"
+            android:textOff=""
+            android:textOn="" />
+
+        <ToggleButton
+            android:id="@+id/tb_camera"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/ic_camera"
+            android:textOff=""
+            android:textOn="" />
+
     </LinearLayout>
 
 </LinearLayout>
