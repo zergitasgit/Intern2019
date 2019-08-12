@@ -8,6 +8,8 @@ import android.content.ContentResolver
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.bluetooth.BluetoothAdapter
+import android.content.res.Configuration
+import androidx.core.content.contentValuesOf
 
 
 object Utils {
@@ -36,4 +38,12 @@ object Utils {
         var isOn: Boolean = mBtAdapter.isEnabled
         return isOn
     }
+
+    fun checkRotate(context: Context): Boolean {
+        if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            return true
+        } else (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+        return false
+    }
+
 }

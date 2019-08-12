@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ln_time_out"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#888878"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="150dp"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btn_15s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#888878"
+                android:text="15s"
+                android:textColor="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/btn_30s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#888878"
+                android:text="30s"
+                android:textColor="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/btn_1p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#888878"
+                android:text="1p"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btn_2p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#888878"
+                android:text="2p"
+                android:textColor="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/btn_10p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#888878"
+                android:text="10p"
+                android:textColor="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/btn_30p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#888878"
+                android:text="30p"
+                android:textColor="@color/colorWhite" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
