@@ -2,17 +2,14 @@ package com.example.controlcenter.services
 
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
-import android.content.ComponentName
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
-import android.content.pm.ConfigurationInfo
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.hardware.Camera
+import android.media.AudioManager
 import android.net.wifi.WifiManager
 import android.os.IBinder
 import android.provider.Settings
@@ -21,7 +18,6 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.controlcenter.R
 import com.example.controlcenter.scenes.ControlCenterGroupView
 import com.example.controlcenter.utils.Utils
@@ -43,6 +39,7 @@ class ControlCenterService : Service() {
     private lateinit var tbSync: ToggleButton
     private lateinit var tbRotate: ToggleButton
     private lateinit var tbBluetooth: ToggleButton
+    private lateinit var tbMute: ToggleButton
     private lateinit var btnTimeOut: Button
     private lateinit var tbFlashLight: ToggleButton
     private lateinit var btnClock: Button
@@ -53,10 +50,7 @@ class ControlCenterService : Service() {
     private var touchToMove: Boolean = false
     private var wifiManager: WifiManager? = null
     private lateinit var camera: Camera
-
-
     override
-
     fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
     }
@@ -88,7 +82,6 @@ class ControlCenterService : Service() {
         } catch (e: Exception) {
             println("Bugs")
         }
-
         windowManager!!.addView(viewBottom, bottomParams)
     }
 
@@ -105,6 +98,7 @@ class ControlCenterService : Service() {
 
     }
 
+    // hiển thị bảng chọn thời gian tắt màn hình
     private fun showTimeOut() {
         try {
             windowManager!!.removeView(viewControl)
@@ -112,7 +106,6 @@ class ControlCenterService : Service() {
         } catch (e: Exception) {
             println("Bugs")
         }
-
         windowManager!!.addView(viewTimeOut, timeoutParams)
     }
 
@@ -126,10 +119,8 @@ class ControlCenterService : Service() {
         controlParams!!.gravity = Gravity.BOTTOM
         controlParams!!.format = PixelFormat.TRANSLUCENT
         controlParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
-        controlParams!!.flags =
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        viewControl!!.setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        controlParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        viewControl!!.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
@@ -146,6 +137,7 @@ class ControlCenterService : Service() {
         tbSync = view.findViewById(R.id.tb_sync)
         tbBluetooth = view.findViewById(R.id.tb_bluetooth)
         tbRotate = view.findViewById(R.id.tb_rotate)
+        tbMute = view.findViewById(R.id.tb_mute)
         btnTimeOut = view.findViewById(R.id.btn_time_out)
         tbFlashLight = view.findViewById(R.id.tb_flash_light)
         btnCalculator = view.findViewById(R.id.btn_calculator)
@@ -399,10 +391,30 @@ class ControlCenterService : Service() {
                 mBtAdapter.disable()
             }
         }
-        if (Utils.checkRotate(this) == true) {
-            println("Rotate off")
+        // check và set state của chế độ rung Vibrate
+        if (Utils.checkAudio(this) == 1) {
+            tbMute.isChecked = true
         } else {
-            println("Rotate on")
+            tbMute.isChecked = false
+        }
+        val audioManager: AudioManager
+        audioManager = baseContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+        tbMute.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (isChecked == true) {
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT)
+
+            } else {
+
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL)
+            }
+        }
+        //------------
+        if (Utils.checkRotate(this) == 1) {
+            tbRotate.isChecked = true
+        } else {
+            tbRotate.isChecked = false
         }
         tbRotate.setOnCheckedChangeListener { buttonView, isChecked ->
 
@@ -423,6 +435,8 @@ class ControlCenterService : Service() {
 
             }
         }
+
+
         // sử lý sự kiện khi nhấn vào button Flash Light
         tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked == true) {

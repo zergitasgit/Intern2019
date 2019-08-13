@@ -10,6 +10,8 @@ import android.accounts.AccountManager
 import android.bluetooth.BluetoothAdapter
 import android.content.res.Configuration
 import androidx.core.content.contentValuesOf
+import android.media.AudioManager
+import androidx.core.content.ContextCompat.getSystemService
 
 
 object Utils {
@@ -39,11 +41,25 @@ object Utils {
         return isOn
     }
 
-    fun checkRotate(context: Context): Boolean {
+    fun checkRotate(context: Context): Int {
         if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            return true
+            return 1
         } else (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-        return false
+        return 0
+    }
+
+    fun checkAudio(context: Context): Int {
+        var audioManager: AudioManager
+        audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT) {
+            return 1
+        }
+
+        return 0
+
+
     }
 
 }
+
+
