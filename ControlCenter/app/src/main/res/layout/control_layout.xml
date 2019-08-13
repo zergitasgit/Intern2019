@@ -121,14 +121,17 @@
         android:layout_height="75dp"
         android:layout_alignBottom="@+id/cv_state"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="-100dp" />
+        android:layout_marginBottom="-100dp"
+        android:background="@drawable/custom_rotate"
+        android:textOff=""
+        android:textOn="" />
 
     <ToggleButton
         android:id="@+id/tb_mute"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_alignBottom="@+id/cv_state"
-        android:layout_marginBottom="-99dp"
+        android:layout_marginBottom="-100dp"
         android:layout_toRightOf="@+id/tb_rotate" />
 
     <Button
@@ -140,13 +143,37 @@
         android:layout_marginBottom="-65dp"
         android:text="Time Out" />
 
+    <abak.tr.com.boxedverticalseekbar.BoxedVertical
+        android:id="@+id/sb_light"
+        android:layout_width="55dp"
+        android:layout_height="138dp"
+        android:layout_alignBottom="@+id/cv_music"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:layout_marginRight="106dp"
+        android:layout_marginBottom="-163dp"
+        app:backgroundColor="@color/color_background"
+        app:defaultValue="200"
+        app:imageEnabled="false"
+        app:max="250"
+        app:progressColor="@color/color_progress"
+        app:step="5"
+        app:textBottomPadding="20"
+        app:textColor="#FF0000"
+        app:textEnabled="true"
+        app:textSize="12sp"
+        app:touchDisabled="true" />
+
     <ToggleButton
         android:id="@+id/tb_flash_light"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_alignBottom="@+id/btn_time_out"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="-77dp" />
+        android:layout_marginBottom="-77dp"
+        android:background="@drawable/custom_flash_light"
+        android:textOff=""
+        android:textOn="" />
 
     <Button
         android:id="@+id/btn_clock"
@@ -154,7 +181,8 @@
         android:layout_height="55dp"
         android:layout_alignBottom="@+id/btn_time_out"
         android:layout_marginBottom="-77dp"
-        android:layout_toRightOf="@+id/tb_flash_light" />
+        android:layout_toRightOf="@+id/tb_flash_light"
+        android:background="@drawable/ic_clock" />
 
     <Button
         android:id="@+id/btn_calculator"
@@ -162,7 +190,8 @@
         android:layout_height="55dp"
         android:layout_alignBottom="@+id/btn_time_out"
         android:layout_marginBottom="-77dp"
-        android:layout_toRightOf="@+id/btn_clock" />
+        android:layout_toRightOf="@+id/btn_clock"
+        android:background="@drawable/ic_calculator" />
 
     <Button
         android:id="@+id/btn_camera"
@@ -170,7 +199,8 @@
         android:layout_height="55dp"
         android:layout_alignBottom="@+id/btn_time_out"
         android:layout_marginBottom="-77dp"
-        android:layout_toRightOf="@+id/btn_calculator" />
+        android:layout_toRightOf="@+id/btn_calculator"
+        android:background="@drawable/ic_camera" />
 
 
 </RelativeLayout>

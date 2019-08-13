@@ -56,8 +56,14 @@ object Utils {
         }
 
         return 0
+    }
 
+    fun checkLight(context: Context): Int {
 
+        return Settings.System.getInt(
+            context.contentResolver,
+            android.provider.Settings.System.SCREEN_BRIGHTNESS
+        )
     }
 
 }

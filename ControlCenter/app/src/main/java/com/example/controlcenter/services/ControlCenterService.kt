@@ -1,5 +1,6 @@
 package com.example.controlcenter.services
 
+import abak.tr.com.boxedverticalseekbar.BoxedVertical
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
 import android.content.ContentResolver
@@ -18,9 +19,12 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
-import com.example.controlcenter.R
 import com.example.controlcenter.scenes.ControlCenterGroupView
 import com.example.controlcenter.utils.Utils
+import android.widget.Toast
+import android.provider.Settings.SettingNotFoundException
+import com.example.controlcenter.R
+
 
 class ControlCenterService : Service() {
     private var windowManager: WindowManager? = null
@@ -41,6 +45,7 @@ class ControlCenterService : Service() {
     private lateinit var tbBluetooth: ToggleButton
     private lateinit var tbMute: ToggleButton
     private lateinit var btnTimeOut: Button
+    private lateinit var sbLight: BoxedVertical
     private lateinit var tbFlashLight: ToggleButton
     private lateinit var btnClock: Button
     private lateinit var btnCalculator: Button
@@ -50,6 +55,7 @@ class ControlCenterService : Service() {
     private var touchToMove: Boolean = false
     private var wifiManager: WifiManager? = null
     private lateinit var camera: Camera
+
     override
     fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
@@ -68,7 +74,6 @@ class ControlCenterService : Service() {
         showIcon()
         initAnimation()
     }
-
 
     // khởi tạo Animation
     private fun initAnimation() {
@@ -119,8 +124,10 @@ class ControlCenterService : Service() {
         controlParams!!.gravity = Gravity.BOTTOM
         controlParams!!.format = PixelFormat.TRANSLUCENT
         controlParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
-        controlParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        viewControl!!.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        controlParams!!.flags =
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        viewControl!!.setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
@@ -139,32 +146,12 @@ class ControlCenterService : Service() {
         tbRotate = view.findViewById(R.id.tb_rotate)
         tbMute = view.findViewById(R.id.tb_mute)
         btnTimeOut = view.findViewById(R.id.btn_time_out)
+        sbLight = view.findViewById(R.id.sb_light)
         tbFlashLight = view.findViewById(R.id.tb_flash_light)
         btnCalculator = view.findViewById(R.id.btn_calculator)
         btnCamera = view.findViewById(R.id.btn_camera)
         btnClock = view.findViewById(R.id.btn_clock)
 
-
-        // sử lý sự kiện khi nhấn vào phần control để out ra khỏi nó
-        rlControl.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
-            when (motionEvent.action) {
-                MotionEvent.ACTION_DOWN -> {
-
-                }
-                MotionEvent.ACTION_UP -> {
-                    Log.d("test", "control_DOWN")
-                    rlControl.animation = animUp
-                    rlControl.animation.start()
-                    showIcon()
-
-                }
-            }
-            return@OnTouchListener true
-        })
-        // sử lý sự kiện set time out - cài đặt thời gian chờ màn hình
-        btnTimeOut.setOnClickListener {
-            showTimeOut()
-        }
 
     }
 
@@ -317,9 +304,25 @@ class ControlCenterService : Service() {
 
 
     //kiểm tra các trạng thái của hệ thống và sử lý các sự kiện của trạng thái đó
-
     private fun setState() {
+        checkWifi()
+        checkPlane()
+        checkSync()
+        checkBluetooth()
+        checkRotateScreens()
+        checkAudioSystem()
+        timeOut()
+        setLight()
+        flashLight()
+        clock()
+        caculator()
+        openCamera()
+        touchOutControl()
 
+    }
+
+
+    private fun checkWifi() {
         // check xem wifi on hay off rồi set vào switch
         wifiManager = application.getSystemService(Context.WIFI_SERVICE) as WifiManager?
         if (Utils.CheckWifi(this) == true) {
@@ -337,6 +340,9 @@ class ControlCenterService : Service() {
                 wifiManager!!.isWifiEnabled = false
             }
         }
+    }
+
+    private fun checkPlane() {
         // check xem chế độ máy bay on hay off rồi set vào switch
         if (Utils.CheckPlane(this) == true) {
             tbPlane.isChecked = true
@@ -362,8 +368,10 @@ class ControlCenterService : Service() {
 
         }
 
-        // check xem đồng bộ on hay off rồi set trạng thái
+    }
 
+    private fun checkSync() {
+        // check xem đồng bộ on hay off rồi set trạng thái
         tbSync.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked == true) {
                 ContentResolver.setMasterSyncAutomatically(true)
@@ -373,6 +381,9 @@ class ControlCenterService : Service() {
                 println("sync off")
             }
         }
+    }
+
+    private fun checkBluetooth() {
         // check xem bluetooth on hay off rồi set trạng thái
         var mBtAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         if (Utils.CheckBluetooth(this)) {
@@ -391,26 +402,9 @@ class ControlCenterService : Service() {
                 mBtAdapter.disable()
             }
         }
-        // check và set state của chế độ rung Vibrate
-        if (Utils.checkAudio(this) == 1) {
-            tbMute.isChecked = true
-        } else {
-            tbMute.isChecked = false
-        }
-        val audioManager: AudioManager
-        audioManager = baseContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    }
 
-        tbMute.setOnCheckedChangeListener { buttonView, isChecked ->
-
-            if (isChecked == true) {
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT)
-
-            } else {
-
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL)
-            }
-        }
-        //------------
+    private fun checkRotateScreens() {
         if (Utils.checkRotate(this) == 1) {
             tbRotate.isChecked = true
         } else {
@@ -436,7 +430,56 @@ class ControlCenterService : Service() {
             }
         }
 
+    }
 
+    private fun checkAudioSystem() {
+        // check và set state của chế độ rung Vibrate
+        if (Utils.checkAudio(this) == 1) {
+            tbMute.isChecked = true
+        } else {
+            tbMute.isChecked = false
+        }
+        val audioManager: AudioManager
+        audioManager = baseContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+        tbMute.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (isChecked == true) {
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT)
+
+            } else {
+
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL)
+            }
+        }
+    }
+
+    private fun setLight() {
+        //  sbLight.defaultValue = Utils.checkLight(this)
+        sbLight.setOnBoxedPointsChangeListener(object : BoxedVertical.OnValuesChangeListener {
+            override fun onPointsChanged(boxedPoints: BoxedVertical, value: Int) {
+                println(value)
+                var brightness = value
+                Settings.System.putInt(
+                    contentResolver,
+                    android.provider.Settings.System.SCREEN_BRIGHTNESS,
+                    value
+                )
+
+
+            }
+
+            override fun onStartTrackingTouch(boxedPoints: BoxedVertical) {
+
+            }
+
+            override fun onStopTrackingTouch(boxedPoints: BoxedVertical) {
+
+            }
+        })
+    }
+
+    private fun flashLight() {
         // sử lý sự kiện khi nhấn vào button Flash Light
         tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked == true) {
@@ -453,10 +496,16 @@ class ControlCenterService : Service() {
                 println("FlashLight off")
             }
         }
+    }
+
+    private fun clock() {
         // sử lý sự kiện khi nhấn vào button đồng hồ
         btnClock.setOnClickListener {
             Toast.makeText(this, "chua phat trien", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun caculator() {
         // sử lý sự kiện khi nhấn vào button máy tính
         btnCalculator.setOnClickListener {
             val intent: Intent = Intent()
@@ -467,6 +516,9 @@ class ControlCenterService : Service() {
             showIcon()
 
         }
+    }
+
+    private fun openCamera() {
         // sử lý sự kiện khi nhấn vào button Camera
         btnCamera.setOnClickListener {
             val intent = Intent("android.media.action.IMAGE_CAPTURE")
@@ -476,6 +528,32 @@ class ControlCenterService : Service() {
             showIcon()
 
         }
+    }
+
+    private fun timeOut() {
+        // sử lý sự kiện set time out - cài đặt thời gian chờ màn hình
+        btnTimeOut.setOnClickListener {
+            showTimeOut()
+        }
+    }
+
+    private fun touchOutControl() {
+        // sử lý sự kiện khi nhấn vào phần control để out ra khỏi nó
+        rlControl.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+
+                }
+                MotionEvent.ACTION_UP -> {
+                    Log.d("test", "control_DOWN")
+                    rlControl.animation = animUp
+                    rlControl.animation.start()
+                    showIcon()
+
+                }
+            }
+            return@OnTouchListener true
+        })
     }
 
     // tạo các widget trong phần icon bottom -- cái thanh dài dài nhỏ nhỏ ý :>>
@@ -495,7 +573,6 @@ class ControlCenterService : Service() {
             bottomParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
             PixelFormat.TRANSLUCENT
         }
-
         //--------------
         lnBottom = view.findViewById(R.id.ln_Bottom)
         moveControl()
