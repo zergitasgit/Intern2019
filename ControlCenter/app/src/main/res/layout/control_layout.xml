@@ -153,16 +153,60 @@
         android:layout_marginRight="106dp"
         android:layout_marginBottom="-163dp"
         app:backgroundColor="@color/color_background"
+        app:defaultImage="@drawable/ic_mute"
+        app:defaultValue="200"
+        app:imageEnabled="false"
+        app:max="250"
+        app:maxImage="@drawable/ic_mute"
+        app:progressColor="@color/color_progress"
+        app:step="1"
+        app:textBottomPadding="20"
+        app:textColor="#FF0000"
+        app:textEnabled="false"
+        app:textSize="12sp"
+        app:touchDisabled="true" />
+
+    <ImageView
+        android:id="@+id/img_light"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignBottom="@+id/cv_music"
+        android:layout_marginLeft="19dp"
+        android:layout_marginTop="-132dp"
+        android:layout_marginBottom="-163dp"
+        android:layout_toRightOf="@id/tb_mute"
+        android:src="@drawable/ic_view_light" />
+
+    <abak.tr.com.boxedverticalseekbar.BoxedVertical
+        android:id="@+id/sb_volume"
+        android:layout_width="55dp"
+        android:layout_height="138dp"
+        android:layout_alignBottom="@+id/cv_music"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="-163dp"
+        app:backgroundColor="@color/color_background"
         app:defaultValue="200"
         app:imageEnabled="false"
         app:max="250"
         app:progressColor="@color/color_progress"
-        app:step="5"
+        app:step="1"
         app:textBottomPadding="20"
         app:textColor="#FF0000"
-        app:textEnabled="true"
+        app:textEnabled="false"
         app:textSize="12sp"
         app:touchDisabled="true" />
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignBottom="@+id/cv_music"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="-132dp"
+        android:layout_marginBottom="-163dp"
+        android:layout_toRightOf="@id/img_light"
+        android:src="@drawable/ic_view_volume" />
 
     <ToggleButton
         android:id="@+id/tb_flash_light"
@@ -182,7 +226,7 @@
         android:layout_alignBottom="@+id/btn_time_out"
         android:layout_marginBottom="-77dp"
         android:layout_toRightOf="@+id/tb_flash_light"
-        android:background="@drawable/ic_clock" />
+        android:background="@drawable/ic_setting_system" />
 
     <Button
         android:id="@+id/btn_calculator"

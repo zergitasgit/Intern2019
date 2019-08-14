@@ -31,8 +31,7 @@ object Utils {
     }
 
     fun CheckSync(context: Context): Boolean {
-
-        return true
+        return false
     }
 
     fun CheckBluetooth(context: Context): Boolean {
@@ -42,10 +41,15 @@ object Utils {
     }
 
     fun checkRotate(context: Context): Int {
-        if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+        if (android.provider.Settings.System.getInt(
+                context.contentResolver,
+                Settings.System.ACCELEROMETER_ROTATION
+            ) == 1
+        ) {
             return 1
-        } else (context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-        return 0
+        } else
+            return 0
     }
 
     fun checkAudio(context: Context): Int {
@@ -58,12 +62,18 @@ object Utils {
         return 0
     }
 
-    fun checkLight(context: Context): Int {
-
+    fun getLight(context: Context): Int {
         return Settings.System.getInt(
             context.contentResolver,
             android.provider.Settings.System.SCREEN_BRIGHTNESS
         )
+    }
+
+    fun getVolume(context: Context): Int {
+        var audioManager: AudioManager
+        audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        var value = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        return value
     }
 
 }

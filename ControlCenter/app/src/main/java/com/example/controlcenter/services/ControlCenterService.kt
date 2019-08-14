@@ -12,6 +12,7 @@ import android.graphics.PixelFormat
 import android.hardware.Camera
 import android.media.AudioManager
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
@@ -22,7 +23,6 @@ import android.widget.*
 import com.example.controlcenter.scenes.ControlCenterGroupView
 import com.example.controlcenter.utils.Utils
 import android.widget.Toast
-import android.provider.Settings.SettingNotFoundException
 import com.example.controlcenter.R
 
 
@@ -46,6 +46,7 @@ class ControlCenterService : Service() {
     private lateinit var tbMute: ToggleButton
     private lateinit var btnTimeOut: Button
     private lateinit var sbLight: BoxedVertical
+    private lateinit var sbVolume: BoxedVertical
     private lateinit var tbFlashLight: ToggleButton
     private lateinit var btnClock: Button
     private lateinit var btnCalculator: Button
@@ -124,8 +125,6 @@ class ControlCenterService : Service() {
         controlParams!!.gravity = Gravity.BOTTOM
         controlParams!!.format = PixelFormat.TRANSLUCENT
         controlParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
-        controlParams!!.flags =
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         viewControl!!.setSystemUiVisibility(
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -136,6 +135,14 @@ class ControlCenterService : Service() {
 
                     or View.SYSTEM_UI_FLAG_IMMERSIVE
         )
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            bottomParams!!.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            PixelFormat.TRANSLUCENT
+        } else {
+            bottomParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            PixelFormat.TRANSLUCENT
+        }
+
         //-------------- Ánh xạ các view trong control view
 
         rlControl = view.findViewById(R.id.rl_control)
@@ -147,6 +154,7 @@ class ControlCenterService : Service() {
         tbMute = view.findViewById(R.id.tb_mute)
         btnTimeOut = view.findViewById(R.id.btn_time_out)
         sbLight = view.findViewById(R.id.sb_light)
+        sbVolume = view.findViewById(R.id.sb_volume)
         tbFlashLight = view.findViewById(R.id.tb_flash_light)
         btnCalculator = view.findViewById(R.id.btn_calculator)
         btnCamera = view.findViewById(R.id.btn_camera)
@@ -313,6 +321,7 @@ class ControlCenterService : Service() {
         checkAudioSystem()
         timeOut()
         setLight()
+        setVolume()
         flashLight()
         clock()
         caculator()
@@ -320,7 +329,6 @@ class ControlCenterService : Service() {
         touchOutControl()
 
     }
-
 
     private fun checkWifi() {
         // check xem wifi on hay off rồi set vào switch
@@ -357,20 +365,23 @@ class ControlCenterService : Service() {
                 var intent: Intent = Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
+                showIcon()
 
             } else {
                 var intent: Intent = Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
+                showIcon()
             }
-            windowManager!!.removeView(viewControl)
-            windowManager!!.addView(viewBottom, bottomParams)
-
         }
-
     }
 
     private fun checkSync() {
+        if (Utils.CheckSync(this) == true) {
+            tbSync.isChecked = true
+        } else {
+            tbSync.isChecked = false
+        }
         // check xem đồng bộ on hay off rồi set trạng thái
         tbSync.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked == true) {
@@ -385,23 +396,28 @@ class ControlCenterService : Service() {
 
     private fun checkBluetooth() {
         // check xem bluetooth on hay off rồi set trạng thái
-        var mBtAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        if (Utils.CheckBluetooth(this)) {
-            tbBluetooth.isChecked = true
-            println("bluetooth on")
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
         } else {
-            tbBluetooth.isChecked = false
-            println("bluetooth off")
-        }
-        tbBluetooth.setOnCheckedChangeListener { buttonView, isChecked ->
-
-            if (isChecked == true) {
-                mBtAdapter.enable()
-
+            var mBtAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+            if (Utils.CheckBluetooth(this)) {
+                tbBluetooth.isChecked = true
+                println("bluetooth on")
             } else {
-                mBtAdapter.disable()
+                tbBluetooth.isChecked = false
+                println("bluetooth off")
+            }
+            tbBluetooth.setOnCheckedChangeListener { buttonView, isChecked ->
+
+                if (isChecked == true) {
+                    mBtAdapter.enable()
+
+                } else {
+                    mBtAdapter.disable()
+                }
             }
         }
+
     }
 
     private fun checkRotateScreens() {
@@ -455,18 +471,46 @@ class ControlCenterService : Service() {
     }
 
     private fun setLight() {
-        //  sbLight.defaultValue = Utils.checkLight(this)
-        sbLight.setOnBoxedPointsChangeListener(object : BoxedVertical.OnValuesChangeListener {
+        var data = Utils.getLight(this@ControlCenterService)
+        sbLight.value = data
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // su ly doi voi android 8.0
+        } else {
+            sbLight.setOnBoxedPointsChangeListener(object : BoxedVertical.OnValuesChangeListener {
+                override fun onPointsChanged(boxedPoints: BoxedVertical, value: Int) {
+                    var brightness = value
+                    Settings.System.putInt(
+                        contentResolver,
+                        android.provider.Settings.System.SCREEN_BRIGHTNESS,
+                        value
+                    )
+
+                }
+
+                override fun onStartTrackingTouch(boxedPoints: BoxedVertical) {
+
+                }
+
+                override fun onStopTrackingTouch(boxedPoints: BoxedVertical) {
+
+                }
+            })
+        }
+    }
+
+    private fun setVolume() {
+        var audioManager: AudioManager
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        sbVolume.value = Utils.getVolume(this)
+        sbVolume.max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        sbVolume.setOnBoxedPointsChangeListener(object : BoxedVertical.OnValuesChangeListener {
             override fun onPointsChanged(boxedPoints: BoxedVertical, value: Int) {
-                println(value)
-                var brightness = value
-                Settings.System.putInt(
-                    contentResolver,
-                    android.provider.Settings.System.SCREEN_BRIGHTNESS,
-                    value
+                audioManager.setStreamVolume(
+                    AudioManager.STREAM_MUSIC,
+                    value, 0
                 )
-
-
             }
 
             override fun onStartTrackingTouch(boxedPoints: BoxedVertical) {
@@ -477,6 +521,7 @@ class ControlCenterService : Service() {
 
             }
         })
+
     }
 
     private fun flashLight() {
@@ -501,7 +546,10 @@ class ControlCenterService : Service() {
     private fun clock() {
         // sử lý sự kiện khi nhấn vào button đồng hồ
         btnClock.setOnClickListener {
-            Toast.makeText(this, "chua phat trien", Toast.LENGTH_SHORT).show()
+            val intent: Intent = Intent(android.provider.Settings.ACTION_SETTINGS)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent)
+            showIcon()
         }
     }
 
@@ -566,11 +614,12 @@ class ControlCenterService : Service() {
         bottomParams!!.gravity = Gravity.BOTTOM
         bottomParams!!.format = PixelFormat.TRANSLUCENT
         bottomParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            bottomParams!!.flags = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            bottomParams!!.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             PixelFormat.TRANSLUCENT
         } else {
-            bottomParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            bottomParams!!.flags = WindowManager.LayoutParams.TYPE_PHONE
             PixelFormat.TRANSLUCENT
         }
         //--------------
