@@ -2,6 +2,7 @@ package com.example.controlcenter.services
 
 import abak.tr.com.boxedverticalseekbar.BoxedVertical
 import android.app.Service
+import android.app.admin.DevicePolicyManager
 import android.bluetooth.BluetoothAdapter
 import android.content.ContentResolver
 import android.content.Context
@@ -12,8 +13,9 @@ import android.graphics.PixelFormat
 import android.hardware.Camera
 import android.media.AudioManager
 import android.net.wifi.WifiManager
-import android.os.Build
 import android.os.IBinder
+import android.os.PowerManager
+import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
 import android.view.*
@@ -51,15 +53,18 @@ class ControlCenterService : Service() {
     private lateinit var btnClock: Button
     private lateinit var btnCalculator: Button
     private lateinit var btnCamera: Button
+    private lateinit var btnMusic: Button
+    private lateinit var btnOffPhone: Button
+    private lateinit var tbHotspot: ToggleButton
+    private lateinit var tbLocation: ToggleButton
     private var y: Int = 0
     private var touchY: Float = 0.0f
     private var touchToMove: Boolean = false
     private var wifiManager: WifiManager? = null
     private lateinit var camera: Camera
 
-    override
-    fun onBind(intent: Intent): IBinder {
-        TODO("Return the communication channel to the service.")
+    override fun onBind(p0: Intent?): IBinder? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -159,7 +164,10 @@ class ControlCenterService : Service() {
         btnCalculator = view.findViewById(R.id.btn_calculator)
         btnCamera = view.findViewById(R.id.btn_camera)
         btnClock = view.findViewById(R.id.btn_clock)
-
+        btnMusic = view.findViewById(R.id.btn_music)
+        btnOffPhone = view.findViewById(R.id.btn_off_phone)
+        tbHotspot = view.findViewById(R.id.tb_hotspot)
+        tbLocation = view.findViewById(R.id.tb_location)
 
     }
 
@@ -326,8 +334,58 @@ class ControlCenterService : Service() {
         clock()
         caculator()
         openCamera()
+        openMusicSetting()
         touchOutControl()
+        offPhone()
+        hotSpot()
+        location()
 
+    }
+
+    private fun location() {
+        tbLocation.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked == true) {
+                val intent: Intent = Intent("android.location.GPS_ENABLED_CHANGE")
+                intent.putExtra("enabled", true)
+                sendBroadcast(intent)
+            } else {
+                val intent: Intent = Intent("android.location.GPS_ENABLED_CHANGE")
+                intent.putExtra("enabled", false)
+                sendBroadcast(intent)
+            }
+        }
+
+    }
+
+
+    private fun openMusicSetting() {
+        btnMusic.setOnClickListener {
+            //Intent intent = new Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER);
+            //startActivity(intent);
+            val intent: Intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            showIcon()
+            startActivity(intent)
+        }
+    }
+
+    private fun offPhone() {
+        btnOffPhone.setOnClickListener {
+
+
+        }
+
+    }
+
+    private fun hotSpot() {
+        println(Utils.checkHotspot(this))
+//        tbHotspot.setOnCheckedChangeListener { buttonView, isChecked ->
+//            if (isChecked == true) {
+//
+//            } else {
+//
+//            }
+//        }
     }
 
     private fun checkWifi() {

@@ -11,7 +11,11 @@ import android.bluetooth.BluetoothAdapter
 import android.content.res.Configuration
 import androidx.core.content.contentValuesOf
 import android.media.AudioManager
+import android.net.wifi.WifiManager
 import androidx.core.content.ContextCompat.getSystemService
+import android.content.Context.WIFI_SERVICE
+import androidx.core.content.ContextCompat.getSystemService
+import java.lang.reflect.Method
 
 
 object Utils {
@@ -74,6 +78,19 @@ object Utils {
         audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         var value = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
         return value
+    }
+
+    fun checkHotspot(context: Context): Boolean {
+
+        val wifimanager = context.getSystemService(WIFI_SERVICE) as WifiManager
+        try {
+            val method: Method = wifimanager.javaClass.getDeclaredMethod("isWifiApEnabled")
+            return method.invoke(wifimanager) as Boolean
+            return true
+        } catch (e: Exception) {
+            println("asd")
+        }
+        return false
     }
 
 }

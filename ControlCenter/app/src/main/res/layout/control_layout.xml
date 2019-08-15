@@ -15,10 +15,9 @@
         app:cardCornerRadius="15dp">
 
         <RelativeLayout
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp">
+            android:layout_margin="15dp">
 
             <ToggleButton
                 android:id="@+id/tb_plane"
@@ -71,46 +70,51 @@
         app:cardCornerRadius="15dp">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="15dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="15dp">
 
             <Button
-                android:id="@+id/btn_setting"
+                android:id="@+id/btn_music"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:background="@drawable/ic_music" />
+
+            <Button
+                android:id="@+id/btn_off_phone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/ic_setting"
-                android:scaleX="1.5"
-                android:scaleY="1.5" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_toRightOf="@+id/btn_music"
+                android:background="@drawable/ic_off_phone" />
 
-            <Button
-                android:id="@+id/btn_previous"
+            <ToggleButton
+                android:id="@+id/tb_hotspot"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/ic_previous"
-                android:scaleX="1.5"
-                android:scaleY="1.5" />
+                android:background="@drawable/ic_hotspot"
+                android:textOff=""
+                android:textOn=""
 
-            <Button
-                android:id="@+id/btn_play"
+                />
+
+            <ToggleButton
+                android:id="@+id/tb_location"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/btn_previous"
-                android:background="@drawable/ic_play"
-                android:scaleX="1.5"
-                android:scaleY="1.5" />
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/tb_hotspot"
+                android:background="@drawable/ic_location"
+                android:textOff=""
+                android:textOn=""
 
-            <Button
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/btn_play"
-                android:background="@drawable/ic_next"
-                android:scaleX="1.5"
-                android:scaleY="1.5" />
+                />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -132,7 +136,10 @@
         android:layout_height="75dp"
         android:layout_alignBottom="@+id/cv_state"
         android:layout_marginBottom="-100dp"
-        android:layout_toRightOf="@+id/tb_rotate" />
+        android:layout_toRightOf="@+id/tb_rotate"
+        android:background="@drawable/custom_mute"
+        android:textOff=""
+        android:textOn="" />
 
     <Button
         android:id="@+id/btn_time_out"
@@ -145,12 +152,12 @@
 
     <abak.tr.com.boxedverticalseekbar.BoxedVertical
         android:id="@+id/sb_light"
-        android:layout_width="55dp"
+        android:layout_width="70dp"
         android:layout_height="138dp"
         android:layout_alignBottom="@+id/cv_music"
         android:layout_alignParentRight="true"
         android:layout_gravity="center"
-        android:layout_marginRight="106dp"
+        android:layout_marginRight="99dp"
         android:layout_marginBottom="-163dp"
         app:backgroundColor="@color/color_background"
         app:defaultImage="@drawable/ic_mute"
@@ -168,10 +175,10 @@
 
     <ImageView
         android:id="@+id/img_light"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="70dp"
+        android:layout_height="73dp"
         android:layout_alignBottom="@+id/cv_music"
-        android:layout_marginLeft="19dp"
+        android:layout_marginLeft="21dp"
         android:layout_marginTop="-132dp"
         android:layout_marginBottom="-163dp"
         android:layout_toRightOf="@id/tb_mute"
@@ -179,7 +186,7 @@
 
     <abak.tr.com.boxedverticalseekbar.BoxedVertical
         android:id="@+id/sb_volume"
-        android:layout_width="55dp"
+        android:layout_width="70dp"
         android:layout_height="138dp"
         android:layout_alignBottom="@+id/cv_music"
         android:layout_alignParentRight="true"
@@ -199,14 +206,15 @@
         app:touchDisabled="true" />
 
     <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="70dp"
+        android:layout_height="73dp"
         android:layout_alignBottom="@+id/cv_music"
-        android:layout_marginLeft="11dp"
+        android:layout_marginLeft="9dp"
         android:layout_marginTop="-132dp"
         android:layout_marginBottom="-163dp"
         android:layout_toRightOf="@id/img_light"
         android:src="@drawable/ic_view_volume" />
+
 
     <ToggleButton
         android:id="@+id/tb_flash_light"
@@ -216,35 +224,46 @@
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="-77dp"
         android:background="@drawable/custom_flash_light"
+        android:scaleX="1.1"
+        android:scaleY="1.1"
         android:textOff=""
         android:textOn="" />
 
     <Button
         android:id="@+id/btn_clock"
-        android:layout_width="55dp"
+        android:layout_width="65dp"
         android:layout_height="55dp"
         android:layout_alignBottom="@+id/btn_time_out"
+        android:layout_marginLeft="25dp"
         android:layout_marginBottom="-77dp"
         android:layout_toRightOf="@+id/tb_flash_light"
-        android:background="@drawable/ic_setting_system" />
+        android:background="@drawable/ic_setting_system"
+        android:scaleX="1.1"
+        android:scaleY="1.1" />
 
     <Button
         android:id="@+id/btn_calculator"
-        android:layout_width="55dp"
+        android:layout_width="65dp"
         android:layout_height="55dp"
         android:layout_alignBottom="@+id/btn_time_out"
+        android:layout_marginLeft="20dp"
         android:layout_marginBottom="-77dp"
         android:layout_toRightOf="@+id/btn_clock"
-        android:background="@drawable/ic_calculator" />
+        android:background="@drawable/ic_calculator"
+        android:scaleX="1.1"
+        android:scaleY="1.1" />
 
     <Button
         android:id="@+id/btn_camera"
-        android:layout_width="55dp"
+        android:layout_width="65dp"
         android:layout_height="55dp"
         android:layout_alignBottom="@+id/btn_time_out"
+        android:layout_marginLeft="20dp"
         android:layout_marginBottom="-77dp"
         android:layout_toRightOf="@+id/btn_calculator"
-        android:background="@drawable/ic_camera" />
+        android:background="@drawable/ic_camera"
+        android:scaleX="1.1"
+        android:scaleY="1.1" />
 
 
 </RelativeLayout>
