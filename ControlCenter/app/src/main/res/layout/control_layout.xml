@@ -7,9 +7,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_state"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginLeft="20dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="150dp"
         android:backgroundTint="@color/colorGray"
         app:cardCornerRadius="15dp">
@@ -61,8 +61,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_music"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="150dp"
         android:layout_toRightOf="@+id/cv_state"
@@ -82,35 +82,32 @@
                 android:background="@drawable/ic_music" />
 
             <Button
-                android:id="@+id/btn_off_phone"
+                android:id="@+id/btn_setting"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="0dp"
-                android:layout_toRightOf="@+id/btn_music"
-                android:background="@drawable/ic_off_phone" />
+                android:layout_toRightOf="@id/btn_music"
+                android:background="@drawable/ic_setting_system" />
 
             <ToggleButton
                 android:id="@+id/tb_hotspot"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/ic_hotspot"
+                android:background="@drawable/custom_hotspot"
                 android:textOff=""
                 android:textOn=""
 
                 />
 
-            <ToggleButton
-                android:id="@+id/tb_location"
+            <Button
+                android:id="@+id/btn_location"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/tb_hotspot"
-                android:background="@drawable/ic_location"
+                android:background="@drawable/ic_no_location"
                 android:textOff=""
                 android:textOn=""
 
@@ -124,7 +121,7 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_alignBottom="@+id/cv_state"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="25dp"
         android:layout_marginBottom="-100dp"
         android:background="@drawable/custom_rotate"
         android:textOff=""
@@ -146,124 +143,130 @@
         android:layout_width="150dp"
         android:layout_height="65dp"
         android:layout_alignBottom="@+id/tb_rotate"
-        android:layout_marginLeft="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="25dp"
         android:layout_marginBottom="-65dp"
         android:text="Time Out" />
 
-    <abak.tr.com.boxedverticalseekbar.BoxedVertical
-        android:id="@+id/sb_light"
-        android:layout_width="70dp"
+    <RelativeLayout
+        android:id="@+id/rl_light"
+        android:layout_width="60dp"
         android:layout_height="138dp"
         android:layout_alignBottom="@+id/cv_music"
-        android:layout_alignParentRight="true"
         android:layout_gravity="center"
-        android:layout_marginRight="99dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="-163dp"
-        app:backgroundColor="@color/color_background"
-        app:defaultImage="@drawable/ic_mute"
-        app:defaultValue="200"
-        app:imageEnabled="false"
-        app:max="250"
-        app:maxImage="@drawable/ic_mute"
-        app:progressColor="@color/color_progress"
-        app:step="1"
-        app:textBottomPadding="20"
-        app:textColor="#FF0000"
-        app:textEnabled="false"
-        app:textSize="12sp"
-        app:touchDisabled="true" />
+        android:layout_toRightOf="@+id/btn_time_out">
 
-    <ImageView
-        android:id="@+id/img_light"
-        android:layout_width="70dp"
-        android:layout_height="73dp"
-        android:layout_alignBottom="@+id/cv_music"
-        android:layout_marginLeft="21dp"
-        android:layout_marginTop="-132dp"
-        android:layout_marginBottom="-163dp"
-        android:layout_toRightOf="@id/tb_mute"
-        android:src="@drawable/ic_view_light" />
+        <abak.tr.com.boxedverticalseekbar.BoxedVertical
+            android:id="@+id/sb_light"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:backgroundColor="@color/color_background"
+            app:defaultImage="@drawable/ic_mute"
+            app:defaultValue="200"
+            app:imageEnabled="false"
+            app:max="250"
+            app:maxImage="@drawable/ic_mute"
+            app:progressColor="@color/color_progress"
+            app:step="1"
+            app:textBottomPadding="20"
+            app:textColor="#FF0000"
+            app:textEnabled="false"
+            app:textSize="12sp"
+            app:touchDisabled="true" />
 
-    <abak.tr.com.boxedverticalseekbar.BoxedVertical
-        android:id="@+id/sb_volume"
-        android:layout_width="70dp"
+        <ImageView
+            android:id="@+id/img_light"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="21dp"
+            android:layout_marginTop="-132dp"
+            android:layout_marginBottom="-163dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:src="@drawable/ic_view_light" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="60dp"
         android:layout_height="138dp"
         android:layout_alignBottom="@+id/cv_music"
-        android:layout_alignParentRight="true"
         android:layout_gravity="center"
-        android:layout_marginRight="20dp"
         android:layout_marginBottom="-163dp"
-        app:backgroundColor="@color/color_background"
-        app:defaultValue="200"
-        app:imageEnabled="false"
-        app:max="250"
-        app:progressColor="@color/color_progress"
-        app:step="1"
-        app:textBottomPadding="20"
-        app:textColor="#FF0000"
-        app:textEnabled="false"
-        app:textSize="12sp"
-        app:touchDisabled="true" />
+        android:layout_toRightOf="@+id/rl_light">
 
-    <ImageView
-        android:layout_width="70dp"
-        android:layout_height="73dp"
-        android:layout_alignBottom="@+id/cv_music"
-        android:layout_marginLeft="9dp"
-        android:layout_marginTop="-132dp"
-        android:layout_marginBottom="-163dp"
-        android:layout_toRightOf="@id/img_light"
-        android:src="@drawable/ic_view_volume" />
+        <abak.tr.com.boxedverticalseekbar.BoxedVertical
+            android:id="@+id/sb_volume"
+            android:layout_width="match_parent"
+            android:layout_height="138dp"
+            app:backgroundColor="@color/color_background"
+            app:defaultValue="200"
+            app:imageEnabled="false"
+            app:max="250"
+            app:progressColor="@color/color_progress"
+            app:step="1"
+            app:textBottomPadding="20"
+            app:textColor="#FF0000"
+            app:textEnabled="false"
+            app:textSize="12sp"
+            app:touchDisabled="true" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="75dp"
+            android:layout_centerInParent="true"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:src="@drawable/ic_view_volume" />
+
+    </RelativeLayout>
 
 
     <ToggleButton
         android:id="@+id/tb_flash_light"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_alignBottom="@+id/btn_time_out"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="-77dp"
+        android:layout_marginBottom="-85dp"
         android:background="@drawable/custom_flash_light"
-        android:scaleX="1.1"
-        android:scaleY="1.1"
+
         android:textOff=""
         android:textOn="" />
 
     <Button
         android:id="@+id/btn_clock"
         android:layout_width="65dp"
-        android:layout_height="55dp"
+        android:layout_height="65dp"
         android:layout_alignBottom="@+id/btn_time_out"
-        android:layout_marginLeft="25dp"
-        android:layout_marginBottom="-77dp"
+        android:layout_marginLeft="18sp"
+        android:layout_marginBottom="-85dp"
         android:layout_toRightOf="@+id/tb_flash_light"
-        android:background="@drawable/ic_setting_system"
-        android:scaleX="1.1"
-        android:scaleY="1.1" />
+        android:background="@drawable/ic_clock" />
 
     <Button
         android:id="@+id/btn_calculator"
         android:layout_width="65dp"
-        android:layout_height="55dp"
+        android:layout_height="65dp"
         android:layout_alignBottom="@+id/btn_time_out"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="-77dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginBottom="-85dp"
         android:layout_toRightOf="@+id/btn_clock"
-        android:background="@drawable/ic_calculator"
-        android:scaleX="1.1"
-        android:scaleY="1.1" />
+        android:background="@drawable/ic_calculator" />
 
     <Button
         android:id="@+id/btn_camera"
         android:layout_width="65dp"
-        android:layout_height="55dp"
+        android:layout_height="65dp"
         android:layout_alignBottom="@+id/btn_time_out"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="-77dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginBottom="-85dp"
         android:layout_toRightOf="@+id/btn_calculator"
-        android:background="@drawable/ic_camera"
-        android:scaleX="1.1"
-        android:scaleY="1.1" />
+        android:background="@drawable/ic_camera" />
 
 
 </RelativeLayout>

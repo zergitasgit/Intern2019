@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import android.content.Context.WIFI_SERVICE
 import androidx.core.content.ContextCompat.getSystemService
 import java.lang.reflect.Method
+import android.net.wifi.WifiConfiguration
 
 
 object Utils {
@@ -91,6 +92,57 @@ object Utils {
             println("asd")
         }
         return false
+    }
+
+    fun turnOnHotSpot(context: Context) {
+        val wifimanager = context.getSystemService(WIFI_SERVICE) as WifiManager
+        val wifiConfiguration = WifiConfiguration()
+        wifiConfiguration.SSID = "MyDummySSID"
+        val method: Method = wifimanager.javaClass.getDeclaredMethod(
+            "setWifiApEnabled",
+            WifiConfiguration::class.java,
+            java.lang.Boolean.TYPE
+        )
+        method.invoke(wifimanager, wifiConfiguration, true)
+    }
+
+    fun turnOffHotSpot(context: Context) {
+        val wifimanager = context.getSystemService(WIFI_SERVICE) as WifiManager
+        val wifiConfiguration = WifiConfiguration()
+        wifiConfiguration.SSID = "MyDummySSID"
+        val method: Method = wifimanager.javaClass.getDeclaredMethod(
+            "setWifiApEnabled",
+            WifiConfiguration::class.java,
+            java.lang.Boolean.TYPE
+        )
+        method.invoke(wifimanager, wifiConfiguration, false)
+
+    }
+
+    fun SetSize(context: Context, i: Int) {
+        val sharedPreference = context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        editor.putInt("size", i)
+        editor.commit()
+    }
+
+    fun getSize(context: Context): Int {
+        val sharedPreference = context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        var i: Int = sharedPreference.getInt("size", 0)
+        return i
+    }
+
+    fun setPosition(context: Context, i: Int) {
+        val sharedPreference = context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        editor.putInt("position", i)
+        editor.commit()
+    }
+
+    fun getPosition(context: Context): Int {
+        val sharedPreference = context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        var i: Int = sharedPreference.getInt("position", 1)
+        return i
     }
 
 }

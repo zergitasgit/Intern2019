@@ -14,7 +14,6 @@ import android.hardware.Camera
 import android.media.AudioManager
 import android.net.wifi.WifiManager
 import android.os.IBinder
-import android.os.PowerManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -40,6 +39,8 @@ class ControlCenterService : Service() {
     private lateinit var lnBottom: LinearLayout
     private lateinit var lnTimeOut: LinearLayout
     private lateinit var animUp: Animation
+    private lateinit var animLeft: Animation
+    private lateinit var animRight: Animation
     private lateinit var tbWifi: ToggleButton
     private lateinit var tbPlane: ToggleButton
     private lateinit var tbSync: ToggleButton
@@ -54,11 +55,13 @@ class ControlCenterService : Service() {
     private lateinit var btnCalculator: Button
     private lateinit var btnCamera: Button
     private lateinit var btnMusic: Button
-    private lateinit var btnOffPhone: Button
+    private lateinit var btnSetting: Button
     private lateinit var tbHotspot: ToggleButton
-    private lateinit var tbLocation: ToggleButton
+    private lateinit var btnLocation: Button
     private var y: Int = 0
     private var touchY: Float = 0.0f
+    private var x: Int = 0
+    private var touchX: Float = 0.0f
     private var touchToMove: Boolean = false
     private var wifiManager: WifiManager? = null
     private lateinit var camera: Camera
@@ -84,6 +87,8 @@ class ControlCenterService : Service() {
     // khởi tạo Animation
     private fun initAnimation() {
         animUp = AnimationUtils.loadAnimation(this, R.anim.anim_up)
+        animLeft = AnimationUtils.loadAnimation(this, R.anim.anim_left)
+        animRight = AnimationUtils.loadAnimation(this, R.anim.anim_right)
     }
 
     // hiển thị thanh nhỏ nhỏ ở bottom
@@ -94,6 +99,8 @@ class ControlCenterService : Service() {
             println("Bugs")
         }
         windowManager!!.addView(viewBottom, bottomParams)
+
+
     }
 
     // hiển thị bảng Control
@@ -165,9 +172,9 @@ class ControlCenterService : Service() {
         btnCamera = view.findViewById(R.id.btn_camera)
         btnClock = view.findViewById(R.id.btn_clock)
         btnMusic = view.findViewById(R.id.btn_music)
-        btnOffPhone = view.findViewById(R.id.btn_off_phone)
+        btnSetting = view.findViewById(R.id.btn_setting)
         tbHotspot = view.findViewById(R.id.tb_hotspot)
-        tbLocation = view.findViewById(R.id.tb_location)
+        btnLocation = view.findViewById(R.id.btn_location)
 
     }
 
@@ -336,56 +343,10 @@ class ControlCenterService : Service() {
         openCamera()
         openMusicSetting()
         touchOutControl()
-        offPhone()
+        settingSystem()
         hotSpot()
         location()
 
-    }
-
-    private fun location() {
-        tbLocation.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked == true) {
-                val intent: Intent = Intent("android.location.GPS_ENABLED_CHANGE")
-                intent.putExtra("enabled", true)
-                sendBroadcast(intent)
-            } else {
-                val intent: Intent = Intent("android.location.GPS_ENABLED_CHANGE")
-                intent.putExtra("enabled", false)
-                sendBroadcast(intent)
-            }
-        }
-
-    }
-
-
-    private fun openMusicSetting() {
-        btnMusic.setOnClickListener {
-            //Intent intent = new Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER);
-            //startActivity(intent);
-            val intent: Intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            showIcon()
-            startActivity(intent)
-        }
-    }
-
-    private fun offPhone() {
-        btnOffPhone.setOnClickListener {
-
-
-        }
-
-    }
-
-    private fun hotSpot() {
-        println(Utils.checkHotspot(this))
-//        tbHotspot.setOnCheckedChangeListener { buttonView, isChecked ->
-//            if (isChecked == true) {
-//
-//            } else {
-//
-//            }
-//        }
     }
 
     private fun checkWifi() {
@@ -476,6 +437,53 @@ class ControlCenterService : Service() {
             }
         }
 
+    }
+
+    private fun openMusicSetting() {
+        btnMusic.setOnClickListener {
+            //Intent intent = new Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER);
+            //startActivity(intent);
+            val intent: Intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            showIcon()
+            startActivity(intent)
+        }
+    }
+
+    private fun settingSystem() {
+        btnSetting.setOnClickListener {
+            val intent: Intent = Intent(android.provider.Settings.ACTION_SETTINGS)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent)
+            showIcon()
+        }
+
+
+    }
+
+    private fun hotSpot() {
+        println(Utils.checkHotspot(this))
+
+
+        tbHotspot.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked == true) {
+
+                Utils.turnOnHotSpot(this)
+
+            } else {
+                Utils.turnOffHotSpot(this)
+            }
+        }
+
+    }
+
+    private fun location() {
+        btnLocation.setOnClickListener {
+            val intent: Intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            showIcon()
+        }
     }
 
     private fun checkRotateScreens() {
@@ -604,10 +612,7 @@ class ControlCenterService : Service() {
     private fun clock() {
         // sử lý sự kiện khi nhấn vào button đồng hồ
         btnClock.setOnClickListener {
-            val intent: Intent = Intent(android.provider.Settings.ACTION_SETTINGS)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent)
-            showIcon()
+            Toast.makeText(this, "Chưa được phát triển", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -665,11 +670,11 @@ class ControlCenterService : Service() {
     // tạo các widget trong phần icon bottom -- cái thanh dài dài nhỏ nhỏ ý :>>
     private fun createIconView() {
         viewBottom = ControlCenterGroupView(this)
-        val view: View = View.inflate(this, R.layout.bottom_layout, viewBottom)
+        var view: View
         bottomParams = WindowManager.LayoutParams()
         bottomParams!!.width = WindowManager.LayoutParams.WRAP_CONTENT
         bottomParams!!.height = WindowManager.LayoutParams.WRAP_CONTENT
-        bottomParams!!.gravity = Gravity.BOTTOM
+
         bottomParams!!.format = PixelFormat.TRANSLUCENT
         bottomParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
 
@@ -681,12 +686,75 @@ class ControlCenterService : Service() {
             PixelFormat.TRANSLUCENT
         }
         //--------------
-        lnBottom = view.findViewById(R.id.ln_Bottom)
-        moveControl()
+
+        if (Utils.getPosition(this) == 1) {
+            view = View.inflate(this, R.layout.left_layout, viewBottom)
+            bottomParams!!.gravity = Gravity.LEFT
+            lnBottom = view.findViewById(R.id.ln_Bottom)
+            lnBottom.layoutParams.width = 50
+            lnBottom.layoutParams.height = Utils.getSize(this)
+            moveControlLeft()
+
+        }
+        if (Utils.getPosition(this) == 2) {
+            view = View.inflate(this, R.layout.left_layout, viewBottom)
+            bottomParams!!.gravity = Gravity.RIGHT
+            lnBottom = view.findViewById(R.id.ln_Bottom)
+            lnBottom.layoutParams.width = 50
+            lnBottom.layoutParams.height = Utils.getSize(this)
+            moveControlLeft()
+
+        }
+        if (Utils.getPosition(this) == 3) {
+            view = View.inflate(this, R.layout.bottom_layout, viewBottom)
+            bottomParams!!.gravity = Gravity.BOTTOM
+            lnBottom = view.findViewById(R.id.ln_Bottom)
+            lnBottom.layoutParams.width = Utils.getSize(this)
+            moveControlUP()
+        }
+
+
+    }
+
+    private fun moveControlLeft() {
+        lnBottom.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    x = bottomParams!!.x
+                    touchX = motionEvent.rawX
+                    touchToMove = false
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val delX = motionEvent.rawX - touchY
+                    bottomParams!!.x = (x - delX).toInt()
+                    windowManager!!.updateViewLayout(viewBottom, bottomParams)
+                    if (delX * delX > 1) {
+                        bottomParams!!.y = 0
+                        windowManager!!.updateViewLayout(viewBottom, bottomParams)
+                    }
+
+                    if (delX * delX > 200) {
+                        touchToMove = true
+                        bottomParams!!.y = 0
+                        windowManager!!.updateViewLayout(viewBottom, bottomParams)
+                    }
+
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (touchToMove == true) {
+                        rlControl.animation = animLeft
+                        rlControl.animation.start()
+                        showControl()
+                        setState()
+                    }
+                }
+            }
+            return@OnTouchListener true
+        })
     }
 
     // xử lý sự kiện vuốt ở thanh icon dài dài nhỏ nhỏ ý
-    private fun moveControl() {
+    private fun moveControlUP() {
         lnBottom.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
