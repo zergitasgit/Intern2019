@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".screens.password.NewPassword"
+        android:orientation="vertical"
+        android:background="#f1f0f6">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="50dp"
+    android:background="#ffffff">
+        <View
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent" android:layout_height="2dp"
+                android:background="#f1f0f6"/>
+        <LinearLayout
+
+                android:clickable="true"
+                android:id="@+id/img_back"
+                      android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+            <ImageView
+                       android:layout_width="25dp" android:layout_height="50dp"
+                       android:src="@mipmap/ic_back22"
+            />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Setting"
+            android:layout_gravity="center_vertical"
+            android:textColor="#196CFF"
+            android:textSize="15sp"/>
+
+        </LinearLayout>
+        <TextView
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set New Password"
+                android:textColor="#000"
+                android:textSize="17sp"/>
+    </RelativeLayout>
+    <EditText
+            android:background="@drawable/edittext"
+            android:layout_marginHorizontal="20dp"
+            android:maxLength="6"
+            android:inputType="numberPassword"
+            android:id="@+id/edt_pass_old"
+            android:layout_marginTop="20dp"
+            android:hint="Confirm old password"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textSize="15sp"
+
+    />
+
+    <EditText
+            android:textSize="15sp"
+            android:background="@drawable/edittext"
+            android:layout_marginHorizontal="20dp"
+            android:maxLength="6"
+            android:id="@+id/edt_pass_new"
+            android:layout_marginTop="20dp"
+            android:hint="Enter your new password"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="numberPassword"
+
+    />
+    <EditText
+            android:textSize="15sp"
+            android:background="@drawable/edittext"
+            android:layout_marginHorizontal="20dp"
+            android:maxLength="6"
+            android:inputType="numberPassword"
+            android:id="@+id/edt_pass_again_new"
+            android:layout_marginTop="20dp"
+            android:hint="Confirm password"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+
+    />
+    <Button
+
+            android:background="@drawable/buttonconfi"
+            android:id="@+id/btn_confirm_new"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="120dp" android:layout_height="40dp"
+            android:text="confirm"/>
+
+
+</LinearLayout>

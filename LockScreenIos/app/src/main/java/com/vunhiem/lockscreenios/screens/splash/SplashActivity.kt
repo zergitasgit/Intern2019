@@ -15,7 +15,7 @@ class SplashActivity : AppCompatActivity() {
     }
     fun splashScreen(){
         val handler = android.os.Handler()
-        handler.postDelayed({ screenRouter() }, 2500)
+        handler.postDelayed({ screenRouter() }, 1000)
     }
 
     private fun screenRouter() {

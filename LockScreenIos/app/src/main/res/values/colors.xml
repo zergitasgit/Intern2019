@@ -3,6 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="white">#FFFF</color>
-    <color name="click">#ACA8AA</color>
+    <color name="white">#ffffff</color>
+    <color name="click">#f1f0f6</color>
+    <color name="color_select">#c6c6c6</color>
+    <color name="color_select2">#413F3F</color>
 </resources>

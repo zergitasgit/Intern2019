@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".screens.wallpaper.Wallpaper"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="#F0E9E9">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:background="#fff">
+        <LinearLayout
+                android:clickable="true"
+                android:id="@+id/img_back"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <ImageView
+                    android:layout_width="25dp" android:layout_height="50dp"
+                    android:src="@mipmap/ic_back22"
+            />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Setting"
+                      android:layout_gravity="center_vertical"
+                      android:textColor="#196CFF"
+                      android:textSize="15sp"/>
+        </LinearLayout>
+        <TextView
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Your Wallpaper"
+                android:textColor="#000"
+                android:textSize="17sp"/>
+    </RelativeLayout>
+    <RelativeLayout
+            android:id="@+id/rl_select_from"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/button_selector"
+            android:clickable="true">
+        <View
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent" android:layout_height="3dp"
+                android:background="#f1f0f6"/>
+        <ImageView
+                android:layout_marginLeft="10dp"
+                android:padding="4dp"
+                android:src="@drawable/icon_album2"
+                android:id="@+id/img_icon_main1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+        />
+        <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/img_icon_main1" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select From Gallery"
+                android:textColor="#03A9F4"
+                android:layout_centerVertical="true"
+                android:textSize="16sp"/>
+        <ImageView
+                android:padding="5dp"
+                android:src="@mipmap/ic_next"
+                android:layout_centerVertical="true" android:layout_width="wrap_content" android:layout_height="40dp"
+                android:layout_alignParentRight="true"/>
+        <View
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent" android:layout_height="3dp"
+                android:background="#f1f0f6"/>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+
+            android:background="#FFF"
+            android:id="@+id/rv_wallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

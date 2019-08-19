@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">LockScreenIos</string>
+    <string name="app_name">LockIOS</string>
+    <string name="mot">1\n</string>
+    <string name="hai">2\nABC</string>
+    <string name="ba">3\nDEF</string>
+    <string name="bon">4\nGHI</string>
+    <string name="nam">5\nJKL</string>
+    <string name="sau">6\nMNO</string>
+    <string name="bay">7\nPQRS</string>
+    <string name="tam">8\nTUV</string>
+    <string name="chin">9\nWXYZ</string>
+    <string name="ko">0</string>
+
 </resources>
