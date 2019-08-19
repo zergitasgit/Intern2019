@@ -1,21 +1,32 @@
 package com.example.controlcenter.services
 
 import abak.tr.com.boxedverticalseekbar.BoxedVertical
+import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.Service
 import android.app.admin.DevicePolicyManager
 import android.bluetooth.BluetoothAdapter
-import android.content.ContentResolver
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.hardware.Camera
 import android.media.AudioManager
+import android.media.MediaMetadata
+import android.media.session.MediaController
+import android.media.session.MediaSession
+import android.media.session.MediaSessionManager
+import android.media.session.PlaybackState
 import android.net.wifi.WifiManager
+import android.os.Build
+import android.os.Bundle
 import android.os.IBinder
+import android.preference.PreferenceManager
 import android.provider.MediaStore
 import android.provider.Settings
+import android.service.notification.NotificationListenerService
+import android.service.notification.StatusBarNotification
 import android.util.Log
 import android.view.*
 import android.view.animation.Animation
@@ -24,10 +35,11 @@ import android.widget.*
 import com.example.controlcenter.scenes.ControlCenterGroupView
 import com.example.controlcenter.utils.Utils
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.controlcenter.R
 
 
-class ControlCenterService : Service() {
+class ControlCenterService : NotificationListenerService() {
     private var windowManager: WindowManager? = null
     private var viewBottom: ControlCenterGroupView? = null
     private var viewControl: ControlCenterGroupView? = null
@@ -54,10 +66,10 @@ class ControlCenterService : Service() {
     private lateinit var btnClock: Button
     private lateinit var btnCalculator: Button
     private lateinit var btnCamera: Button
-    private lateinit var btnMusic: Button
-    private lateinit var btnSetting: Button
-    private lateinit var tbHotspot: ToggleButton
-    private lateinit var btnLocation: Button
+    private lateinit var btnPrevious: Button
+    private lateinit var tbPlay: ToggleButton
+    private lateinit var btnNext: Button
+    private lateinit var tvMusicName: TextView
     private var y: Int = 0
     private var touchY: Float = 0.0f
     private var x: Int = 0
@@ -65,15 +77,247 @@ class ControlCenterService : Service() {
     private var touchToMove: Boolean = false
     private var wifiManager: WifiManager? = null
     private lateinit var camera: Camera
+    private lateinit var mediaSessionManager: MediaSessionManager
+    private var mediaController: MediaController? = null
+    private var online: Boolean = false
+    private val MEDIA_ACTION: String = "com.example.controlcenter.services.MEDIA_ACTION"
+    private val MEDIA_UPDATE: String = "com.example.controlcenter.services.MEDIA_UPDATE"
+    private val componentName: ComponentName =
+        ComponentName(
+            "com.example.controlcenter",
+            "com.example.controlcenter.services.ControlCenterService"
+        )
+
+    var currentlyPlaying: Boolean = false
+    var currentArt: Bitmap? = null
+    var currentArtist: String = ""
+    var currentSong: String = ""
+    var currentAlbum: String = ""
+    private lateinit var meta: MediaMetadata
+
+
+    override fun onCreate() {
+        registerReceiver(button, IntentFilter(MEDIA_ACTION))
+        mediaSessionManager = getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
+        try {
+            mediaSessionManager.addOnActiveSessionsChangedListener(sessionListener, componentName)
+            var controllers: List<MediaController> =
+                mediaSessionManager.getActiveSessions(componentName)
+            mediaController = this!!.pickController(controllers)!!
+            if (mediaController != null) {
+                mediaController!!.registerCallback(callback)
+                meta = mediaController!!.metadata!!
+                updateMetadata()
+
+            }
+            online = true
+        } catch (e: Exception) {
+            println("loi co on create")
+            println(e)
+
+        }
+    }
 
     override fun onBind(p0: Intent?): IBinder? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return null
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (mediaController == null) {
+            try {
+                var controllers: List<MediaController> =
+                    mediaSessionManager.getActiveSessions(componentName)
+                mediaController = this!!.pickController(controllers)!!
+                if (mediaController != null) {
+                    mediaController!!.registerCallback(callback)
+                    meta = mediaController!!.getMetadata()!!
+                    updateMetadata()
+                }
+            } catch (e: Exception) {
+                println("bug onStartCommand")
+                println(e)
+
+            }
+        }
         initView()
         return START_STICKY
+
     }
+
+    var callback: MediaController.Callback = object : MediaController.Callback() {
+        override fun onSessionDestroyed() {
+            super.onSessionDestroyed()
+            mediaController = null!!
+            meta = null!!
+        }
+
+        override fun onSessionEvent(event: String, extras: Bundle?) {
+            super.onSessionEvent(event, extras)
+            updateMetadata()
+        }
+
+        override fun onPlaybackStateChanged(state: PlaybackState?) {
+            super.onPlaybackStateChanged(state)
+            if (state != null) {
+                currentlyPlaying = state.state == PlaybackState.STATE_PLAYING
+            }
+        }
+
+        override fun onMetadataChanged(metadata: MediaMetadata?) {
+            super.onMetadataChanged(metadata)
+            meta = metadata!!
+            updateMetadata()
+        }
+
+        override fun onQueueChanged(queue: MutableList<MediaSession.QueueItem>?) {
+            super.onQueueChanged(queue)
+        }
+
+        override fun onQueueTitleChanged(title: CharSequence?) {
+            super.onQueueTitleChanged(title)
+        }
+
+        override fun onExtrasChanged(extras: Bundle?) {
+            super.onExtrasChanged(extras)
+        }
+
+        override fun onAudioInfoChanged(info: MediaController.PlaybackInfo?) {
+            super.onAudioInfoChanged(info)
+        }
+
+    }
+
+    override fun onNotificationPosted(sbn: StatusBarNotification?, rankingMap: RankingMap?) {
+        super.onNotificationPosted(sbn, rankingMap)
+    }
+
+    override fun onNotificationRemoved(sbn: StatusBarNotification?) {
+        super.onNotificationRemoved(sbn)
+    }
+
+    fun updateMetadata() {
+        if (mediaController != null && mediaController!!.playbackState != null) {
+            currentlyPlaying =
+                mediaController!!.playbackState!!.state == PlaybackState.STATE_PLAYING
+        }
+        if (meta == null) return
+        currentArt = meta.getBitmap(MediaMetadata.METADATA_KEY_ART)
+        if (currentArt == null) {
+            currentArt = meta.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART)
+        }
+        if (currentArt == null) {
+            currentArt = meta.getBitmap(MediaMetadata.METADATA_KEY_DISPLAY_ICON)
+        }
+        currentArtist = meta.getString(MediaMetadata.METADATA_KEY_ARTIST)
+        currentSong = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
+        if (currentSong == null) {
+            currentSong = meta.getString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE)
+        }
+        currentAlbum = meta.getString(MediaMetadata.METADATA_KEY_ALBUM)
+        if (currentArtist == null) {
+            currentArtist = meta.getString(MediaMetadata.METADATA_KEY_ALBUM_ARTIST)
+        }
+        if (currentArtist == null) {
+            currentArtist = meta.getString(MediaMetadata.METADATA_KEY_AUTHOR)
+        }
+        if (currentArtist == null) {
+            currentArtist = meta.getString(MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE)
+        }
+        if (currentArtist == null) {
+            currentArtist = meta.getString(MediaMetadata.METADATA_KEY_WRITER)
+        }
+        if (currentArtist == null) {
+            currentArtist = meta.getString(MediaMetadata.METADATA_KEY_COMPOSER)
+        }
+        if (currentArtist == null) currentArtist = ""
+        if (currentSong == null) currentSong = ""
+        if (currentAlbum == null) currentAlbum = ""
+        sendBroadcast(Intent(MEDIA_UPDATE))
+    }
+
+    fun pickController(controllers: List<MediaController>): MediaController? {
+        for (i in 0 until controllers.size) {
+            val mc: MediaController = controllers.get(i)
+            if (mc.playbackState != null && mc.playbackState!!.state == PlaybackState.STATE_PLAYING) {
+                return mc
+            }
+        }
+        if (controllers.size > 0) return controllers.get(0)
+        return null
+    }
+
+    var sessionListener: MediaSessionManager.OnActiveSessionsChangedListener =
+        object : MediaSessionManager.OnActiveSessionsChangedListener {
+            override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
+                mediaController = controllers?.let { pickController(it) }!!
+                if (mediaController == null) return
+                mediaController!!.registerCallback(callback)
+                meta = mediaController!!.metadata!!
+                updateMetadata()
+            }
+
+        }
+
+    var button: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, intent: Intent?) {
+            //Play is 0, next is 1, previous is 2
+            var action: Int = intent!!.getIntExtra("type", -1)
+            if (mediaController != null && action == 0) {
+                mediaController!!.dispatchMediaButtonEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
+                    )
+                )
+                mediaController!!.dispatchMediaButtonEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
+                    )
+                )
+            } else if (mediaController != null && action == 1) {
+                mediaController!!.dispatchMediaButtonEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_MEDIA_NEXT
+                    )
+                )
+                mediaController!!.dispatchMediaButtonEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_MEDIA_NEXT
+                    )
+                )
+            } else if (mediaController != null && action == 2) {
+                mediaController!!.dispatchMediaButtonEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_MEDIA_PREVIOUS
+                    )
+                )
+                mediaController!!.dispatchMediaButtonEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_MEDIA_PREVIOUS
+                    )
+                )
+            } else if (action == 3) {
+                val m: PackageManager = application.packageManager
+                if (mediaController == null) {
+                    val p: SharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                    val pack: String? = p.getString("appLaunch", "").toString()
+                    if (!pack.equals("")) {
+                        startActivity((pack?.let { m.getLaunchIntentForPackage(it) }))
+                    } else {
+                        startActivity(m.getLaunchIntentForPackage(mediaController!!.getPackageName()))
+                    }
+                }
+            }
+        }
+
+    }
+
 
     private fun initView() {
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -171,11 +415,10 @@ class ControlCenterService : Service() {
         btnCalculator = view.findViewById(R.id.btn_calculator)
         btnCamera = view.findViewById(R.id.btn_camera)
         btnClock = view.findViewById(R.id.btn_clock)
-        btnMusic = view.findViewById(R.id.btn_music)
-        btnSetting = view.findViewById(R.id.btn_setting)
-        tbHotspot = view.findViewById(R.id.tb_hotspot)
-        btnLocation = view.findViewById(R.id.btn_location)
-
+        btnPrevious = view.findViewById(R.id.btn_previous)
+        tbPlay = view.findViewById(R.id.tb_play)
+        btnNext = view.findViewById(R.id.btn_next)
+        tvMusicName = view.findViewById(R.id.tv_music_name)
     }
 
     // khởi tạo window manager của phần time out
@@ -341,11 +584,54 @@ class ControlCenterService : Service() {
         clock()
         caculator()
         openCamera()
-        openMusicSetting()
         touchOutControl()
-        settingSystem()
-        hotSpot()
-        location()
+        playMusic()
+
+
+    }
+
+
+    private fun playMusic() {
+        updateMetadata()
+        tvMusicName.text = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
+        println(meta.getString(MediaMetadata.METADATA_KEY_TITLE))
+        btnPrevious.setOnClickListener {
+            println(meta.getString(MediaMetadata.METADATA_KEY_TITLE))
+            val transportControls = mediaController!!.transportControls
+            transportControls.skipToPrevious()
+            tvMusicName.text = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
+            if (windowManager != null) {
+                windowManager!!.updateViewLayout(viewControl, controlParams)
+            }
+        }
+        if (currentlyPlaying == true) {
+            tbPlay.isChecked = true
+
+        } else {
+            tbPlay.isChecked = false
+        }
+        tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked == true) {
+                val transportControls = mediaController!!.transportControls
+                transportControls.play()
+
+
+            } else {
+                val transportControls = mediaController!!.transportControls
+                transportControls.pause()
+            }
+        }
+        btnNext.setOnClickListener {
+            val transportControls = mediaController!!.transportControls
+            updateMetadata()
+            transportControls.skipToNext()
+            tvMusicName.text = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
+            if (windowManager != null) {
+                windowManager!!.updateViewLayout(viewControl, controlParams)
+            }
+
+        }
+
 
     }
 
@@ -437,53 +723,6 @@ class ControlCenterService : Service() {
             }
         }
 
-    }
-
-    private fun openMusicSetting() {
-        btnMusic.setOnClickListener {
-            //Intent intent = new Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER);
-            //startActivity(intent);
-            val intent: Intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            showIcon()
-            startActivity(intent)
-        }
-    }
-
-    private fun settingSystem() {
-        btnSetting.setOnClickListener {
-            val intent: Intent = Intent(android.provider.Settings.ACTION_SETTINGS)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent)
-            showIcon()
-        }
-
-
-    }
-
-    private fun hotSpot() {
-        println(Utils.checkHotspot(this))
-
-
-        tbHotspot.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked == true) {
-
-                Utils.turnOnHotSpot(this)
-
-            } else {
-                Utils.turnOffHotSpot(this)
-            }
-        }
-
-    }
-
-    private fun location() {
-        btnLocation.setOnClickListener {
-            val intent: Intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            showIcon()
-        }
     }
 
     private fun checkRotateScreens() {
@@ -793,6 +1032,12 @@ class ControlCenterService : Service() {
 
     // xử lý sự kiện destroy service
     override fun onDestroy() {
+        unregisterReceiver(button)
+        if (mediaController != null) {
+            mediaController = null
+            online = false
+            mediaSessionManager.removeOnActiveSessionsChangedListener(sessionListener)
+        }
         windowManager!!.removeView(viewBottom)
     }
 }

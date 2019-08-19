@@ -17,17 +17,36 @@ import com.example.controlcenter.utils.Utils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        val intent: Intent = Intent(this, ControlCenterService::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        onControl()
+        checkPermissionNotification(intent)
         changeSize()
-        changePositon()
+        changePositon(intent)
         PermissionAPI()
     }
+    private fun checkPermissionNotification(intent: Intent) {
+        if (Settings.Secure.getString(
+                this.getContentResolver(),
+                "enabled_notification_listeners"
+            ).contains(getApplicationContext().getPackageName())
+        ) {
+            sw_control_center.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    startService(intent)
+                } else {
+                    stopService(intent)
+                }
+            }
+        } else {
+            val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            getApplicationContext().startActivity(intent)
+        }
+    }
 
-    private fun changePositon() {
+    private fun changePositon(intent: Intent) {
         var i = Utils.getPosition(this)
         if (i == 2) {
             rb_ben_phai.isChecked = true
@@ -38,22 +57,20 @@ class MainActivity : AppCompatActivity() {
         if (i == 3) {
             rb_ben_duoi.isChecked = true
         }
-        val myToast = Toast.makeText(
-            this,
-            "Hãy tắt/mở lại nút để xem sự thay đổi",
-            Toast.LENGTH_SHORT
-        )
         rb_ben_trai.setOnClickListener {
             Utils.setPosition(this, 1)
-            myToast.show()
+
+
         }
         rb_ben_phai.setOnClickListener {
             Utils.setPosition(this, 2)
-            myToast.show()
+
+
         }
         rb_ben_duoi.setOnClickListener {
             Utils.setPosition(this, 3)
-            myToast.show()
+
+
         }
 
     }
@@ -78,17 +95,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
         sb_size.progress = Utils.getSize(this)
-    }
-
-    private fun onControl() {
-        val intent: Intent = Intent(this, ControlCenterService::class.java)
-        sw_control_center.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                startService(intent)
-            } else {
-                stopService(intent)
-            }
-        }
     }
 
     private fun PermissionAPI() {

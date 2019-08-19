@@ -69,50 +69,59 @@
         android:backgroundTint="@color/colorGray"
         app:cardCornerRadius="15dp">
 
+        <TextView
+            android:textColor="@color/colorWhite"
+            android:text="name "
+            android:textSize="13dp"
+            android:id="@+id/tv_music_name"
+            android:layout_width="140dp"
+            android:layout_height="32dp"
+            android:layout_margin="5dp"
+            />
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="15dp">
+            android:layout_marginTop="15dp">
 
             <Button
-                android:id="@+id/btn_music"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/btn_music_setting"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/ic_music" />
 
             <Button
-                android:id="@+id/btn_setting"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/btn_music"
-                android:background="@drawable/ic_setting_system" />
+                android:id="@+id/btn_previous"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_below="@+id/btn_music_setting"
+                android:background="@drawable/ic_previous"
+                android:scaleX="1.3"
+                android:scaleY="1.3" />
 
             <ToggleButton
-                android:id="@+id/tb_hotspot"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/custom_hotspot"
+                android:id="@+id/tb_play"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_below="@+id/btn_music_setting"
+                android:layout_toRightOf="@+id/btn_previous"
+                android:background="@drawable/custom_play_music"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
                 android:textOff=""
-                android:textOn=""
-
-                />
+                android:textOn="" />
 
             <Button
-                android:id="@+id/btn_location"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/tb_hotspot"
-                android:background="@drawable/ic_no_location"
-                android:textOff=""
-                android:textOn=""
-
-                />
-
+                android:id="@+id/btn_next"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_below="@+id/btn_music_setting"
+                android:layout_toRightOf="@+id/tb_play"
+                android:background="@drawable/ic_next"
+                android:scaleX="1.3"
+                android:scaleY="1.3" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
