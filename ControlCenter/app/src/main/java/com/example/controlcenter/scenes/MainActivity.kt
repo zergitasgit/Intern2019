@@ -22,21 +22,42 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkPermissionNotification(intent)
-        changeSize()
+        changeSize(intent)
         changePositon(intent)
         PermissionAPI()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (sw_control_center.isChecked == true) {
+            Utils.setCheckControl(this, 0)
+        } else {
+            Utils.setCheckControl(this, 1)
+        }
+
+    }
+
     private fun checkPermissionNotification(intent: Intent) {
         if (Settings.Secure.getString(
                 this.getContentResolver(),
                 "enabled_notification_listeners"
             ).contains(getApplicationContext().getPackageName())
         ) {
+            if (Utils.getCheckControl(this) == 0) {
+                sw_control_center.isChecked = true
+            } else {
+                sw_control_center.isChecked = false
+            }
+
             sw_control_center.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     startService(intent)
+                    Utils.setCheckControl(this, 0)
+
                 } else {
                     stopService(intent)
+                    Utils.setCheckControl(this, 1)
+
                 }
             }
         } else {
@@ -59,23 +80,29 @@ class MainActivity : AppCompatActivity() {
         }
         rb_ben_trai.setOnClickListener {
             Utils.setPosition(this, 1)
-
+            if (Utils.getCheckControl(this) == 0) {
+                stopService(intent)
+                startService(intent)
+            }
 
         }
         rb_ben_phai.setOnClickListener {
             Utils.setPosition(this, 2)
-
-
+            if (Utils.getCheckControl(this) == 0) {
+                stopService(intent)
+                startService(intent)
+            }
         }
         rb_ben_duoi.setOnClickListener {
             Utils.setPosition(this, 3)
-
-
+            if (Utils.getCheckControl(this) == 0) {
+                stopService(intent)
+                startService(intent)
+            }
         }
-
     }
 
-    private fun changeSize() {
+    private fun changeSize(intent: Intent) {
         sb_size.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 Utils.SetSize(applicationContext, i)
@@ -86,12 +113,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                val myToast = Toast.makeText(
-                    applicationContext,
-                    "Hãy tắt/mở lại nút để xem sự thay đổi",
-                    Toast.LENGTH_SHORT
-                )
-                myToast.show()
+                if (Utils.getCheckControl(applicationContext) == 0) {
+                    stopService(intent)
+                    startService(intent)
+                }
             }
         })
         sb_size.progress = Utils.getSize(this)

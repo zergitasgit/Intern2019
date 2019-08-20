@@ -8,6 +8,7 @@ import android.content.ContentResolver
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.bluetooth.BluetoothAdapter
+import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.res.Configuration
 import androidx.core.content.contentValuesOf
 import android.media.AudioManager
@@ -20,12 +21,25 @@ import android.net.wifi.WifiConfiguration
 
 
 object Utils {
+
+    fun setCheckControl(context: Context, value: Int) {
+        val sharedPreference = context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        editor.putInt("on", value)
+        editor.commit()
+    }
+
+    fun getCheckControl(context: Context): Int {
+        val sharedPreference = context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        var i: Int = sharedPreference.getInt("on", 0)
+        return i
+    }
+
     fun CheckWifi(context: Context): Boolean {
-        val connectivityManager =
+        val manager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
-        return isConnected
+        var isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting
+        return isWifi
     }
 
     fun CheckPlane(context: Context): Boolean {
@@ -35,8 +49,11 @@ object Utils {
         ) != 0
     }
 
-    fun CheckSync(context: Context): Boolean {
-        return false
+    fun CheckNetwork(context: Context): Boolean {
+        val manager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting
+        return is3g
     }
 
     fun CheckBluetooth(context: Context): Boolean {

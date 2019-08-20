@@ -1,10 +1,6 @@
 package com.example.controlcenter.services
 
 import abak.tr.com.boxedverticalseekbar.BoxedVertical
-import android.annotation.SuppressLint
-import android.annotation.TargetApi
-import android.app.Service
-import android.app.admin.DevicePolicyManager
 import android.bluetooth.BluetoothAdapter
 import android.content.*
 import android.content.pm.PackageManager
@@ -19,11 +15,9 @@ import android.media.session.MediaSession
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import android.net.wifi.WifiManager
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.preference.PreferenceManager
-import android.provider.MediaStore
 import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -32,11 +26,9 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import com.example.controlcenter.R
 import com.example.controlcenter.scenes.ControlCenterGroupView
 import com.example.controlcenter.utils.Utils
-import android.widget.Toast
-import androidx.annotation.RequiresApi
-import com.example.controlcenter.R
 
 
 class ControlCenterService : NotificationListenerService() {
@@ -55,7 +47,7 @@ class ControlCenterService : NotificationListenerService() {
     private lateinit var animRight: Animation
     private lateinit var tbWifi: ToggleButton
     private lateinit var tbPlane: ToggleButton
-    private lateinit var tbSync: ToggleButton
+    private lateinit var tbNetwork: ToggleButton
     private lateinit var tbRotate: ToggleButton
     private lateinit var tbBluetooth: ToggleButton
     private lateinit var tbMute: ToggleButton
@@ -69,6 +61,7 @@ class ControlCenterService : NotificationListenerService() {
     private lateinit var btnPrevious: Button
     private lateinit var tbPlay: ToggleButton
     private lateinit var btnNext: Button
+    private lateinit var btnMusicSetting: Button
     private lateinit var tvMusicName: TextView
     private var y: Int = 0
     private var touchY: Float = 0.0f
@@ -116,6 +109,8 @@ class ControlCenterService : NotificationListenerService() {
             println(e)
 
         }
+
+
     }
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -404,7 +399,7 @@ class ControlCenterService : NotificationListenerService() {
         rlControl = view.findViewById(R.id.rl_control)
         tbWifi = view.findViewById(R.id.tb_wifi)
         tbPlane = view.findViewById(R.id.tb_plane)
-        tbSync = view.findViewById(R.id.tb_sync)
+        tbNetwork = view.findViewById(R.id.tb_network)
         tbBluetooth = view.findViewById(R.id.tb_bluetooth)
         tbRotate = view.findViewById(R.id.tb_rotate)
         tbMute = view.findViewById(R.id.tb_mute)
@@ -418,6 +413,7 @@ class ControlCenterService : NotificationListenerService() {
         btnPrevious = view.findViewById(R.id.btn_previous)
         tbPlay = view.findViewById(R.id.tb_play)
         btnNext = view.findViewById(R.id.btn_next)
+        btnMusicSetting = view.findViewById(R.id.btn_music_setting)
         tvMusicName = view.findViewById(R.id.tv_music_name)
     }
 
@@ -573,7 +569,7 @@ class ControlCenterService : NotificationListenerService() {
     private fun setState() {
         checkWifi()
         checkPlane()
-        checkSync()
+        checkNetwork()
         checkBluetooth()
         checkRotateScreens()
         checkAudioSystem()
@@ -586,53 +582,64 @@ class ControlCenterService : NotificationListenerService() {
         openCamera()
         touchOutControl()
         playMusic()
-
-
     }
 
 
     private fun playMusic() {
-        updateMetadata()
-        tvMusicName.text = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
-        println(meta.getString(MediaMetadata.METADATA_KEY_TITLE))
-        btnPrevious.setOnClickListener {
-            println(meta.getString(MediaMetadata.METADATA_KEY_TITLE))
-            val transportControls = mediaController!!.transportControls
-            transportControls.skipToPrevious()
-            tvMusicName.text = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
-            if (windowManager != null) {
-                windowManager!!.updateViewLayout(viewControl, controlParams)
+        if (mediaController == null) {
+            tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked == true) {
+                    Toast.makeText(this, "Bạn cần mở một ứng dụng nhạc", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Bạn cần mở một ứng dụng nhạc", Toast.LENGTH_SHORT).show()
+                }
             }
+//            btnMusicSetting.setOnClickListener {
+//                val intent: Intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                showIcon()
+//                startActivity(intent)
+//            }
         }
         if (currentlyPlaying == true) {
             tbPlay.isChecked = true
-
         } else {
             tbPlay.isChecked = false
         }
-        tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked == true) {
+
+        if (mediaController != null) {
+            tvMusicName.text = currentSong
+            btnPrevious.setOnClickListener {
                 val transportControls = mediaController!!.transportControls
-                transportControls.play()
+                transportControls.skipToPrevious()
+                tvMusicName.text = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
+                if (windowManager != null) {
+                    windowManager!!.updateViewLayout(viewControl, controlParams)
+                }
+            }
+            tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked == true) {
+                    val transportControls = mediaController!!.transportControls
+                    transportControls.play()
 
-
-            } else {
+                } else {
+                    val transportControls = mediaController!!.transportControls
+                    transportControls.pause()
+                }
+            }
+            btnNext.setOnClickListener {
                 val transportControls = mediaController!!.transportControls
-                transportControls.pause()
-            }
-        }
-        btnNext.setOnClickListener {
-            val transportControls = mediaController!!.transportControls
-            updateMetadata()
-            transportControls.skipToNext()
-            tvMusicName.text = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
-            if (windowManager != null) {
-                windowManager!!.updateViewLayout(viewControl, controlParams)
+                updateMetadata()
+                transportControls.skipToNext()
+                tvMusicName.text = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
+                if (windowManager != null) {
+                    windowManager!!.updateViewLayout(viewControl, controlParams)
+                }
+
             }
 
+
         }
-
-
     }
 
     private fun checkWifi() {
@@ -653,6 +660,14 @@ class ControlCenterService : NotificationListenerService() {
                 wifiManager!!.isWifiEnabled = false
             }
         }
+        tbWifi.setOnLongClickListener {
+            var intent: Intent = Intent(Settings.ACTION_WIFI_SETTINGS)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            showIcon()
+            return@setOnLongClickListener true
+        }
+
     }
 
     private fun checkPlane() {
@@ -665,37 +680,25 @@ class ControlCenterService : NotificationListenerService() {
             println("Chưa bật chế độ máy bay")
         }
         // sự kiện  khi nhấn vào máy bay
-        tbPlane.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked == true) {
-                var intent: Intent = Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                showIcon()
-
-            } else {
-                var intent: Intent = Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                showIcon()
-            }
+        tbPlane.setOnClickListener {
+            var intent: Intent = Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            showIcon()
         }
     }
 
-    private fun checkSync() {
-        if (Utils.CheckSync(this) == true) {
-            tbSync.isChecked = true
+    private fun checkNetwork() {
+        if (Utils.CheckNetwork(this) == true) {
+            tbNetwork.isChecked = true
         } else {
-            tbSync.isChecked = false
+            tbNetwork.isChecked = false
         }
-        // check xem đồng bộ on hay off rồi set trạng thái
-        tbSync.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked == true) {
-                ContentResolver.setMasterSyncAutomatically(true)
-                println("sync on")
-            } else {
-                ContentResolver.setMasterSyncAutomatically(false)
-                println("sync off")
-            }
+        tbNetwork.setOnClickListener {
+            var intent: Intent = Intent(Settings.ACTION_DATA_ROAMING_SETTINGS)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            showIcon()
         }
     }
 
@@ -720,6 +723,13 @@ class ControlCenterService : NotificationListenerService() {
                 } else {
                     mBtAdapter.disable()
                 }
+            }
+            tbBluetooth.setOnLongClickListener {
+                var intent: Intent = Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                showIcon()
+                return@setOnLongClickListener true
             }
         }
 
@@ -780,7 +790,7 @@ class ControlCenterService : NotificationListenerService() {
         sbLight.value = data
 
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             // su ly doi voi android 8.0
         } else {
             sbLight.setOnBoxedPointsChangeListener(object : BoxedVertical.OnValuesChangeListener {
@@ -791,7 +801,6 @@ class ControlCenterService : NotificationListenerService() {
                         android.provider.Settings.System.SCREEN_BRIGHTNESS,
                         value
                     )
-
                 }
 
                 override fun onStartTrackingTouch(boxedPoints: BoxedVertical) {
@@ -908,48 +917,52 @@ class ControlCenterService : NotificationListenerService() {
 
     // tạo các widget trong phần icon bottom -- cái thanh dài dài nhỏ nhỏ ý :>>
     private fun createIconView() {
-        viewBottom = ControlCenterGroupView(this)
-        var view: View
-        bottomParams = WindowManager.LayoutParams()
-        bottomParams!!.width = WindowManager.LayoutParams.WRAP_CONTENT
-        bottomParams!!.height = WindowManager.LayoutParams.WRAP_CONTENT
 
-        bottomParams!!.format = PixelFormat.TRANSLUCENT
-        bottomParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            bottomParams!!.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            PixelFormat.TRANSLUCENT
         } else {
-            bottomParams!!.flags = WindowManager.LayoutParams.TYPE_PHONE
-            PixelFormat.TRANSLUCENT
-        }
-        //--------------
+            viewBottom = ControlCenterGroupView(this)
+            var view: View
+            bottomParams = WindowManager.LayoutParams()
+            bottomParams!!.width = WindowManager.LayoutParams.WRAP_CONTENT
+            bottomParams!!.height = WindowManager.LayoutParams.WRAP_CONTENT
+            bottomParams!!.format = PixelFormat.TRANSLUCENT
+            bottomParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                bottomParams!!.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                PixelFormat.TRANSLUCENT
+            } else {
+                bottomParams!!.flags = WindowManager.LayoutParams.TYPE_PHONE
+                PixelFormat.TRANSLUCENT
+            }
+            //--------------
 
-        if (Utils.getPosition(this) == 1) {
-            view = View.inflate(this, R.layout.left_layout, viewBottom)
-            bottomParams!!.gravity = Gravity.LEFT
-            lnBottom = view.findViewById(R.id.ln_Bottom)
-            lnBottom.layoutParams.width = 50
-            lnBottom.layoutParams.height = Utils.getSize(this)
-            moveControlLeft()
+            if (Utils.getPosition(this) == 1) {
+                view = View.inflate(this, R.layout.left_layout, viewBottom)
+                bottomParams!!.gravity = Gravity.LEFT
+                lnBottom = view.findViewById(R.id.ln_Bottom)
+                lnBottom.layoutParams.width = 50
+                lnBottom.layoutParams.height = Utils.getSize(this)
+                moveControlLeft()
 
-        }
-        if (Utils.getPosition(this) == 2) {
-            view = View.inflate(this, R.layout.left_layout, viewBottom)
-            bottomParams!!.gravity = Gravity.RIGHT
-            lnBottom = view.findViewById(R.id.ln_Bottom)
-            lnBottom.layoutParams.width = 50
-            lnBottom.layoutParams.height = Utils.getSize(this)
-            moveControlLeft()
+            }
+            if (Utils.getPosition(this) == 2) {
+                view = View.inflate(this, R.layout.left_layout, viewBottom)
+                bottomParams!!.gravity = Gravity.RIGHT
+                lnBottom = view.findViewById(R.id.ln_Bottom)
+                lnBottom.layoutParams.width = 50
+                lnBottom.layoutParams.height = Utils.getSize(this)
+                moveControlLeft()
 
-        }
-        if (Utils.getPosition(this) == 3) {
-            view = View.inflate(this, R.layout.bottom_layout, viewBottom)
-            bottomParams!!.gravity = Gravity.BOTTOM
-            lnBottom = view.findViewById(R.id.ln_Bottom)
-            lnBottom.layoutParams.width = Utils.getSize(this)
-            moveControlUP()
+            }
+            if (Utils.getPosition(this) == 3) {
+                view = View.inflate(this, R.layout.bottom_layout, viewBottom)
+                bottomParams!!.gravity = Gravity.BOTTOM
+                lnBottom = view.findViewById(R.id.ln_Bottom)
+                lnBottom.layoutParams.width = Utils.getSize(this)
+                moveControlUP()
+            }
+
         }
 
 
@@ -1041,3 +1054,4 @@ class ControlCenterService : NotificationListenerService() {
         windowManager!!.removeView(viewBottom)
     }
 }
+

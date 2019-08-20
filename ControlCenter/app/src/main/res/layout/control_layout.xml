@@ -28,12 +28,12 @@
                 android:textOn="" />
 
             <ToggleButton
-                android:id="@+id/tb_sync"
+                android:id="@+id/tb_network"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/tb_plane"
-                android:background="@drawable/custom_sync"
+                android:background="@drawable/custom_network"
                 android:textOff=""
                 android:textOn="" />
 
@@ -70,14 +70,13 @@
         app:cardCornerRadius="15dp">
 
         <TextView
-            android:textColor="@color/colorWhite"
-            android:text="name "
-            android:textSize="13dp"
             android:id="@+id/tv_music_name"
             android:layout_width="140dp"
             android:layout_height="32dp"
             android:layout_margin="5dp"
-            />
+            android:text="name "
+            android:textColor="@color/colorWhite"
+            android:textSize="13dp" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
