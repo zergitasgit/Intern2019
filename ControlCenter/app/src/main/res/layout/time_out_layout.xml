@@ -3,14 +3,15 @@
     android:id="@+id/ln_time_out"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#888878"
+    android:background="#BB9866"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="250dp"
         android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="150dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="250dp"
+        android:background="#5E5E51"
         android:orientation="vertical"
         android:weightSum="2">
 

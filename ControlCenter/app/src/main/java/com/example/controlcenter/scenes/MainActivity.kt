@@ -27,17 +27,10 @@ class MainActivity : AppCompatActivity() {
         PermissionAPI()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (sw_control_center.isChecked == true) {
-            Utils.setCheckControl(this, 0)
-        } else {
-            Utils.setCheckControl(this, 1)
-        }
 
-    }
 
     private fun checkPermissionNotification(intent: Intent) {
+        sb_size.progress = Utils.getSize(this)+1
         if (Settings.Secure.getString(
                 this.getContentResolver(),
                 "enabled_notification_listeners"

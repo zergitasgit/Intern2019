@@ -182,9 +182,6 @@ class ControlCenterService : NotificationListenerService() {
 
     }
 
-    override fun onNotificationPosted(sbn: StatusBarNotification?, rankingMap: RankingMap?) {
-        super.onNotificationPosted(sbn, rankingMap)
-    }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification?) {
         super.onNotificationRemoved(sbn)
@@ -244,6 +241,7 @@ class ControlCenterService : NotificationListenerService() {
     var sessionListener: MediaSessionManager.OnActiveSessionsChangedListener =
         object : MediaSessionManager.OnActiveSessionsChangedListener {
             override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
+                println("okkk")
                 mediaController = controllers?.let { pickController(it) }!!
                 if (mediaController == null) return
                 mediaController!!.registerCallback(callback)
@@ -585,8 +583,14 @@ class ControlCenterService : NotificationListenerService() {
     }
 
 
+    override fun onNotificationPosted(sbn: StatusBarNotification?, rankingMap: RankingMap?) {
+        super.onNotificationPosted(sbn, rankingMap)
+        Log.e("NotificationPosted", "Posted")
+    }
+
     private fun playMusic() {
         if (mediaController == null) {
+
             tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked == true) {
                     Toast.makeText(this, "Bạn cần mở một ứng dụng nhạc", Toast.LENGTH_SHORT).show()
@@ -601,6 +605,7 @@ class ControlCenterService : NotificationListenerService() {
 //                startActivity(intent)
 //            }
         }
+
         if (currentlyPlaying == true) {
             tbPlay.isChecked = true
         } else {
@@ -608,12 +613,13 @@ class ControlCenterService : NotificationListenerService() {
         }
 
         if (mediaController != null) {
-            tvMusicName.text = currentSong
+            updateMetadata()
+            tvMusicName.text = "Playing :" + currentSong
             btnPrevious.setOnClickListener {
-                val transportControls = mediaController!!.transportControls
-                transportControls.skipToPrevious()
-                tvMusicName.text = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
                 if (windowManager != null) {
+                    val transportControls = mediaController!!.transportControls
+                    transportControls.skipToPrevious()
+                    tvMusicName.text = "Next " + currentSong
                     windowManager!!.updateViewLayout(viewControl, controlParams)
                 }
             }
@@ -628,12 +634,13 @@ class ControlCenterService : NotificationListenerService() {
                 }
             }
             btnNext.setOnClickListener {
-                val transportControls = mediaController!!.transportControls
-                updateMetadata()
-                transportControls.skipToNext()
-                tvMusicName.text = meta.getString(MediaMetadata.METADATA_KEY_TITLE)
                 if (windowManager != null) {
+                    val transportControls = mediaController!!.transportControls
+                    transportControls.skipToNext()
+                    tvMusicName.text = "Previous " + currentSong
                     windowManager!!.updateViewLayout(viewControl, controlParams)
+
+
                 }
 
             }
@@ -860,7 +867,49 @@ class ControlCenterService : NotificationListenerService() {
     private fun clock() {
         // sử lý sự kiện khi nhấn vào button đồng hồ
         btnClock.setOnClickListener {
-            Toast.makeText(this, "Chưa được phát triển", Toast.LENGTH_SHORT).show()
+            //PackageManager packageManager = context.getPackageManager();
+            //Intent alarmClockIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
+            //
+            //// Verify clock implementation
+            //String clockImpls[][] = {
+            //        {"HTC Alarm Clock", "com.htc.android.worldclock", "com.htc.android.worldclock.WorldClockTabControl" },
+            //        {"Standar Alarm Clock", "com.android.deskclock", "com.android.deskclock.AlarmClock"},
+            //        {"Froyo Nexus Alarm Clock", "com.google.android.deskclock", "com.android.deskclock.DeskClock"},
+            //        {"Moto Blur Alarm Clock", "com.motorola.blur.alarmclock",  "com.motorola.blur.alarmclock.AlarmClock"},
+            //        {"Samsung Galaxy Clock", "com.sec.android.app.clockpackage","com.sec.android.app.clockpackage.ClockPackage"} ,
+            //        {"Sony Ericsson Xperia Z", "com.sonyericsson.organizer", "com.sonyericsson.organizer.Organizer_WorldClock" },
+            //        {"ASUS Tablets", "com.asus.deskclock", "com.asus.deskclock.DeskClock"}
+            //
+            //};
+            //
+            //boolean foundClockImpl = false;
+            //
+            //for(int i=0; i<clockImpls.length; i++) {
+            //    String vendor = clockImpls[i][0];
+            //    String packageName = clockImpls[i][1];
+            //    String className = clockImpls[i][2];
+            //    try {
+            //        ComponentName cn = new ComponentName(packageName, className);
+            //        ActivityInfo aInfo = packageManager.getActivityInfo(cn, PackageManager.GET_META_DATA);
+            //        alarmClockIntent.setComponent(cn);
+            //        debug("Found " + vendor + " --> " + packageName + "/" + className);
+            //        foundClockImpl = true;
+            //    } catch (NameNotFoundException e) {
+            //        debug(vendor + " does not exists");
+            //    }
+            //}
+            //
+            //if (foundClockImpl) {
+            //    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, alarmClockIntent, 0);
+            //        // add pending intent to your component
+            //        // ....
+            //}
+            var packageManager: PackageManager = application.packageManager
+            var intent: Intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            windowManager!!.removeView(viewControl)
+            showIcon()
         }
     }
 
@@ -941,7 +990,6 @@ class ControlCenterService : NotificationListenerService() {
                 view = View.inflate(this, R.layout.left_layout, viewBottom)
                 bottomParams!!.gravity = Gravity.LEFT
                 lnBottom = view.findViewById(R.id.ln_Bottom)
-                lnBottom.layoutParams.width = 50
                 lnBottom.layoutParams.height = Utils.getSize(this)
                 moveControlLeft()
 
@@ -950,7 +998,6 @@ class ControlCenterService : NotificationListenerService() {
                 view = View.inflate(this, R.layout.left_layout, viewBottom)
                 bottomParams!!.gravity = Gravity.RIGHT
                 lnBottom = view.findViewById(R.id.ln_Bottom)
-                lnBottom.layoutParams.width = 50
                 lnBottom.layoutParams.height = Utils.getSize(this)
                 moveControlLeft()
 
