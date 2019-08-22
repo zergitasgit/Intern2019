@@ -7,9 +7,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.RadioButton
 import android.widget.SeekBar
-import android.widget.Switch
 import android.widget.Toast
 import com.example.controlcenter.R
 import com.example.controlcenter.services.ControlCenterService
@@ -28,36 +26,38 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun checkPermissionNotification(intent: Intent) {
-        sb_size.progress = Utils.getSize(this)+1
-        if (Settings.Secure.getString(
-                this.getContentResolver(),
-                "enabled_notification_listeners"
-            ).contains(getApplicationContext().getPackageName())
-        ) {
-            if (Utils.getCheckControl(this) == 0) {
-                sw_control_center.isChecked = true
-            } else {
-                sw_control_center.isChecked = false
-            }
+        if (Utils.getCheckControl(this) == 0) {
+            sw_control_center.isChecked = true
+            stopService(intent)
+            startService(intent)
+        } else {
+            sw_control_center.isChecked = false
+        }
 
-            sw_control_center.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked) {
+        sw_control_center.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                if (Settings.Secure.getString(
+                        this.getContentResolver(),
+                        "enabled_notification_listeners"
+                    ).contains(getApplicationContext().getPackageName())
+                ) {
                     startService(intent)
                     Utils.setCheckControl(this, 0)
-
                 } else {
-                    stopService(intent)
-                    Utils.setCheckControl(this, 1)
-
+                    val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    getApplicationContext().startActivity(intent)
                 }
+
+
+            } else {
+                stopService(intent)
+                Utils.setCheckControl(this, 1)
+
             }
-        } else {
-            val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            getApplicationContext().startActivity(intent)
         }
+
     }
 
     private fun changePositon(intent: Intent) {
@@ -106,18 +106,27 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
+
                 if (Utils.getCheckControl(applicationContext) == 0) {
                     stopService(intent)
                     startService(intent)
                 }
+
             }
         })
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            sb_size.progress = 360
+
+        }
         sb_size.progress = Utils.getSize(this)
     }
 
     private fun PermissionAPI() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (!Settings.canDrawOverlays(this@MainActivity)) {
+                Toast.makeText(this, "Bạn cần cấp một số quyền cho ứng dụng", Toast.LENGTH_SHORT)
+                    .show()
                 val intent = Intent(
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:$packageName")

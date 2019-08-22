@@ -15,7 +15,9 @@ import android.media.session.MediaSession
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
 import android.preference.PreferenceManager
 import android.provider.Settings
@@ -43,6 +45,7 @@ class ControlCenterService : NotificationListenerService() {
     private lateinit var lnBottom: LinearLayout
     private lateinit var lnTimeOut: LinearLayout
     private lateinit var animUp: Animation
+    private lateinit var animDown: Animation
     private lateinit var animLeft: Animation
     private lateinit var animRight: Animation
     private lateinit var tbWifi: ToggleButton
@@ -90,6 +93,7 @@ class ControlCenterService : NotificationListenerService() {
 
 
     override fun onCreate() {
+        println("onCreate service")
         registerReceiver(button, IntentFilter(MEDIA_ACTION))
         mediaSessionManager = getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
         try {
@@ -118,6 +122,7 @@ class ControlCenterService : NotificationListenerService() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        println("onStartCommand service")
         if (mediaController == null) {
             try {
                 var controllers: List<MediaController> =
@@ -241,7 +246,6 @@ class ControlCenterService : NotificationListenerService() {
     var sessionListener: MediaSessionManager.OnActiveSessionsChangedListener =
         object : MediaSessionManager.OnActiveSessionsChangedListener {
             override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
-                println("okkk")
                 mediaController = controllers?.let { pickController(it) }!!
                 if (mediaController == null) return
                 mediaController!!.registerCallback(callback)
@@ -324,6 +328,7 @@ class ControlCenterService : NotificationListenerService() {
     // khởi tạo Animation
     private fun initAnimation() {
         animUp = AnimationUtils.loadAnimation(this, R.anim.anim_up)
+        animDown = AnimationUtils.loadAnimation(this, R.anim.anim_down)
         animLeft = AnimationUtils.loadAnimation(this, R.anim.anim_left)
         animRight = AnimationUtils.loadAnimation(this, R.anim.anim_right)
     }
@@ -384,13 +389,24 @@ class ControlCenterService : NotificationListenerService() {
 
                     or View.SYSTEM_UI_FLAG_IMMERSIVE
         )
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            bottomParams!!.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            bottomParams!!.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+//            PixelFormat.TRANSLUCENT
+//        } else {
+//            bottomParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+//            PixelFormat.TRANSLUCENT
+//        }
+        controlParams = WindowManager.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            } else {
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+            },
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
-        } else {
-            bottomParams!!.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-            PixelFormat.TRANSLUCENT
-        }
+        )
 
         //-------------- Ánh xạ các view trong control view
 
@@ -423,10 +439,21 @@ class ControlCenterService : NotificationListenerService() {
         timeoutParams!!.width = WindowManager.LayoutParams.MATCH_PARENT
         timeoutParams!!.height = WindowManager.LayoutParams.MATCH_PARENT
         timeoutParams!!.gravity = Gravity.BOTTOM
-        timeoutParams!!.format = PixelFormat.TRANSLUCENT
-        timeoutParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
-        timeoutParams!!.flags =
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+//        timeoutParams!!.format = PixelFormat.TRANSLUCENT
+//        timeoutParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
+//        timeoutParams!!.flags =
+//            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        timeoutParams = WindowManager.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            } else {
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+            },
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            PixelFormat.TRANSLUCENT
+        )
         viewTimeOut!!.setSystemUiVisibility(
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -598,12 +625,7 @@ class ControlCenterService : NotificationListenerService() {
                     Toast.makeText(this, "Bạn cần mở một ứng dụng nhạc", Toast.LENGTH_SHORT).show()
                 }
             }
-//            btnMusicSetting.setOnClickListener {
-//                val intent: Intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                showIcon()
-//                startActivity(intent)
-//            }
+
         }
 
         if (currentlyPlaying == true) {
@@ -653,10 +675,10 @@ class ControlCenterService : NotificationListenerService() {
         // check xem wifi on hay off rồi set vào switch
         wifiManager = application.getSystemService(Context.WIFI_SERVICE) as WifiManager?
         if (Utils.CheckWifi(this) == true) {
-            println("Đã bật wifi")
+
             tbWifi.isChecked = true
         } else {
-            println("Chưa bật wifi")
+
             tbWifi.isChecked = false
         }
         // sự kiện  khi nhấn wifi
@@ -681,10 +703,10 @@ class ControlCenterService : NotificationListenerService() {
         // check xem chế độ máy bay on hay off rồi set vào switch
         if (Utils.CheckPlane(this) == true) {
             tbPlane.isChecked = true
-            println("đang bật chế độ máy bay")
+
         } else {
             tbPlane.isChecked = false
-            println("Chưa bật chế độ máy bay")
+
         }
         // sự kiện  khi nhấn vào máy bay
         tbPlane.setOnClickListener {
@@ -717,10 +739,10 @@ class ControlCenterService : NotificationListenerService() {
             var mBtAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
             if (Utils.CheckBluetooth(this)) {
                 tbBluetooth.isChecked = true
-                println("bluetooth on")
+
             } else {
                 tbBluetooth.isChecked = false
-                println("bluetooth off")
+
             }
             tbBluetooth.setOnCheckedChangeListener { buttonView, isChecked ->
 
@@ -859,7 +881,7 @@ class ControlCenterService : NotificationListenerService() {
             } else {
                 camera.stopPreview()
                 camera.release()
-                println("FlashLight off")
+
             }
         }
     }
@@ -867,43 +889,6 @@ class ControlCenterService : NotificationListenerService() {
     private fun clock() {
         // sử lý sự kiện khi nhấn vào button đồng hồ
         btnClock.setOnClickListener {
-            //PackageManager packageManager = context.getPackageManager();
-            //Intent alarmClockIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
-            //
-            //// Verify clock implementation
-            //String clockImpls[][] = {
-            //        {"HTC Alarm Clock", "com.htc.android.worldclock", "com.htc.android.worldclock.WorldClockTabControl" },
-            //        {"Standar Alarm Clock", "com.android.deskclock", "com.android.deskclock.AlarmClock"},
-            //        {"Froyo Nexus Alarm Clock", "com.google.android.deskclock", "com.android.deskclock.DeskClock"},
-            //        {"Moto Blur Alarm Clock", "com.motorola.blur.alarmclock",  "com.motorola.blur.alarmclock.AlarmClock"},
-            //        {"Samsung Galaxy Clock", "com.sec.android.app.clockpackage","com.sec.android.app.clockpackage.ClockPackage"} ,
-            //        {"Sony Ericsson Xperia Z", "com.sonyericsson.organizer", "com.sonyericsson.organizer.Organizer_WorldClock" },
-            //        {"ASUS Tablets", "com.asus.deskclock", "com.asus.deskclock.DeskClock"}
-            //
-            //};
-            //
-            //boolean foundClockImpl = false;
-            //
-            //for(int i=0; i<clockImpls.length; i++) {
-            //    String vendor = clockImpls[i][0];
-            //    String packageName = clockImpls[i][1];
-            //    String className = clockImpls[i][2];
-            //    try {
-            //        ComponentName cn = new ComponentName(packageName, className);
-            //        ActivityInfo aInfo = packageManager.getActivityInfo(cn, PackageManager.GET_META_DATA);
-            //        alarmClockIntent.setComponent(cn);
-            //        debug("Found " + vendor + " --> " + packageName + "/" + className);
-            //        foundClockImpl = true;
-            //    } catch (NameNotFoundException e) {
-            //        debug(vendor + " does not exists");
-            //    }
-            //}
-            //
-            //if (foundClockImpl) {
-            //    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, alarmClockIntent, 0);
-            //        // add pending intent to your component
-            //        // ....
-            //}
             var packageManager: PackageManager = application.packageManager
             var intent: Intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -953,11 +938,9 @@ class ControlCenterService : NotificationListenerService() {
 
                 }
                 MotionEvent.ACTION_UP -> {
-                    Log.d("test", "control_DOWN")
-                    rlControl.animation = animUp
-                    rlControl.animation.start()
+                    lnBottom.animation = animUp
+                    lnBottom.animation.start()
                     showIcon()
-
                 }
             }
             return@OnTouchListener true
@@ -966,54 +949,58 @@ class ControlCenterService : NotificationListenerService() {
 
     // tạo các widget trong phần icon bottom -- cái thanh dài dài nhỏ nhỏ ý :>>
     private fun createIconView() {
+        viewBottom = ControlCenterGroupView(this)
+        var view: View
+        bottomParams = WindowManager.LayoutParams()
+        bottomParams!!.width = WindowManager.LayoutParams.WRAP_CONTENT
+        bottomParams!!.height = WindowManager.LayoutParams.WRAP_CONTENT
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-
-        } else {
-            viewBottom = ControlCenterGroupView(this)
-            var view: View
-            bottomParams = WindowManager.LayoutParams()
-            bottomParams!!.width = WindowManager.LayoutParams.WRAP_CONTENT
-            bottomParams!!.height = WindowManager.LayoutParams.WRAP_CONTENT
-            bottomParams!!.format = PixelFormat.TRANSLUCENT
-            bottomParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                bottomParams!!.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-                PixelFormat.TRANSLUCENT
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+//            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+//            PixelFormat.TRANSLUCENT
+//
+//        } else {
+//            bottomParams!!.format = PixelFormat.TRANSLUCENT
+//            bottomParams!!.type = WindowManager.LayoutParams.TYPE_PHONE
+//        }
+        bottomParams = WindowManager.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             } else {
-                bottomParams!!.flags = WindowManager.LayoutParams.TYPE_PHONE
-                PixelFormat.TRANSLUCENT
-            }
-            //--------------
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+            },
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            PixelFormat.TRANSLUCENT
+        )
 
-            if (Utils.getPosition(this) == 1) {
-                view = View.inflate(this, R.layout.left_layout, viewBottom)
-                bottomParams!!.gravity = Gravity.LEFT
-                lnBottom = view.findViewById(R.id.ln_Bottom)
-                lnBottom.layoutParams.height = Utils.getSize(this)
-                moveControlLeft()
-
-            }
-            if (Utils.getPosition(this) == 2) {
-                view = View.inflate(this, R.layout.left_layout, viewBottom)
-                bottomParams!!.gravity = Gravity.RIGHT
-                lnBottom = view.findViewById(R.id.ln_Bottom)
-                lnBottom.layoutParams.height = Utils.getSize(this)
-                moveControlLeft()
-
-            }
-            if (Utils.getPosition(this) == 3) {
-                view = View.inflate(this, R.layout.bottom_layout, viewBottom)
-                bottomParams!!.gravity = Gravity.BOTTOM
-                lnBottom = view.findViewById(R.id.ln_Bottom)
-                lnBottom.layoutParams.width = Utils.getSize(this)
-                moveControlUP()
-            }
+        if (Utils.getPosition(this) == 1) {
+            view = View.inflate(this, R.layout.left_layout, viewBottom)
+            bottomParams!!.gravity = Gravity.LEFT
+            lnBottom = view.findViewById(R.id.ln_Bottom)
+            lnBottom.layoutParams.height = Utils.getSize(this)
+            moveControlLeft()
 
         }
+        if (Utils.getPosition(this) == 2) {
+            view = View.inflate(this, R.layout.left_layout, viewBottom)
+            bottomParams!!.gravity = Gravity.RIGHT
+            lnBottom = view.findViewById(R.id.ln_Bottom)
+            lnBottom.layoutParams.height = Utils.getSize(this)
+            moveControlRight()
 
-
+        }
+        if (Utils.getPosition(this) == 3) {
+            view = View.inflate(this, R.layout.bottom_layout, viewBottom)
+            bottomParams!!.gravity = Gravity.BOTTOM
+            lnBottom = view.findViewById(R.id.ln_Bottom)
+            lnBottom.layoutParams.width = Utils.getSize(this)
+            moveControlUP()
+        }
     }
+
 
     private fun moveControlLeft() {
         lnBottom.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
@@ -1042,6 +1029,43 @@ class ControlCenterService : NotificationListenerService() {
                 MotionEvent.ACTION_UP -> {
                     if (touchToMove == true) {
                         rlControl.animation = animLeft
+                        rlControl.animation.start()
+                        showControl()
+                        setState()
+                    }
+                }
+            }
+            return@OnTouchListener true
+        })
+    }
+
+    private fun moveControlRight() {
+        lnBottom.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    x = bottomParams!!.x
+                    touchX = motionEvent.rawX
+                    touchToMove = false
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val delX = motionEvent.rawX - touchY
+                    bottomParams!!.x = (x - delX).toInt()
+                    windowManager!!.updateViewLayout(viewBottom, bottomParams)
+                    if (delX * delX > 1) {
+                        bottomParams!!.y = 0
+                        windowManager!!.updateViewLayout(viewBottom, bottomParams)
+                    }
+
+                    if (delX * delX > 200) {
+                        touchToMove = true
+                        bottomParams!!.y = 0
+                        windowManager!!.updateViewLayout(viewBottom, bottomParams)
+                    }
+
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (touchToMove == true) {
+                        rlControl.animation = animRight
                         rlControl.animation.start()
                         showControl()
                         setState()

@@ -149,6 +149,9 @@
         android:textOn="" />
 
     <Button
+        android:paddingRight="5dp"
+        android:textSize="12dp"
+        android:drawableLeft="@drawable/ic_time_out"
         android:gravity="center"
         android:textColor="@color/colorWhite"
         android:background="@drawable/custom_button"
