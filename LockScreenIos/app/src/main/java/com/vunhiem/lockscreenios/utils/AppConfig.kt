@@ -61,4 +61,15 @@ object AppConfig {
 
         return 0
     }
+    fun setLock(lockStatus:Boolean,context: Context){
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("lockStatuss", lockStatus)
+        editor.apply()
+    }
+    fun getLock(context: Context): Boolean? {
+        val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("lockStatuss", true)
+    }
 }

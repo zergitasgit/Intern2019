@@ -12,7 +12,7 @@ import com.example.ibikenavigationkotlin.utils.AppConfig
 import com.squareup.picasso.Picasso
 import com.vunhiem.lockscreenios.R
 import com.vunhiem.lockscreenios.screens.main.MyGroupView
-import com.vunhiem.lockscreenios.service.MyService
+
 import kotlinx.android.synthetic.main.activity_set_wallpaper2.*
 import java.io.File
 
@@ -20,7 +20,6 @@ import java.io.File
 class SetWallpaper : AppCompatActivity() {
     private var mView: MyGroupView? = null
     var image: Int = 0
-    lateinit var service: MyService
     var imgID: String?=null
 
 

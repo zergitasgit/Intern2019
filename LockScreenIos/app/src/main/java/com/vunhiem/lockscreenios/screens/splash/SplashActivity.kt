@@ -1,8 +1,8 @@
 package com.vunhiem.lockscreenios.screens.splash
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.vunhiem.lockscreenios.R
 import com.vunhiem.lockscreenios.screens.main.MainActivity
 
@@ -13,7 +13,8 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.splash_activity)
         splashScreen()
     }
-    fun splashScreen(){
+
+    fun splashScreen() {
         val handler = android.os.Handler()
         handler.postDelayed({ screenRouter() }, 1000)
     }

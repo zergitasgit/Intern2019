@@ -1,4 +1,4 @@
-package com.vunhiem.lockscreenios.notification
+package com.vunhiem.lockscreenios.screens.notification
 
 import android.content.Context
 import android.graphics.Canvas
@@ -11,16 +11,18 @@ import android.graphics.drawable.ColorDrawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.vunhiem.lockscreenios.R
+
+
 
 
 abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-    private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete_white_24)
+    private val deleteIcon = ContextCompat.getDrawable(context, com.vunhiem.lockscreenios.R.drawable.ic_delete_white_24)
     private val intrinsicWidth = deleteIcon!!.intrinsicWidth
     private val intrinsicHeight = deleteIcon!!.intrinsicHeight
     private val background = ColorDrawable()
-    private val backgroundColor = Color.parseColor("#f44336")
+    var white = "#99BCBFE6"
+    private val backgroundColor = Color.parseColor(white)
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
 

@@ -1,6 +1,9 @@
 package com.vunhiem.lockscreenios.service
 
 import android.annotation.SuppressLint
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,7 +18,6 @@ import android.os.Handler
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.telephony.TelephonyManager
-import android.text.InputType
 import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
@@ -25,20 +27,19 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ibikenavigationkotlin.utils.AppConfig
-import com.squareup.picasso.Picasso
 import com.vunhiem.lockscreenios.R
-import com.vunhiem.lockscreenios.notification.SwipeToDeleteCallback
-import com.vunhiem.lockscreenios.notification.adapter.NotificationAdaper
 import com.vunhiem.lockscreenios.screens.main.GroupViewPassword
 import com.vunhiem.lockscreenios.screens.main.MyGroupView
-import kotlinx.android.synthetic.main.activity_set_wallpaper2.*
+import com.vunhiem.lockscreenios.screens.notification.SwipeToDeleteCallback
+import com.vunhiem.lockscreenios.screens.notification.adapter.NotificationAdaper
 import org.apache.commons.lang3.StringUtils
-import java.io.File
 import java.text.SimpleDateFormat
 
 
@@ -53,16 +54,38 @@ class NotificationService : NotificationListenerService() {
         super.onCreate()
         context = applicationContext
 
+        mReceiver = LockScreenStateReceiver()
+        val filter = IntentFilter(Intent.ACTION_SCREEN_OFF)
+        filter.addAction(Intent.ACTION_SCREEN_ON)
+        filter.addAction(Intent.ACTION_BATTERY_CHANGED)
+//        filter.addAction(Intent.ACTION_BATTERY_CHANGED)
+        registerReceiver(mReceiver, filter)
+        LocalBroadcastManager.getInstance(context).registerReceiver(onNotice, IntentFilter("Msg"))
 
+        var switchMainStatus = AppConfig.getLock(applicationContext)
+        Log.i("hoho", "command$switchMainStatus")
+        if (switchMainStatus == true) {
+            initview()
+            setTime()
+        }
+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1) {
+            createNotificationChannel()
+            val CHANNEL_ID = "1"
+            val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.icon_pin60)
+                .setContentTitle("IosLock active")
+                .setOnlyAlertOnce(true)
+            notification = builder.build()
+            with(NotificationManagerCompat.from(context)) { notify(NOTIFICATION_ID, notification!!) }
+            startForeground(NOTIFICATION_ID, notification)
+            Log.d("chan", "Start the foreground")
+        }
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        initview()
-        setTime()
-
 
         return START_STICKY
 
@@ -70,7 +93,6 @@ class NotificationService : NotificationListenerService() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun initview() {
-        wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager?
         createLockScreen()
         swipeUpToUnlock()
 
@@ -96,6 +118,9 @@ class NotificationService : NotificationListenerService() {
     @SuppressLint("WrongConstant")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun createLockScreen() {
+        wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager?
+
+        Log.i("covao", "có vào")
         mView = MyGroupView(applicationContext)
         val view: View = View.inflate(applicationContext, com.vunhiem.lockscreenios.R.layout.lock_layout, mView)
         linearLayout = view.findViewById(com.vunhiem.lockscreenios.R.id.ln_lock)
@@ -112,8 +137,11 @@ class NotificationService : NotificationListenerService() {
         viewBottom = view.findViewById(R.id.viewBottom)
         tvTelecom = view.findViewById(R.id.tv_telecom)
         imgBackgroundLock = view.findViewById(R.id.img_background_main)
+        tvOpenCamera = view.findViewById(R.id.tv_opencamera)
+        tvOpen = view.findViewById(R.id.tv_open)
         setFullScreen()
         getNameTelecom()
+
 
 
 
@@ -149,29 +177,57 @@ class NotificationService : NotificationListenerService() {
             val intent = Intent("android.media.action.IMAGE_CAPTURE")
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
-            wm!!.removeView(view)
+            var xx: Boolean = AppConfig.getStatusPassword(applicationContext)!!
+            if (xx == true) {
+                val anim: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.up2)
+                tvOpenCamera.startAnimation(anim)
+            }else{
+                wm!!.removeView(mView)
+            }
+
 
         }
         mCamera()
 
-        imgClear.setOnClickListener {
+        imgClear!!.setOnClickListener {
             listNotification.clear()
             adapter.notifyDataSetChanged()
-            imgClear.setVisibility(View.INVISIBLE)
+            imgClear!!.setVisibility(View.INVISIBLE)
         }
+        CreateNotifiInScreenLock()
+
+//        LocalBroadcastManager.getInstance(context).registerReceiver(onNotice, IntentFilter("Msg"))
+        registerBroadReciver()
+
+    }
+
+
+    private fun registerBroadReciver() {
+        mReceiver = LockScreenStateReceiver()
+        val filter = IntentFilter(Intent.ACTION_SCREEN_OFF)
+        filter.addAction(Intent.ACTION_BATTERY_CHANGED)
+        registerReceiver(mReceiver, filter)
+    }
+
+    @SuppressLint("WrongConstant")
+    private fun CreateNotifiInScreenLock() {
         rvNotification.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, true)
         adapter =
-            NotificationAdaper(applicationContext, listNotification, object : NotificationAdaper.ItemNotiListener {
-                override fun onClick(pos: Int) {
-                    wm!!.removeView(mView)
-                    var xx: Boolean = AppConfig.getStatusPassword(applicationContext)!!
-                    Log.i("tag", "onaddPass1")
-                    if (xx == true) {
-                        Log.i("tag", "onaddPass2")
-                        createPasswordScreen()
+            NotificationAdaper(
+                applicationContext,
+                listNotification,
+                object : NotificationAdaper.ItemNotiListener {
+                    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+                    override fun onClick(pos: Int) {
+                        wm!!.removeView(mView)
+                        var xx: Boolean = AppConfig.getStatusPassword(applicationContext)!!
+                        Log.i("tag", "onaddPass1")
+                        if (xx == true) {
+                            Log.i("tag", "onaddPass2")
+                            createPasswordScreen()
+                        }
                     }
-                }
-            })
+                })
 
         rvNotification.adapter = adapter
         val swipeHandler = object : SwipeToDeleteCallback(this) {
@@ -183,20 +239,21 @@ class NotificationService : NotificationListenerService() {
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(rvNotification)
+    }
 
-
-
-
-        LocalBroadcastManager.getInstance(context).registerReceiver(onNotice, IntentFilter("Msg"))
-
-
-        mReceiver = LockScreenStateReceiver()
-        val filter = IntentFilter(Intent.ACTION_SCREEN_ON)
-        filter.addAction(Intent.ACTION_BATTERY_CHANGED)
-        filter.addAction(Intent.ACTION_USER_PRESENT)
-        filter.addAction(Intent.ACTION_SCREEN_OFF)
-        registerReceiver(mReceiver, filter)
-
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            val name = "floating_window_noti_channel"
+            val descriptionText = "A cool channel"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply { description = descriptionText }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -217,22 +274,21 @@ class NotificationService : NotificationListenerService() {
                 MotionEvent.ACTION_MOVE -> {
 
                     if (touchY > (xxxx - 50)) {
-                    val delY = motionEvent.rawY - touchY
-                    Log.i("hi", "$delY")
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        val delY = motionEvent.rawY - touchY
+                        Log.i("hi", "$delY")
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
-                        mParams!!.y = (y + delY).toInt()
+                            mParams!!.y = (y + delY).toInt()
 
-                        if (mParams!!.y <= 0) {
-                            Log.i("hi", "${(y + delY).toInt()}")
-                            wm!!.updateViewLayout(mView, mParams)
+                            if (mParams!!.y <= 0) {
+                                Log.i("hi", "${(y + delY).toInt()}")
+                                wm!!.updateViewLayout(mView, mParams)
 
-                        }
-                        if (delY * delY > 40000 && mParams!!.y <= 0) {
-                            touchToMove = true
-                        }
-                    } else {
-
+                            }
+                            if (delY * delY > 40000 && mParams!!.y <= 0) {
+                                touchToMove = true
+                            }
+                        } else {
 
 
                             mParams!!.y = (y - delY).toInt()
@@ -249,17 +305,31 @@ class NotificationService : NotificationListenerService() {
 
                 }
                 MotionEvent.ACTION_UP -> {
-                   touchY = motionEvent.rawY
-                Log.i("tag","up$touchY")
-                        if (touchToMove && touchY<xxxx-150) {
+                    touchY = motionEvent.rawY
+                    Log.i("tag", "up$touchY")
+                    if (touchToMove && touchY < xxxx - 150) {
 
-                            mParams!!.y = 0
-                            wm!!.removeView(mView)
-//                            wm!!.removeViewImmediate(mView)
-
-//                        val animUp: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.up)
+                        mParams!!.y = 0
+//                        val animUp: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.unlock)
 //                        ll_frame.startAnimation(animUp)
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                            val handler = Handler()
+                            val animUp: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.unlock)
+                        ll_frame.startAnimation(animUp)
+                            handler.postDelayed({
+                                wm!!.removeView(mView)
+                                var xx: Boolean = AppConfig.getStatusPassword(applicationContext)!!
+                                Log.i("tag", "onaddPass1")
+                                if (xx == true) {
+                                    Log.i("tag", "onaddPass2")
+                                    createPasswordScreen()
+                                    val anim: Animation = AnimationUtils.loadAnimation(this, R.anim.up)
+                                    layouPass.startAnimation(anim)
+                                }
+                            }, 500)
 
+                        } else {
+                            wm!!.removeView(mView)
                             var xx: Boolean = AppConfig.getStatusPassword(applicationContext)!!
                             Log.i("tag", "onaddPass1")
                             if (xx == true) {
@@ -268,12 +338,17 @@ class NotificationService : NotificationListenerService() {
                                 val anim: Animation = AnimationUtils.loadAnimation(this, R.anim.up)
                                 layouPass.startAnimation(anim)
                             }
+                        }
+//                            wm!!.removeViewImmediate(mView)
+
+//                        val animUp: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.up)
+//                        ll_frame.startAnimation(animUp)
 
 
-                        } else {
+                    } else {
 
-                            mParams!!.y = 0
-                            wm!!.updateViewLayout(mView, mParams)
+                        mParams!!.y = 0
+                        wm!!.updateViewLayout(mView, mParams)
 //
 //                        Log.i("tag","komo ${mParams!!.y}")
 //                        for (i in mParams!!.y downTo 0) {
@@ -303,21 +378,22 @@ class NotificationService : NotificationListenerService() {
         })
 
     }
-    private fun disableImportPass(){
-        if(countPass>=5){
-            btn0.isEnabled=false
-            btn1.isEnabled=false
-            btn2.isEnabled=false
-            btn3.isEnabled=false
-            btn4.isEnabled=false
-            btn5.isEnabled=false
-            btn6.isEnabled=false
-            btn7.isEnabled=false
-            btn8.isEnabled=false
-            btn9.isEnabled=false
-            tvNotifiPass.text="Error code 5 time, Try after $cowdown second"
-        }else{
-            tvNotifiPass.text="Touch ID or Password"
+
+    private fun disableImportPass() {
+        if (countPass >= 5) {
+            btn0.isEnabled = false
+            btn1.isEnabled = false
+            btn2.isEnabled = false
+            btn3.isEnabled = false
+            btn4.isEnabled = false
+            btn5.isEnabled = false
+            btn6.isEnabled = false
+            btn7.isEnabled = false
+            btn8.isEnabled = false
+            btn9.isEnabled = false
+            tvNotifiPass.text = "Error code 5 time, Try after $cowdown second"
+        } else {
+            tvNotifiPass.text = "Touch ID or Password"
             btn0.isEnabled
             btn1.isEnabled
             btn2.isEnabled
@@ -336,7 +412,12 @@ class NotificationService : NotificationListenerService() {
     private fun createPasswordScreen() {
         wmpass = getSystemService(Context.WINDOW_SERVICE) as WindowManager?
         passView = GroupViewPassword(applicationContext)
-        val v: View = View.inflate(applicationContext, com.vunhiem.lockscreenios.R.layout.layout_password, passView)
+        val v: View
+        if (Build.VERSION.SDK_INT <Build.VERSION_CODES.LOLLIPOP){
+            v = View.inflate(applicationContext, com.vunhiem.lockscreenios.R.layout.layout_password2, passView)
+        }else{
+        v = View.inflate(applicationContext, com.vunhiem.lockscreenios.R.layout.layout_password, passView)}
+
         tvCanclePass = v.findViewById(R.id.tv_cancle_pass)
         tvCall = v.findViewById(R.id.tv_call)
         tvPin = v.findViewById(R.id.tv_pin)
@@ -350,8 +431,7 @@ class NotificationService : NotificationListenerService() {
         pass5 = v.findViewById(R.id.pass5)
         pass6 = v.findViewById(R.id.pass6)
         layouPass = v.findViewById(R.id.ln_layoutpass)
-        tvNotifiPass= v.findViewById(R.id.tv_notification)
-
+        tvNotifiPass = v.findViewById(R.id.tv_notification)
 
 
 
@@ -396,12 +476,6 @@ class NotificationService : NotificationListenerService() {
             Log.i("tag", "onaddPass")
             isshowPass = true
 
-            mReceiver = LockScreenStateReceiver()
-            val filter = IntentFilter(Intent.ACTION_SCREEN_ON)
-            filter.addAction(Intent.ACTION_BATTERY_CHANGED)
-            filter.addAction(Intent.ACTION_USER_PRESENT)
-            filter.addAction(Intent.ACTION_SCREEN_OFF)
-            registerReceiver(mReceiver, filter)
         } else {
 
             mParamsPass = WindowManager.LayoutParams()
@@ -424,18 +498,16 @@ class NotificationService : NotificationListenerService() {
             Log.i("tag", "onaddPass")
             isshowPass = true
 
-            mReceiver = LockScreenStateReceiver()
-            val filter = IntentFilter(Intent.ACTION_SCREEN_ON)
-            filter.addAction(Intent.ACTION_BATTERY_CHANGED)
-            filter.addAction(Intent.ACTION_USER_PRESENT)
-            filter.addAction(Intent.ACTION_SCREEN_OFF)
-            registerReceiver(mReceiver, filter)
-
 
         }
+        registerBroadReciver()
 
         listPass = ArrayList()
+        setOnclickScreenPass()
 
+    }
+
+    private fun setOnclickScreenPass() {
 
         tvCanclePass.setOnClickListener {
             if (listPass.size == 0) {
@@ -531,41 +603,31 @@ class NotificationService : NotificationListenerService() {
 
         }
         if (listPass.size == 6) {
-            btn0.isEnabled=false
-            btn1.isEnabled=false
-            btn2.isEnabled=false
-            btn3.isEnabled=false
-            btn4.isEnabled=false
-            btn5.isEnabled=false
-            btn6.isEnabled=false
-            btn7.isEnabled=false
-            btn8.isEnabled=false
-            btn9.isEnabled=false
+            btn0.isEnabled = false
+            btn1.isEnabled = false
+            btn2.isEnabled = false
+            btn3.isEnabled = false
+            btn4.isEnabled = false
+            btn5.isEnabled = false
+            btn6.isEnabled = false
+            btn7.isEnabled = false
+            btn8.isEnabled = false
+            btn9.isEnabled = false
         }
-
-//}else{
-//    btn0.isEnabled
-//    btn1.isEnabled
-//    btn2.isEnabled
-//    btn3.isEnabled
-//    btn4.isEnabled
-//    btn5.isEnabled
-//    btn6.isEnabled
-//    btn7.isEnabled
-//    btn8.isEnabled
-//    btn9.isEnabled
-
 
     }
 
     fun checkNotifiEmpty() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (listNotification.size == 0) {
+                imgClear!!.setVisibility(View.INVISIBLE)
+            } else {
+                imgClear!!.setVisibility(View.VISIBLE)
+            }
 
-        if (listNotification.size == 0) {
-            imgClear.setVisibility(View.INVISIBLE)
-        } else {
-            imgClear.setVisibility(View.VISIBLE)
+        }else{
+            imgClear!!.setVisibility(View.INVISIBLE)
         }
-
     }
 
     fun password() {
@@ -598,18 +660,21 @@ class NotificationService : NotificationListenerService() {
             var password: String = "$pas$pas1$pas2$pas3$pas4$pas5"
             var x = AppConfig.getPassord(applicationContext)
 
-            if (password == x && wmpass != null && countPass<5) {
+            if (password == x && wmpass != null && countPass < 5) {
 //                val handler = android.os.Handler()
 //                handler.postDelayed({ wmpass!!.removeView(passView) }, 300)
-                val handler = Handler()
-                    handler.postDelayed({
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1) {
                     wmpass!!.removeView(passView)
-                }, 300)
-
+                } else {
+                    val handler = Handler()
+                    handler.postDelayed({
+                        wmpass!!.removeView(passView)
+                    }, 300)
+                }
 
             } else {
                 countPass++
-                Log.i("tu","$countPass")
+                Log.i("tu", "$countPass")
                 val animShake: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.shake)
                 ll_circle_pass.startAnimation(animShake)
                 val handler = android.os.Handler()
@@ -624,38 +689,38 @@ class NotificationService : NotificationListenerService() {
                 }, 100)
 
                 listPass.clear()
-                if (countPass==5){
+                if (countPass == 5) {
                     val handlerxxx = Handler()
                     handlerxxx.postDelayed({
-                       cowdown--
+                        cowdown--
                     }, 300)
 
-                    tvNotifiPass.text=" Error code 5 time, Try after 30 second "
-                    btn0.isEnabled=false
-                    btn1.isEnabled=false
-                    btn2.isEnabled=false
-                    btn3.isEnabled=false
-                    btn4.isEnabled=false
-                    btn5.isEnabled=false
-                    btn6.isEnabled=false
-                    btn7.isEnabled=false
-                    btn8.isEnabled=false
-                    btn9.isEnabled=false
+                    tvNotifiPass.text = " Error code 5 time, Try after 30 second "
+                    btn0.isEnabled = false
+                    btn1.isEnabled = false
+                    btn2.isEnabled = false
+                    btn3.isEnabled = false
+                    btn4.isEnabled = false
+                    btn5.isEnabled = false
+                    btn6.isEnabled = false
+                    btn7.isEnabled = false
+                    btn8.isEnabled = false
+                    btn9.isEnabled = false
                 }
                 val handlerx = Handler()
                 handlerx.postDelayed({
-                    tvNotifiPass.text="Touch ID or Password"
-                    countPass=0
-                    btn0.isEnabled
-                    btn1.isEnabled
-                    btn2.isEnabled
-                    btn3.isEnabled
-                    btn4.isEnabled
-                    btn5.isEnabled
-                    btn6.isEnabled
-                    btn7.isEnabled
-                    btn8.isEnabled
-                    btn9.isEnabled
+                    tvNotifiPass.text = "Touch ID or Password"
+                    countPass = 0
+                    btn0.isEnabled = true
+                    btn1.isEnabled = true
+                    btn2.isEnabled = true
+                    btn3.isEnabled = true
+                    btn4.isEnabled = true
+                    btn5.isEnabled = true
+                    btn6.isEnabled = true
+                    btn7.isEnabled = true
+                    btn8.isEnabled = true
+                    btn9.isEnabled = true
                 }, 30000)
 
             }
@@ -681,16 +746,18 @@ class NotificationService : NotificationListenerService() {
 
 
     fun setFullScreen() {
-        mView!!.setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+        if(mView!=null) {
+            mView!!.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
 
-                    or View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
 
-                    or View.SYSTEM_UI_FLAG_IMMERSIVE
-        )
+                        or View.SYSTEM_UI_FLAG_IMMERSIVE
+            )
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -698,26 +765,27 @@ class NotificationService : NotificationListenerService() {
         isFlashOn = false
         objCameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    mCameraId = objCameraManager!!.cameraIdList[0]}
 
-        mCameraId = objCameraManager!!.cameraIdList[0]
 
-
-        rlFlash.setOnClickListener {
-            try {
-                if (isFlashOn == false) {
-                    turnOnFlash()
-                    isFlashOn = true
-                } else {
-                    turnOffFlash()
-                    isFlashOn = false
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
+    rlFlash.setOnClickListener {
+        try {
+            if (isFlashOn == false) {
+                turnOnFlash()
+                isFlashOn = true
+            } else {
+                turnOffFlash()
+                isFlashOn = false
             }
-
-            true
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
+        true
     }
+}
+//    }
 
     private fun turnOnFlash() {
 
@@ -736,7 +804,7 @@ class NotificationService : NotificationListenerService() {
             }
         }
 
-    }
+}
 
     private fun turnOffFlash() {
 //        try {
@@ -759,8 +827,10 @@ class NotificationService : NotificationListenerService() {
 
         val pack = sbn.packageName
         val extras = sbn.notification.extras
-        val title = extras.getString("android.title")
-        val text = extras.getCharSequence("android.text")!!.toString()
+        val title: String? = extras.getString("android.title")
+        val text: String? = extras.getCharSequence("android.text").toString()
+
+//        val text="hihi"
 
         Log.i("Package", pack)
         Log.i("Title", title)
@@ -769,7 +839,7 @@ class NotificationService : NotificationListenerService() {
 
         val msgrcv = Intent("Msg")
 
-        if (pack != "android") {
+        if (pack != "android" && pack != "com.android.systemui" && title != null) {
             msgrcv.putExtra("package", pack)
             msgrcv.putExtra("title", title)
             msgrcv.putExtra("text", text)
@@ -792,7 +862,7 @@ class NotificationService : NotificationListenerService() {
             val pack = intent.getStringExtra("package")
             val title = intent.getStringExtra("title")
             val text = intent.getStringExtra("text")
-            if(pack!=null) {
+            if (pack != null) {
                 listNotification.add(com.vunhiem.lockscreenios.model.Notification(pack, title, text))
                 checkNotifiEmpty()
                 rvNotification.scrollToPosition(listNotification.size - 1)
@@ -809,60 +879,76 @@ class NotificationService : NotificationListenerService() {
         override fun onReceive(context: Context, intent: Intent) {
 
             if (intent.action == Intent.ACTION_SCREEN_OFF) {
-                checkNotifiEmpty()
-                setFullScreen()
-                Log.i("tag", "OFF")
-                if (wm != null) {
-                    try {
-                        wm!!.removeView(mView)
+                var switchMainStatus = AppConfig.getLock(applicationContext)
+                Log.i("hoho", "$switchMainStatus")
+                if (switchMainStatus == true) {
+                    checkNotifiEmpty()
+                    setFullScreen()
+                    Log.i("tag", "OFF")
+                    if (wm != null) {
+                        try {
+                            wm!!.removeView(mView)
 
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                    var idWallpaper = AppConfig.getIdWallPaper(applicationContext)
+                    var uriWallpaper = AppConfig.getIdWallPaperUri(applicationContext)
+
+                    if (idWallpaper != null) {
+                        imgBackgroundLock.setImageResource(AppConfig.getIdWallPaper(applicationContext)!!.toInt())
+                    }
+                    if (AppConfig.getIdWallPaperUri(applicationContext) != null) {
+                        val uri: Uri = Uri.parse(AppConfig.getIdWallPaperUri(applicationContext))
+                        imgBackgroundLock.setImageURI(uri)
+
+                    }
+
+                    wm!!.addView(mView, mParams)
+
+                    if (wmpass != null) {
+                        try {
+                            Log.i("tag", "onaddPass")
+                            wmpass!!.removeView(passView)
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
                 }
-                var idWallpaper = AppConfig.getIdWallPaper(applicationContext)
-                var uriWallpaper = AppConfig.getIdWallPaperUri(applicationContext)
 
-                if (idWallpaper != null) {
-                    imgBackgroundLock.setImageResource(AppConfig.getIdWallPaper(applicationContext)!!.toInt())
-                }
-                if (AppConfig.getIdWallPaperUri(applicationContext) != null) {
-                    val uri:Uri= Uri.parse(AppConfig.getIdWallPaperUri(applicationContext))
-                            imgBackgroundLock.setImageURI(uri)
+            }
+            if (intent.action == Intent.ACTION_SCREEN_ON){
 
-                }
-
-                wm!!.addView(mView, mParams)
-
-                if (wmpass != null) {
-                    try {
-                        Log.i("tag", "onaddPass")
-                        wmpass!!.removeView(passView)
-
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-
+                val anim: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.textview2)
+                tvOpen.startAnimation(anim)
 
             }
             if (intent.action == Intent.ACTION_BATTERY_CHANGED) {
-                Log.i("tag", "on Pin")
-                setFullScreen()
-                var level: Int
-                level = intent.getIntExtra("level", 0)
-                tvPin.text = (Integer.toString(level) + "%")
-                if (level > 50) {
-                    imgPin.setImageResource(R.drawable.icon_pin60)
-                } else {
-                    imgPin.setImageResource(R.drawable.icon_pin30)
+                if (tvPin!=null) {
+                    Log.i("tag", "on Pin")
+                    setFullScreen()
+                    var level: Int
+                    level = intent.getIntExtra("level", 0)
+                    tvPin.text = (Integer.toString(level) + "%")
+                    if (level > 50) {
+                        imgPin.setImageResource(R.drawable.icon_pin60)
+                    } else {
+                        imgPin.setImageResource(R.drawable.icon_pin30)
+
+                    }
 
                 }
-
             }
 
-
         }
+    }
+
+    override fun onDestroy() {
+        unregisterReceiver(mReceiver)
+        unregisterReceiver(onNotice)
+        super.onDestroy()
     }
 
     private var objCameraManager: CameraManager? = null
@@ -912,12 +998,16 @@ class NotificationService : NotificationListenerService() {
     lateinit var btn9: Button
     lateinit var tvCall: TextView
     lateinit var adapter: NotificationAdaper
-    lateinit var imgClear: ImageView
+    private var imgClear: ImageView? = null
     lateinit var viewBottom: Button
     lateinit var tvTelecom: TextView
     lateinit var layouPass: LinearLayout
-    var countPass:Int=0
-    lateinit var tvNotifiPass:TextView
-    var cowdown:Int=30
-
+    var countPass: Int = 0
+    lateinit var tvNotifiPass: TextView
+    var cowdown: Int = 30
+    private val NOTIFICATION_ID = 144
+    private var notification: Notification? = null
+    val CHANNEL_ID = "1"
+    lateinit var tvOpenCamera:TextView
+    lateinit var tvOpen:TextView
 }

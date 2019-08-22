@@ -4,30 +4,24 @@ import android.Manifest
 import android.app.admin.DevicePolicyManager
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.widget.CompoundButton
+import android.provider.Settings
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.ibikenavigationkotlin.utils.AppConfig
-import com.vunhiem.lockscreenios.screens.password.NewPassword
-import com.vunhiem.lockscreenios.screens.password.PasswordAuthentic
-import com.vunhiem.lockscreenios.screens.wallpaper.Wallpaper
-import com.vunhiem.lockscreenios.service.MyService
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.ArrayList
-import android.app.Activity
-import android.net.Uri
-import android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION
-import android.provider.Settings.canDrawOverlays
-import android.os.Build
-import android.provider.Settings
-import android.widget.Toast
 import com.suke.widget.SwitchButton
 import com.vunhiem.lockscreenios.R
-import com.vunhiem.lockscreenios.notification.SetNotification
+import com.vunhiem.lockscreenios.screens.password.NewPassword
+import com.vunhiem.lockscreenios.screens.password.PasswordAuthentic
 import com.vunhiem.lockscreenios.screens.privacy.PrivacyActivity
+import com.vunhiem.lockscreenios.screens.wallpaper.Wallpaper
 import com.vunhiem.lockscreenios.service.NotificationService
+import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,13 +31,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkAndRequestPermissions()
-        switch()
-        disableLockSreenSystem()
+        val intent = Intent(this@MainActivity, NotificationService::class.java)
+        startService(intent)
         oncClick()
+        switch()
 
 
     }
-
 
 
     private fun oncClick() {
@@ -61,16 +55,17 @@ class MainActivity : AppCompatActivity() {
             if (x == null) {
                 val intent = Intent(this, NewPassword::class.java)
                 startActivity(intent)
-            }else{
-            val intent = Intent(this, PasswordAuthentic::class.java)
-            startActivity(intent)}
+            } else {
+                val intent = Intent(this, PasswordAuthentic::class.java)
+                startActivity(intent)
+            }
         }
         rl_wallpaer.setOnClickListener {
             val intent = Intent(this, Wallpaper::class.java)
             startActivity(intent)
         }
         rl_noti.setOnClickListener {
-            val intent = Intent(this, SetNotification::class.java)
+            val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
             startActivity(intent)
         }
         rl_feedback.setOnClickListener {
@@ -89,25 +84,30 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, PrivacyActivity::class.java)
             startActivity(intent)
         }
+        rl_cancle_lock.setOnClickListener {
+            val intent = Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD)
+            startActivity(intent)
+        }
     }
 
     fun switch() {
-        switch_main.setOnCheckedChangeListener(object:SwitchButton.OnCheckedChangeListener{
+
+        var switchMainStatus: Boolean? = AppConfig.getLock(this)
+        switch_main.isChecked = switchMainStatus!!
+        switch_main.setOnCheckedChangeListener(object : SwitchButton.OnCheckedChangeListener {
             override fun onCheckedChanged(view: SwitchButton?, isChecked: Boolean) {
                 if (isChecked) {
-                    val intent = Intent(this@MainActivity, NotificationService::class.java)
-                    startService(intent)
+                    AppConfig.setLock(isChecked, this@MainActivity)
+
                 } else {
-                    val intent = Intent(this@MainActivity, NotificationService::class.java)
-                    stopService(intent)
+                    AppConfig.setLock(isChecked, this@MainActivity)
+                    Log.i("hoho1", "$isChecked")
                 }
             }
 
         })
 
     }
-
-
 
 
     private fun checkAndRequestPermissions() {
@@ -130,12 +130,6 @@ class MainActivity : AppCompatActivity() {
         }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toTypedArray(), 1)
-        }
-    }
-    fun disableLockSreenSystem() {
-        rl_cancle_lock.setOnClickListener {
-            val intent = Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD)
-            startActivity(intent)
         }
     }
 

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
           package="com.vunhiem.lockscreenios">
 
     <uses-feature
             android:name="android.hardware.camera"
             android:required="true"/>
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -30,8 +29,7 @@
         </activity>
         <activity android:name=".screens.privacy.PrivacyActivity">
         </activity>
-        <activity android:name=".notification.SetNotification">
-        </activity>
+
         <activity android:name=".screens.wallpaper.SetWallpaper">
         </activity>
         <activity android:name=".screens.wallpaper.Wallpaper">
@@ -45,11 +43,11 @@
         <activity android:name=".screens.password.PasswordActivity">
         </activity>
 
-        <service
-                android:name=".service.MyService"
-                android:enabled="true"
-                android:exported="true">
-        </service>
+        <!--<service-->
+                <!--android:name=".service.MyService"-->
+                <!--android:enabled="true"-->
+                <!--android:exported="true">-->
+        <!--</service>-->
         <service
                 android:name=".service.NotificationService"
                 android:enabled="true"
@@ -72,7 +70,15 @@
             </intent-filter>
         </activity>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-              android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+                  android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+        <!--<receiver android:name=".service.NotificationService$LockScreenStateReceiver"-->
+        <!--android:enabled="true"-->
+        <!--android:exported="false">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.SCREEN_OFF"/>-->
+
+        <!--</intent-filter>-->
+        <!--</receiver>-->
     </application>
 
 </manifest>

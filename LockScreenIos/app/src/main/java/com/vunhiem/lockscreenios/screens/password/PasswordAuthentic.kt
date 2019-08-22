@@ -1,9 +1,9 @@
 package com.vunhiem.lockscreenios.screens.password
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.ibikenavigationkotlin.utils.AppConfig
 import com.vunhiem.lockscreenios.R
 import kotlinx.android.synthetic.main.activity_password_authentic.*
@@ -23,12 +23,11 @@ class PasswordAuthentic : AppCompatActivity() {
         btn_confirm_new.setOnClickListener {
             var y = edt_pass_new.text.toString()
             var x = AppConfig.getPassord(this)
-            if (y.equals(x)){
-                val intent = Intent(this,PasswordActivity::class.java)
+            if (y.equals(x)) {
+                val intent = Intent(this, PasswordActivity::class.java)
                 startActivity(intent)
                 finish()
-            }
-            else{
+            } else {
                 edt_pass_new.text.clear()
                 Toast.makeText(this, "Password Error", Toast.LENGTH_LONG).show()
             }
