@@ -242,14 +242,13 @@ class NotificationService : NotificationListenerService() {
     }
 
     private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             val name = "floating_window_noti_channel"
             val descriptionText = "A cool channel"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply { description = descriptionText }
-            // Register the channel with the system
+
             val notificationManager: NotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
@@ -620,9 +619,9 @@ class NotificationService : NotificationListenerService() {
     fun checkNotifiEmpty() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (listNotification.size == 0) {
-                imgClear!!.setVisibility(View.INVISIBLE)
+                imgClear?.setVisibility(View.INVISIBLE)
             } else {
-                imgClear!!.setVisibility(View.VISIBLE)
+                imgClear?.setVisibility(View.VISIBLE)
             }
 
         }else{
@@ -931,7 +930,7 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     setFullScreen()
                     var level: Int
                     level = intent.getIntExtra("level", 0)
-                    tvPin.text = (Integer.toString(level) + "%")
+                    tvPin?.text = (Integer.toString(level) + "%")
                     if (level > 50) {
                         imgPin.setImageResource(R.drawable.icon_pin60)
                     } else {
@@ -971,7 +970,7 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     private var mReceiver: BroadcastReceiver? = null
     private var isshowPass: Boolean = false
     private lateinit var linearLayout: LinearLayout
-    lateinit var tvPin: TextView
+    var tvPin: TextView?=null
     lateinit var tvCanclePass: TextView
     lateinit var imgPin: ImageView
     lateinit var listPass: ArrayList<Int>

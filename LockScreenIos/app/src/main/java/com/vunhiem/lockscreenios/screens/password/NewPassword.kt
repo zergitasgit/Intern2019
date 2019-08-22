@@ -29,6 +29,7 @@ class NewPassword : AppCompatActivity() {
 
             if (mk.equals(mk2) && mk.length == 6 && mk2.length == 6) {
                 AppConfig.setPassword(mk, this@NewPassword)
+                AppConfig.setStatusPassword(true,this@NewPassword)
                 Toast.makeText(this, "Set password success", Toast.LENGTH_LONG).show()
                 edt_pass_new.text.clear()
                 edt_pass_again_new.text.clear()
