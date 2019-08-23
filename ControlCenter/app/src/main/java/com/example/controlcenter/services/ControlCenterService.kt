@@ -340,7 +340,12 @@ class ControlCenterService : NotificationListenerService() {
         } catch (e: Exception) {
             println("Bugs")
         }
-        windowManager!!.addView(viewBottom, bottomParams)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            windowManager!!.addView(viewBottom, bottomParams)
+
+        } else {
+            windowManager!!.addView(viewBottom, bottomParams)
+        }
 
 
     }
@@ -1125,4 +1130,3 @@ class ControlCenterService : NotificationListenerService() {
         windowManager!!.removeView(viewBottom)
     }
 }
-

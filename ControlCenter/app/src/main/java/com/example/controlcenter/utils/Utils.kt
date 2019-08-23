@@ -35,6 +35,19 @@ object Utils {
         return i
     }
 
+    fun setCheckIcon(context: Context, value: Int) {
+        val sharedPreference = context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        editor.putInt("icon", value)
+        editor.commit()
+    }
+
+    fun getCheckIcon(context: Context): Int {
+        val sharedPreference = context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        var i: Int = sharedPreference.getInt("icon", 0)
+        return i
+    }
+
     fun CheckWifi(context: Context): Boolean {
         val manager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -161,6 +174,7 @@ object Utils {
         var i: Int = sharedPreference.getInt("position", 1)
         return i
     }
+    //
 
 }
 

@@ -19,24 +19,32 @@ class MainActivity : AppCompatActivity() {
         val intent: Intent = Intent(this, ControlCenterService::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        PermissionAPI()
         checkPermissionNotification(intent)
         changeSize(intent)
         changePositon(intent)
-        PermissionAPI()
+
     }
 
-
+    // kiểm tra quyền hiển thị thông báo - quyền play nhạc
     private fun checkPermissionNotification(intent: Intent) {
-        if (Utils.getCheckControl(this) == 0) {
-            sw_control_center.isChecked = true
-            stopService(intent)
-            startService(intent)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
         } else {
-            sw_control_center.isChecked = false
+            // kiểm tra nếu nút button đã được bật thì sẽ start Service
+            if (Utils.getCheckControl(this) == 0) {
+                sw_control_center.isChecked = true
+                stopService(intent)
+                startService(intent)
+            } else {
+                sw_control_center.isChecked = false
+            }
         }
 
+        // Sử lý sự kiên khi nhấn vào switch bật tắt
         sw_control_center.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
+                // kiểm tra đã bật quyền cho phép hiện thông báo chưa
                 if (Settings.Secure.getString(
                         this.getContentResolver(),
                         "enabled_notification_listeners"
@@ -45,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                     startService(intent)
                     Utils.setCheckControl(this, 0)
                 } else {
+                    // nếu chưa bật quyền đó thì sẽ vào màn hình cấp quyền
                     val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     getApplicationContext().startActivity(intent)
@@ -52,14 +61,21 @@ class MainActivity : AppCompatActivity() {
 
 
             } else {
-                stopService(intent)
-                Utils.setCheckControl(this, 1)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+
+                } else {
+                    stopService(intent)
+                    Utils.setCheckControl(this, 1)
+                }
+
 
             }
         }
 
     }
 
+    // sự kiện thay đổi vị trí của icon
     private fun changePositon(intent: Intent) {
         var i = Utils.getPosition(this)
         if (i == 2) {
@@ -74,27 +90,41 @@ class MainActivity : AppCompatActivity() {
         rb_ben_trai.setOnClickListener {
             Utils.setPosition(this, 1)
             if (Utils.getCheckControl(this) == 0) {
-                stopService(intent)
-                startService(intent)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+                } else {
+                    stopService(intent)
+                    startService(intent)
+                }
+
             }
 
         }
         rb_ben_phai.setOnClickListener {
             Utils.setPosition(this, 2)
             if (Utils.getCheckControl(this) == 0) {
-                stopService(intent)
-                startService(intent)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+                } else {
+                    stopService(intent)
+                    startService(intent)
+                }
             }
         }
         rb_ben_duoi.setOnClickListener {
             Utils.setPosition(this, 3)
             if (Utils.getCheckControl(this) == 0) {
-                stopService(intent)
-                startService(intent)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+                } else {
+                    stopService(intent)
+                    startService(intent)
+                }
             }
         }
     }
 
+    // sự kiện thay đổi size của icon
     private fun changeSize(intent: Intent) {
         sb_size.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
@@ -125,6 +155,7 @@ class MainActivity : AppCompatActivity() {
     private fun PermissionAPI() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (!Settings.canDrawOverlays(this@MainActivity)) {
+                // dialog ở đây
                 Toast.makeText(this, "Bạn cần cấp một số quyền cho ứng dụng", Toast.LENGTH_SHORT)
                     .show()
                 val intent = Intent(
