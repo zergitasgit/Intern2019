@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         val intent: Intent = Intent(this, ControlCenterService::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        onCheckSwitch()
         PermissionAPI()
         checkPermissionNotification(intent)
         changeSize(intent)
@@ -26,20 +27,30 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // kiểm tra quyền hiển thị thông báo - quyền play nhạc
-    private fun checkPermissionNotification(intent: Intent) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+    private fun onCheckSwitch() {
+        if (Utils.getCheckControl(this) == 0) {
+            sw_control_center.isChecked = true
+            sb_size.progress = Utils.getSize(this)-1
+            startService(intent)
+
+
 
         } else {
-            // kiểm tra nếu nút button đã được bật thì sẽ start Service
-            if (Utils.getCheckControl(this) == 0) {
-                sw_control_center.isChecked = true
-                stopService(intent)
-                startService(intent)
-            } else {
-                sw_control_center.isChecked = false
-            }
+            sw_control_center.isChecked = false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (sw_control_center.isChecked == true) {
+            Utils.setCheckControl(this, 0)
+        } else {
+            Utils.setCheckControl(this, 1)
+        }
+    }
+
+    // kiểm tra quyền hiển thị thông báo - quyền play nhạc
+    private fun checkPermissionNotification(intent: Intent) {
 
         // Sử lý sự kiên khi nhấn vào switch bật tắt
         sw_control_center.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -62,7 +73,8 @@ class MainActivity : AppCompatActivity() {
 
             } else {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
+                    stopService(intent)
+                    Utils.setCheckControl(this, 1)
 
                 } else {
                     stopService(intent)
@@ -91,7 +103,8 @@ class MainActivity : AppCompatActivity() {
             Utils.setPosition(this, 1)
             if (Utils.getCheckControl(this) == 0) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
+                    stopService(intent)
+                    startService(intent)
                 } else {
                     stopService(intent)
                     startService(intent)
@@ -104,7 +117,8 @@ class MainActivity : AppCompatActivity() {
             Utils.setPosition(this, 2)
             if (Utils.getCheckControl(this) == 0) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
+                    stopService(intent)
+                    startService(intent)
                 } else {
                     stopService(intent)
                     startService(intent)
@@ -115,7 +129,8 @@ class MainActivity : AppCompatActivity() {
             Utils.setPosition(this, 3)
             if (Utils.getCheckControl(this) == 0) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
+                    stopService(intent)
+                    startService(intent)
                 } else {
                     stopService(intent)
                     startService(intent)
@@ -146,10 +161,12 @@ class MainActivity : AppCompatActivity() {
         })
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            sb_size.progress = 360
+            sb_size.progress = Utils.getSize(this)
 
+        } else {
+            sb_size.progress = Utils.getSize(this)
         }
-        sb_size.progress = Utils.getSize(this)
+
     }
 
     private fun PermissionAPI() {

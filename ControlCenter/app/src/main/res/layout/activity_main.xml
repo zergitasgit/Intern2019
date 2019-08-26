@@ -54,12 +54,12 @@
                         android:textColor="@color/colorBlack" />
 
                     <SeekBar
+                        android:max="500"
                         android:id="@+id/sb_size"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:max="450"
-                        android:min="250" />
+                        />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

@@ -8,12 +8,14 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.hardware.Camera
+import android.hardware.camera2.CameraManager
 import android.media.AudioManager
 import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
+import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
@@ -83,6 +85,8 @@ class ControlCenterService : NotificationListenerService() {
             "com.example.controlcenter",
             "com.example.controlcenter.services.ControlCenterService"
         )
+    private var objCameraManager: CameraManager? = null
+    private var mCameraId: String? = null
 
     var currentlyPlaying: Boolean = false
     var currentArt: Bitmap? = null
@@ -210,7 +214,8 @@ class ControlCenterService : NotificationListenerService() {
         if (currentSong == null) {
             currentSong = meta.getString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE)
         }
-        currentAlbum = meta.getString(MediaMetadata.METADATA_KEY_ALBUM)
+        // currentAlbum = meta.getString(MediaMetadata.METADATA_KEY_ALBUM)
+
         if (currentArtist == null) {
             currentArtist = meta.getString(MediaMetadata.METADATA_KEY_ALBUM_ARTIST)
         }
@@ -251,6 +256,8 @@ class ControlCenterService : NotificationListenerService() {
                 mediaController!!.registerCallback(callback)
                 meta = mediaController!!.metadata!!
                 updateMetadata()
+
+
             }
 
         }
@@ -646,7 +653,7 @@ class ControlCenterService : NotificationListenerService() {
                 if (windowManager != null) {
                     val transportControls = mediaController!!.transportControls
                     transportControls.skipToPrevious()
-                    tvMusicName.text = "Next " + currentSong
+                    tvMusicName.text = "Song :  " + currentSong
                     windowManager!!.updateViewLayout(viewControl, controlParams)
                 }
             }
@@ -662,9 +669,10 @@ class ControlCenterService : NotificationListenerService() {
             }
             btnNext.setOnClickListener {
                 if (windowManager != null) {
+                    updateMetadata()
                     val transportControls = mediaController!!.transportControls
                     transportControls.skipToNext()
-                    tvMusicName.text = "Previous " + currentSong
+                    tvMusicName.text = "Song :  " + currentSong
                     windowManager!!.updateViewLayout(viewControl, controlParams)
 
 
@@ -873,22 +881,36 @@ class ControlCenterService : NotificationListenerService() {
     }
 
     private fun flashLight() {
-        // sử lý sự kiện khi nhấn vào button Flash Light
-        tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked == true) {
-                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
-                    camera = Camera.open()
-                    var p = camera!!.getParameters()
-                    p!!.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
-                    camera!!.setParameters(p)
-                    camera!!.startPreview()
-                }
-            } else {
-                camera.stopPreview()
-                camera.release()
+        //
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
+
+//            tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
+//                if (isChecked == true) {
+//
+//                } else {
+//
+//                }
+//            }
+        } else {
+            // sử lý sự kiện khi nhấn vào button Flash Light
+            tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked == true) {
+                    if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+                        camera = Camera.open()
+                        var p = camera!!.getParameters()
+                        p!!.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
+                        camera!!.setParameters(p)
+                        camera!!.startPreview()
+                    }
+                } else {
+                    camera.stopPreview()
+                    camera.release()
+
+                }
             }
         }
+
     }
 
     private fun clock() {
