@@ -30,6 +30,7 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.annotation.RequiresApi
 import com.example.controlcenter.R
 import com.example.controlcenter.scenes.ControlCenterGroupView
 import com.example.controlcenter.utils.Utils
@@ -74,7 +75,7 @@ class ControlCenterService : NotificationListenerService() {
     private var touchX: Float = 0.0f
     private var touchToMove: Boolean = false
     private var wifiManager: WifiManager? = null
-    private lateinit var camera: Camera
+    private var camera: Camera? = null
     private lateinit var mediaSessionManager: MediaSessionManager
     private var mediaController: MediaController? = null
     private var online: Boolean = false
@@ -94,6 +95,7 @@ class ControlCenterService : NotificationListenerService() {
     var currentSong: String = ""
     var currentAlbum: String = ""
     private lateinit var meta: MediaMetadata
+    var isFlashOn: Boolean? = null
 
 
     override fun onCreate() {
@@ -632,9 +634,9 @@ class ControlCenterService : NotificationListenerService() {
 
             tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked == true) {
-                    Toast.makeText(this, "Bạn cần mở một ứng dụng nhạc", Toast.LENGTH_SHORT).show()
+                    tvMusicName.text = "Bạn cần mở một ứng dụng nhạc"
                 } else {
-                    Toast.makeText(this, "Bạn cần mở một ứng dụng nhạc", Toast.LENGTH_SHORT).show()
+                    tvMusicName.text = "Bạn cần mở một ứng dụng nhạc"
                 }
             }
 
@@ -745,34 +747,30 @@ class ControlCenterService : NotificationListenerService() {
     }
 
     private fun checkBluetooth() {
-        // check xem bluetooth on hay off rồi set trạng thái
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+        var mBtAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        if (Utils.CheckBluetooth(this)) {
+            tbBluetooth.isChecked = true
 
         } else {
-            var mBtAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-            if (Utils.CheckBluetooth(this)) {
-                tbBluetooth.isChecked = true
+            tbBluetooth.isChecked = false
+
+        }
+        tbBluetooth.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (isChecked == true) {
+                mBtAdapter.enable()
 
             } else {
-                tbBluetooth.isChecked = false
-
+                mBtAdapter.disable()
             }
-            tbBluetooth.setOnCheckedChangeListener { buttonView, isChecked ->
-
-                if (isChecked == true) {
-                    mBtAdapter.enable()
-
-                } else {
-                    mBtAdapter.disable()
-                }
-            }
-            tbBluetooth.setOnLongClickListener {
-                var intent: Intent = Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                showIcon()
-                return@setOnLongClickListener true
-            }
+        }
+        tbBluetooth.setOnLongClickListener {
+            var intent: Intent = Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            showIcon()
+            return@setOnLongClickListener true
         }
 
     }
@@ -830,30 +828,25 @@ class ControlCenterService : NotificationListenerService() {
     private fun setLight() {
         var data = Utils.getLight(this@ControlCenterService)
         sbLight.value = data
+        sbLight.setOnBoxedPointsChangeListener(object : BoxedVertical.OnValuesChangeListener {
+            override fun onPointsChanged(boxedPoints: BoxedVertical, value: Int) {
+                var brightness = value
+                Settings.System.putInt(
+                    contentResolver,
+                    android.provider.Settings.System.SCREEN_BRIGHTNESS,
+                    value
+                )
+            }
 
+            override fun onStartTrackingTouch(boxedPoints: BoxedVertical) {
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            // su ly doi voi android 8.0
-        } else {
-            sbLight.setOnBoxedPointsChangeListener(object : BoxedVertical.OnValuesChangeListener {
-                override fun onPointsChanged(boxedPoints: BoxedVertical, value: Int) {
-                    var brightness = value
-                    Settings.System.putInt(
-                        contentResolver,
-                        android.provider.Settings.System.SCREEN_BRIGHTNESS,
-                        value
-                    )
-                }
+            }
 
-                override fun onStartTrackingTouch(boxedPoints: BoxedVertical) {
+            override fun onStopTrackingTouch(boxedPoints: BoxedVertical) {
 
-                }
+            }
+        })
 
-                override fun onStopTrackingTouch(boxedPoints: BoxedVertical) {
-
-                }
-            })
-        }
     }
 
     private fun setVolume() {
@@ -880,44 +873,110 @@ class ControlCenterService : NotificationListenerService() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
     private fun flashLight() {
-        //
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
-
-//            tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
-//                if (isChecked == true) {
-//
-//                } else {
-//
-//                }
-//            }
-        } else {
-            // sử lý sự kiện khi nhấn vào button Flash Light
+            isFlashOn = false
+            objCameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mCameraId = objCameraManager!!.cameraIdList[0]
+            }
             tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked == true) {
-                    if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
-                        camera = Camera.open()
-                        var p = camera!!.getParameters()
-                        p!!.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
-                        camera!!.setParameters(p)
-                        camera!!.startPreview()
-                    }
+                    turnOnFlash()
+                    isFlashOn = true
                 } else {
-                    camera.stopPreview()
-                    camera.release()
+                    turnOffFlash()
+                    isFlashOn = true
 
                 }
             }
+        } else {
+//            tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
+//                if (isChecked == true) {
+//                    if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+//                        turnOnFlash()
+//                        isFlashOn = true
+//                    }
+//                } else {
+//                    turnOffFlash()
+//                    isFlashOn = true
+//
+//                }
+//            }
         }
 
+
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//
+//
+////            tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
+////                if (isChecked == true) {
+////
+////                } else {
+////
+////                }
+////            }
+//        } else {
+//            // sử lý sự kiện khi nhấn vào button Flash Light
+//            tbFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
+//                if (isChecked == true) {
+//                    if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+//                        camera = Camera.open()
+//                        var p = camera!!.getParameters()
+//                        p!!.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
+//                        camera!!.setParameters(p)
+//                        camera!!.startPreview()
+//                    }
+//                } else {
+//                    camera.stopPreview()
+//                    camera.release()
+//
+//                }
+//            }
+//        }
+
+
+    }
+
+    private fun turnOffFlash() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            objCameraManager!!.setTorchMode(mCameraId!!, false)
+        } else {
+            Log.i("tag", "flahof")
+            if (camera != null) {
+                camera!!.stopPreview()
+                camera!!.release()
+
+            }
+
+        }
+    }
+
+    private fun turnOnFlash() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            objCameraManager!!.setTorchMode(mCameraId!!, true)
+        } else {
+            if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+                if (camera == null)
+                    Log.i("tag", "flahON")
+                camera = Camera.open()
+                var p = camera!!.getParameters()
+                p!!.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
+                camera!!.setParameters(p)
+                camera!!.startPreview()
+            }
+        }
     }
 
     private fun clock() {
         // sử lý sự kiện khi nhấn vào button đồng hồ
         btnClock.setOnClickListener {
             var packageManager: PackageManager = application.packageManager
-            var intent: Intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+            var intent: Intent =
+                Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             windowManager!!.removeView(viewControl)
@@ -927,18 +986,33 @@ class ControlCenterService : NotificationListenerService() {
 
     private fun caculator() {
         // sử lý sự kiện khi nhấn vào button máy tính
-        btnCalculator.setOnClickListener {
-            val intent: Intent = Intent()
-            intent.setClassName("com.android.calculator2", "com.android.calculator2.Calculator")
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            windowManager!!.removeView(viewControl)
-            showIcon()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            btnCalculator.setOnClickListener {
+                val intent = Intent()
+                intent.setAction(Intent.ACTION_MAIN)
+                intent.addCategory(Intent.CATEGORY_APP_CALCULATOR)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                windowManager!!.removeView(viewControl)
+                showIcon()
+            }
+        } else {
+            btnCalculator.setOnClickListener {
+                val intent: Intent = Intent()
+                intent.setClassName("com.android.calculator2", "com.android.calculator2.Calculator")
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                windowManager!!.removeView(viewControl)
+                showIcon()
 
+            }
         }
+
+
     }
 
     private fun openCamera() {
+
         // sử lý sự kiện khi nhấn vào button Camera
         btnCamera.setOnClickListener {
             val intent = Intent("android.media.action.IMAGE_CAPTURE")
@@ -946,6 +1020,7 @@ class ControlCenterService : NotificationListenerService() {
             startActivity(intent)
             windowManager!!.removeView(viewControl)
             showIcon()
+
 
         }
     }

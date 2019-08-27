@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         checkPermissionNotification(intent)
         changeSize(intent)
         changePositon(intent)
+        checkSystemWritePermission()
 
     }
 
@@ -167,6 +168,23 @@ class MainActivity : AppCompatActivity() {
             sb_size.progress = Utils.getSize(this)
         }
 
+    }
+    private fun checkSystemWritePermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Settings.System.canWrite(this@MainActivity))
+                return true
+            else
+                openAndroidPermissionsMenu()
+        }
+        return false
+    }
+
+    private fun openAndroidPermissionsMenu() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+            intent.data = Uri.parse("package:" + this.packageName)
+            startActivity(intent)
+        }
     }
 
     private fun PermissionAPI() {
