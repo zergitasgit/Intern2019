@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "F:\\Android\\Codemau\\LockScreenIos\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+            "outputFile": "D:\\Android\\zergitas-2019\\internship\\Intern2019\\LockScreenIos\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\LORD Nhiem\\.gradle\\caches\\transforms-2\\files-2.1\\8a90935574f82694cec42fb7c78743b1\\appcompat-1.0.2\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
+                    "source": "C:\\Users\\bongm\\.gradle\\caches\\transforms-2\\files-2.1\\8a90935574f82694cec42fb7c78743b1\\appcompat-1.0.2\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

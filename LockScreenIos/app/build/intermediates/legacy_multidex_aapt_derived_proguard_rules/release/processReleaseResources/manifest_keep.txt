@@ -1,0 +1,4 @@
+# Referenced at D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\build\intermediates\merged_manifests\release\AndroidManifest.xml:32
+-keep class androidx.core.app.CoreComponentFactory { <init>(); }
+# Referenced at D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\build\intermediates\merged_manifests\release\AndroidManifest.xml:32
+-keep class com.os13lockscreen.ilockscreenos13.MyApplication { <init>(); }

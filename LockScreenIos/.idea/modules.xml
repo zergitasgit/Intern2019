@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Codemau-LockScreenIos.iml" filepath="$PROJECT_DIR$/Codemau-LockScreenIos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Intern2019-LockScreenIos.iml" filepath="$PROJECT_DIR$/Intern2019-LockScreenIos.iml" />
       <module fileurl="file://$PROJECT_DIR$/LockScreenIos.iml" filepath="$PROJECT_DIR$/LockScreenIos.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
