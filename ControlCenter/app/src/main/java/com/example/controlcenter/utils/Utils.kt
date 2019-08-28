@@ -31,7 +31,7 @@ object Utils {
 
     fun getCheckControl(context: Context): Int {
         val sharedPreference = context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
-        var i: Int = sharedPreference.getInt("on", 0)
+        var i: Int = sharedPreference.getInt("on", 1)
         return i
     }
 

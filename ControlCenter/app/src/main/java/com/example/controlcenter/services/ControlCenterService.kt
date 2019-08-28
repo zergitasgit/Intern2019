@@ -1,6 +1,9 @@
 package com.example.controlcenter.services
 
 import abak.tr.com.boxedverticalseekbar.BoxedVertical
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.bluetooth.BluetoothAdapter
 import android.content.*
 import android.content.pm.PackageManager
@@ -10,6 +13,7 @@ import android.graphics.PixelFormat
 import android.hardware.Camera
 import android.hardware.camera2.CameraManager
 import android.media.AudioManager
+import android.media.Image
 import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.MediaSession
@@ -22,6 +26,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.preference.PreferenceManager
+import android.provider.AlarmClock
 import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -31,6 +36,8 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.controlcenter.R
 import com.example.controlcenter.scenes.ControlCenterGroupView
 import com.example.controlcenter.utils.Utils
@@ -51,6 +58,7 @@ class ControlCenterService : NotificationListenerService() {
     private lateinit var animDown: Animation
     private lateinit var animLeft: Animation
     private lateinit var animRight: Animation
+    private lateinit var animClick: Animation
     private lateinit var tbWifi: ToggleButton
     private lateinit var tbPlane: ToggleButton
     private lateinit var tbNetwork: ToggleButton
@@ -67,7 +75,7 @@ class ControlCenterService : NotificationListenerService() {
     private lateinit var btnPrevious: Button
     private lateinit var tbPlay: ToggleButton
     private lateinit var btnNext: Button
-    private lateinit var btnMusicSetting: Button
+    private lateinit var imgMusicSetting: ImageView
     private lateinit var tvMusicName: TextView
     private var y: Int = 0
     private var touchY: Float = 0.0f
@@ -96,7 +104,10 @@ class ControlCenterService : NotificationListenerService() {
     var currentAlbum: String = ""
     private lateinit var meta: MediaMetadata
     var isFlashOn: Boolean? = null
-
+    var context = this
+    private var notification: Notification? = null
+    private val NOTIFICATION_ID = 144
+    val CHANNEL_ID = "1"
 
     override fun onCreate() {
         println("onCreate service")
@@ -119,8 +130,41 @@ class ControlCenterService : NotificationListenerService() {
             println(e)
 
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            createNotificationChannel()
+            val CHANNEL_ID = "1"
+            val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Control Center active")
+                .setOnlyAlertOnce(true)
+            notification = builder.build()
+            with(NotificationManagerCompat.from(context)) {
+                notify(
+                    NOTIFICATION_ID,
+                    notification!!
+                )
+            }
+            startForeground(NOTIFICATION_ID, notification)
+            Log.d("chan", "Start the foreground")
+        }
 
 
+    }
+
+    private fun createNotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            val name = "floating_window_noti_channel"
+            val descriptionText = "A cool channel"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+
+            val notificationManager: NotificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -340,6 +384,8 @@ class ControlCenterService : NotificationListenerService() {
         animDown = AnimationUtils.loadAnimation(this, R.anim.anim_down)
         animLeft = AnimationUtils.loadAnimation(this, R.anim.anim_left)
         animRight = AnimationUtils.loadAnimation(this, R.anim.anim_right)
+        animClick = AnimationUtils.loadAnimation(this, R.anim.anim_click)
+
     }
 
     // hiển thị thanh nhỏ nhỏ ở bottom
@@ -441,7 +487,7 @@ class ControlCenterService : NotificationListenerService() {
         btnPrevious = view.findViewById(R.id.btn_previous)
         tbPlay = view.findViewById(R.id.tb_play)
         btnNext = view.findViewById(R.id.btn_next)
-        btnMusicSetting = view.findViewById(R.id.btn_music_setting)
+        imgMusicSetting = view.findViewById(R.id.img_music)
         tvMusicName = view.findViewById(R.id.tv_music_name)
     }
 
@@ -530,6 +576,10 @@ class ControlCenterService : NotificationListenerService() {
             btn2p.setTextColor(textColorWhite)
             btn10p.setTextColor(textColorWhite)
             btn30p.setTextColor(textColorWhite)
+            windowManager!!.removeView(viewTimeOut)
+            showControl()
+            rlControl.animation = animUp
+            rlControl.animation.start()
         }
         btn30s.setOnClickListener {
             setTimeOut(30000)
@@ -540,6 +590,10 @@ class ControlCenterService : NotificationListenerService() {
             btn2p.setTextColor(textColorWhite)
             btn10p.setTextColor(textColorWhite)
             btn30p.setTextColor(textColorWhite)
+            windowManager!!.removeView(viewTimeOut)
+            showControl()
+            rlControl.animation = animUp
+            rlControl.animation.start()
         }
         btn1p.setOnClickListener {
             setTimeOut(60000)
@@ -550,6 +604,10 @@ class ControlCenterService : NotificationListenerService() {
             btn2p.setTextColor(textColorWhite)
             btn10p.setTextColor(textColorWhite)
             btn30p.setTextColor(textColorWhite)
+            windowManager!!.removeView(viewTimeOut)
+            showControl()
+            rlControl.animation = animUp
+            rlControl.animation.start()
         }
         btn2p.setOnClickListener {
             setTimeOut(120000)
@@ -560,6 +618,10 @@ class ControlCenterService : NotificationListenerService() {
             btn1p.setTextColor(textColorWhite)
             btn10p.setTextColor(textColorWhite)
             btn30p.setTextColor(textColorWhite)
+            windowManager!!.removeView(viewTimeOut)
+            showControl()
+            rlControl.animation = animUp
+            rlControl.animation.start()
         }
         btn10p.setOnClickListener {
             setTimeOut(600000)
@@ -570,6 +632,10 @@ class ControlCenterService : NotificationListenerService() {
             btn2p.setTextColor(textColorWhite)
             btn30p.setTextColor(textColorWhite)
             btn10p.setTextColor(textColorRed)
+            windowManager!!.removeView(viewTimeOut)
+            showControl()
+            rlControl.animation = animUp
+            rlControl.animation.start()
         }
         btn30p.setOnClickListener {
             setTimeOut(1800000)
@@ -580,6 +646,10 @@ class ControlCenterService : NotificationListenerService() {
             btn2p.setTextColor(textColorWhite)
             btn10p.setTextColor(textColorWhite)
             btn30p.setTextColor(textColorRed)
+            windowManager!!.removeView(viewTimeOut)
+            showControl()
+            rlControl.animation = animUp
+            rlControl.animation.start()
         }
 
 
@@ -650,12 +720,13 @@ class ControlCenterService : NotificationListenerService() {
 
         if (mediaController != null) {
             updateMetadata()
-            tvMusicName.text = "Playing :" + currentSong
+            tvMusicName.text = "Music"
             btnPrevious.setOnClickListener {
                 if (windowManager != null) {
                     val transportControls = mediaController!!.transportControls
                     transportControls.skipToPrevious()
-                    tvMusicName.text = "Song :  " + currentSong
+                    updateMetadata()
+                    tvMusicName.text = "playing"
                     windowManager!!.updateViewLayout(viewControl, controlParams)
                 }
             }
@@ -663,10 +734,12 @@ class ControlCenterService : NotificationListenerService() {
                 if (isChecked == true) {
                     val transportControls = mediaController!!.transportControls
                     transportControls.play()
+                    tvMusicName.text = "playing"
 
                 } else {
                     val transportControls = mediaController!!.transportControls
                     transportControls.pause()
+                    tvMusicName.text = "Pause"
                 }
             }
             btnNext.setOnClickListener {
@@ -674,8 +747,11 @@ class ControlCenterService : NotificationListenerService() {
                     updateMetadata()
                     val transportControls = mediaController!!.transportControls
                     transportControls.skipToNext()
-                    tvMusicName.text = "Song :  " + currentSong
+                    updateMetadata()
+                    tvMusicName.text = "playing"
                     windowManager!!.updateViewLayout(viewControl, controlParams)
+                    btnNext.animation = animClick
+                    btnNext.animation.start()
 
 
                 }
@@ -876,7 +952,7 @@ class ControlCenterService : NotificationListenerService() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 
     private fun flashLight() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             isFlashOn = false
             objCameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -981,12 +1057,14 @@ class ControlCenterService : NotificationListenerService() {
             startActivity(intent)
             windowManager!!.removeView(viewControl)
             showIcon()
+
+
         }
     }
 
     private fun caculator() {
         // sử lý sự kiện khi nhấn vào button máy tính
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             btnCalculator.setOnClickListener {
                 val intent = Intent()
                 intent.setAction(Intent.ACTION_MAIN)
@@ -1037,6 +1115,7 @@ class ControlCenterService : NotificationListenerService() {
         rlControl.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
+
 
                 }
                 MotionEvent.ACTION_UP -> {
@@ -1183,6 +1262,7 @@ class ControlCenterService : NotificationListenerService() {
         lnBottom.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
+                    println("okkk")
                     y = bottomParams!!.y
                     touchY = motionEvent.rawY
                     touchToMove = false

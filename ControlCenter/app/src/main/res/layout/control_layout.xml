@@ -85,8 +85,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp">
 
-            <Button
-                android:id="@+id/btn_music_setting"
+            <ImageView
+                android:id="@+id/img_music"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_centerHorizontal="true"
@@ -96,7 +96,7 @@
                 android:id="@+id/btn_previous"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_below="@+id/btn_music_setting"
+                android:layout_below="@+id/img_music"
                 android:background="@drawable/ic_previous"
                 android:scaleX="1.5"
                 android:scaleY="1.5" />
@@ -105,7 +105,7 @@
                 android:id="@+id/tb_play"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_below="@+id/btn_music_setting"
+                android:layout_below="@+id/img_music"
                 android:layout_toRightOf="@+id/btn_previous"
                 android:background="@drawable/custom_play_music"
                 android:scaleX="1.5"
@@ -117,7 +117,7 @@
                 android:id="@+id/btn_next"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_below="@+id/btn_music_setting"
+                android:layout_below="@+id/img_music"
                 android:layout_toRightOf="@+id/tb_play"
                 android:background="@drawable/ic_next"
                 android:scaleX="1.5"

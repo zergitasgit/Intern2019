@@ -25,22 +25,21 @@ class MainActivity : AppCompatActivity() {
         changeSize(intent)
         changePositon(intent)
         checkSystemWritePermission()
+//        sb_size.progress = Utils.getPosition(this) + 1
 
     }
 
     private fun onCheckSwitch() {
         if (Utils.getCheckControl(this) == 0) {
             sw_control_center.isChecked = true
-            sb_size.progress = Utils.getSize(this)-1
             startService(intent)
-
-
 
         } else {
             sw_control_center.isChecked = false
         }
     }
 
+    //
     override fun onDestroy() {
         super.onDestroy()
         if (sw_control_center.isChecked == true) {
@@ -65,6 +64,12 @@ class MainActivity : AppCompatActivity() {
                     startService(intent)
                     Utils.setCheckControl(this, 0)
                 } else {
+                    Toast.makeText(
+                        this,
+                        "Bạn cần cấp một số quyền cho ứng dụng",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
                     // nếu chưa bật quyền đó thì sẽ vào màn hình cấp quyền
                     val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -160,15 +165,10 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            sb_size.progress = Utils.getSize(this)
-
-        } else {
-            sb_size.progress = Utils.getSize(this)
-        }
+        sb_size.progress = Utils.getSize(this)
 
     }
+
     private fun checkSystemWritePermission(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Settings.System.canWrite(this@MainActivity))
@@ -181,9 +181,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun openAndroidPermissionsMenu() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
             val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
             intent.data = Uri.parse("package:" + this.packageName)
             startActivity(intent)
+            Toast.makeText(this, "Bạn cần cấp một số quyền cho ứng dụng", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -191,13 +194,13 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (!Settings.canDrawOverlays(this@MainActivity)) {
                 // dialog ở đây
-                Toast.makeText(this, "Bạn cần cấp một số quyền cho ứng dụng", Toast.LENGTH_SHORT)
-                    .show()
                 val intent = Intent(
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:$packageName")
                 )
                 startActivityForResult(intent, 1234)
+                Toast.makeText(this, "Bạn cần cấp một số quyền cho ứng dụng", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
