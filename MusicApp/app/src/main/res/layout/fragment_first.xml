@@ -1,0 +1,115 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:layout_marginBottom="126dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Library"
+        android:textColor="#000"
+        android:textSize="30dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="5dp"
+        android:background="#EBEBEB">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_playlists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Playlists"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="5dp"
+        android:background="#EBEBEB">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_artists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Artists"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="5dp"
+        android:background="#EBEBEB">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_albums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Albums"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="5dp"
+        android:background="#EBEBEB">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_songs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Songs"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="5dp"
+        android:background="#EBEBEB">
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Recently Added"
+        android:textColor="#000"
+        android:textSize="26dp" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_recently"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:layout_margin="5dp"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

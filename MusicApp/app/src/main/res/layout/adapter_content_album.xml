@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:id="@+id/rl_content_album">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_number_song_of_album"
+        android:layout_marginLeft="15dp"
+        android:layout_centerVertical="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_name_song_of_album"
+        android:layout_toRightOf="@+id/tv_number_song_of_album"
+        android:layout_marginLeft="15dp"
+        android:textSize="16dp"
+        android:textColor="#000"
+        android:layout_centerVertical="true"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="35dp"
+        android:background="#EBEBEB">
+    </FrameLayout>
+</RelativeLayout>

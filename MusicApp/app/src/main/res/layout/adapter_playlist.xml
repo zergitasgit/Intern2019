@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:id="@+id/rl_adapter_playlist"
+    >
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/bg_shuffle_false"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/album_art" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="New Playlist"
+        android:textColor="@color/colorAccent"
+        android:layout_toRightOf="@+id/rl"
+        android:layout_centerVertical="true"
+        android:textSize="15dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="#EBEBEB"></RelativeLayout>
+</RelativeLayout>
