@@ -72,4 +72,18 @@ object AppConfig {
         val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return sharedPreferences.getBoolean("lockStatuss", true)
     }
+    fun setNoti(notiWord: String, context: Context) {
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("noti", notiWord)
+        editor.apply()
+    }
+
+    fun getNoti(context: Context): String? {
+        val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.getString("noti", null)
+    }
+
+
 }

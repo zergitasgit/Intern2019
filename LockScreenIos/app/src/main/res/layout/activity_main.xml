@@ -8,28 +8,43 @@
             android:layout_height="wrap_content"
             tools:context=".screens.main.MainActivity"
             android:orientation="vertical"
-            android:background="#f1f0f6">
+            android:background="#fff">
         <FrameLayout android:layout_width="match_parent" android:layout_height="200dp">
 
 
-            <ImageView android:layout_width="match_parent"
+            <ImageView
+                    android:id="@+id/img_main"
+                    android:layout_width="match_parent"
                        android:layout_height="200dp"
-                       android:src="@drawable/icon_main"
+                       android:src="@drawable/background_lock"
                        android:scaleType="fitXY"/>
+            <ToggleButton
+                    android:layout_gravity="center"
+                    android:textOn=""
+                    android:textOff=""
+                    android:checked="true"
+                    android:id="@+id/btn_main"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:background="@drawable/button_main"
+                    />
 
-            <com.suke.widget.SwitchButton
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/switch_main"
-                    android:layout_width="90dp" android:layout_height="45dp"
-                    app:sb_show_indicator="false"
-            />
 
 
         </FrameLayout>
+        <TextView
+                android:fontFamily="@font/big"
+                android:layout_marginLeft="10dp"
+                android:textSize="15sp"
+                android:layout_marginTop="12dp"
+                android:textStyle="bold"
+                android:textColor="#415ada"
+                android:text="Settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         <RelativeLayout
                 android:id="@+id/rl_password"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/button_selector"
@@ -39,18 +54,18 @@
 
                     android:layout_alignParentTop="true"
                     android:layout_width="match_parent" android:layout_height="1dp"
-                    android:background="#f1f0f6"/>
+                    android:background="#c8c8c8"/>
             <ImageView
                     android:layout_marginLeft="10dp"
                     android:padding="4dp"
-                    android:src="@drawable/icon_pass2"
+                    android:src="@drawable/ic_icon_pass2"
                     android:id="@+id/img_icon_main"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
             />
             <TextView
-
+                    android:fontFamily="@font/small"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/img_icon_main" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,17 +74,18 @@
                     android:layout_centerVertical="true"
                     android:textSize="16sp"/>
             <ImageView
+                    android:layout_marginRight="10dp"
                     android:padding="5dp"
-                    android:src="@mipmap/ic_next"
-                    android:layout_centerVertical="true" android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:src="@drawable/ic_ic_next"
+                    android:layout_centerVertical="true" android:layout_width="35dp"
+                    android:layout_height="23dp"
                     android:layout_alignParentRight="true"/>
 
             <View
                     android:layout_marginLeft="70dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_width="match_parent" android:layout_height="2dp"
-                    android:background="#f1f0f6"/>
+                    android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#c8c8c8"/>
         </RelativeLayout>
         <RelativeLayout
                 android:id="@+id/rl_wallpaer"
@@ -80,13 +96,14 @@
             <ImageView
                     android:layout_marginLeft="10dp"
                     android:padding="4dp"
-                    android:src="@drawable/icon_wallpaper2"
+                    android:src="@drawable/ic_icon_wallpaper2"
                     android:id="@+id/img_icon_main1"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
             />
             <TextView
+                    android:fontFamily="@font/small"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/img_icon_main1" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,15 +112,55 @@
                     android:layout_centerVertical="true"
                     android:textSize="16sp"/>
             <ImageView
+                    android:layout_marginRight="10dp"
                     android:padding="5dp"
-                    android:src="@mipmap/ic_next"
-                    android:layout_centerVertical="true" android:layout_width="wrap_content" android:layout_height="40dp"
+                    android:src="@drawable/ic_ic_next"
+                    android:layout_centerVertical="true" android:layout_width="35dp"
+                    android:layout_height="23dp"
                     android:layout_alignParentRight="true"/>
             <View
                     android:layout_marginLeft="70dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_width="match_parent" android:layout_height="2dp"
-                    android:background="#f1f0f6"/>
+                    android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#c8c8c8"/>
+        </RelativeLayout>
+        <RelativeLayout
+                android:id="@+id/rl_cancle_lock"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/button_selector"
+                android:clickable="true">
+            <ImageView
+                    android:padding="4dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_icon_setting"
+                    android:id="@+id/img_icon_main3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    />
+            <TextView
+                    android:fontFamily="@font/small"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/img_icon_main3" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disable system lockscreen"
+                    android:textColor="#010101"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp"/>
+            <ImageView
+                    android:layout_marginRight="10dp"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_ic_next"
+                    android:layout_centerVertical="true" android:layout_width="35dp"
+                    android:layout_height="23dp"
+                    android:layout_alignParentRight="true"/>
+            <View
+                    android:layout_marginLeft="70dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#c8c8c8"/>
+
         </RelativeLayout>
         <RelativeLayout
                 android:id="@+id/rl_noti"
@@ -114,13 +171,14 @@
             <ImageView
                     android:layout_marginLeft="10dp"
                     android:padding="4dp"
-                    android:src="@drawable/icon_noiti2"
+                    android:src="@drawable/ic_icon_noiti2"
                     android:id="@+id/img_icon_main2"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
             />
             <TextView
+                    android:fontFamily="@font/small"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/img_icon_main2" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -129,69 +187,51 @@
                     android:layout_centerVertical="true"
                     android:textSize="16sp"/>
             <ImageView
-                    android:padding="5dp"
-                    android:src="@mipmap/ic_next"
-                    android:layout_centerVertical="true" android:layout_width="wrap_content" android:layout_height="40dp"
+                    android:id="@+id/img_swith_noti"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_ic_off_2"
+                    android:layout_centerVertical="true" android:layout_width="60dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentRight="true"/>
             <View
-                    android:layout_marginLeft="70dp"
+
                     android:layout_alignParentBottom="true"
-                    android:layout_width="match_parent" android:layout_height="2dp"
-                    android:background="#f1f0f6"/>
+                    android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#c8c8c8"/>
         </RelativeLayout>
-        <RelativeLayout
-                android:id="@+id/rl_cancle_lock"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/button_selector"
-                android:clickable="true">
-            <ImageView
-                    android:padding="3dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/icon_setting"
-                    android:id="@+id/img_icon_main3"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-            />
-            <TextView
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/img_icon_main3" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Disable system lockscreen"
-                    android:textColor="#010101"
-                    android:layout_centerVertical="true"
-                    android:textSize="16sp"/>
-            <ImageView
-                    android:layout_marginLeft="10dp"
-                    android:padding="5dp"
-                    android:src="@mipmap/ic_next"
-                    android:layout_centerVertical="true" android:layout_width="wrap_content" android:layout_height="40dp"
-                    android:layout_alignParentRight="true"/>
-            <View
 
-                android:layout_alignParentBottom="true"
-                android:layout_width="match_parent" android:layout_height="2dp"
-                android:background="#f1f0f6"/>
-
-        </RelativeLayout>
+        <TextView
+                android:fontFamily="@font/big"
+                android:layout_marginLeft="10dp"
+                android:textSize="15sp"
+                android:layout_marginTop="12dp"
+                android:textStyle="bold"
+                android:textColor="#415ada"
+                android:text="Others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         <RelativeLayout
                 android:id="@+id/rl_feedback"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/button_selector"
                 android:clickable="true">
+            <View
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#c8c8c8"/>
             <ImageView
-                    android:padding="3.5dp"
+                    android:padding="4dp"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/icon_feedback"
+                    android:src="@drawable/ic_icon_feedback"
                     android:id="@+id/img_icon_main4"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
             />
             <TextView
+                    android:fontFamily="@font/small"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/img_icon_main4" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -200,15 +240,17 @@
                     android:layout_centerVertical="true"
                     android:textSize="16sp"/>
             <ImageView
+                    android:layout_marginRight="10dp"
                     android:padding="5dp"
-                    android:src="@mipmap/ic_next"
-                    android:layout_centerVertical="true" android:layout_width="wrap_content" android:layout_height="40dp"
+                    android:src="@drawable/ic_ic_next"
+                    android:layout_centerVertical="true" android:layout_width="35dp"
+                    android:layout_height="23dp"
                     android:layout_alignParentRight="true"/>
             <View
                     android:layout_marginLeft="70dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_width="match_parent" android:layout_height="2dp"
-                    android:background="#f1f0f6"/>
+                    android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#c8c8c8"/>
 
         </RelativeLayout>
         <RelativeLayout
@@ -218,15 +260,16 @@
                 android:background="@drawable/button_selector"
                 android:clickable="true">
             <ImageView
-                    android:padding="3dp"
+                    android:padding="4dp"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/icon_share"
+                    android:src="@drawable/ic_icon_share"
                     android:id="@+id/img_icon_main5"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
             />
             <TextView
+                    android:fontFamily="@font/small"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/img_icon_main5" android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -235,15 +278,17 @@
                     android:layout_centerVertical="true"
                     android:textSize="16sp"/>
             <ImageView
+                    android:layout_marginRight="10dp"
                     android:padding="5dp"
-                    android:src="@mipmap/ic_next"
-                    android:layout_centerVertical="true" android:layout_width="wrap_content" android:layout_height="40dp"
+                    android:src="@drawable/ic_ic_next"
+                    android:layout_centerVertical="true" android:layout_width="35dp"
+                    android:layout_height="23dp"
                     android:layout_alignParentRight="true"/>
             <View
                     android:layout_marginLeft="70dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_width="match_parent" android:layout_height="2dp"
-                    android:background="#f1f0f6"/>
+                    android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#c8c8c8"/>
         </RelativeLayout>
         <RelativeLayout
                 android:id="@+id/rl_privacy"
@@ -253,14 +298,15 @@
                 android:clickable="true">
             <ImageView
                     android:layout_marginLeft="10dp"
-                    android:padding="3dp"
-                    android:src="@drawable/icon_baomat"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_icon_baomat"
                     android:id="@+id/img_icon_main9"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
             />
             <TextView
+                    android:fontFamily="@font/small"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/img_icon_main9"
                     android:layout_width="wrap_content"
@@ -270,14 +316,16 @@
                     android:layout_centerVertical="true"
                     android:textSize="16sp"/>
             <ImageView
+                    android:layout_marginRight="10dp"
                     android:padding="5dp"
-                    android:src="@mipmap/ic_next"
-                    android:layout_centerVertical="true" android:layout_width="wrap_content" android:layout_height="40dp"
+                    android:src="@drawable/ic_ic_next"
+                    android:layout_centerVertical="true" android:layout_width="35dp"
+                    android:layout_height="23dp"
                     android:layout_alignParentRight="true"/>
             <View
                     android:layout_alignParentBottom="true"
-                    android:layout_width="match_parent" android:layout_height="2dp"
-                    android:background="#f1f0f6"/>
+                    android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#c8c8c8"/>
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

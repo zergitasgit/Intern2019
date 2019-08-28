@@ -2,11 +2,12 @@ package com.vunhiem.lockscreenios.screens.wallpaper.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import com.vunhiem.lockscreenios.R
 import com.vunhiem.lockscreenios.model.Image
 import com.vunhiem.lockscreenios.screens.wallpaper.SetWallpaper
@@ -24,7 +25,12 @@ class WallpaperAdapter(val data:ArrayList<Image>,val context: Context):
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var image:Image = data[position]
-        Picasso.with(context).load(image.id).fit().centerCrop().into(holder.itemView.imgWallpaper)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+//            Picasso.with(context).load(image.id).fit().centerCrop().into(holder.itemView.imgWallpaper)
+//        } else{
+         Glide.with(context).load(image.id).into(holder.itemView.imgWallpaper)
+//        }
+
         holder.itemView.imgWallpaper.setOnClickListener {
             val intent = Intent(context, SetWallpaper::class.java)
             intent.putExtra("key", image.id)

@@ -10,7 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/icon_background_lock"
+            android:src="@drawable/lock44"
     />
 
 
@@ -92,10 +92,10 @@
             >
                 <ImageView
 
-                        android:src="@mipmap/ic_clear2"
+                        android:src="@drawable/ic_ic_delete_all"
                         android:layout_alignParentRight="true"
                         android:id="@+id/img_clear"
-                        android:layout_width="50dp" android:layout_height="30dp"
+                        android:layout_width="40dp" android:layout_height="30dp"
                 />
                 <androidx.recyclerview.widget.RecyclerView
                         android:layout_below="@id/img_clear"
@@ -120,13 +120,10 @@
                     android:id="@+id/rl_flash"
                     android:layout_marginLeft="35dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/cirlce"
+                    android:background="@drawable/ic_ic_flashlight"
                     android:layout_width="50dp"
                     android:layout_height="50dp">
-                <ImageView
-                        android:layout_width="50dp"
-                        android:src="@drawable/a2"
-                        android:layout_height="50dp"/>
+
             </RelativeLayout>
             <TextView
                     android:id="@+id/tv_opencamera"
@@ -142,14 +139,13 @@
                     android:layout_marginTop="10dp"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/cirlce"
+                    android:background="@drawable/ic_ic_camera"
                     android:layout_width="50dp"
                     android:layout_marginRight="35dp"
                     android:layout_height="50dp">
                 <ImageView
                         android:id="@+id/img_camera"
                         android:layout_width="50dp"
-                        android:src="@drawable/a4"
                         android:layout_height="50dp"/>
             </RelativeLayout>
 

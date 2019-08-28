@@ -1,0 +1,170 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.vunhiem.lockscreenios"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="15"
+8-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml
+10
+11    <uses-feature
+11-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:5:5-7:39
+12        android:name="android.hardware.camera"
+12-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:6:13-51
+13        android:required="true" />
+13-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:7:13-36
+14
+15    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+15-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:9:5-77
+15-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:9:22-74
+16    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+16-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:10:5-81
+16-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:10:22-78
+17    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+17-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:11:5-75
+17-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:11:22-72
+18    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+18-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:12:5-80
+18-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:12:22-77
+19    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+19-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:13:5-81
+19-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:13:22-78
+20    <uses-permission android:name="android.permission.CALL_PHONE" />
+20-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:14:5-69
+20-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:14:22-66
+21    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+21-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:15:5-78
+21-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:15:22-75
+22    <uses-permission android:name="android.permission.CAMERA" />
+22-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:16:5-65
+22-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:16:22-62
+23    <uses-permission android:name="android.permission.FLASHLIGHT" />
+23-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:17:5-69
+23-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:17:22-66
+24    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+24-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:18:5-81
+24-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:18:22-78
+25
+26    <uses-feature android:name="android.hardware.camera.flash" />
+26-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:20:5-66
+26-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:20:19-63
+27
+28    <application
+28-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:22:5-76:19
+29        android:allowBackup="true"
+29-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:23:13-39
+30        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+30-->[androidx.core:core:1.0.2] C:\Users\LORD Nhiem\.gradle\caches\transforms-2\files-2.1\4c11edde0e8743f1e03fb17544729eec\core-1.0.2\AndroidManifest.xml:22:18-86
+31        android:debuggable="true"
+32        android:icon="@mipmap/ic_icon_app"
+32-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:24:13-47
+33        android:label="@string/app_name"
+33-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:25:13-45
+34        android:roundIcon="@mipmap/ic_icon_app"
+34-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:26:13-52
+35        android:showOnLockScreen="true"
+35-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:27:13-44
+36        android:supportsRtl="true"
+36-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:28:13-39
+37        android:testOnly="true"
+38        android:theme="@style/AppTheme" >
+38-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:29:13-44
+39        <activity android:name="com.vunhiem.lockscreenios.screens.notification.NotificationActivity" />
+39-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:30:9-88
+39-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:30:19-76
+40        <activity android:name="com.vunhiem.lockscreenios.screens.privacy.PrivacyActivity" />
+40-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:31:9-78
+40-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:31:19-66
+41        <activity android:name="com.vunhiem.lockscreenios.screens.wallpaper.SetWallpaper" />
+41-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:32:9-77
+41-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:32:19-65
+42        <activity android:name="com.vunhiem.lockscreenios.screens.wallpaper.Wallpaper" />
+42-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:33:9-74
+42-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:33:19-62
+43        <activity android:name="com.vunhiem.lockscreenios.screens.password.ChangePassActivity" />
+43-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:34:9-82
+43-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:34:19-70
+44        <activity android:name="com.vunhiem.lockscreenios.screens.password.PasswordAuthentic" />
+44-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:35:9-81
+44-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:35:19-69
+45        <activity android:name="com.vunhiem.lockscreenios.screens.password.NewPassword" />
+45-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:36:9-75
+45-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:36:19-63
+46        <activity android:name="com.vunhiem.lockscreenios.screens.password.PasswordActivity" /> <!-- <service -->
+46-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:37:9-80
+46-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:37:19-68
+47        <!-- android:name=".service.MyService" -->
+48        <!-- android:enabled="true" -->
+49        <!-- android:exported="true"> -->
+50        <!-- </service> -->
+51        <service
+51-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:42:9-52:19
+52            android:name="com.vunhiem.lockscreenios.service.NotificationService"
+52-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:43:17-60
+53            android:enabled="true"
+53-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:44:17-39
+54            android:exported="true"
+54-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:45:17-40
+55            android:label="@string/app_name"
+55-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:46:17-49
+56            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+56-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:47:17-91
+57            android:stopWithTask="false" >
+57-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:48:17-45
+58            <intent-filter>
+58-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:49:13-51:29
+59                <action android:name="android.service.notification.NotificationListenerService" />
+59-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:50:17-99
+59-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:50:25-96
+60            </intent-filter>
+61        </service>
+62
+63        <activity android:name="com.vunhiem.lockscreenios.screens.main.MainActivity" />
+63-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:54:9-72
+63-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:54:19-60
+64        <activity android:name="com.vunhiem.lockscreenios.screens.splash.SplashActivity" >
+64-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:55:9-61:20
+64-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:55:19-64
+65            <intent-filter>
+65-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:56:13-60:29
+66                <action android:name="android.intent.action.MAIN" />
+66-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:57:17-69
+66-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:57:25-66
+67
+68                <category android:name="android.intent.category.LAUNCHER" />
+68-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:59:17-77
+68-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:59:27-74
+69            </intent-filter>
+70        </activity>
+71        <activity
+71-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:62:9-64:78
+72            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+72-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:63:17-80
+73            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+73-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:64:17-75
+74
+75        <receiver
+75-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:66:9-75:20
+76            android:name="com.vunhiem.lockscreenios.screens.main.BootUpReceiver"
+76-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:67:17-60
+77            android:enabled="true"
+77-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:68:17-39
+78            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
+78-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:69:17-79
+79            <intent-filter>
+79-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:70:13-74:29
+80                <action android:name="android.intent.action.BOOT_COMPLETED" />
+80-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:71:17-79
+80-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:71:25-76
+81
+82                <category android:name="android.intent.category.DEFAULT" />
+82-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:73:17-76
+82-->F:\Android\Codemau\LockScreenIos\app\src\main\AndroidManifest.xml:73:27-73
+83            </intent-filter>
+84        </receiver>
+85    </application>
+86
+87</manifest>

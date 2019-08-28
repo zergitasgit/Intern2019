@@ -8,8 +8,8 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.ibikenavigationkotlin.utils.AppConfig
-import com.squareup.picasso.Picasso
 import com.vunhiem.lockscreenios.R
 import com.vunhiem.lockscreenios.screens.main.MyGroupView
 
@@ -50,9 +50,9 @@ class SetWallpaper : AppCompatActivity() {
 
 
         if (image != 0) {
-            Picasso.with(this)
+            Glide.with(this)
                 .load(image)
-                .fit().centerCrop()
+                .centerCrop()
                 .into(img_background)
         } else {
             imgID = intent.getStringExtra("key1")

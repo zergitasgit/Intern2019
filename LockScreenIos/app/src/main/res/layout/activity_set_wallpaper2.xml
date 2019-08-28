@@ -5,10 +5,10 @@
         android:layout_height="match_parent">
 
     <ImageView
+            android:src="@drawable/background_lock1"
             android:id="@+id/img_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/icon_background_lock"
             android:scaleType="fitXY"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,7 +19,7 @@
                   android:id="@+id/ln_lock"
                   android:weightSum="10">
         <RelativeLayout android:layout_width="match_parent" android:layout_height="0dp"
-                        android:layout_weight="0.4"
+                        android:layout_weight="0.3"
                         android:background="#000">
             <ImageView
                     android:layout_centerVertical="true"
@@ -28,14 +28,6 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/icon_song"/>
 
-            <TextView
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/img_song"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="Viettel"
-                    android:textColor="#FFFF"
-                    android:textSize="13sp"/>
             <TextView
                     android:layout_centerVertical="true"
                     android:text="41%"
@@ -54,7 +46,7 @@
 
         </RelativeLayout>
         <LinearLayout android:layout_width="match_parent" android:layout_height="0dp"
-                      android:layout_weight="8.9"
+                      android:layout_weight="9"
                       android:orientation="vertical"
                       android:weightSum="10">
             <LinearLayout android:layout_width="match_parent" android:layout_height="0dp"
@@ -84,7 +76,9 @@
                         android:text="Thứ Tư,5 tháng 8"
                         android:id="@+id/tv_date"/>
             </LinearLayout>
-            <TextView android:layout_width="wrap_content" android:layout_height="0dp"
+            <TextView
+                    android:fontFamily="@font/small"
+                    android:layout_width="wrap_content" android:layout_height="0dp"
                       android:layout_weight="2"
                       android:text="Do you use this picture?"
                       android:textSize="25sp"
@@ -148,7 +142,7 @@
             </LinearLayout>
 
             <View android:layout_width="1dp" android:layout_height="match_parent"
-                  android:background="#474646"/>
+                  android:background="#00124b"/>
 
             <LinearLayout
                     android:id="@+id/btn_cancle"

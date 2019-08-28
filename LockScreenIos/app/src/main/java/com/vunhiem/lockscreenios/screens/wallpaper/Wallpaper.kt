@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.graphics.BitmapFactory
 import android.R
 import android.app.Activity
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -94,16 +95,30 @@ class Wallpaper : AppCompatActivity() {
     }
 
     private fun initRecycleview() {
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+//            data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone1))
+//            data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone3))
+//            data.add(Image(com.vunhiem.lockscreenios.R.drawable.image1))
+//            data.add(Image(com.vunhiem.lockscreenios.R.drawable.image3))
+//            data.add(Image(com.vunhiem.lockscreenios.R.drawable.image4))
+//            data.add(Image(com.vunhiem.lockscreenios.R.drawable.image5))
+//            data.add(Image(com.vunhiem.lockscreenios.R.drawable.image6))
+//            data.add(Image(com.vunhiem.lockscreenios.R.drawable.image7))
+//            data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone3))
+//            data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone4))
+//        }
+//        else{
+            data.add(Image(com.vunhiem.lockscreenios.R.drawable.icon_background_lock))
+            data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone1))
+            data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone2))
+            data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone3))
+            data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone4))
+            for (i in 1..15) {
+                data.add(Image(com.vunhiem.lockscreenios.R.drawable.image + i))
+            }
+//        }
 
-        data.add(Image(com.vunhiem.lockscreenios.R.drawable.icon_background_lock))
-        data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone1))
-        data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone2))
-        data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone3))
-        data.add(Image(com.vunhiem.lockscreenios.R.drawable.iphone4))
 
-        for (i in 1..15) {
-            data.add(Image(com.vunhiem.lockscreenios.R.drawable.image + i))
-        }
         rv_wallpaper.layoutManager = GridLayoutManager(this,2)
         rv_wallpaper.adapter = WallpaperAdapter(data,this)
 

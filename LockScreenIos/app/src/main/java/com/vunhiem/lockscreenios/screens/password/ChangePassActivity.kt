@@ -3,16 +3,26 @@ package com.vunhiem.lockscreenios.screens.password
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.ibikenavigationkotlin.utils.AppConfig
 import com.vunhiem.lockscreenios.R
 import kotlinx.android.synthetic.main.activity_change.*
+import kotlinx.android.synthetic.main.activity_change.btn_confirm_new
+import kotlinx.android.synthetic.main.activity_change.edt_pass_again_new
+import kotlinx.android.synthetic.main.activity_change.edt_pass_new
+import kotlinx.android.synthetic.main.activity_change.img_back
+import kotlinx.android.synthetic.main.activity_new_password.*
 
 class ChangePassActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change)
+        loadData()
         onClick()
+    }
+    private fun loadData() {
+        Glide.with(this).load(R.drawable.background_pass1080).into(img_change)
     }
 
     private fun onClick() {

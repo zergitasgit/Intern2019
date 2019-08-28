@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.vunhiem.lockscreenios">
+        package="com.vunhiem.lockscreenios">
 
     <uses-feature
             android:name="android.hardware.camera"
-            android:required="true"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+            android:required="true" />
 
-    <uses-feature android:name="android.hardware.camera.flash"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-feature android:name="android.hardware.camera.flash" />
 
     <application
             android:allowBackup="true"
@@ -25,29 +27,18 @@
             android:showOnLockScreen="true"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".screens.wallpaper.CropImageActivity">
-        </activity>
-        <activity android:name=".screens.privacy.PrivacyActivity">
-        </activity>
-
-        <activity android:name=".screens.wallpaper.SetWallpaper">
-        </activity>
-        <activity android:name=".screens.wallpaper.Wallpaper">
-        </activity>
-        <activity android:name=".screens.password.ChangePassActivity">
-        </activity>
-        <activity android:name=".screens.password.PasswordAuthentic">
-        </activity>
-        <activity android:name=".screens.password.NewPassword">
-        </activity>
-        <activity android:name=".screens.password.PasswordActivity">
-        </activity>
-
-        <!--<service-->
-                <!--android:name=".service.MyService"-->
-                <!--android:enabled="true"-->
-                <!--android:exported="true">-->
-        <!--</service>-->
+        <activity android:name=".screens.notification.NotificationActivity"></activity>
+        <activity android:name=".screens.privacy.PrivacyActivity"></activity>
+        <activity android:name=".screens.wallpaper.SetWallpaper"></activity>
+        <activity android:name=".screens.wallpaper.Wallpaper"></activity>
+        <activity android:name=".screens.password.ChangePassActivity"></activity>
+        <activity android:name=".screens.password.PasswordAuthentic"></activity>
+        <activity android:name=".screens.password.NewPassword"></activity>
+        <activity android:name=".screens.password.PasswordActivity"></activity> <!-- <service -->
+        <!-- android:name=".service.MyService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- </service> -->
         <service
                 android:name=".service.NotificationService"
                 android:enabled="true"
@@ -56,29 +47,32 @@
                 android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
                 android:stopWithTask="false">
             <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService"/>
+                <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
 
-        <activity android:name=".screens.main.MainActivity">
-        </activity>
+        <activity android:name=".screens.main.MainActivity"></activity>
         <activity android:name=".screens.splash.SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-                  android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
-        <!--<receiver android:name=".service.NotificationService$LockScreenStateReceiver"-->
-        <!--android:enabled="true"-->
-        <!--android:exported="false">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.SCREEN_OFF"/>-->
+        <activity
+                android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+                android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
 
-        <!--</intent-filter>-->
-        <!--</receiver>-->
+        <receiver
+                android:name=".screens.main.BootUpReceiver"
+                android:enabled="true"
+                android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

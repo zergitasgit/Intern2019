@@ -11,16 +11,15 @@ import android.graphics.drawable.ColorDrawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-
-
+import com.vunhiem.lockscreenios.R
 
 
 abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-    private val deleteIcon = ContextCompat.getDrawable(context, com.vunhiem.lockscreenios.R.drawable.ic_delete_white_24)
+    private val deleteIcon = ContextCompat.getDrawable(context, com.vunhiem.lockscreenios.R.drawable.ic_ic_delete)
     private val intrinsicWidth = deleteIcon!!.intrinsicWidth
     private val intrinsicHeight = deleteIcon!!.intrinsicHeight
-    private val background = ColorDrawable()
+    private val background = ContextCompat.getDrawable(context, com.vunhiem.lockscreenios.R.drawable.noti_round_bg)
     var white = "#99BCBFE6"
     private val backgroundColor = Color.parseColor(white)
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
@@ -66,8 +65,7 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
         }
 
         // Draw the red delete background
-        background.color = backgroundColor
-        background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+        background!!.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
         background.draw(c)
 
         // Calculate position of delete icon

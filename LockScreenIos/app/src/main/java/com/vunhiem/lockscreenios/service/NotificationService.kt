@@ -33,6 +33,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.ibikenavigationkotlin.utils.AppConfig
 import com.vunhiem.lockscreenios.R
 import com.vunhiem.lockscreenios.screens.main.GroupViewPassword
@@ -69,15 +70,20 @@ class NotificationService : NotificationListenerService() {
             setTime()
         }
 
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
             val CHANNEL_ID = "1"
             val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.icon_pin60)
-                .setContentTitle("IosLock active")
+                .setSmallIcon(R.mipmap.ic_notii)
+                .setContentTitle("iOS Lock active")
                 .setOnlyAlertOnce(true)
             notification = builder.build()
-            with(NotificationManagerCompat.from(context)) { notify(NOTIFICATION_ID, notification!!) }
+            with(NotificationManagerCompat.from(context)) {
+                notify(
+                    NOTIFICATION_ID,
+                    notification!!
+                )
+            }
             startForeground(NOTIFICATION_ID, notification)
             Log.d("chan", "Start the foreground")
         }
@@ -104,7 +110,8 @@ class NotificationService : NotificationListenerService() {
 
 
     fun getNameTelecom() {
-        val manager: TelephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        val manager: TelephonyManager =
+            context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         var carrierName: String = manager.getNetworkOperatorName()
         Log.i("mang", "hi")
         Log.i("mang", "$carrierName")
@@ -119,10 +126,18 @@ class NotificationService : NotificationListenerService() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun createLockScreen() {
         wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager?
-
+        val view: View
         Log.i("covao", "có vào")
         mView = MyGroupView(applicationContext)
-        val view: View = View.inflate(applicationContext, com.vunhiem.lockscreenios.R.layout.lock_layout, mView)
+        view =
+            View.inflate(applicationContext, com.vunhiem.lockscreenios.R.layout.lock_layout, mView)
+        imgBackgroundLock = view.findViewById(R.id.img_background_main)
+        imgBackgroundLock?.let {
+            Glide.with(applicationContext).load(R.drawable.backgroundlock_1080).into(
+                it
+            )
+        }
+
         linearLayout = view.findViewById(com.vunhiem.lockscreenios.R.id.ln_lock)
 
         rlCamera = view.findViewById(com.vunhiem.lockscreenios.R.id.rl_camera)
@@ -136,7 +151,7 @@ class NotificationService : NotificationListenerService() {
         ll_frame = view.findViewById(R.id.ll_frame)
         viewBottom = view.findViewById(R.id.viewBottom)
         tvTelecom = view.findViewById(R.id.tv_telecom)
-        imgBackgroundLock = view.findViewById(R.id.img_background_main)
+
         tvOpenCamera = view.findViewById(R.id.tv_opencamera)
         tvOpen = view.findViewById(R.id.tv_open)
         setFullScreen()
@@ -181,7 +196,7 @@ class NotificationService : NotificationListenerService() {
             if (xx == true) {
                 val anim: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.up2)
                 tvOpenCamera.startAnimation(anim)
-            }else{
+            } else {
                 wm!!.removeView(mView)
             }
 
@@ -211,7 +226,8 @@ class NotificationService : NotificationListenerService() {
 
     @SuppressLint("WrongConstant")
     private fun CreateNotifiInScreenLock() {
-        rvNotification.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, true)
+        rvNotification.layoutManager =
+            LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, true)
         adapter =
             NotificationAdaper(
                 applicationContext,
@@ -247,7 +263,9 @@ class NotificationService : NotificationListenerService() {
             val name = "floating_window_noti_channel"
             val descriptionText = "A cool channel"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply { description = descriptionText }
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
 
             val notificationManager: NotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -313,8 +331,9 @@ class NotificationService : NotificationListenerService() {
 //                        ll_frame.startAnimation(animUp)
                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                             val handler = Handler()
-                            val animUp: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.unlock)
-                        ll_frame.startAnimation(animUp)
+                            val animUp: Animation =
+                                AnimationUtils.loadAnimation(applicationContext, R.anim.unlock)
+                            ll_frame.startAnimation(animUp)
                             handler.postDelayed({
                                 wm!!.removeView(mView)
                                 var xx: Boolean = AppConfig.getStatusPassword(applicationContext)!!
@@ -322,7 +341,8 @@ class NotificationService : NotificationListenerService() {
                                 if (xx == true) {
                                     Log.i("tag", "onaddPass2")
                                     createPasswordScreen()
-                                    val anim: Animation = AnimationUtils.loadAnimation(this, R.anim.up)
+                                    val anim: Animation =
+                                        AnimationUtils.loadAnimation(this, R.anim.up)
                                     layouPass.startAnimation(anim)
                                 }
                             }, 500)
@@ -412,10 +432,23 @@ class NotificationService : NotificationListenerService() {
         wmpass = getSystemService(Context.WINDOW_SERVICE) as WindowManager?
         passView = GroupViewPassword(applicationContext)
         val v: View
-        if (Build.VERSION.SDK_INT <Build.VERSION_CODES.LOLLIPOP){
-            v = View.inflate(applicationContext, com.vunhiem.lockscreenios.R.layout.layout_password2, passView)
-        }else{
-        v = View.inflate(applicationContext, com.vunhiem.lockscreenios.R.layout.layout_password, passView)}
+//        if (Build.VERSION.SDK_INT <Build.VERSION_CODES.LOLLIPOP){
+//            v = View.inflate(applicationContext, com.vunhiem.lockscreenios.R.layout.layout_password2, passView)
+//        }else{
+        v = View.inflate(
+            applicationContext,
+            com.vunhiem.lockscreenios.R.layout.layout_password,
+            passView
+        )
+//    }
+
+        imgPassLock = v.findViewById(R.id.img_passlock)
+
+        imgPassLock?.let {
+            Glide.with(applicationContext).load(R.drawable.backgroundlock_1080).into(
+                it
+            )
+        }
 
         tvCanclePass = v.findViewById(R.id.tv_cancle_pass)
         tvCall = v.findViewById(R.id.tv_call)
@@ -624,8 +657,8 @@ class NotificationService : NotificationListenerService() {
                 imgClear?.setVisibility(View.VISIBLE)
             }
 
-        }else{
-            imgClear!!.setVisibility(View.INVISIBLE)
+        } else {
+            imgClear?.setVisibility(View.INVISIBLE)
         }
     }
 
@@ -674,7 +707,8 @@ class NotificationService : NotificationListenerService() {
             } else {
                 countPass++
                 Log.i("tu", "$countPass")
-                val animShake: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.shake)
+                val animShake: Animation =
+                    AnimationUtils.loadAnimation(applicationContext, R.anim.shake)
                 ll_circle_pass.startAnimation(animShake)
                 val handler = android.os.Handler()
                 handler.postDelayed({
@@ -745,7 +779,7 @@ class NotificationService : NotificationListenerService() {
 
 
     fun setFullScreen() {
-        if(mView!=null) {
+        if (mView != null) {
             mView!!.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -764,30 +798,36 @@ class NotificationService : NotificationListenerService() {
         isFlashOn = false
         objCameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
-if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-    mCameraId = objCameraManager!!.cameraIdList[0]}
-
-
-    rlFlash.setOnClickListener {
-        try {
-            if (isFlashOn == false) {
-                turnOnFlash()
-                isFlashOn = true
-            } else {
-                turnOffFlash()
-                isFlashOn = false
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mCameraId = objCameraManager!!.cameraIdList[0]
         }
 
-        true
+
+        rlFlash.setOnClickListener {
+            try {
+                if (isFlashOn == false) {
+                    turnOnFlash()
+                    isFlashOn = true
+                } else {
+                    turnOffFlash()
+                    isFlashOn = false
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            true
+        }
     }
-}
 //    }
 
     private fun turnOnFlash() {
-
+        if (camera != null) {
+            val startMain = Intent(Intent.ACTION_MAIN)
+            startMain.addCategory(Intent.CATEGORY_HOME)
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(startMain)
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             objCameraManager!!.setTorchMode(mCameraId!!, true)
@@ -803,7 +843,7 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             }
         }
 
-}
+    }
 
     private fun turnOffFlash() {
 //        try {
@@ -824,26 +864,46 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     override fun onNotificationPosted(sbn: StatusBarNotification) {
 
+//        val pack = sbn.packageName
+//        val extras = sbn.notification.extras
+//        val title: String? = extras.getString("android.title")
+//        val text: String? = extras.getCharSequence("android.text").toString()
+
         val pack = sbn.packageName
+//        val ticker = sbn.notification.tickerText.toString()
         val extras = sbn.notification.extras
-        val title: String? = extras.getString("android.title")
-        val text: String? = extras.getCharSequence("android.text").toString()
-
-//        val text="hihi"
-
+        val title = extras.getString("android.title")
+//        val text = extras.getCharSequence("android.text").toString()
+        val text: String? = extras.getCharSequence("android.text").toString().trimStart()
         Log.i("Package", pack)
-        Log.i("Title", title)
         Log.i("Text", text)
 
+        val noti2 ="2 new messages"
+        val noti3 ="3 new messages"
+        val noti4 ="4 new messages"
+        val noti5 ="5 new messages"
+        val noti6 ="6 new messages"
+        val noti7 ="7 new messages"
+        val noti8 ="8 new messages"
+        val noti9 ="9 new messages"
+        val noti10 ="10 new messages"
+        val noti11 ="11 new messages"
+        val noti12 ="12 new messages"
 
-        val msgrcv = Intent("Msg")
-
-        if (pack != "android" && pack != "com.android.systemui" && title != null) {
+        if (pack != "android" && pack != "com.android.systemui" && pack != "com.google.android" && pack != "android.providers.downloads" && pack != "com.asus.dm"
+            && pack != "com.android.providers.downloads" && title != "Chat heads active"
+            && title != null && title != "iOS Lock active" && text != "" && text != AppConfig.getNoti(
+                applicationContext)  && text!=noti2 && text!=noti3 && text!=noti4 && text!=noti5 && text!=noti6
+            && text!=noti7 && text!=noti8 && text!=noti9 && text!=noti10 && text!=noti11 && text!=noti12
+        ) {
+            val msgrcv = Intent("Msg")
             msgrcv.putExtra("package", pack)
             msgrcv.putExtra("title", title)
             msgrcv.putExtra("text", text)
+
+            text?.let { AppConfig.setNoti(it, applicationContext) }
+            LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv)
         }
-        LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv)
 
 
     }
@@ -852,6 +912,7 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         Log.i("Msg", "Notification Removed")
 
     }
+
 
     private val onNotice = object : BroadcastReceiver() {
 
@@ -862,11 +923,18 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val title = intent.getStringExtra("title")
             val text = intent.getStringExtra("text")
             if (pack != null) {
-                listNotification.add(com.vunhiem.lockscreenios.model.Notification(pack, title, text))
+                listNotification.add(
+                    com.vunhiem.lockscreenios.model.Notification(
+                        pack,
+                        title,
+                        text
+                    )
+                )
                 checkNotifiEmpty()
                 rvNotification.scrollToPosition(listNotification.size - 1)
                 adapter.notifyItemInserted(listNotification.size - 1)
             }
+
 
         }
     }
@@ -896,11 +964,27 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     var uriWallpaper = AppConfig.getIdWallPaperUri(applicationContext)
 
                     if (idWallpaper != null) {
-                        imgBackgroundLock.setImageResource(AppConfig.getIdWallPaper(applicationContext)!!.toInt())
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            imgBackgroundLock?.let {
+                                Glide.with(applicationContext)
+                                    .load(AppConfig.getIdWallPaper(applicationContext)!!.toInt())
+                                    .into(
+                                        it
+                                    )
+                            }
+
+                        } else {
+                            imgBackgroundLock!!.setImageResource(
+                                AppConfig.getIdWallPaper(
+                                    applicationContext
+                                )!!.toInt()
+                            )
+                        }
+
                     }
                     if (AppConfig.getIdWallPaperUri(applicationContext) != null) {
                         val uri: Uri = Uri.parse(AppConfig.getIdWallPaperUri(applicationContext))
-                        imgBackgroundLock.setImageURI(uri)
+                        imgBackgroundLock?.setImageURI(uri)
 
                     }
 
@@ -918,14 +1002,17 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 }
 
             }
-            if (intent.action == Intent.ACTION_SCREEN_ON){
 
-                val anim: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.textview2)
-                tvOpen.startAnimation(anim)
+
+            if (intent.action == Intent.ACTION_SCREEN_ON) {
+
+                val anim: Animation =
+                    AnimationUtils.loadAnimation(applicationContext, R.anim.textview2)
+                tvOpen?.startAnimation(anim)
 
             }
             if (intent.action == Intent.ACTION_BATTERY_CHANGED) {
-                if (tvPin!=null) {
+                if (tvPin != null) {
                     Log.i("tag", "on Pin")
                     setFullScreen()
                     var level: Int
@@ -947,6 +1034,7 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     override fun onDestroy() {
         unregisterReceiver(mReceiver)
         unregisterReceiver(onNotice)
+
         super.onDestroy()
     }
 
@@ -970,13 +1058,13 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     private var mReceiver: BroadcastReceiver? = null
     private var isshowPass: Boolean = false
     private lateinit var linearLayout: LinearLayout
-    var tvPin: TextView?=null
+    var tvPin: TextView? = null
     lateinit var tvCanclePass: TextView
     lateinit var imgPin: ImageView
     lateinit var listPass: ArrayList<Int>
     var listNotification: ArrayList<com.vunhiem.lockscreenios.model.Notification> = ArrayList()
     lateinit var rvNotification: RecyclerView
-    lateinit var imgBackgroundLock: ImageView
+    var imgBackgroundLock: ImageView? = null
     lateinit var pass1: ImageView
     lateinit var pass2: ImageView
     lateinit var pass3: ImageView
@@ -1007,6 +1095,7 @@ if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
     private val NOTIFICATION_ID = 144
     private var notification: Notification? = null
     val CHANNEL_ID = "1"
-    lateinit var tvOpenCamera:TextView
-    lateinit var tvOpen:TextView
+    lateinit var tvOpenCamera: TextView
+    private var tvOpen: TextView? = null
+    private var imgPassLock: ImageView? = null
 }
