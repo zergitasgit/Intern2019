@@ -51,7 +51,7 @@ class ControlCenterService : NotificationListenerService() {
     private var bottomParams: WindowManager.LayoutParams? = null
     private var controlParams: WindowManager.LayoutParams? = null
     private var timeoutParams: WindowManager.LayoutParams? = null
-    private lateinit var rlControl: RelativeLayout
+    private lateinit var rlControl: LinearLayout
     private lateinit var lnBottom: LinearLayout
     private lateinit var lnTimeOut: LinearLayout
     private lateinit var animUp: Animation
@@ -75,7 +75,6 @@ class ControlCenterService : NotificationListenerService() {
     private lateinit var btnPrevious: Button
     private lateinit var tbPlay: ToggleButton
     private lateinit var btnNext: Button
-    private lateinit var imgMusicSetting: ImageView
     private lateinit var tvMusicName: TextView
     private var y: Int = 0
     private var touchY: Float = 0.0f
@@ -470,7 +469,7 @@ class ControlCenterService : NotificationListenerService() {
 
         //-------------- Ánh xạ các view trong control view
 
-        rlControl = view.findViewById(R.id.rl_control)
+        rlControl = view.findViewById(R.id.ln_control)
         tbWifi = view.findViewById(R.id.tb_wifi)
         tbPlane = view.findViewById(R.id.tb_plane)
         tbNetwork = view.findViewById(R.id.tb_network)
@@ -487,7 +486,6 @@ class ControlCenterService : NotificationListenerService() {
         btnPrevious = view.findViewById(R.id.btn_previous)
         tbPlay = view.findViewById(R.id.tb_play)
         btnNext = view.findViewById(R.id.btn_next)
-        imgMusicSetting = view.findViewById(R.id.img_music)
         tvMusicName = view.findViewById(R.id.tv_music_name)
     }
 
@@ -705,8 +703,10 @@ class ControlCenterService : NotificationListenerService() {
             tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked == true) {
                     tvMusicName.text = "Bạn cần mở một ứng dụng nhạc"
+                    tvMusicName.textSize= 12F
                 } else {
                     tvMusicName.text = "Bạn cần mở một ứng dụng nhạc"
+                    tvMusicName.textSize= 12F
                 }
             }
 
@@ -882,9 +882,9 @@ class ControlCenterService : NotificationListenerService() {
     private fun checkAudioSystem() {
         // check và set state của chế độ rung Vibrate
         if (Utils.checkAudio(this) == 1) {
-            tbMute.isChecked = true
-        } else {
             tbMute.isChecked = false
+        } else {
+            tbMute.isChecked = true
         }
         val audioManager: AudioManager
         audioManager = baseContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -892,11 +892,11 @@ class ControlCenterService : NotificationListenerService() {
         tbMute.setOnCheckedChangeListener { buttonView, isChecked ->
 
             if (isChecked == true) {
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT)
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL)
 
             } else {
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT)
 
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL)
             }
         }
     }

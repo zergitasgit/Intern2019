@@ -107,6 +107,8 @@ class MainActivity : AppCompatActivity() {
         }
         rb_ben_trai.setOnClickListener {
             Utils.setPosition(this, 1)
+            rb_ben_phai.isChecked=false
+            rb_ben_duoi.isChecked=false
             if (Utils.getCheckControl(this) == 0) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                     stopService(intent)
@@ -120,6 +122,8 @@ class MainActivity : AppCompatActivity() {
 
         }
         rb_ben_phai.setOnClickListener {
+            rb_ben_duoi.isChecked=false
+            rb_ben_trai.isChecked=false
             Utils.setPosition(this, 2)
             if (Utils.getCheckControl(this) == 0) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -132,6 +136,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         rb_ben_duoi.setOnClickListener {
+            rb_ben_trai.isChecked=false
+            rb_ben_phai.isChecked=false
             Utils.setPosition(this, 3)
             if (Utils.getCheckControl(this) == 0) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

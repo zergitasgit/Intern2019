@@ -1,8 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/ic_no_rotate" android:state_checked="false" />
+    <item android:state_checked="false">
+        <layer-list>
+            <item>
 
-    <item android:drawable="@drawable/ic_rotate" android:state_checked="true" />
+                <shape android:shape="rectangle">
+                    <corners android:radius="10dp"></corners>
+                    <solid android:color="#A6000000" />
+                </shape>
+            </item>
+            <item android:bottom="15dp" android:left="15dp" android:right="15dp" android:top="15dp">
+                <bitmap android:src="@drawable/ic_no_rotate" />
+            </item>
+        </layer-list>
+
+    </item>
+
+    <item android:state_checked="true">
+        <layer-list>
+            <item>
+
+                <shape android:shape="rectangle">
+                    <corners android:radius="10dp"></corners>
+                    <solid android:color="#A6FFFFFF" />
+                </shape>
+            </item>
+            <item android:bottom="15dp" android:left="15dp" android:right="15dp" android:top="15dp">
+                <bitmap android:src="@drawable/ic_rotate" />
+            </item>
+        </layer-list>
+    </item>
 
 </selector>
