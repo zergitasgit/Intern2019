@@ -10,7 +10,7 @@
                     <solid android:color="#A6000000" />
                 </shape>
             </item>
-            <item android:bottom="15dp" android:left="15dp" android:right="15dp" android:top="15dp">
+            <item android:bottom="20dp" android:left="20dp" android:right="20dp" android:top="20dp">
                 <bitmap android:src="@drawable/ic_no_rotate" />
             </item>
         </layer-list>
@@ -26,7 +26,7 @@
                     <solid android:color="#A6FFFFFF" />
                 </shape>
             </item>
-            <item android:bottom="15dp" android:left="15dp" android:right="15dp" android:top="15dp">
+            <item android:bottom="20dp" android:left="20dp" android:right="20dp" android:top="20dp">
                 <bitmap android:src="@drawable/ic_rotate" />
             </item>
         </layer-list>

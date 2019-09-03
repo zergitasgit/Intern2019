@@ -10,7 +10,7 @@
                     <solid android:color="#A6000000" />
                 </shape>
             </item>
-            <item android:right="95dp" android:top="15dp" android:bottom="15dp" android:left="15dp">
+            <item android:right="100dp" android:top="25dp" android:bottom="25dp" android:left="25dp">
                 <bitmap android:src="@drawable/ic_time_out" />
             </item>
         </layer-list>

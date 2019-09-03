@@ -4,7 +4,7 @@
     <item android:state_checked="false">
         <layer-list>
 
-            <item android:left="5dp" android:right="5dp">
+            <item android:left="11dp" android:right="11dp" android:top="4dp" android:bottom="4dp">
                 <bitmap android:src="@drawable/ic_no_wifi" />
             </item>
         </layer-list>
@@ -13,7 +13,7 @@
 
     <item android:state_checked="true">
         <layer-list>
-            <item android:left="5dp" android:right="5dp">
+            <item android:left="11dp" android:right="11dp" android:top="4dp" android:bottom="4dp">
                 <bitmap android:src="@drawable/ic_wifi" />
             </item>
         </layer-list>

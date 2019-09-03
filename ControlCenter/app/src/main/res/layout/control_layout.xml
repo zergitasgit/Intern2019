@@ -3,8 +3,8 @@
     android:id="@+id/ln_control"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_control_bg"
     android:orientation="vertical"
+    android:background="@drawable/img_control_bg"
     android:weightSum="10">
 
     <LinearLayout
@@ -18,8 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleX="0.6"
-            android:scaleY="0.6"
-            android:src="@drawable/img_down_row"></ImageView>
+            android:scaleY="0.6"></ImageView>
 
     </LinearLayout>
 
@@ -38,6 +37,7 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:padding="5dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="15dp"
@@ -149,6 +149,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/ic_previous" />
                     <ToggleButton
+                        android:layout_marginHorizontal="10dp"
                         android:id="@+id/tb_play"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -229,8 +230,8 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_button"
                         android:gravity="center"
-                        android:text="Time Out"
                         android:paddingLeft="55dp"
+                        android:text="Time Out"
                         android:textColor="@color/colorWhite" />
 
                 </LinearLayout>
@@ -257,7 +258,7 @@
                         android:id="@+id/sb_light"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:backgroundColor="@color/color_background"
+                        app:backgroundColor="#A6000000"
                         app:defaultImage="@drawable/ic_mute"
                         app:defaultValue="200"
                         app:imageEnabled="false"
@@ -270,9 +271,8 @@
                         app:textSize="12sp"
                         app:touchDisabled="true" />
                     <ImageView
-
-                        android:scaleX="0.7"
-                        android:scaleY="0.7"
+                        android:scaleX="0.4"
+                        android:scaleY="0.4"
                         android:id="@+id/img_light"
                         android:layout_width="70dp"
                         android:layout_height="75dp"
@@ -292,7 +292,7 @@
                         android:id="@+id/sb_volume"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:backgroundColor="@color/color_background"
+                        app:backgroundColor="#A6000000"
                         app:defaultValue="200"
                         app:imageEnabled="false"
                         app:max="250"
@@ -303,8 +303,8 @@
                         app:textSize="12sp"
                         app:touchDisabled="true" />
                     <ImageView
-                        android:scaleX="0.7"
-                        android:scaleY="0.7"
+                        android:scaleX="0.4"
+                        android:scaleY="0.4"
                         android:layout_width="70dp"
                         android:layout_height="75dp"
                         android:layout_centerInParent="true"
@@ -324,8 +324,9 @@
             android:weightSum="4"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2">
+            android:layout_weight="1.5">
             <ToggleButton
+                android:layout_marginRight="20dp"
                 android:id="@+id/tb_flash_light"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -335,25 +336,27 @@
                 android:textOn="" />
 
             <Button
+                android:layout_marginRight="20dp"
                 android:id="@+id/btn_clock"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_clock" />
+                android:background="@drawable/custom_clock" />
 
             <Button
+                android:layout_marginRight="20dp"
                 android:id="@+id/btn_calculator"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_calculator" />
+                android:background="@drawable/custom_caculator" />
 
             <Button
                 android:id="@+id/btn_camera"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_camera" />
+                android:background="@drawable/custom_camera" />
 
 
 

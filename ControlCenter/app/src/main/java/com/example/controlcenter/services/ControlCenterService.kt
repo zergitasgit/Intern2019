@@ -13,20 +13,16 @@ import android.graphics.PixelFormat
 import android.hardware.Camera
 import android.hardware.camera2.CameraManager
 import android.media.AudioManager
-import android.media.Image
 import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
-import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.IBinder
 import android.preference.PreferenceManager
-import android.provider.AlarmClock
 import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -109,7 +105,6 @@ class ControlCenterService : NotificationListenerService() {
     val CHANNEL_ID = "1"
 
     override fun onCreate() {
-        println("onCreate service")
         registerReceiver(button, IntentFilter(MEDIA_ACTION))
         mediaSessionManager = getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
         try {
@@ -126,7 +121,6 @@ class ControlCenterService : NotificationListenerService() {
             online = true
         } catch (e: Exception) {
             println("loi co on create")
-            println(e)
 
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -171,7 +165,6 @@ class ControlCenterService : NotificationListenerService() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        println("onStartCommand service")
         if (mediaController == null) {
             try {
                 var controllers: List<MediaController> =
@@ -183,7 +176,6 @@ class ControlCenterService : NotificationListenerService() {
                     updateMetadata()
                 }
             } catch (e: Exception) {
-                println("bug onStartCommand")
                 println(e)
 
             }
@@ -296,12 +288,16 @@ class ControlCenterService : NotificationListenerService() {
     var sessionListener: MediaSessionManager.OnActiveSessionsChangedListener =
         object : MediaSessionManager.OnActiveSessionsChangedListener {
             override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
-                mediaController = controllers?.let { pickController(it) }!!
-                if (mediaController == null) return
-                mediaController!!.registerCallback(callback)
-                meta = mediaController!!.metadata!!
-                updateMetadata()
-
+                if (mediaController!=null){
+                    mediaController = controllers?.let { pickController(it) }!!
+                    if (mediaController == null) return
+                    mediaController!!.registerCallback(callback)
+                    meta = mediaController!!.metadata!!
+                    updateMetadata()
+                    println("mediaController" +mediaController)
+                    println("controllers" +controllers)
+                    println("meta" +meta)
+                }
 
             }
 
@@ -537,113 +533,113 @@ class ControlCenterService : NotificationListenerService() {
             }
             return@OnTouchListener true
         })
-        var btn15s: Button = view.findViewById(R.id.btn_15s)
-        var btn30s: Button = view.findViewById(R.id.btn_30s)
-        var btn1p: Button = view.findViewById(R.id.btn_1p)
-        var btn2p: Button = view.findViewById(R.id.btn_2p)
-        var btn10p: Button = view.findViewById(R.id.btn_10p)
-        var btn30p: Button = view.findViewById(R.id.btn_30p)
+        var cb15s: CheckBox = view.findViewById(R.id.btn_15s)
+        var cb30s: CheckBox = view.findViewById(R.id.btn_30s)
+        var cb1p: CheckBox = view.findViewById(R.id.btn_1p)
+        var cb2p: CheckBox = view.findViewById(R.id.btn_2p)
+        var cb10p: CheckBox = view.findViewById(R.id.btn_10p)
+        var cb30p: CheckBox = view.findViewById(R.id.btn_30p)
         val textColorRed = Color.RED
         val textColorWhite = Color.WHITE
         // sử lý sự kiện check time our rồi đổi màu của button set time
         if (getTimeOut() == 15000) {
-            btn15s.setTextColor(textColorRed)
+            cb15s.isChecked=true
         }
         if (getTimeOut() == 30000) {
-            btn30s.setTextColor(textColorRed)
+            cb30s.isChecked=true
         }
         if (getTimeOut() == 60000) {
-            btn1p.setTextColor(textColorRed)
+            cb1p.isChecked=true
         }
         if (getTimeOut() == 120000) {
-            btn2p.setTextColor(textColorRed)
+            cb2p.isChecked=true
         }
         if (getTimeOut() == 600000) {
-            btn10p.setTextColor(textColorRed)
+            cb10p.isChecked=true
         }
         if (getTimeOut() == 1800000) {
-            btn30p.setTextColor(textColorRed)
+            cb30p.isChecked=true
         }
         // đổi màu khi người dùng click vào button thời gian nào đó
-        btn15s.setOnClickListener {
+        cb15s.setOnClickListener {
             setTimeOut(15000)
             Toast.makeText(this, "thời gian khóa màn hình là 15s,", Toast.LENGTH_SHORT).show()
-            btn15s.setTextColor(textColorRed)
-            btn30s.setTextColor(textColorWhite)
-            btn1p.setTextColor(textColorWhite)
-            btn2p.setTextColor(textColorWhite)
-            btn10p.setTextColor(textColorWhite)
-            btn30p.setTextColor(textColorWhite)
+            cb15s.isChecked=true
+            cb30s.isChecked=false
+            cb1p.isChecked=false
+            cb2p.isChecked=false
+            cb10p.isChecked=false
+            cb30p.isChecked=false
             windowManager!!.removeView(viewTimeOut)
             showControl()
             rlControl.animation = animUp
             rlControl.animation.start()
         }
-        btn30s.setOnClickListener {
+        cb30s.setOnClickListener {
             setTimeOut(30000)
             Toast.makeText(this, "thời gian khóa màn hình là 30s,", Toast.LENGTH_SHORT).show()
-            btn30s.setTextColor(textColorRed)
-            btn15s.setTextColor(textColorWhite)
-            btn1p.setTextColor(textColorWhite)
-            btn2p.setTextColor(textColorWhite)
-            btn10p.setTextColor(textColorWhite)
-            btn30p.setTextColor(textColorWhite)
+            cb30s.isChecked=true
+            cb15s.isChecked=false
+            cb1p.isChecked=false
+            cb2p.isChecked=false
+            cb10p.isChecked=false
+            cb30p.isChecked=false
             windowManager!!.removeView(viewTimeOut)
             showControl()
             rlControl.animation = animUp
             rlControl.animation.start()
         }
-        btn1p.setOnClickListener {
+        cb1p.setOnClickListener {
             setTimeOut(60000)
             Toast.makeText(this, "thời gian khóa màn hình là 1p,", Toast.LENGTH_SHORT).show()
-            btn1p.setTextColor(textColorRed)
-            btn15s.setTextColor(textColorWhite)
-            btn30s.setTextColor(textColorWhite)
-            btn2p.setTextColor(textColorWhite)
-            btn10p.setTextColor(textColorWhite)
-            btn30p.setTextColor(textColorWhite)
+            cb1p.isChecked=true
+            cb15s.isChecked=false
+            cb30s.isChecked=false
+            cb2p.isChecked=false
+            cb10p.isChecked=false
+            cb30p.isChecked=false
             windowManager!!.removeView(viewTimeOut)
             showControl()
             rlControl.animation = animUp
             rlControl.animation.start()
         }
-        btn2p.setOnClickListener {
+        cb2p.setOnClickListener {
             setTimeOut(120000)
             Toast.makeText(this, "thời gian khóa màn hình là 2p,", Toast.LENGTH_SHORT).show()
-            btn2p.setTextColor(textColorRed)
-            btn15s.setTextColor(textColorWhite)
-            btn30s.setTextColor(textColorWhite)
-            btn1p.setTextColor(textColorWhite)
-            btn10p.setTextColor(textColorWhite)
-            btn30p.setTextColor(textColorWhite)
+            cb2p.isChecked=true
+            cb15s.isChecked=false
+            cb30s.isChecked=false
+            cb1p.isChecked=false
+            cb10p.isChecked=false
+            cb30p.isChecked=false
             windowManager!!.removeView(viewTimeOut)
             showControl()
             rlControl.animation = animUp
             rlControl.animation.start()
         }
-        btn10p.setOnClickListener {
+        cb10p.setOnClickListener {
             setTimeOut(600000)
             Toast.makeText(this, "thời gian khóa màn hình là 10p,", Toast.LENGTH_SHORT).show()
-            btn15s.setTextColor(textColorWhite)
-            btn30s.setTextColor(textColorWhite)
-            btn1p.setTextColor(textColorWhite)
-            btn2p.setTextColor(textColorWhite)
-            btn30p.setTextColor(textColorWhite)
-            btn10p.setTextColor(textColorRed)
+            cb15s.isChecked=false
+            cb30s.isChecked=false
+            cb1p.isChecked=false
+            cb2p.isChecked=false
+            cb30p.isChecked=false
+            cb10p.isChecked=true
             windowManager!!.removeView(viewTimeOut)
             showControl()
             rlControl.animation = animUp
             rlControl.animation.start()
         }
-        btn30p.setOnClickListener {
+        cb30p.setOnClickListener {
             setTimeOut(1800000)
             Toast.makeText(this, "thời gian khóa màn hình là 30p,", Toast.LENGTH_SHORT).show()
-            btn15s.setTextColor(textColorWhite)
-            btn30s.setTextColor(textColorWhite)
-            btn1p.setTextColor(textColorWhite)
-            btn2p.setTextColor(textColorWhite)
-            btn10p.setTextColor(textColorWhite)
-            btn30p.setTextColor(textColorRed)
+            cb15s.isChecked=false
+            cb30s.isChecked=false
+            cb1p.isChecked=false
+            cb2p.isChecked=false
+            cb10p.isChecked=false
+            cb30p.isChecked=true
             windowManager!!.removeView(viewTimeOut)
             showControl()
             rlControl.animation = animUp
@@ -702,11 +698,9 @@ class ControlCenterService : NotificationListenerService() {
 
             tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked == true) {
-                    tvMusicName.text = "Bạn cần mở một ứng dụng nhạc"
-                    tvMusicName.textSize= 12F
+                    tvMusicName.text = "Hãy mở ứng dụng nhạc"
                 } else {
-                    tvMusicName.text = "Bạn cần mở một ứng dụng nhạc"
-                    tvMusicName.textSize= 12F
+                    tvMusicName.text = "Hãy mở ứng dụng nhạc"
                 }
             }
 
@@ -1262,7 +1256,6 @@ class ControlCenterService : NotificationListenerService() {
         lnBottom.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    println("okkk")
                     y = bottomParams!!.y
                     touchY = motionEvent.rawY
                     touchToMove = false

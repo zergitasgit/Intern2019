@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         changeSize(intent)
         changePositon(intent)
         checkSystemWritePermission()
-//        sb_size.progress = Utils.getPosition(this) + 1
 
     }
 
