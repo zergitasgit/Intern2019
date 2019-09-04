@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // kiểm tra trước khi tắt switch có được tắt hay mở không, có thì checked
     private fun onCheckSwitch() {
         if (Utils.getCheckControl(this) == 0) {
             sw_control_center.isChecked = true
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //
+    // khi destroy thì lưu trạng thái của switch
     override fun onDestroy() {
         super.onDestroy()
         if (sw_control_center.isChecked == true) {
@@ -106,8 +107,8 @@ class MainActivity : AppCompatActivity() {
         }
         rb_ben_trai.setOnClickListener {
             Utils.setPosition(this, 1)
-            rb_ben_phai.isChecked=false
-            rb_ben_duoi.isChecked=false
+            rb_ben_phai.isChecked = false
+            rb_ben_duoi.isChecked = false
             if (Utils.getCheckControl(this) == 0) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                     stopService(intent)
@@ -121,8 +122,8 @@ class MainActivity : AppCompatActivity() {
 
         }
         rb_ben_phai.setOnClickListener {
-            rb_ben_duoi.isChecked=false
-            rb_ben_trai.isChecked=false
+            rb_ben_duoi.isChecked = false
+            rb_ben_trai.isChecked = false
             Utils.setPosition(this, 2)
             if (Utils.getCheckControl(this) == 0) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -135,8 +136,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         rb_ben_duoi.setOnClickListener {
-            rb_ben_trai.isChecked=false
-            rb_ben_phai.isChecked=false
+            rb_ben_trai.isChecked = false
+            rb_ben_phai.isChecked = false
             Utils.setPosition(this, 3)
             if (Utils.getCheckControl(this) == 0) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -174,6 +175,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // xin quyền chỉnh sửa thông số hệ thống
     private fun checkSystemWritePermission(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Settings.System.canWrite(this@MainActivity))
@@ -184,6 +186,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    // vào quyền chỉnh sửa thông số hệ thống
     private fun openAndroidPermissionsMenu() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
@@ -195,6 +198,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // xin quyền ghi đè giao diện màn hình
     private fun PermissionAPI() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (!Settings.canDrawOverlays(this@MainActivity)) {

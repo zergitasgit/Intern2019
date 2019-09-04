@@ -124,17 +124,19 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:weightSum="2">
+                        android:weightSum="3">
                         <TextView
+                            android:textSize="10dp"
                             android:fontFamily="@font/seguisb"
                             android:textColor="#fff"
                             android:gravity="center|center_horizontal"
                             android:id="@+id/tv_music_name"
                             android:text="Song's name"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"></TextView>
                         <TextView
+
                             android:fontFamily="@font/segoeui"
                             android:textColor="#fff"
                             android:gravity="center|center_horizontal"

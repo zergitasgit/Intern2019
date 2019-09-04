@@ -73,6 +73,7 @@ class ControlCenterService : NotificationListenerService() {
     private lateinit var tbPlay: ToggleButton
     private lateinit var btnNext: Button
     private lateinit var tvMusicName: TextView
+    private lateinit var tvMusicSinger: TextView
     private lateinit var imgBg: ImageView
     private lateinit var imgTimeOutBg: ImageView
     private var y: Int = 0
@@ -296,11 +297,17 @@ class ControlCenterService : NotificationListenerService() {
                     mediaController = controllers?.let { pickController(it) }!!
                     if (mediaController == null) return
                     mediaController!!.registerCallback(callback)
-                    meta = mediaController!!.metadata!!
-                    updateMetadata()
-                    println("mediaController" + mediaController)
-                    println("controllers" + controllers)
-                    println("meta" + meta)
+                    try {
+                        meta = mediaController!!.metadata!!
+                        updateMetadata()
+                    }
+                    catch (e:Exception){
+                        println("mediaController" + mediaController)
+                        println("controllers" + controllers)
+                        println("meta" + meta)
+                    }
+
+
                 }
 
             }
@@ -488,6 +495,8 @@ class ControlCenterService : NotificationListenerService() {
         tbPlay = view.findViewById(R.id.tb_play)
         btnNext = view.findViewById(R.id.btn_next)
         tvMusicName = view.findViewById(R.id.tv_music_name)
+        tvMusicSinger = view.findViewById(R.id.tv_music_singer)
+
     }
 
     // khởi tạo window manager của phần time out
@@ -524,7 +533,7 @@ class ControlCenterService : NotificationListenerService() {
                     or View.SYSTEM_UI_FLAG_IMMERSIVE
         )
         lnTimeOut = view.findViewById(R.id.ln_time_out)
-        imgTimeOutBg= view.findViewById(R.id.img_time_out_bg)
+        imgTimeOutBg = view.findViewById(R.id.img_time_out_bg)
         Glide.with(this).load(R.drawable.img_control_bg).into(imgTimeOutBg)
         lnTimeOut.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
@@ -705,9 +714,9 @@ class ControlCenterService : NotificationListenerService() {
 
             tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked == true) {
-                    tvMusicName.text = "Hãy mở ứng dụng nhạc"
+                    tvMusicName.text = "Open music player"
                 } else {
-                    tvMusicName.text = "Hãy mở ứng dụng nhạc"
+                    tvMusicName.text = "Open music player"
                 }
             }
 
@@ -721,13 +730,15 @@ class ControlCenterService : NotificationListenerService() {
 
         if (mediaController != null) {
             updateMetadata()
-            tvMusicName.text = "Music"
+            tvMusicName.text = currentSong
+            tvMusicSinger.text = currentArtist
             btnPrevious.setOnClickListener {
                 if (windowManager != null) {
                     val transportControls = mediaController!!.transportControls
                     transportControls.skipToPrevious()
                     updateMetadata()
-                    tvMusicName.text = "playing"
+                    tvMusicName.text = currentSong
+                    tvMusicSinger.text = currentArtist
                     windowManager!!.updateViewLayout(viewControl, controlParams)
                 }
             }
@@ -735,7 +746,8 @@ class ControlCenterService : NotificationListenerService() {
                 if (isChecked == true) {
                     val transportControls = mediaController!!.transportControls
                     transportControls.play()
-                    tvMusicName.text = "playing"
+                    tvMusicName.text = currentSong
+                    tvMusicSinger.text = currentArtist
 
                 } else {
                     val transportControls = mediaController!!.transportControls
@@ -749,7 +761,8 @@ class ControlCenterService : NotificationListenerService() {
                     val transportControls = mediaController!!.transportControls
                     transportControls.skipToNext()
                     updateMetadata()
-                    tvMusicName.text = "playing"
+                    tvMusicName.text = currentSong
+                    tvMusicSinger.text = currentArtist
                     windowManager!!.updateViewLayout(viewControl, controlParams)
                     btnNext.animation = animClick
                     btnNext.animation.start()
@@ -1019,9 +1032,15 @@ class ControlCenterService : NotificationListenerService() {
 
     private fun turnOffFlash() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            objCameraManager!!.setTorchMode(mCameraId!!, false)
+            try {
+                objCameraManager!!.setTorchMode(mCameraId!!, false)
+            }
+            catch (e:Exception){
+                Log.i("tag", "loi")
+            }
+
         } else {
-            Log.i("tag", "flahof")
+
             if (camera != null) {
                 camera!!.stopPreview()
                 camera!!.release()
@@ -1034,11 +1053,17 @@ class ControlCenterService : NotificationListenerService() {
     private fun turnOnFlash() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            objCameraManager!!.setTorchMode(mCameraId!!, true)
+            try {
+                objCameraManager!!.setTorchMode(mCameraId!!, true)
+            }
+            catch (e :Exception){
+                Log.i("tag", "loi")
+            }
+
         } else {
             if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
                 if (camera == null)
-                    Log.i("tag", "flahON")
+
                 camera = Camera.open()
                 var p = camera!!.getParameters()
                 p!!.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
@@ -1111,6 +1136,7 @@ class ControlCenterService : NotificationListenerService() {
         }
     }
 
+    // sử lý sự kiện khi nhấn ra ngoài vùng control 4
     private fun touchOutControl() {
         // sử lý sự kiện khi nhấn vào phần control để out ra khỏi nó
         rlControl.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
@@ -1167,7 +1193,7 @@ class ControlCenterService : NotificationListenerService() {
 
         }
         if (Utils.getPosition(this) == 2) {
-            view = View.inflate(this, R.layout.left_layout, viewBottom)
+            view = View.inflate(this, R.layout.right_layout, viewBottom)
             bottomParams!!.gravity = Gravity.RIGHT
             lnBottom = view.findViewById(R.id.ln_Bottom)
             lnBottom.layoutParams.height = Utils.getSize(this)
@@ -1183,7 +1209,7 @@ class ControlCenterService : NotificationListenerService() {
         }
     }
 
-
+    // sử lý sự kiện khi vuốt sang phải icon bottom
     private fun moveControlLeft() {
         lnBottom.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
@@ -1221,6 +1247,7 @@ class ControlCenterService : NotificationListenerService() {
         })
     }
 
+    // sử lý sự kiện khi vuốt sang trái icon bottom
     private fun moveControlRight() {
         lnBottom.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
@@ -1258,7 +1285,7 @@ class ControlCenterService : NotificationListenerService() {
         })
     }
 
-    // xử lý sự kiện vuốt ở thanh icon dài dài nhỏ nhỏ ý
+    // sử lý sự kiện khi vuốt sang phải icon bottom
     private fun moveControlUP() {
         lnBottom.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
