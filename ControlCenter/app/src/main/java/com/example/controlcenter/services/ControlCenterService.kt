@@ -18,11 +18,13 @@ import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
+import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.preference.PreferenceManager
+import android.provider.MediaStore
 import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -38,6 +40,7 @@ import com.bumptech.glide.Glide
 import com.example.controlcenter.R
 import com.example.controlcenter.scenes.ControlCenterGroupView
 import com.example.controlcenter.utils.Utils
+import java.io.File
 
 
 class ControlCenterService : NotificationListenerService() {
@@ -73,7 +76,6 @@ class ControlCenterService : NotificationListenerService() {
     private lateinit var tbPlay: ToggleButton
     private lateinit var btnNext: Button
     private lateinit var tvMusicName: TextView
-    private lateinit var tvMusicSinger: TextView
     private lateinit var imgBg: ImageView
     private lateinit var imgTimeOutBg: ImageView
     private var y: Int = 0
@@ -110,6 +112,7 @@ class ControlCenterService : NotificationListenerService() {
 
 
     override fun onCreate() {
+        // sử lý phần play music
         registerReceiver(button, IntentFilter(MEDIA_ACTION))
         mediaSessionManager = getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
         try {
@@ -128,6 +131,7 @@ class ControlCenterService : NotificationListenerService() {
             println("loi co on create")
 
         }
+        // sử lý phần hiển thị notification, giữ cho control center luôn hoạt động, hiển thị icon
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             createNotificationChannel()
             val CHANNEL_ID = "1"
@@ -150,6 +154,7 @@ class ControlCenterService : NotificationListenerService() {
     }
 
     private fun createNotificationChannel() {
+        // sử lý hiển thị notification
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             val name = "floating_window_noti_channel"
@@ -170,6 +175,7 @@ class ControlCenterService : NotificationListenerService() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // sử lý phần play music
         if (mediaController == null) {
             try {
                 var controllers: List<MediaController> =
@@ -238,6 +244,7 @@ class ControlCenterService : NotificationListenerService() {
         super.onNotificationRemoved(sbn)
     }
 
+    // sử lý phần cập nhập thông tin nhạc
     fun updateMetadata() {
         if (mediaController != null && mediaController!!.playbackState != null) {
             currentlyPlaying =
@@ -300,8 +307,7 @@ class ControlCenterService : NotificationListenerService() {
                     try {
                         meta = mediaController!!.metadata!!
                         updateMetadata()
-                    }
-                    catch (e:Exception){
+                    } catch (e: Exception) {
                         println("mediaController" + mediaController)
                         println("controllers" + controllers)
                         println("meta" + meta)
@@ -495,7 +501,7 @@ class ControlCenterService : NotificationListenerService() {
         tbPlay = view.findViewById(R.id.tb_play)
         btnNext = view.findViewById(R.id.btn_next)
         tvMusicName = view.findViewById(R.id.tv_music_name)
-        tvMusicSinger = view.findViewById(R.id.tv_music_singer)
+
 
     }
 
@@ -709,16 +715,26 @@ class ControlCenterService : NotificationListenerService() {
         Log.e("NotificationPosted", "Posted")
     }
 
+    // sử lý sự kiên play nhạc play music
     private fun playMusic() {
         if (mediaController == null) {
-
-            tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked == true) {
-                    tvMusicName.text = "Open music player"
-                } else {
-                    tvMusicName.text = "Open music player"
-                }
+            val intentMusic: Intent = Intent(this, ControlCenterService::class.java)
+            tbPlay.setOnClickListener {
+                val intent = Intent(MediaStore.INTENT_ACTION_MUSIC_PLAYER)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                showIcon()
+                startActivity(intent)
+                stopService(intentMusic)
+                startService(intentMusic)
             }
+
+//            tbPlay.setOnCheckedChangeListener { buttonView, isChecked ->
+//                if (isChecked == true) {
+//
+//                } else {
+//                    tvMusicName.text = "Open music player"
+//                }
+//            }
 
         }
 
@@ -731,14 +747,15 @@ class ControlCenterService : NotificationListenerService() {
         if (mediaController != null) {
             updateMetadata()
             tvMusicName.text = currentSong
-            tvMusicSinger.text = currentArtist
             btnPrevious.setOnClickListener {
                 if (windowManager != null) {
                     val transportControls = mediaController!!.transportControls
                     transportControls.skipToPrevious()
                     updateMetadata()
-                    tvMusicName.text = currentSong
-                    tvMusicSinger.text = currentArtist
+                    tvMusicName.text = "Playing"
+                    if (tbPlay.isChecked == false) {
+                        tbPlay.isChecked = true
+                    }
                     windowManager!!.updateViewLayout(viewControl, controlParams)
                 }
             }
@@ -746,13 +763,13 @@ class ControlCenterService : NotificationListenerService() {
                 if (isChecked == true) {
                     val transportControls = mediaController!!.transportControls
                     transportControls.play()
-                    tvMusicName.text = currentSong
-                    tvMusicSinger.text = currentArtist
+                    tvMusicName.text = "Playing"
 
                 } else {
                     val transportControls = mediaController!!.transportControls
                     transportControls.pause()
                     tvMusicName.text = "Pause"
+                    windowManager!!.updateViewLayout(viewControl, controlParams)
                 }
             }
             btnNext.setOnClickListener {
@@ -761,12 +778,11 @@ class ControlCenterService : NotificationListenerService() {
                     val transportControls = mediaController!!.transportControls
                     transportControls.skipToNext()
                     updateMetadata()
-                    tvMusicName.text = currentSong
-                    tvMusicSinger.text = currentArtist
+                    tvMusicName.text = "Playing"
+                    if (tbPlay.isChecked == false) {
+                        tbPlay.isChecked = true
+                    }
                     windowManager!!.updateViewLayout(viewControl, controlParams)
-                    btnNext.animation = animClick
-                    btnNext.animation.start()
-
 
                 }
 
@@ -776,6 +792,7 @@ class ControlCenterService : NotificationListenerService() {
         }
     }
 
+    //kiểm tra và thiết lập wifi
     private fun checkWifi() {
         // check xem wifi on hay off rồi set vào switch
         wifiManager = application.getSystemService(Context.WIFI_SERVICE) as WifiManager?
@@ -804,6 +821,7 @@ class ControlCenterService : NotificationListenerService() {
 
     }
 
+    // kiểm tra và thiết lập chế độ máy bay
     private fun checkPlane() {
         // check xem chế độ máy bay on hay off rồi set vào switch
         if (Utils.CheckPlane(this) == true) {
@@ -822,6 +840,7 @@ class ControlCenterService : NotificationListenerService() {
         }
     }
 
+    // kiểm tra và thiết lập mạng
     private fun checkNetwork() {
         if (Utils.CheckNetwork(this) == true) {
             tbNetwork.isChecked = true
@@ -836,6 +855,7 @@ class ControlCenterService : NotificationListenerService() {
         }
     }
 
+    // kiểm tra và thiết lập bluetooth
     private fun checkBluetooth() {
 
         var mBtAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -865,6 +885,7 @@ class ControlCenterService : NotificationListenerService() {
 
     }
 
+    // kiểm tra và thiết lậpchế độ xoay màn hình của điện thoại
     private fun checkRotateScreens() {
         if (Utils.checkRotate(this) == 1) {
             tbRotate.isChecked = true
@@ -893,6 +914,7 @@ class ControlCenterService : NotificationListenerService() {
 
     }
 
+    // kiểm tra và thiết lậpchế độ điện thoại, đang yên lặng hay bình thường
     private fun checkAudioSystem() {
         // check và set state của chế độ rung Vibrate
         if (Utils.checkAudio(this) == 1) {
@@ -915,6 +937,7 @@ class ControlCenterService : NotificationListenerService() {
         }
     }
 
+    // sử lý ảnh sáng light
     private fun setLight() {
         var data = Utils.getLight(this@ControlCenterService)
         sbLight.value = data
@@ -939,6 +962,7 @@ class ControlCenterService : NotificationListenerService() {
 
     }
 
+    // sử ký âm thanh volume
     private fun setVolume() {
         var audioManager: AudioManager
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -964,7 +988,7 @@ class ControlCenterService : NotificationListenerService() {
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-
+    // sử lý đèn pin flash
     private fun flashLight() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             isFlashOn = false
@@ -1030,12 +1054,12 @@ class ControlCenterService : NotificationListenerService() {
 
     }
 
+    // tắt đèn pin flash
     private fun turnOffFlash() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 objCameraManager!!.setTorchMode(mCameraId!!, false)
-            }
-            catch (e:Exception){
+            } catch (e: Exception) {
                 Log.i("tag", "loi")
             }
 
@@ -1050,13 +1074,13 @@ class ControlCenterService : NotificationListenerService() {
         }
     }
 
+    // mở đèn pin flash
     private fun turnOnFlash() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 objCameraManager!!.setTorchMode(mCameraId!!, true)
-            }
-            catch (e :Exception){
+            } catch (e: Exception) {
                 Log.i("tag", "loi")
             }
 
@@ -1064,7 +1088,7 @@ class ControlCenterService : NotificationListenerService() {
             if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
                 if (camera == null)
 
-                camera = Camera.open()
+                    camera = Camera.open()
                 var p = camera!!.getParameters()
                 p!!.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH)
                 camera!!.setParameters(p)
@@ -1073,6 +1097,7 @@ class ControlCenterService : NotificationListenerService() {
         }
     }
 
+    // mở đồng hồ clock
     private fun clock() {
         // sử lý sự kiện khi nhấn vào button đồng hồ
         btnClock.setOnClickListener {
@@ -1088,6 +1113,7 @@ class ControlCenterService : NotificationListenerService() {
         }
     }
 
+    // mở caculator máy tính
     private fun caculator() {
         // sử lý sự kiện khi nhấn vào button máy tính
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -1115,6 +1141,7 @@ class ControlCenterService : NotificationListenerService() {
 
     }
 
+    // mở camera máy ảnh
     private fun openCamera() {
 
         // sử lý sự kiện khi nhấn vào button Camera

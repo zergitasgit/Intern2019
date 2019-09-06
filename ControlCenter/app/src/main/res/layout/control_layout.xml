@@ -126,7 +126,7 @@
                         android:orientation="vertical"
                         android:weightSum="3">
                         <TextView
-                            android:textSize="10dp"
+                            android:textSize="14dp"
                             android:fontFamily="@font/seguisb"
                             android:textColor="#fff"
                             android:gravity="center|center_horizontal"
@@ -135,16 +135,7 @@
                             android:layout_weight="2"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"></TextView>
-                        <TextView
 
-                            android:fontFamily="@font/segoeui"
-                            android:textColor="#fff"
-                            android:gravity="center|center_horizontal"
-                            android:id="@+id/tv_music_singer"
-                            android:text="Singer"
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"></TextView>
                     </LinearLayout>
 
                     <LinearLayout
