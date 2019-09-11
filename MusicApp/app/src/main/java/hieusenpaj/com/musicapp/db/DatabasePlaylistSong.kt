@@ -72,7 +72,7 @@ class DatabasePlaylistSong(private val context: Context,
         return arr
     }
 
-    fun delete(path: String): Boolean {
+    fun delete(path: String,id: Long): Boolean {
         // Gets the data repository in write mode
         val db = writableDatabase
         // Define 'where' part of query.
@@ -81,7 +81,6 @@ class DatabasePlaylistSong(private val context: Context,
         val selectionArgs = arrayOf(path)
         // Issue SQL statement.
         db.delete(TABLE_NAME_PLAYLIST_SONG, selection, selectionArgs)
-
         return true
     }
 //    fun deleteId(id: Long): Boolean {

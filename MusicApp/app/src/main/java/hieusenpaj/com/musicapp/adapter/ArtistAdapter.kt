@@ -30,12 +30,12 @@ class ArtistAdapter(
         val artists: Artists = arrArtist.get(p1)
 
         p0.tvName.text = artists.title
-        p0.tvNoOfSong.text = artists.track.toString()
+        p0.tvNoOfSong.text = artists.track.toString() +" song"
         Glide
                 .with(context)
                 .load(artists.art)
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.album_art)
+                        .placeholder(R.drawable.ic_singer)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .centerCrop()

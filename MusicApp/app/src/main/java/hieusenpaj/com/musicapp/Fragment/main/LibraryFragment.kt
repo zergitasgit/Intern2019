@@ -32,16 +32,15 @@ class LibraryFragment : Fragment() {
 //        tv_playlists.setOnClickListener( View.OnClickListener {
 //
 //        })
+
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         var editor = sharedPreferences?.edit()
         val dbSong: DatabaseSong = DatabaseSong(context!!, null)
-        if (!sharedPreferences?.getString("path", "").equals("")) {
+        if (sharedPreferences?.getBoolean("permission",false)==true) {
             arrSong = dbSong.getSongRecently()
             view.rv_recently.layoutManager = GridLayoutManager(context!!,2)
              adapterRecently = AdapterRecently(context!!,arrSong,object : AdapterRecently.ItemSongListener{
                 override fun onClick(position: Int, art: String, title: String, artist: String, path: String, duration: Long,favorite : Int) {
-                    dbSong.updateRecently(path,System.currentTimeMillis())
-//                    arrSong.clear()
                     if (editor != null) {
 
                         editor.putString("path", path)
@@ -57,9 +56,14 @@ class LibraryFragment : Fragment() {
 
 
                     (activity as MainActivity).songClicked(art, title, artist,path,duration,"song",favorite)
+                    dbSong.updateRecently(path,System.currentTimeMillis())
                     arrSong = dbSong.getSongRecently()
-                    view.rv_recently.adapter = adapterRecently
+//                    view.rv_recently.layoutManager = GridLayoutManager(context!!,2)
+//
+//                    var size  = arrSong.size
+                    adapterRecently?.setListItems(arrSong)
                     adapterRecently?.notifyDataSetChanged()
+//                    view.rv_recently.adapter = adapterRecently
 
                 }
 

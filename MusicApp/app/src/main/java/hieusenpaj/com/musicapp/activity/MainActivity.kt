@@ -14,6 +14,7 @@ import android.support.annotation.RequiresApi
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
+import android.util.TypedValue
 import android.view.View
 import android.view.animation.Animation
 import hieusenpaj.com.musicapp.Fragment.main.LibraryFragment
@@ -22,6 +23,7 @@ import hieusenpaj.com.musicapp.Fragment.main.FavoriteFragment
 import hieusenpaj.com.musicapp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.animation.TranslateAnimation
+import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -33,6 +35,7 @@ import hieusenpaj.com.musicapp.db.DatabasePlaylist
 import hieusenpaj.com.musicapp.db.DatabasePlaylistSong
 import hieusenpaj.com.musicapp.db.DatabaseSong
 import hieusenpaj.com.musicapp.service.MusicService
+import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -50,8 +53,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var mp: MediaPlayer? = null
         var seed: Long = 0
-
-
     }
 
     var audioManager: AudioManager? = null
@@ -59,27 +60,29 @@ class MainActivity : AppCompatActivity() {
     var name: String? = null
     var art: String? = null
     var artist: String? = null
-    var favorite: Int?=null
-    var dbSong: DatabaseSong? = null
+    var favorite: Int? = null
+    var dbSong = DatabaseSong(this, null)
     val dbPlaylist = DatabasePlaylist(this, null)
     val dbPlaylistSong = DatabasePlaylistSong(this, null)
     var arrayList = ArrayList<Song>()
     var arrPath = ArrayList<String>()
     var arrSong = ArrayList<Song>()
     var arrSongPlaylist = ArrayList<Song>()
+    var boolean: Boolean = false
+    lateinit var behavior: BottomSheetBehavior<RelativeLayout>
+    var currentApiVersion: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        hideSystemUI()
         tv_name_song_expanded.isSelected = true
         tv_name_song_expanded.marqueeRepeatLimit = -1
-        tv_name_song_collapsed.isSelected =true;
-        tv_name_song_collapsed.marqueeRepeatLimit =-1
+        tv_name_song_collapsed.isSelected = true;
+        tv_name_song_collapsed.marqueeRepeatLimit = -1
         seed = System.nanoTime()
 //        openBottomSheet()
-        handlePermiss()
-//        setUpToolbar()
-        openBottomSheet()
 
+//        setUpToolbar()
 
         // To open the first tab as default
         sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
@@ -90,7 +93,8 @@ class MainActivity : AppCompatActivity() {
             edit!!.putLong("seed", seed);
             edit!!.apply()
         }
-
+        openBottomSheet()
+        handlePermiss()
 
         val firstFragment = LibraryFragment()
         openFragment(firstFragment)
@@ -107,17 +111,18 @@ class MainActivity : AppCompatActivity() {
         repeat()
 
         doStart()
+
         if (mp != null) {
             if (sharedPreferences?.getBoolean("isplay", false) == true) {
-                iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.pause))
-                iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.pause))
+                iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.ic_pause))
+                iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.ic_pause))
             } else {
-                iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.play))
-                iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.play))
+                iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.ic_play))
+                iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.ic_play))
             }
         } else {
-            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.play))
-            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.play))
+            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.ic_play))
+            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.ic_play))
         }
         setSound()
 
@@ -125,25 +130,23 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener {
 
         when (it.itemId) {
 
-            R.id.navigation_dashboard -> {
+            R.id.navigation_library -> {
                 val firstFragment = LibraryFragment()
                 openFragment(firstFragment)
                 return@OnNavigationItemSelectedListener true
             }
 
-            R.id.navigation_billUpload -> {
+            R.id.navigation_search -> {
                 val secondFragment = SearchFragment()
                 openFragment(secondFragment)
                 return@OnNavigationItemSelectedListener true
             }
 
-            R.id.navigation_settings -> {
+            R.id.navigation_favourite -> {
                 val thirdFragment = FavoriteFragment()
                 openFragment(thirdFragment)
                 return@OnNavigationItemSelectedListener true
@@ -184,15 +187,16 @@ class MainActivity : AppCompatActivity() {
         })
 
     }
-    fun favoriteCheck(){
-        if(arrayList.get(sharedPreferences!!.getInt("pos",0)).favorite==0){
-            iv_favorite.setImageDrawable(resources.getDrawable(R.drawable.baseline_favorite_black_48dp))
-            dbSong?.updateFavorite(sharedPreferences!!.getString("path",""),1)
-            arrayList.get(sharedPreferences!!.getInt("pos",0)).favorite=1
-        }else{
-            iv_favorite.setImageDrawable(resources.getDrawable(R.drawable.baseline_favorite_border_black_48dp))
-            dbSong?.updateFavorite(sharedPreferences!!.getString("path",""),0)
-            arrayList.get(sharedPreferences!!.getInt("pos",0)).favorite=0
+
+    fun favoriteCheck() {
+        if (arrayList.get(sharedPreferences!!.getInt("pos", 0)).favorite == 0) {
+            iv_favorite.setImageDrawable(resources.getDrawable(R.drawable.ic_favourite_click))
+            dbSong?.updateFavorite(sharedPreferences!!.getString("path", ""), 1)
+            arrayList.get(sharedPreferences!!.getInt("pos", 0)).favorite = 1
+        } else {
+            iv_favorite.setImageDrawable(resources.getDrawable(R.drawable.ic_favourite))
+            dbSong?.updateFavorite(sharedPreferences!!.getString("path", ""), 0)
+            arrayList.get(sharedPreferences!!.getInt("pos", 0)).favorite = 0
         }
     }
 
@@ -251,8 +255,8 @@ class MainActivity : AppCompatActivity() {
             edit?.putBoolean("shuffle", true)
 
             Collections.shuffle(arrayList, Random(sharedPreferences!!.getLong("seed", 0)))
-            for( i in arrayList.indices){
-                if(arrayList[i].path.equals(sharedPreferences?.getString("path", ""))){
+            for (i in arrayList.indices) {
+                if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
                     edit!!.putInt("pos", i)
                     edit!!.apply()
                 }
@@ -265,29 +269,29 @@ class MainActivity : AppCompatActivity() {
             rl_shuffle.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.bg_shuffle_false));
             iv_shuffle.setImageDrawable(resources.getDrawable(R.drawable.shuffle))
             tv_shuffle.setTextColor(Color.parseColor("#ff4081"))
-            if(sharedPreferences!!.getString("array","").equals("song")){
+            if (sharedPreferences!!.getString("array", "").equals("song")) {
                 arrayList = dbSong!!.getSong()
                 var position = dbSong!!.getPositionSong(sharedPreferences?.getString("path", "")!!)
                 edit!!.putInt("pos", position - 1)
                 edit!!.apply()
-            }else if(sharedPreferences!!.getString("array","").equals("album")){
-                arrayList = dbSong!!.getSongOfAlbum(sharedPreferences!!.getLong("albumid",0))
-                for( i in arrayList.indices){
-                    if(arrayList[i].path.equals(sharedPreferences?.getString("path", ""))){
+            } else if (sharedPreferences!!.getString("array", "").equals("album")) {
+                arrayList = dbSong!!.getSongOfAlbum(sharedPreferences!!.getLong("albumid", 0))
+                for (i in arrayList.indices) {
+                    if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
                         edit!!.putInt("pos", i)
                         edit!!.apply()
                     }
                 }
-            }else if(sharedPreferences!!.getString("array","").equals("artist")){
-                arrayList = dbSong!!.getSongOfArttist(sharedPreferences!!.getString("artist",""))
-                for( i in arrayList.indices){
-                    if(arrayList[i].path.equals(sharedPreferences?.getString("path", ""))){
+            } else if (sharedPreferences!!.getString("array", "").equals("artist")) {
+                arrayList = dbSong!!.getSongOfArttist(sharedPreferences!!.getString("artist", ""))
+                for (i in arrayList.indices) {
+                    if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
                         edit!!.putInt("pos", i)
                         edit!!.apply()
                     }
                 }
-            } else if(sharedPreferences!!.getString("array","").equals("playlist")){
-                arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId",0))
+            } else if (sharedPreferences!!.getString("array", "").equals("playlist")) {
+                arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId", 0))
 //            arrSong = dbSong!!.getSong()
                 arrayList.clear()
                 for (i in arrPath) {
@@ -300,15 +304,23 @@ class MainActivity : AppCompatActivity() {
                 for (i in arrayList.indices) {
                     if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
                         edit!!.putInt("pos", i)
-                        edit!!.putBoolean("changePlaylist",false)
+                        boolean = true
                         edit!!.apply()
                     }
                 }
-                if(sharedPreferences!!.getBoolean("changePlaylist",true)==true){
-
+                if (boolean == false) {
                     edit!!.putInt("pos", 0)
+                    boolean = false
                     edit!!.apply()
+                }
 
+            } else if (sharedPreferences?.getString("array", "").equals("favorite")) {
+                arrayList = dbSong!!.getSongFavorite()
+                for (i in arrayList.indices) {
+                    if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+                        edit!!.putInt("pos", i)
+                        edit!!.apply()
+                    }
                 }
             }
 
@@ -334,7 +346,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun songClicked(art: String, title: String, artist: String, path: String, duration: Long,array:String,favorite: Int) {
+    fun songClicked(art: String, title: String, artist: String, path: String, duration: Long, array: String, favorite: Int) {
 //        if(array.equals("song")){
 //            arrayList = dbSong!!.getSong()
 //        }else if(array.equals("album")){
@@ -415,13 +427,16 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
 
-        updateView(art, title, artist, duration,favorite)
+        behavior.peekHeight = convertToPx(126)
+
+        updateView(art, title, artist, duration, favorite)
         sendBrIvPlay()
         startIntentService("")
         doStart()
 
     }
-    fun updateDB(){
+
+    fun updateDB() {
         if (sharedPreferences!!.getString("array", "").equals("song")) {
             arrayList = dbSong!!.getSong()
         } else if (sharedPreferences!!.getString("array", "").equals("album")) {
@@ -429,9 +444,8 @@ class MainActivity : AppCompatActivity() {
         } else if (sharedPreferences!!.getString("array", "").equals("artist")) {
             arrayList = dbSong!!.getSongOfArttist(sharedPreferences!!.getString("artist", ""))
 
-        }
-        else if(sharedPreferences!!.getString("array","").equals("playlist")){
-            arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId",0))
+        } else if (sharedPreferences!!.getString("array", "").equals("playlist")) {
+            arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId", 0))
 //            arrSong = dbSong.getSong()
             arrayList.clear()
             for (i in arrPath) {
@@ -454,12 +468,12 @@ class MainActivity : AppCompatActivity() {
             }
 
         } else {
-            if (sharedPreferences!!.getString("array", "").equals("song")) {
+            if (sharedPreferences?.getString("array", "").equals("song")) {
                 arrayList = dbSong!!.getSong()
                 var position = dbSong!!.getPositionSong(sharedPreferences?.getString("path", "")!!)
                 edit!!.putInt("pos", position - 1)
                 edit!!.apply()
-            } else if (sharedPreferences!!.getString("array", "").equals("album")) {
+            } else if (sharedPreferences?.getString("array", "").equals("album")) {
                 arrayList = dbSong!!.getSongOfAlbum(sharedPreferences!!.getLong("albumid", 0))
                 for (i in arrayList.indices) {
                     if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
@@ -467,7 +481,7 @@ class MainActivity : AppCompatActivity() {
                         edit!!.apply()
                     }
                 }
-            } else if (sharedPreferences!!.getString("array", "").equals("artist")) {
+            } else if (sharedPreferences?.getString("array", "").equals("artist")) {
                 arrayList = dbSong!!.getSongOfArttist(sharedPreferences!!.getString("artist", ""))
                 for (i in arrayList.indices) {
                     if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
@@ -475,30 +489,37 @@ class MainActivity : AppCompatActivity() {
                         edit!!.apply()
                     }
                 }
-            }
-            else if(sharedPreferences!!.getString("array","").equals("playlist")){
-                arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId",0))
-//            arrSong = dbSong.getSong()
-                arrayList.clear()
-                for (i in arrPath) {
-
-                    arrSong = dbSong!!.getSongByPath(i)
-
-                    arrayList.add(arrSong.get(0))
-                }
+            } else if (sharedPreferences?.getString("array", "").equals("playlist")) {
+//                arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId",0))
+////            arrSong = dbSong.getSong()
+//                arrayList.clear()
+//                for (i in arrPath) {
+//
+//                    arrSong = dbSong!!.getSongByPath(i)
+//
+//                    arrayList.add(arrSong.get(0))
+//                }
 //                arrayList = arrSongPlaylist
                 for (i in arrayList.indices) {
                     if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
                         edit!!.putInt("pos", i)
-                        edit!!.putBoolean("changePlaylist",false)
+                        boolean = true
                         edit!!.apply()
                     }
                 }
-                if(sharedPreferences!!.getBoolean("changePlaylist",true)==true){
-
+                if (boolean == false) {
                     edit!!.putInt("pos", 0)
+                    boolean = false
                     edit!!.apply()
+                }
 
+            } else if (sharedPreferences?.getString("array", "").equals("favorite")) {
+                arrayList = dbSong!!.getSongFavorite()
+                for (i in arrayList.indices) {
+                    if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+                        edit!!.putInt("pos", i)
+                        edit!!.apply()
+                    }
                 }
             }
 
@@ -507,13 +528,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-    fun updateView(art: String, title: String, artist: String, duration: Long,favorite:Int) {
+    fun updateView(art: String, title: String, artist: String, duration: Long, favorite: Int) {
         Glide
                 .with(this)
                 .load(art)
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.album_art)
+                        .placeholder(R.drawable.ic_songs)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .centerCrop()
@@ -528,7 +548,7 @@ class MainActivity : AppCompatActivity() {
                 .load(art)
 
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.album_art)
+                        .placeholder(R.drawable.ic_songs)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .centerCrop()
@@ -562,17 +582,17 @@ class MainActivity : AppCompatActivity() {
 //        tv_sb_end.text = min.toString() + ":" + seconds % 60
 
         if (sharedPreferences?.getBoolean("isplay", false) == true) {
-            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.pause))
-            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.pause))
+            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.ic_pause))
+            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.ic_pause))
         } else {
-            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.play))
-            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.play))
+            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.ic_play))
+            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.ic_play))
         }
-        if(favorite==1){
-            iv_favorite.setImageDrawable(resources.getDrawable(R.drawable.baseline_favorite_black_48dp))
+        if (favorite == 1) {
+            iv_favorite.setImageDrawable(resources.getDrawable(R.drawable.ic_favourite_click))
 
-        }else{
-            iv_favorite.setImageDrawable(resources.getDrawable(R.drawable.baseline_favorite_border_black_48dp))
+        } else {
+            iv_favorite.setImageDrawable(resources.getDrawable(R.drawable.ic_favourite))
 
         }
 
@@ -581,10 +601,15 @@ class MainActivity : AppCompatActivity() {
     fun openBottomSheet() {
 
         navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        val behavior = BottomSheetBehavior.from(nestedScrollview)
+        behavior = BottomSheetBehavior.from(nestedScrollview)
         nestedScrollview.setOnClickListener(View.OnClickListener {
 
         })
+        if (name.equals(null) || name.equals("")) {
+            behavior.peekHeight = 0
+        } else {
+            behavior.peekHeight = convertToPx(126)
+        }
         behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
@@ -669,6 +694,7 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+
     fun setUpToolbar() {
 
         // Hide action bar
@@ -680,6 +706,8 @@ class MainActivity : AppCompatActivity() {
         val perms = arrayOf("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE")
         if (Build.VERSION.SDK_INT >= 23) {
             requestPermissions(perms, 3)
+        } else {
+            version()
         }
 
     }
@@ -690,43 +718,8 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             3/*200*/ -> {
                 if (grantResults[0] == 0) {
-                    dbSong = DatabaseSong(this, null)
-                    arrayList = listOfSongs(this)
-                    if (dbSong!!.getSong().size <= 0) {
+                    version()
 
-                        for (song in arrayList) {
-                            dbSong!!.insertSong(song.title, song.artist, song.album, song.path, song.duration, song.albumId, song.art,System.currentTimeMillis())
-                        }
-                    } else {
-                        if (sharedPreferences!!.getString("array", "").equals("song")) {
-                            arrayList = dbSong!!.getSong()
-                        } else if (sharedPreferences!!.getString("array", "").equals("album")) {
-                            arrayList = dbSong!!.getSongOfAlbum(sharedPreferences!!.getLong("albumid", 0))
-                        } else if (sharedPreferences!!.getString("array", "").equals("artist")) {
-                            arrayList = dbSong!!.getSongOfArttist(sharedPreferences!!.getString("artist", ""))
-
-                        } else if (sharedPreferences!!.getString("array", "").equals("playlist")) {
-                            arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId", 0))
-//            arrSong = dbSong!!.getSong()
-                            arrayList.clear()
-                            for (i in arrPath) {
-
-                                arrSong = dbSong!!.getSongByPath(i)
-
-                                arrayList.add(arrSong.get(0))
-                            }
-//                        arrayList = arrSongPlaylist
-
-                        }
-
-                        if (sharedPreferences?.getBoolean("shuffle", false) == true) {
-
-                            Collections.shuffle(arrayList, Random(sharedPreferences!!.getLong("seed", 0)))
-
-                        }
-                        updateView(sharedPreferences?.getString("art", "")!!, name!!, sharedPreferences?.getString("artist", "")!!,
-                                sharedPreferences?.getLong("time", 0)!!,arrayList.get(sharedPreferences!!.getInt("pos",0)).favorite)
-                    }
                 }
 
                 return
@@ -750,13 +743,13 @@ class MainActivity : AppCompatActivity() {
     fun playBC() {
         if (sharedPreferences?.getBoolean("isplay", false) == false) {
 //            stopPlaying()
-            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.play))
-            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.play))
+            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.ic_play))
+            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.ic_play))
 
         } else {
 //            doStart()
-            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.pause))
-            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.pause))
+            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.ic_pause))
+            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.ic_pause))
 
         }
     }
@@ -806,7 +799,7 @@ class MainActivity : AppCompatActivity() {
 //                edit!!.putBoolean("isplay",true)
                 edit?.apply()
                 doStart()
-                updateView(song.art, song.title, song.artist, song.duration,song.favorite)
+                updateView(song.art, song.title, song.artist, song.duration, song.favorite)
 
                 //                Toast.makeText(getApplicationContext(),"back",Toast.LENGTH_SHORT).show();
             }
@@ -820,7 +813,7 @@ class MainActivity : AppCompatActivity() {
 //                edit!!.putBoolean("isplay",true)
                 edit?.apply()
                 doStart()
-                updateView(song.art, song.title, song.artist, song.duration,song.favorite)
+                updateView(song.art, song.title, song.artist, song.duration, song.favorite)
 
 //                Toast.makeText(this@MainActivity, "nextAc", Toast.LENGTH_SHORT).show();
             }
@@ -838,8 +831,50 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun hideSystemUI() {
+        currentApiVersion = android.os.Build.VERSION.SDK_INT
+
+        val flags = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+
+        // This work only for android 4.4+
+        if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
+
+            window.decorView.systemUiVisibility = flags
+
+            // Code below is to handle presses of Volume up or Volume down.
+            // Without this, after pressing volume buttons, the navigation bar will
+            // show up and won't hide
+            val decorView = window.decorView
+            decorView
+                    .setOnSystemUiVisibilityChangeListener { visibility ->
+                        if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0) {
+                            decorView.systemUiVisibility = flags
+                        }
+                    }
+        }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (currentApiVersion >= Build.VERSION_CODES.KITKAT && hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_FULLSCREEN
+                            or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+//        if (mp != null) mp?.release()
 
         unregisterReceiver(broadcastReceiver)
         unregisterReceiver(brSound)
@@ -864,8 +899,8 @@ class MainActivity : AppCompatActivity() {
         sb_duration.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 if (p2) {
-                    if(mp!=null){
-                    mp!!.seekTo(p1)
+                    if (mp != null) {
+                        mp!!.seekTo(p1)
                     }
 
 
@@ -876,7 +911,12 @@ class MainActivity : AppCompatActivity() {
                 seconds = (p1 / 1000)
                 min = seconds / 60
 
-                tv_sb_start.text = min.toString() + ":" + seconds % 60
+                if (seconds % 60 < 10) {
+                    tv_sb_start.text = min.toString() + ":" + "0" + seconds % 60
+                } else {
+                    tv_sb_start.text = min.toString() + ":" + seconds % 60
+                }
+
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -897,7 +937,7 @@ class MainActivity : AppCompatActivity() {
     private val update = object : Runnable {
         override fun run() {
             if (mp != null) {
-                val currentTime = mp!!.getCurrentPosition().toLong()
+                val currentTime = mp?.getCurrentPosition()!!.toLong()
                 sb_duration.setProgress(currentTime.toInt())
                 val minutes = TimeUnit.MILLISECONDS.toMinutes(currentTime).toInt()
                 val seconds = TimeUnit.MILLISECONDS.toSeconds(currentTime).toInt() - minutes * 60
@@ -931,7 +971,6 @@ class MainActivity : AppCompatActivity() {
                 song = arrayList.get(sharedPreferences!!.getInt("pos", 0) + 1)
                 edit!!.putBoolean("isplay", true)
                 Toast.makeText(this, "" + song!!.title, Toast.LENGTH_SHORT).show()
-
             }
         } else {
             song = arrayList.get(sharedPreferences!!.getInt("pos", 0))
@@ -955,7 +994,7 @@ class MainActivity : AppCompatActivity() {
             }
             //
             edit!!.apply()
-            updateView(art!!, name!!, artist!!, song.duration,favorite!!)
+            updateView(art!!, name!!, artist!!, song.duration, favorite!!)
         }
 
 //        control()
@@ -994,7 +1033,7 @@ class MainActivity : AppCompatActivity() {
         edit!!.apply()
 //        control()
 
-        updateView(art!!, name!!, artist!!, song.duration,favorite!!)
+        updateView(art!!, name!!, artist!!, song.duration, favorite!!)
 
         //        startService(path, name);
         doStart()
@@ -1005,8 +1044,8 @@ class MainActivity : AppCompatActivity() {
     fun pausePlay() {
 
         if (sharedPreferences?.getBoolean("isplay", false) == true) {
-            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.play))
-            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.play))
+            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.ic_play))
+            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.ic_play))
             //            remoteView.setImageViewResource(R.drawable.ic_pause,R.drawable.ic_play);
             edit!!.putBoolean("isplay", false)
             edit!!.apply()
@@ -1020,8 +1059,8 @@ class MainActivity : AppCompatActivity() {
             }
             edit!!.putBoolean("isplay", true)
             edit!!.apply()
-            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.pause))
-            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.pause))
+            iv_play_pause_collapsed.setImageDrawable(resources.getDrawable(R.drawable.ic_pause))
+            iv_play_pause_expanded.setImageDrawable(resources.getDrawable(R.drawable.ic_pause))
             //            remoteView.setImageViewResource(R.drawable.ic_play,R.drawable.ic_pause);
 
 
@@ -1029,8 +1068,69 @@ class MainActivity : AppCompatActivity() {
         sendBrIvPlay()
     }
 
+    fun convertToPx(dp: Int): Int {
+        // Get the screen's density scale
+        val scale = resources.displayMetrics.density
+        // Convert the dps to pixels, based on density scale
+        return (dp * scale + 0.5f).toInt()
+    }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    fun version() {
+        arrayList = listOfSongs(this)
+//        for (i in arrayList.indices) {
+//            if (arrayList.get(i).duration.toInt() == 0) {
+//                var fdelete = File(arrayList.get(i).path)
+//                fdelete.delete()
+//                arrayList.removeAt(i)
+//                sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(fdelete)))
+//            }
+//
+//        }
+        edit?.putBoolean("permission", true)
+        edit?.apply()
+        if (dbSong!!.getSong().size != arrayList.size) {
+            dbSong.deleteId("hieusenpaj")
+            for (song in arrayList) {
+
+                dbSong!!.insertSong(song.title, song.artist, song.album, song.path, song.duration, song.albumId, song.art, System.currentTimeMillis())
+            }
+        } else {
+            if (sharedPreferences?.getString("array", "").equals("song")) {
+                arrayList = dbSong.getSong()
+            } else if (sharedPreferences?.getString("array", "").equals("album")) {
+                arrayList = dbSong?.getSongOfAlbum(sharedPreferences!!.getLong("albumid", 0))
+            } else if (sharedPreferences?.getString("array", "").equals("artist")) {
+                arrayList = dbSong!!.getSongOfArttist(sharedPreferences!!.getString("artist", ""))
+
+            } else if (sharedPreferences?.getString("array", "").equals("playlist")) {
+                arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId", 0))
+//            arrSong = dbSong!!.getSong()
+                arrayList.clear()
+                for (i in arrPath) {
+
+                    arrSong = dbSong!!.getSongByPath(i)
+
+                    arrayList.add(arrSong.get(0))
+                }
+//                        arrayList = arrSongPlaylist
+
+            } else if (sharedPreferences?.getString("array", "").equals("favorite")) {
+                arrayList = dbSong!!.getSongFavorite()
+
+            }
+
+            if (sharedPreferences?.getBoolean("shuffle", false) == true) {
+
+                Collections.shuffle(arrayList, Random(sharedPreferences!!.getLong("seed", 0)))
+
+            }
+        }
+        updateView(sharedPreferences?.getString("art", "")!!, name!!, sharedPreferences?.getString("artist", "")!!,
+                sharedPreferences?.getLong("time", 0)!!, arrayList.get(sharedPreferences!!.getInt("pos", 0)).favorite)
+
+    }
+
+
     fun listOfSongs(context: Context?): ArrayList<Song> {
         val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0"
         var title: String
@@ -1089,9 +1189,10 @@ class MainActivity : AppCompatActivity() {
 
             var sArtworkUri = Uri.parse("content://media/external/audio/albumart");
             var albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
-            val songData = Song(title, artist, album, path, time, albumId, albumArtUri.toString(),0)
-
-            listOfSongs.add(songData)
+            if (time >=1000) {
+                val songData = Song(title, artist, album, path, time, albumId, albumArtUri.toString(), 0)
+                listOfSongs.add(songData)
+            }
 
 
 

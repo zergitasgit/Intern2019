@@ -12,6 +12,10 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import hieusenpaj.com.musicapp.R
 import hieusenpaj.com.musicapp.`object`.Song
 import hieusenpaj.com.musicapp.`object`.SongAdd
@@ -80,6 +84,20 @@ class NewPlaylistActivity : AppCompatActivity() {
                         arraySongAddTrue.add(song)
                     }
                 }
+                Glide
+                        .with(this)
+                        .load(arraySongAddTrue.get(0).song.art)
+                        .apply(RequestOptions()
+                                .placeholder(R.drawable.ic_playlist)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
+                                .centerCrop()
+                        )
+                        .thumbnail(0.5f)
+                        .transition(DrawableTransitionOptions()
+                                .crossFade()
+                        )
+                        .into(iv_art)
                 enableSwipeToDeleteAndUndo(arraySongAddTrue, arraySongAdd)
 
 
@@ -99,7 +117,7 @@ class NewPlaylistActivity : AppCompatActivity() {
                 for (song in arraySongAddTrue) {
                     dbPlaylistSong.insert(time, song.song.path, song.song.title)
                 }
-                dbPlaylist.insert(time, ed_name_playlist.text.toString())
+                dbPlaylist.insert(time, ed_name_playlist.text.toString(),arraySongAddTrue.get(0).song.art)
                 onBackPressed()
 
             } else {
@@ -118,7 +136,7 @@ class NewPlaylistActivity : AppCompatActivity() {
 
     private fun enableSwipeToDeleteAndUndo(arraySongAddTrue: ArrayList<SongAdd>, arraySongAdd: ArrayList<SongAdd>) {
         rv_new_playlist.layoutManager = LinearLayoutManager(this)
-         adaptertrue = AdapterContentAddSong(this, arraySongAddTrue)
+        adaptertrue = AdapterContentAddSong(this, arraySongAddTrue)
         rv_new_playlist.adapter = adaptertrue
         rv_new_playlist.setHasFixedSize(true)
         adaptertrue?.notifyDataSetChanged()
@@ -168,7 +186,7 @@ class NewPlaylistActivity : AppCompatActivity() {
                         p.setColor(Color.parseColor("#388E3C"))
                         val background = RectF(itemView.left.toFloat(), itemView.top.toFloat(), dX, itemView.bottom.toFloat())
                         c.drawRect(background, p)
-                        icon = BitmapFactory.decodeResource(resources, R.drawable.baseline_photo_camera_white_48dp)
+                        icon = BitmapFactory.decodeResource(resources, R.drawable.baseline_delete_outline_white_48dp)
                         val icon_dest = RectF(itemView.left.toFloat() + width, itemView.top.toFloat() + width,
                                 itemView.left.toFloat() + 2 * width, itemView.bottom.toFloat() - width)
                         c.drawBitmap(icon, null, icon_dest, p)
@@ -177,7 +195,7 @@ class NewPlaylistActivity : AppCompatActivity() {
                         val background = RectF(itemView.right.toFloat() + dX, itemView.top.toFloat(), itemView.right.toFloat(),
                                 itemView.bottom.toFloat())
                         c.drawRect(background, p)
-                        icon = BitmapFactory.decodeResource(resources, R.drawable.baseline_photo_camera_white_48dp)
+                        icon = BitmapFactory.decodeResource(resources, R.drawable.baseline_delete_outline_white_48dp)
                         val icon_dest = RectF(itemView.right.toFloat() - 2 * width, itemView.top.toFloat() + width,
                                 itemView.right.toFloat() - width, itemView.bottom.toFloat() - width)
                         c.drawBitmap(icon, null, icon_dest, p)

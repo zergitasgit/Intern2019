@@ -32,7 +32,12 @@ import kotlinx.android.synthetic.main.dialog_add_song.*
 import kotlinx.android.synthetic.main.fragment_content_play_list.*
 import kotlinx.android.synthetic.main.fragment_content_play_list.view.*
 import android.support.v7.widget.helper.ItemTouchHelper.Callback.makeMovementFlags
-
+import hieusenpaj.com.musicapp.adapter.AlbumAdapter
+import android.support.v7.widget.helper.ItemTouchHelper.Callback.makeMovementFlags
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,6 +52,7 @@ class ContentPlayListFragment : Fragment() {
     var arrPath = ArrayList<String>()
     //    var arrSong = ArrayList<Song>()
     var arrByPath = ArrayList<Song>()
+    var arrPos = ArrayList<String>()
     var arr = ArrayList<SongAdd>()
     var arrayList = ArrayList<Song>()
     var arraySongAdd = ArrayList<SongAdd>()
@@ -63,7 +69,9 @@ class ContentPlayListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view: View = inflater.inflate(R.layout.fragment_content_play_list, container, false)
-
+        view.ll_back.setOnClickListener(View.OnClickListener {
+            activity!!.onBackPressed()
+        })
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         editor = sharedPreferences?.edit()
         val dbPlaylistSong = DatabasePlaylistSong(context!!, null)
@@ -71,6 +79,7 @@ class ContentPlayListFragment : Fragment() {
         val dbPlaylist = DatabasePlaylist(context!!, null)
         val id = arguments!!.getLong("id")
         val name = arguments!!.getString("name")
+        val art = arguments!!.getString("art")
 
 
 
@@ -87,18 +96,32 @@ class ContentPlayListFragment : Fragment() {
 
 
         view.ed_name.text = Editable.Factory.getInstance().newEditable(name)
-        setSua(view, arr, dbPlaylistSong, dbPlaylist, id, context!!)
+        Glide
+                .with(this)
+                .load(art)
+                .apply(RequestOptions()
+                        .placeholder(R.drawable.ic_playlist)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .centerCrop()
+                )
+                .thumbnail(0.5f)
+                .transition(DrawableTransitionOptions()
+                        .crossFade()
+                )
+                .into(view.iv_art)
+        setSua(view, dbPlaylistSong, dbPlaylist, id, context!!)
 
 
         return view
     }
 
-    fun setSua(view: View, arraySongAddTrue: ArrayList<SongAdd>, db: DatabasePlaylistSong, dbPlaylist: DatabasePlaylist, id: Long
+    fun setSua(view: View, db: DatabasePlaylistSong, dbPlaylist: DatabasePlaylist, id: Long
                , context: Context) {
         view.rv_content_playlist.layoutManager = LinearLayoutManager(context)
         view.rv_content_playlist.setHasFixedSize(true)
-        adapter = AdapterContentPlaylist(context!!, arraySongAddTrue, object : AdapterContentPlaylist.ItemSongListener {
-            override fun onClick(position: Int, art: String, title: String, artist: String, path: String, duration: Long,favorite : Int) {
+        adapter = AdapterContentPlaylist(context!!, arr, object : AdapterContentPlaylist.ItemSongListener {
+            override fun onClick(position: Int, art: String, title: String, artist: String, path: String, duration: Long, favorite: Int) {
 
 //                var song = arr.get(pos).song
                 editor!!.putString("path", path)
@@ -114,65 +137,65 @@ class ContentPlayListFragment : Fragment() {
                 editor!!.apply()
 
 
-                (activity as MainActivity).songClicked(art, title, artist, path, duration, "playlist",favorite)
+                (activity as MainActivity).songClicked(art, title, artist, path, duration, "playlist", favorite)
             }
 
 
         })
         view.rv_content_playlist.adapter = adapter
-        setUpItemTouchCallBack(arraySongAddTrue, db)
+        setUpItemTouchCallBack(adapter!!, db)
+
+        view.rv_content_playlist.isEnabled = false
         view.tv_sua.setOnClickListener(View.OnClickListener {
             if (checkSua == false) {
+
+
                 view.tv_sua.text = "Xong"
                 checkSua = true
 
                 view.ll_add_song.visibility = View.VISIBLE
                 view.ed_name.isEnabled = true
-                setUpItemTouchCallBack(arraySongAddTrue, db)
-                dialogAddSong(view, context, arraySongAddTrue, id, db)
-                enableSwipe(view)
+                view.frame.visibility = View.VISIBLE
+
+                dialogAddSong(view, context, id, db)
+                setUpItemTouchCallBack(adapter!!, db)
 
             } else {
+                view.rv_content_playlist.isClickable = true
+                view.rv_content_playlist.isEnabled = true
                 view.tv_sua.text = "Sửa"
                 checkSua = false
 
                 view.ll_add_song.visibility = View.GONE
                 view.ed_name.isEnabled = false
+                view.frame.visibility = View.GONE
 
                 db.deleteId(id)
                 var time = System.currentTimeMillis()
                 dbPlaylist.update(id, view.ed_name.text.toString())
-                for (song in arraySongAddTrue) {
+                dbPlaylist.updateArt(id,arr.get(0).song.art)
+                Glide
+                        .with(this)
+                        .load(arr.get(0).song.art)
+                        .apply(RequestOptions()
+                                .placeholder(R.drawable.ic_playlist)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
+                                .centerCrop()
+                        )
+                        .thumbnail(0.5f)
+                        .transition(DrawableTransitionOptions()
+                                .crossFade()
+                        )
+                        .into(view.iv_art)
+//                for (k in arrPos.indices) {
+//                    db.delete(arrPos.get(k),id)
+//                }
+                for (song in arr) {
                     db.insert(id, song.song.path, song.song.title)
                 }
-//                dbPlaylist.insert(time, view.ed_name.text.toString())
-//                view.rv_content_playlist.layoutManager = LinearLayoutManager(context)
-//                view.rv_content_playlist.setHasFixedSize(true)
-//                adapter = AdapterContentPlaylist(context!!, arraySongAddTrue, object : AdapterContentPlaylist.ItemSongListener {
-//                    override fun onClick(pos: Int) {
-//
-//
-//                        var song = arr.get(pos).song
-//                        editor!!.putString("path", song.path)
-//                        editor!!.putString("art", song.art)
-//                        editor!!.putString("artist", song.artist)
-//                        editor!!.putString("name", song.title)
-////                        editor!!.putInt("pos", pos)
-//                        editor!!.putLong("time", song.duration)
-//                        editor!!.putBoolean("isplay", true)
-//                        editor!!.putLong("playlistId", id)
-//                        editor!!.putString("array", "playlist")
-////                    editor.putLong("albumid",id.toLong())
-//                        editor!!.apply()
-//
-//                        (activity as MainActivity).songClicked(song.art, song.title, song.artist, song.path, song.duration, "playlist")
-//                    }
-//
-//                })
-//                view.rv_content_playlist.adapter = adapter
 
-//                setUpItemTouchCallBack(arraySongAddTrue, db)
-                disableSwip()
+                disableSwip(adapter!!, db)
 //                adapter!!.notifyDataSetChanged()
 
             }
@@ -182,7 +205,7 @@ class ContentPlayListFragment : Fragment() {
     }
 
     private var itemTouchHelper: ItemTouchHelper? = null
-    private fun setUpItemTouchCallBack(arraySongAddTrue: ArrayList<SongAdd>, db: DatabasePlaylistSong) {
+    private fun setUpItemTouchCallBack(adapter: AdapterContentPlaylist, db: DatabasePlaylistSong) {
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT
                 or ItemTouchHelper.RIGHT) {
 
@@ -194,15 +217,81 @@ class ContentPlayListFragment : Fragment() {
                 val position = viewHolder.adapterPosition
 
                 if (direction == ItemTouchHelper.LEFT) {
-                    val deletedModel = arraySongAddTrue.get(position)
+                    val deletedModel = arr.get(position)
 
-                    db.delete(deletedModel.song.path)
+
+                    arrPos.add(deletedModel.song.path)
+                    adapter.removeItem(position)
+
+
+                } else {
+                    val deletedModel = arr.get(position)
+
+                    arrPos.add(deletedModel.song.path)
+                    adapter.removeItem(position)
+                }
+            }
+
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                                     dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+
+                val icon: Bitmap
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+
+                    val itemView = viewHolder.itemView
+                    val height = itemView.bottom.toFloat() - itemView.top.toFloat()
+                    val width = height / 3
+
+                    if (dX > 0) {
+                        p.setColor(Color.parseColor("#388E3C"))
+                        val background = RectF(itemView.left.toFloat(), itemView.top.toFloat(), dX, itemView.bottom.toFloat())
+                        c.drawRect(background, p)
+                        icon = BitmapFactory.decodeResource(resources, R.drawable.baseline_delete_outline_white_48dp)
+                        val icon_dest = RectF(itemView.left.toFloat() + width, itemView.top.toFloat() + width,
+                                itemView.left.toFloat() + 2 * width, itemView.bottom.toFloat() - width)
+                        c.drawBitmap(icon, null, icon_dest, p)
+                    } else {
+                        p.setColor(Color.parseColor("#D32F2F"))
+                        val background = RectF(itemView.right.toFloat() + dX, itemView.top.toFloat(), itemView.right.toFloat(),
+                                itemView.bottom.toFloat())
+                        c.drawRect(background, p)
+                        icon = BitmapFactory.decodeResource(resources, R.drawable.baseline_delete_outline_white_48dp)
+                        val icon_dest = RectF(itemView.right.toFloat() - 2 * width, itemView.top.toFloat() + width,
+                                itemView.right.toFloat() - width, itemView.bottom.toFloat() - width)
+                        c.drawBitmap(icon, null, icon_dest, p)
+                    }
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }
+
+
+        }
+        itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+        itemTouchHelper!!.attachToRecyclerView(rv_content_playlist)
+    }
+
+    fun disableSwip(adapter: AdapterContentPlaylist, db: DatabasePlaylistSong) {
+        itemTouchHelper!!.attachToRecyclerView(null)
+        val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT
+                or ItemTouchHelper.RIGHT) {
+
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+
+                if (direction == ItemTouchHelper.LEFT) {
+                    val deletedModel = arr.get(position)
+                    arrPos.add(deletedModel.song.path)
+
                     adapter!!.removeItem(position)
 
 
                 } else {
-                    val deletedModel = arraySongAddTrue.get(position)
-                    db.delete(deletedModel.song.path)
+                    val deletedModel = arr.get(position)
+                    arrPos.add(deletedModel.song.path)
                     adapter!!.removeItem(position)
                 }
             }
@@ -221,7 +310,7 @@ class ContentPlayListFragment : Fragment() {
                         p.setColor(Color.parseColor("#388E3C"))
                         val background = RectF(itemView.left.toFloat(), itemView.top.toFloat(), dX, itemView.bottom.toFloat())
                         c.drawRect(background, p)
-                        icon = BitmapFactory.decodeResource(resources, R.drawable.baseline_photo_camera_white_48dp)
+                        icon = BitmapFactory.decodeResource(resources, R.drawable.baseline_delete_outline_white_48dp)
                         val icon_dest = RectF(itemView.left.toFloat() + width, itemView.top.toFloat() + width,
                                 itemView.left.toFloat() + 2 * width, itemView.bottom.toFloat() - width)
                         c.drawBitmap(icon, null, icon_dest, p)
@@ -230,7 +319,7 @@ class ContentPlayListFragment : Fragment() {
                         val background = RectF(itemView.right.toFloat() + dX, itemView.top.toFloat(), itemView.right.toFloat(),
                                 itemView.bottom.toFloat())
                         c.drawRect(background, p)
-                        icon = BitmapFactory.decodeResource(resources, R.drawable.baseline_photo_camera_white_48dp)
+                        icon = BitmapFactory.decodeResource(resources, R.drawable.baseline_delete_outline_white_48dp)
                         val icon_dest = RectF(itemView.right.toFloat() - 2 * width, itemView.top.toFloat() + width,
                                 itemView.right.toFloat() - width, itemView.bottom.toFloat() - width)
                         c.drawBitmap(icon, null, icon_dest, p)
@@ -240,54 +329,22 @@ class ContentPlayListFragment : Fragment() {
             }
 
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-                val dragFlags = 0
-                val swipeFlags = ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
-
-                return makeMovementFlags(dragFlags, swipeFlags)
-            }
-        }
-        itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-    }
-
-    private fun enableSwipe(view: View) {
-        itemTouchHelper!!.attachToRecyclerView(view.rv_content_playlist)
-    }
-
-    fun disableSwip() {
-        val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT
-                or ItemTouchHelper.RIGHT) {
-
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-
-                if (direction == ItemTouchHelper.LEFT) {
-//                    val deletedModel = arraySongAddTrue.get(position)
-
-
-
-                } else {
-//                    val deletedModel = arraySongAddTrue.get(position)
-
+                for (i in arr.indices) {
+                    if (viewHolder?.adapterPosition == i) return 0
                 }
+                return super.getMovementFlags(recyclerView, viewHolder)
             }
-            override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-                val dragFlags = 0
-                val swipeFlags = ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
 
-                return makeMovementFlags(dragFlags, swipeFlags)
-            }
         }
         itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-        itemTouchHelper!!.attachToRecyclerView(null)
+        itemTouchHelper!!.attachToRecyclerView(rv_content_playlist)
+
+
     }
 
-    fun dialogAddSong(view: View, context: Context, arraySongAddTrue: ArrayList<SongAdd>, id: Long, db: DatabasePlaylistSong) {
-//        arraySongAddTrue.clear()
-        val dbSong: DatabaseSong = DatabaseSong(context, null)
+    fun dialogAddSong(view: View, context: Context, id: Long, db: DatabasePlaylistSong) {
+//        arr.clear()
+        val dbSong = DatabaseSong(context, null)
         arraySongAdd.clear()
         arrayList = dbSong.getSong()
         for (i in arrayList.indices) {
@@ -303,10 +360,10 @@ class ContentPlayListFragment : Fragment() {
             window!!.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
 
 
-//            arraySongAddTrue.clear()
+//            arr.clear()
             for (i in arraySongAdd.indices) {
-                for (k in arraySongAddTrue.indices)
-                    if (arraySongAddTrue.get(k).song.path.equals(arraySongAdd.get(i).song.path)) {
+                for (k in arr.indices)
+                    if (arr.get(k).song.path.equals(arraySongAdd.get(i).song.path)) {
                         arraySongAdd.get(i).ischeck = true
                     }
             }
@@ -322,36 +379,46 @@ class ContentPlayListFragment : Fragment() {
             dialog.rv_dialog_add_song.adapter = adapterAdd
             dialog.rl_done.setOnClickListener(View.OnClickListener {
                 dialog.dismiss()
-                arraySongAddTrue.clear()
+                arr.clear()
 
                 for (song in arraySongAdd) {
                     if (song.ischeck == true) {
-                        arraySongAddTrue.add(song)
+                        arr.add(song)
+
                     }
+
                 }
+//                for(i in arr.indices){
+//                    for(k in arrPos.indices){
+//                        if (arrPos.get(k).equals(arr.get(i).song.path)){
+//                            arrPos.removeAt(k)
+//                        }
+//                    }
+//                }
 //                view.rv_content_playlist.layoutManager = LinearLayoutManager(context)
 //                view.rv_content_playlist.setHasFixedSize(true)
-//                adapter = AdapterContentPlaylist(context!!, arraySongAddTrue, object : AdapterContentPlaylist.ItemSongListener {
-//                    override fun onClick(pos: Int) {
+//                adapter = AdapterContentPlaylist(context!!, arr, object : AdapterContentPlaylist.ItemSongListener {
+//                    override fun onClick(position: Int, art: String, title: String, artist: String, path: String, duration: Long, favorite: Int) {
 //
 //                    }
 //
+//
 //                })
 //                view.rv_content_playlist.adapter = adapter
+                view.rv_content_playlist.isClickable = false
+                view.rv_content_playlist.isEnabled = false
                 adapter!!.notifyDataSetChanged()
-                setUpItemTouchCallBack(arraySongAddTrue, db)
-
 
 
 //                enableSwipe()
 
-//                (arraySongAddTrue, arraySongAdd)
+//                (arr, arraySongAdd)
 
 
             })
             dialog.rl_cancle.setOnClickListener(View.OnClickListener {
                 dialog.dismiss()
-                setUpItemTouchCallBack(arraySongAddTrue, db)
+//                setUpItemTouchCallBack(adapter!!, arr, db)
                 adapterAdd!!.setAllFalse()
             })
         })

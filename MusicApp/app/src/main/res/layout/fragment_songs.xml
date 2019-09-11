@@ -5,13 +5,17 @@
     android:orientation="vertical"
     android:background="#fff"
     android:layout_marginBottom="126dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
     <LinearLayout
         android:id="@+id/ll_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp">
+        >
 
         <ImageView
             android:layout_width="25dp"
@@ -24,18 +28,23 @@
             android:text="Libary"
             android:textColor="@color/colorAccent"
             android:textSize="20dp" />
+
     </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="Songs"
-        android:textSize="26dp"
-        android:textStyle="bold"
-        android:textColor="#000"
-        android:layout_marginTop="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Songs"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:layout_centerInParent="true"
+
+            />
+    </RelativeLayout>
+
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"

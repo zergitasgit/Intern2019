@@ -1,6 +1,8 @@
 package hieusenpaj.com.musicapp.Fragment.library
 
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -42,16 +44,38 @@ import kotlinx.android.synthetic.main.bottom_sheet_layout.*
 class AlbumFragment : Fragment() {
     var arrAlbum: ArrayList<Album> = ArrayList()
     var arr: ArrayList<Song> = ArrayList()
+    var albumAdapter : AlbumAdapter?= null
+    var sharedPreferences: SharedPreferences? = null
+    var editor: SharedPreferences.Editor? = null
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view :View =  inflater.inflate(R.layout.fragment_album, container, false)
-
+        view.ll_back.setOnClickListener(View.OnClickListener {
+            activity!!.onBackPressed()
+        })
+        sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        editor = sharedPreferences?.edit()
         arrAlbum =getList()
+        if (sharedPreferences?.getString("sort","").equals("title")){
+            var list  = arrAlbum.sortedWith(compareBy({ it.title }))
+            arrAlbum.clear()
+            for(i in list){
+
+                arrAlbum.add(i)
+            }
+        }else if(sharedPreferences?.getString("sort","").equals("artist")){
+            var list = arrAlbum.sortedWith(compareBy({ it.artist }))
+            arrAlbum.clear()
+            for(i in list){
+
+                arrAlbum.add(i)
+            }
+        }
         var fragment:ContentAlbumFragment = ContentAlbumFragment()
         view.rv_album.layoutManager = GridLayoutManager(context!!,2)
-        var albumAdapter : AlbumAdapter = AlbumAdapter(this!!.context!!,arrAlbum,object : AlbumAdapter.ItemSongListener {
+         albumAdapter  = AlbumAdapter(this!!.context!!, arrAlbum ,object : AlbumAdapter.ItemSongListener {
             override fun onClick(pos: Int) {
                 openFragment(fragment,arrAlbum.get(pos).id,arrAlbum.get(pos).title,arrAlbum.get(pos).artist,arrAlbum.get(pos).art)
             }
@@ -98,15 +122,45 @@ class AlbumFragment : Fragment() {
         val dialog = BottomSheetDialog(context!!,R.style.CustomBottomSheetDialogTheme)
 //        dialog.window.setBackgroundDrawable( ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(view)
-
+        if (sharedPreferences?.getString("sort","").equals("title")){
+            dialog.iv_title.visibility = View.VISIBLE
+            dialog.iv_artist.visibility = View.GONE
+        }else  if (sharedPreferences?.getString("sort","").equals("artist")){
+            dialog.iv_artist.visibility = View.VISIBLE
+            dialog.iv_title.visibility = View.GONE
+        }
         dialog.rl_title.setOnClickListener(View.OnClickListener {
             dialog.iv_title.visibility = View.VISIBLE
             dialog.iv_artist.visibility = View.GONE
+            var list  = arrAlbum.sortedWith(compareBy({ it.title }))
+            arrAlbum.clear()
+            for(i in list){
+
+                arrAlbum.add(i)
+            }
+            albumAdapter?.notifyDataSetChanged()
+            dialog.dismiss()
+            editor!!.putString("sort","title")
+            editor!!.apply()
+
 
         })
         dialog.rl_artist.setOnClickListener(View.OnClickListener {
             dialog.iv_artist.visibility = View.VISIBLE
             dialog.iv_title.visibility = View.GONE
+            var list = arrAlbum.sortedWith(compareBy({ it.artist }))
+            arrAlbum.clear()
+            for(i in list){
+
+                arrAlbum.add(i)
+            }
+            albumAdapter?.notifyDataSetChanged()
+            dialog.dismiss()
+            editor!!.putString("sort","artist")
+            editor!!.apply()
+        })
+        dialog.rl_cancel.setOnClickListener(View.OnClickListener {
+            dialog.dismiss()
         })
         dialog.show()
 

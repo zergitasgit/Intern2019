@@ -36,7 +36,7 @@ class AdapterContentPlaylist(private val context: Context
                 .with(context)
                 .load(song.art)
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.album_art)
+                        .placeholder(R.drawable.ic_playlist)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .centerCrop()

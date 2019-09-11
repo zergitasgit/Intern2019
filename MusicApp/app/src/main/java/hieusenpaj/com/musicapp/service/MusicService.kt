@@ -41,6 +41,7 @@ class MusicService : Service() {
     var sharedPreferences: SharedPreferences? = null
     var editor: SharedPreferences.Editor? = null
     var remoteView: RemoteViews? = null
+    var remoteViewSmall: RemoteViews? = null
     var manager: NotificationManager? = null
     var notification: Notification? = null
     var path: String? = null
@@ -54,12 +55,11 @@ class MusicService : Service() {
     var arrPath = ArrayList<String>()
     var arrSong = ArrayList<Song>()
     var arrSongPlaylist = ArrayList<Song>()
+    var boolean = false
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
         editor = sharedPreferences?.edit()
-
-
         updateDB()
 
         val intent1 = IntentFilter()
@@ -73,11 +73,12 @@ class MusicService : Service() {
         registerReceiver(broadcastReceiver, intent1)
         registerReceiver(broadcastReceiverIv, intent1)
         registerReceiver(broadcastReceiverShuffle, intent1)
-        status = intent!!.extras.getString("status")
+        status = intent?.extras!!.getString("status")
+        createNotificationChannel()
+
         updateStatus(status!!)
 
 //        control()
-        createNotificationChannel()
 
 
         return Service.START_STICKY;
@@ -156,14 +157,19 @@ class MusicService : Service() {
         }
         control(name!!, path!!, art!!, nameArtist!!)
         val notificationIntent = Intent(this, MainActivity::class.java)
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP);
         val pendingIntent = PendingIntent.getActivity(this,
-                100, notificationIntent, PendingIntent.FLAG_ONE_SHOT)
+                100, notificationIntent, 0)
 
         remoteView = RemoteViews(applicationContext.packageName, R.layout.remote_view_layout)
+        remoteViewSmall = RemoteViews(applicationContext.packageName, R.layout.remote_view_small_layout)
         remoteView?.setTextViewText(R.id.tv_name_song, name)
         remoteView?.setTextViewText(R.id.tv_name_artist, nameArtist)
         remoteView?.setImageViewUri(R.id.iv_art, Uri.parse(art))
+
+        remoteViewSmall?.setTextViewText(R.id.tv_name, name)
+        remoteViewSmall?.setTextViewText(R.id.tv_artist, nameArtist)
+        remoteViewSmall?.setImageViewUri(R.id.iv_art, Uri.parse(art))
 //        loadArt(art!!)
 
 //        if(sharedPreferences.getBoolean("receiver",false)==false) {
@@ -175,10 +181,13 @@ class MusicService : Service() {
         val pendingNextIntent = PendingIntent.getBroadcast(this, 100, nectIntent, 0)
         val dismissIntent = Intent("com.example.app.ACTION_DISMISS")
         val pendingDismissIntent = PendingIntent.getBroadcast(this, 100, dismissIntent, 0)
-        remoteView?.setOnClickPendingIntent(R.id.iv_next, pendingNextIntent)
-        remoteView?.setOnClickPendingIntent(R.id.iv_back, pendingBackIntent)
-        remoteView?.setOnClickPendingIntent(R.id.iv_play_pause, pendingPlayIntent)
+        remoteView?.setOnClickPendingIntent(R.id.rl_next, pendingNextIntent)
+        remoteView?.setOnClickPendingIntent(R.id.rl_back, pendingBackIntent)
+        remoteView?.setOnClickPendingIntent(R.id.rl_pause_play, pendingPlayIntent)
         remoteView?.setOnClickPendingIntent(R.id.iv_dismiss, pendingDismissIntent)
+        remoteViewSmall?.setOnClickPendingIntent(R.id.iv_next, pendingNextIntent)
+        remoteViewSmall?.setOnClickPendingIntent(R.id.iv_pause_play, pendingPlayIntent)
+        remoteViewSmall?.setOnClickPendingIntent(R.id.iv_dismiss, pendingDismissIntent)
 
 //        if (sharedPreferences?.getBoolean("isplay", false) == true) {
 //            updatePlayPause(true)
@@ -186,16 +195,17 @@ class MusicService : Service() {
 //            updatePlayPause(false)
 //        }
 //        }
-
+        val notifystyle = NotificationCompat.BigPictureStyle()
 
         notification = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setOngoing(true)
-                .setPriority(Notification.PRIORITY_DEFAULT)
-                .setCategory(Notification.CATEGORY_SERVICE)
-                .setSmallIcon(R.drawable.play)
+                .setSmallIcon(R.drawable.ic_songs)
+                .setContentTitle(name)
+                .setContentText(nameArtist)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentIntent(pendingIntent)
                 .setCustomBigContentView(remoteView)
-
+                .setCustomContentView(remoteViewSmall)
                 .build()
 //        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notification.setChannelId(youChannelID);
 
@@ -208,7 +218,7 @@ class MusicService : Service() {
 //        notificationView.setOnClickPendingIntent(R.id.btn_play_pause_in_notification, pendingSwitchIntent);
 
 
-        startForeground(2, notification)
+        startForeground(1, notification)
     }
     fun updateDB(){
         if (sharedPreferences!!.getString("array", "").equals("song")) {
@@ -230,7 +240,10 @@ class MusicService : Service() {
                 arrayList.add(arrSong.get(0))
             }
 //            arrayList = arrSongPlaylist
+        }else if(sharedPreferences?.getString("array","").equals("favorite")){
+            arrayList = dbSong!!.getSongFavorite()
         }
+
 //        arrayList = dbSong.getSong()
         if (sharedPreferences?.getBoolean("shuffle", false) == true) {
 
@@ -279,15 +292,23 @@ class MusicService : Service() {
                 for (i in arrayList.indices) {
                     if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
                         editor!!.putInt("pos", i)
-                        editor!!.putBoolean("changePlaylist",false)
+                        boolean = true
                         editor!!.apply()
                     }
                 }
-                if(sharedPreferences!!.getBoolean("changePlaylist",true)==true){
-
+                if (boolean==false){
                     editor!!.putInt("pos", 0)
+                    boolean = false
                     editor!!.apply()
+                }
 
+            }else if(sharedPreferences?.getString("array","").equals("favorite")){
+                arrayList = dbSong!!.getSongFavorite()
+                for (i in arrayList.indices) {
+                    if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+                        editor!!.putInt("pos", i)
+                        editor!!.apply()
+                    }
                 }
             }
 
@@ -303,10 +324,10 @@ class MusicService : Service() {
             val serviceChannel = NotificationChannel(
                     CHANNEL_ID,
                     "Foreground Service Channel",
-                    NotificationManager.IMPORTANCE_LOW
+                    NotificationManager.IMPORTANCE_NONE
             )
-            serviceChannel.lightColor = Color.BLUE
-            serviceChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+//            serviceChannel.lightColor = Color.BLUE
+//            serviceChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
 
             manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
             manager?.createNotificationChannel(serviceChannel)
@@ -334,17 +355,24 @@ class MusicService : Service() {
         val api = Build.VERSION.SDK_INT
         // update the icon
         if (isPlay == false) {
-            remoteView?.setImageViewResource(R.id.iv_play_pause, R.drawable.play)
+            remoteView?.setImageViewResource(R.id.iv_play_pause, R.drawable.ic_play)
+            remoteViewSmall?.setImageViewResource(R.id.iv_pause_play,R.drawable.ic_play)
         } else {
-            remoteView?.setImageViewResource(R.id.iv_play_pause, R.drawable.pause)
+            remoteView?.setImageViewResource(R.id.iv_play_pause, R.drawable.ic_pause)
+            remoteViewSmall?.setImageViewResource(R.id.iv_pause_play,R.drawable.ic_pause)
         }
         // update the title
         // update the content
 
-        remoteView?.setImageViewUri(R.id.iv_art, Uri.parse(sharedPreferences!!.getString("art", "")))
+//        remoteView?.setImageViewUri(R.id.iv_art, Uri.parse(sharedPreferences!!.getString("art", "")))
+//        remoteViewSmall?.setImageViewUri(R.id.iv_art, Uri.parse(sharedPreferences!!.getString("art", "")))
         // update the notification
+        if (api >= Build.VERSION_CODES.HONEYCOMB) {
 
-        manager?.notify(2, notification)
+            startForeground(1, notification)
+        }else{
+            manager?.notify(1, notification)
+        }
 
     }
 
@@ -357,13 +385,22 @@ class MusicService : Service() {
         remoteView?.setTextViewText(R.id.tv_name_song, name)
         remoteView?.setImageViewUri(R.id.iv_art, Uri.parse(art))
         remoteView?.setTextViewText(R.id.tv_name_artist, artist)
+
+        remoteViewSmall?.setTextViewText(R.id.tv_name, name)
+        remoteViewSmall?.setImageViewUri(R.id.iv_art, Uri.parse(art))
+        remoteViewSmall?.setTextViewText(R.id.tv_artist, artist)
 //        loadArt(art)
         // update the content
 
 
         // update the notification
 
-        manager?.notify(2, notification)
+        if (api >= Build.VERSION_CODES.HONEYCOMB) {
+
+            startForeground(1, notification)
+        }else{
+            manager?.notify(1, notification)
+        }
 
     }
 
@@ -432,16 +469,18 @@ class MusicService : Service() {
 //                    arrayList = arrSongPlaylist
                     for (i in arrayList.indices) {
                         if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
-                            editor!!.putInt("pos", i)
-                            editor!!.putBoolean("changePlaylist",false)
+                            editor!!.putInt("pos",i)
                             editor!!.apply()
                         }
                     }
-                    if(sharedPreferences!!.getBoolean("changePlaylist",true)==true){
 
-                        editor!!.putInt("pos", 0)
-                        editor!!.apply()
-
+                } else if(sharedPreferences?.getString("array","").equals("favorite")){
+                    arrayList = dbSong!!.getSongFavorite()
+                    for (i in arrayList.indices) {
+                        if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+                            editor!!.putInt("pos", i)
+                            editor!!.apply()
+                        }
                     }
                 }
 
@@ -534,7 +573,7 @@ class MusicService : Service() {
                 val intent = Intent("SERVICE_DISMISS")
                 context.sendBroadcast(intent)
                 stopForeground(true);
-                manager!!.cancel(2);
+                manager?.cancel(1);
             }
             //            }
 
@@ -566,8 +605,6 @@ class MusicService : Service() {
             mp!!.release()
         }
 
-
-
         mp = MediaPlayer()
         try {
             mp!!.setDataSource(path)
@@ -580,6 +617,7 @@ class MusicService : Service() {
         editor?.putString("path", path)
         editor?.putString("name", name)
         editor?.putString("art", art)
+        editor?.putString("artist", artist)
         editor?.putString("artist", artist)
 
         editor?.putLong("time", mp?.getDuration()!!.toLong())
@@ -648,7 +686,7 @@ class MusicService : Service() {
                 R.id.iv_art,
                 remoteView,
                 notification,
-                2)
+                1)
 
         Glide.with(applicationContext)
                 .asBitmap()

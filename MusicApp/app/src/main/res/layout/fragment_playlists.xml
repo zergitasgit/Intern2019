@@ -16,7 +16,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
 
             <LinearLayout
                 android:id="@+id/ll_back"
@@ -59,22 +60,16 @@
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/ll_new_playlist"
             android:layout_margin="10dp">
 
-            <RelativeLayout
+            <ImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:background="@drawable/bg_shuffle_false">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/baseline_add_circle_outline_white_48dp" />
-            </RelativeLayout>
+                android:src="@drawable/ic_add_playlist">
+            </ImageView>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -84,11 +79,16 @@
                 android:textColor="@color/colorAccent"
                 android:layout_gravity="center_vertical"/>
         </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EBEBEB"
+            android:layout_marginLeft="10dp"></FrameLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_playlist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:scrollbars="vertical"
             android:nestedScrollingEnabled="false"
             android:background="#fff"

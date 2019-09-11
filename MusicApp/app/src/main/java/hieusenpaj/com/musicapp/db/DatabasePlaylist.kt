@@ -20,7 +20,7 @@ class DatabasePlaylist(private val context: Context,
                     + COLUMN_ID + " INTEGER PRIMARY KEY,"
                     + COLUMN_ID_PLAYLIST + " REAL," +
                     COLUMN_NAME_PLAYLIST
-                    + " TEXT" +
+                    + " TEXT," + COLUMN_ART_PLAYLIST + " TEXT" +
                     ")")
 
             p0!!.execSQL(CREATE_PRODUCTS_TABLE_PLAYLIST)
@@ -44,12 +44,14 @@ class DatabasePlaylist(private val context: Context,
         val COLUMN_ID_PLAYLIST = "id_playlist"
 
         val COLUMN_NAME_PLAYLIST = "name"
+        val COLUMN_ART_PLAYLIST = "art"
     }
 
-    fun insert(id: Long, name: String) {
+    fun insert(id: Long, name: String,art:String) {
         val values = ContentValues()
         values.put(COLUMN_ID_PLAYLIST, id)
         values.put(COLUMN_NAME_PLAYLIST, name)
+        values.put(COLUMN_ART_PLAYLIST, art)
 
 
         val db = this.writableDatabase
@@ -62,10 +64,10 @@ class DatabasePlaylist(private val context: Context,
         val db = this.getWritableDatabase()
         val cursor = db.rawQuery("SELECT * FROM playlist ", null)
         cursor.moveToFirst()
-        while (!cursor.isAfterLast) {
+        while (!cursor.isAfterLast ) {
 
             var playlist = Playlist(cursor.getLong(cursor.getColumnIndex("id_playlist")),
-                    cursor.getString(cursor.getColumnIndex("name"))
+                    cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("art"))
             )
 //            subject.setMon(cursor.getString(cursor.getColumnIndex("name")))
 //            subject.setImage(cursor.getBlob(cursor.getColumnIndex("image")))
@@ -80,6 +82,14 @@ class DatabasePlaylist(private val context: Context,
         val contentValues = ContentValues()
         val db = this.getReadableDatabase()
         contentValues.put(COLUMN_NAME_PLAYLIST, name)
+        db.update(TABLE_NAME_PLAYLIST, contentValues, "id_playlist = '$id'", null)
+        return
+
+    }
+    fun updateArt(id:Long,art:String) {
+        val contentValues = ContentValues()
+        val db = this.getReadableDatabase()
+        contentValues.put(COLUMN_ART_PLAYLIST, art)
         db.update(TABLE_NAME_PLAYLIST, contentValues, "id_playlist = '$id'", null)
         return
 

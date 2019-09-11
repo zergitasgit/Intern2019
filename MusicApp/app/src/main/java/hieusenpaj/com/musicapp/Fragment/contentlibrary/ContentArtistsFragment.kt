@@ -19,6 +19,7 @@ import hieusenpaj.com.musicapp.`object`.Song
 import hieusenpaj.com.musicapp.activity.MainActivity
 import hieusenpaj.com.musicapp.adapter.ContentArtistAdapter
 import hieusenpaj.com.musicapp.db.DatabaseSong
+import kotlinx.android.synthetic.main.fragment_content_artists.*
 import kotlinx.android.synthetic.main.fragment_content_artists.view.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,6 +36,9 @@ class ContentArtistsFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
        var  view : View= inflater.inflate(R.layout.fragment_content_artists, container, false)
+        view.ll_back.setOnClickListener(View.OnClickListener {
+            activity!!.onBackPressed()
+        })
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         var editor  =  sharedPreferences?.edit()
         val name = arguments!!.getString("name")
@@ -74,9 +78,10 @@ class ContentArtistsFragment : Fragment() {
                 .with(context)
                 .load(art)
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.album_art)
+                        .placeholder(R.drawable.ic_singer)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
+                        .centerCrop()
                 )
                 .thumbnail(0.5f)
                 .transition(DrawableTransitionOptions()

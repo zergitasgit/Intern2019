@@ -31,8 +31,9 @@ class PlaylistsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         var view : View =  inflater.inflate(R.layout.fragment_playlists, container, false)
-        dbPlaylist= DatabasePlaylist(context!!, null)
         view.nestedScrollview.requestFocus();
+        dbPlaylist= DatabasePlaylist(context!!, null)
+        arrPlaylist = dbPlaylist!!.getPlaylist()
         return view
     }
 
@@ -42,7 +43,10 @@ class PlaylistsFragment : Fragment() {
             val intent = Intent(context, NewPlaylistActivity::class.java)
             startActivity(intent)
         })
-        arrPlaylist = dbPlaylist!!.getPlaylist()
+        view.ll_back.setOnClickListener(View.OnClickListener {
+                activity!!.onBackPressed()
+        })
+
 
         rv_playlist.layoutManager = LinearLayoutManager(context)
         var adapter = AdapterPlaylist(context!!,arrPlaylist,object :AdapterPlaylist.ItemSongListener{
@@ -71,7 +75,7 @@ class PlaylistsFragment : Fragment() {
         arrPlaylist = dbPlaylist!!.getPlaylist()
         var adapter = AdapterPlaylist(context!!,arrPlaylist,object :AdapterPlaylist.ItemSongListener{
             override fun onClick(pos: Int) {
-                openFragment(contentPlayListFragment,arrPlaylist.get(pos).id,arrPlaylist.get(pos).title)
+                openFragment(contentPlayListFragment,arrPlaylist.get(pos).id,arrPlaylist.get(pos).title,arrPlaylist.get(pos).art)
 
             }
 
@@ -79,10 +83,11 @@ class PlaylistsFragment : Fragment() {
         rv_playlist.adapter = adapter
 
     }
-    private fun openFragment(fragment: Fragment,id:Long,name:String) {
+    private fun openFragment(fragment: Fragment,id:Long,name:String,art:String) {
         val bundle = Bundle()
         bundle.putLong("id", id)
         bundle.putString("name", name)
+        bundle.putString("art", art)
         val transaction = activity!!.supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
         transaction.addToBackStack(null)

@@ -35,7 +35,7 @@ class SongAdapter(
     override fun onBindViewHolder(p0: SongAdapter.SongViewHolder, p1: Int) {
         var song =arrSong.get(p1)
         p0.tvName.text = song.title
-        p0.tvAlbum.text = song.album
+//        p0.tvAlbum.text = song.album
         p0.tvArtist.text = song.artist
 
 
@@ -44,7 +44,7 @@ class SongAdapter(
                 .load(song.art)
 
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.album_art)
+                        .placeholder(R.drawable.ic_songs)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .centerCrop()
@@ -79,7 +79,7 @@ class SongAdapter(
     class SongViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val tvName = v.tv_name_song
         val tvArtist = v.tv_artists
-        val tvAlbum: TextView = v.tv_albums
+//        val tvAlbum: TextView = v.tv_albums
         val ivArt: ImageView = v.iv_art
         val tvTime: TextView = v.tv_time
         val rl = v.rl_adapter_song

@@ -20,7 +20,7 @@ import hieusenpaj.com.musicapp.activity.MainActivity
 import hieusenpaj.com.musicapp.adapter.ContentAlbumAdapter
 import hieusenpaj.com.musicapp.db.DatabaseSong
 import kotlinx.android.synthetic.main.fragment_content_album.view.*
-import kotlinx.android.synthetic.main.fragment_content_artists.view.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,7 +37,9 @@ class ContentAlbumFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var v:View= inflater.inflate(R.layout.fragment_content_album, container, false)
-
+        v.ll_back.setOnClickListener(View.OnClickListener {
+            activity!!.onBackPressed()
+        })
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         var editor  =  sharedPreferences?.edit()
 
@@ -79,9 +81,10 @@ class ContentAlbumFragment : Fragment() {
                 .with(context)
                 .load(art)
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.album_art)
+                        .placeholder(R.drawable.ic_albums)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
+                        .centerCrop()
                 )
                 .thumbnail(0.5f)
                 .transition(DrawableTransitionOptions()

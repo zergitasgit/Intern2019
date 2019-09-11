@@ -8,11 +8,13 @@
         android:id="@+id/tv_song_add"
         android:layout_centerVertical="true"
         android:textSize="16dp"
-        android:layout_marginLeft="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="35dp"
+        android:maxLines="1"/>
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@drawable/plus"
+        android:src="@drawable/ic_add_song"
         android:id="@+id/iv_song_add"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"

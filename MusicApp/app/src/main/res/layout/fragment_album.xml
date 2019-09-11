@@ -7,14 +7,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:id="@+id/ll_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
+
             android:orientation="horizontal">
 
             <ImageView
@@ -39,26 +40,25 @@
             android:text="Sort"
             android:textColor="@color/colorAccent"
             android:textSize="20dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Albums"
+            android:textColor="#000"
+            android:textSize="20dp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:text="Albums"
-        android:textColor="#000"
-        android:textSize="26dp"
-        android:textStyle="bold" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_album"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:layout_margin="5dp"/>
 </LinearLayout>
 
 

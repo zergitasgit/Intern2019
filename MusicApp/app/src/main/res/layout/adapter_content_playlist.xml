@@ -1,40 +1,53 @@
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="5dp"
-    android:id="@+id/rl">
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/iv_art"
-        />
+    android:layout_marginTop="5dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="0dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_art"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+    </android.support.v7.widget.CardView>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_toRightOf="@+id/iv_art"
         android:layout_marginLeft="10dp"
-        >
+        android:layout_toRightOf="@+id/card">
+
         <TextView
+            android:id="@+id/tv_name_song"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_name_song"
-            android:textSize="15dp"
-            android:maxLines="1"
             android:layout_marginTop="5dp"
-            />
+            android:maxLines="1"
+            android:textSize="15dp" />
+
         <TextView
+            android:id="@+id/tv_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="7dp"
-            android:id="@+id/tv_artist"
-            android:textColor="#EBEBEB"/>
+            android:textColor="#EBEBEB" />
+
         <RelativeLayout
+            android:id="@+id/rl_under_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#EBEBEB"
-            android:id="@+id/rl_under_line"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:background="#EBEBEB">
 
         </RelativeLayout>
     </RelativeLayout>

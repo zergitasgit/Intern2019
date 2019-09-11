@@ -22,6 +22,7 @@ open class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.Callback() 
      var intrinsicHeight: Int?=null
 
 
+
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         return ItemTouchHelper.Callback.makeMovementFlags(0, ItemTouchHelper.LEFT)
     }

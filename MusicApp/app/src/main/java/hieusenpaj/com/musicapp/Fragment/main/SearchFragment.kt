@@ -30,9 +30,11 @@ class SearchFragment : Fragment() {
         // Inflate the layout for this fragment
         var view: View = inflater.inflate(R.layout.fragment_search, container, false)
         (activity as AppCompatActivity).setSupportActionBar(view.toolbar)
+        view.toolbar.setTitle("Search")
+
         dbSong = DatabaseSong(context!!, null)
         arrayList = dbSong!!.getSong()
-        view.recyclerView.layoutManager = LinearLayoutManager(context!!, LinearLayout.VERTICAL, false)
+        view.recyclerView.layoutManager = LinearLayoutManager(context!!)
         songAdapter = SongAdapter(context!!, arrayList, object : SongAdapter.ItemSongListener {
             override fun onClick(position: Int, art: String, title: String, artist: String, path: String, duration: Long,favorite : Int) {
 
@@ -64,7 +66,7 @@ class SearchFragment : Fragment() {
         //making the searchview consume all the toolbar when open
         searchView.maxWidth = Int.MAX_VALUE
 
-        searchView.queryHint = "Search View Hint"
+        searchView.queryHint = "Search"
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 

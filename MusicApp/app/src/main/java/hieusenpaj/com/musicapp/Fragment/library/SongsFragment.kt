@@ -49,7 +49,9 @@ class SongsFragment : Fragment() {
 //
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         var editor  =  sharedPreferences?.edit()
-
+        view.ll_back.setOnClickListener(View.OnClickListener {
+            activity!!.onBackPressed()
+        })
         val dbSong = DatabaseSong(this.context!!, null)
         arrayList = dbSong.getSong()
         view.rv_song.layoutManager = LinearLayoutManager(context)

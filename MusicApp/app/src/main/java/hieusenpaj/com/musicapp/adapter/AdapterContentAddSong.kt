@@ -25,7 +25,7 @@ class AdapterContentAddSong(private val context: Context
                 .with(context)
                 .load(songAdd.song.art)
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.album_art)
+                        .placeholder(R.drawable.ic_songs)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .centerCrop()

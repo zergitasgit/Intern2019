@@ -35,14 +35,10 @@ class AdapterRecently(private val context: Context
                 .load(arrSong.get(p1).art)
 
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.album_art)
+                        .placeholder(R.drawable.ic_songs)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .centerCrop()
-                )
-                .thumbnail(0.5f)
-                .transition(DrawableTransitionOptions()
-                        .crossFade()
                 )
                 .into(p0.iv)
 
@@ -62,5 +58,9 @@ class AdapterRecently(private val context: Context
 
     interface ItemSongListener {
         fun onClick(position: Int, art: String, title: String, artist: String, path: String, duration: Long,favorite : Int)
+    }
+    fun setListItems(arrSong: ArrayList<Song>) {
+        this.arrSong.clear();
+        this.arrSong = arrSong
     }
 }

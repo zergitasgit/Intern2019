@@ -11,12 +11,12 @@ import java.time.Duration
 
 class DatabaseSong(private val context: Context,
                    factory: SQLiteDatabase.CursorFactory?)
-    : SQLiteOpenHelper(context,DATABASE_NAME,factory,DATABASE_VERSION) {
+    : SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
 
     override fun onCreate(p0: SQLiteDatabase?) {
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("hieu",Context.MODE_PRIVATE)
-        val edit:SharedPreferences.Editor = sharedPreferences.edit()
-        if (sharedPreferences.getBoolean("saved",false)==false){
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+        if (sharedPreferences.getBoolean("saved", false) == false) {
             val CREATE_PRODUCTS_TABLE = ("CREATE TABLE " +
                     TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY," +
@@ -27,15 +27,15 @@ class DatabaseSong(private val context: Context,
                     COLUMN_ART + " TEXT," + COLUMN_RECENTLY + " REAL," + COLUMN_FAVORITE + " INTEGER" + ")")
 
             p0!!.execSQL(CREATE_PRODUCTS_TABLE)
-            edit.putBoolean("saved",true)
+            edit.putBoolean("saved", true)
             edit.apply()
-            Toast.makeText(context,"hi",Toast.LENGTH_SHORT).show()
-        }else {
+            Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show()
+        } else {
 
         }
     }
-    fun saveDB(){
 
+    fun saveDB() {
 
 
     }
@@ -44,6 +44,7 @@ class DatabaseSong(private val context: Context,
 //        p0!!.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME)
 //        onCreate(p0)
     }
+
     companion object {
         private val DATABASE_VERSION = 1
         //
@@ -74,7 +75,8 @@ class DatabaseSong(private val context: Context,
 //        val COLUMN_ID_PLAYLIST_ID  = "playlist_id"
 //        val COLUMN_ID_SONG_ID  = "song_id"
     }
-    fun insertSong(name: String,artist: String,album: String,path: String,duration: Long,albumId: Long,art: String,time : Long) {
+
+    fun insertSong(name: String, artist: String, album: String, path: String, duration: Long, albumId: Long, art: String, time: Long) {
         val values = ContentValues()
         values.put(COLUMN_NAME, name)
         values.put(COLUMN_ARTIST, artist)
@@ -89,17 +91,18 @@ class DatabaseSong(private val context: Context,
         db.insert(TABLE_NAME, null, values)
         db.close()
     }
-    fun getSongOfArttist(name:String):ArrayList<Song> {
-        var arr : ArrayList<Song> = ArrayList()
+
+    fun getSongOfArttist(name: String): ArrayList<Song> {
+        var arr: ArrayList<Song> = ArrayList()
         val db = this.getWritableDatabase()
         val cursor = db.rawQuery("SELECT * FROM song WHERE artist = '$name' ", null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
 
-            var song = Song(cursor.getString(cursor.getColumnIndex("name")),cursor.getString(cursor.getColumnIndex("artist")),
+            var song = Song(cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("artist")),
                     cursor.getString(cursor.getColumnIndex("album")),
-                    cursor.getString(cursor.getColumnIndex("path")),cursor.getLong(cursor.getColumnIndex("duration")),
-                    cursor.getLong(cursor.getColumnIndex("albumId")),cursor.getString(cursor.getColumnIndex("art")),
+                    cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("duration")),
+                    cursor.getLong(cursor.getColumnIndex("albumId")), cursor.getString(cursor.getColumnIndex("art")),
                     cursor.getInt(cursor.getColumnIndex("favorite")))
 //            subject.setMon(cursor.getString(cursor.getColumnIndex("name")))
 //            subject.setImage(cursor.getBlob(cursor.getColumnIndex("image")))
@@ -109,17 +112,18 @@ class DatabaseSong(private val context: Context,
         }
         return arr
     }
-    fun getSongOfAlbum(albumId: Long): ArrayList<Song>{
-        var arr : ArrayList<Song> = ArrayList()
+
+    fun getSongOfAlbum(albumId: Long): ArrayList<Song> {
+        var arr: ArrayList<Song> = ArrayList()
         val db = this.getWritableDatabase()
         val cursor = db.rawQuery("SELECT * FROM song WHERE albumId = '$albumId' ", null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
 
-            var song = Song(cursor.getString(cursor.getColumnIndex("name")),cursor.getString(cursor.getColumnIndex("artist")),
+            var song = Song(cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("artist")),
                     cursor.getString(cursor.getColumnIndex("album")),
-                    cursor.getString(cursor.getColumnIndex("path")),cursor.getLong(cursor.getColumnIndex("duration")),
-                    cursor.getLong(cursor.getColumnIndex("albumId")),cursor.getString(cursor.getColumnIndex("art")),
+                    cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("duration")),
+                    cursor.getLong(cursor.getColumnIndex("albumId")), cursor.getString(cursor.getColumnIndex("art")),
                     cursor.getInt(cursor.getColumnIndex("favorite")))
 //            subject.setMon(cursor.getString(cursor.getColumnIndex("name")))
 //            subject.setImage(cursor.getBlob(cursor.getColumnIndex("image")))
@@ -129,8 +133,9 @@ class DatabaseSong(private val context: Context,
         }
         return arr
     }
-    fun getPositionSong(path:String): Int{
-        var position:Int?=null
+
+    fun getPositionSong(path: String): Int {
+        var position: Int? = null
         val db = this.getWritableDatabase()
         val cursor = db.rawQuery("SELECT * FROM song WHERE path = '$path' ", null)
         cursor.moveToFirst()
@@ -140,16 +145,17 @@ class DatabaseSong(private val context: Context,
         }
         return position!!
     }
-    fun getSongByPath(path:String): ArrayList<Song>{
+
+    fun getSongByPath(path: String): ArrayList<Song> {
         var arr = ArrayList<Song>()
         val db = this.getWritableDatabase()
         val cursor = db.rawQuery("SELECT * FROM song WHERE path = '$path' ", null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
-            var song = Song(cursor.getString(cursor.getColumnIndex("name")),cursor.getString(cursor.getColumnIndex("artist")),
+            var song = Song(cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("artist")),
                     cursor.getString(cursor.getColumnIndex("album")),
-                    cursor.getString(cursor.getColumnIndex("path")),cursor.getLong(cursor.getColumnIndex("duration")),
-                    cursor.getLong(cursor.getColumnIndex("albumId")),cursor.getString(cursor.getColumnIndex("art")),
+                    cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("duration")),
+                    cursor.getLong(cursor.getColumnIndex("albumId")), cursor.getString(cursor.getColumnIndex("art")),
                     cursor.getInt(cursor.getColumnIndex("favorite")))
 //            subject.setMon(cursor.getString(cursor.getColumnIndex("name")))
 //            subject.setImage(cursor.getBlob(cursor.getColumnIndex("image")))
@@ -159,16 +165,17 @@ class DatabaseSong(private val context: Context,
         }
         return arr
     }
-    fun getSongFavorite(): ArrayList<Song>{
+
+    fun getSongFavorite(): ArrayList<Song> {
         var arr = ArrayList<Song>()
         val db = this.getWritableDatabase()
         val cursor = db.rawQuery("SELECT * FROM song WHERE favorite = 1 ", null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
-            var song = Song(cursor.getString(cursor.getColumnIndex("name")),cursor.getString(cursor.getColumnIndex("artist")),
+            var song = Song(cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("artist")),
                     cursor.getString(cursor.getColumnIndex("album")),
-                    cursor.getString(cursor.getColumnIndex("path")),cursor.getLong(cursor.getColumnIndex("duration")),
-                    cursor.getLong(cursor.getColumnIndex("albumId")),cursor.getString(cursor.getColumnIndex("art")),
+                    cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("duration")),
+                    cursor.getLong(cursor.getColumnIndex("albumId")), cursor.getString(cursor.getColumnIndex("art")),
                     cursor.getInt(cursor.getColumnIndex("favorite")))
 //            subject.setMon(cursor.getString(cursor.getColumnIndex("name")))
 //            subject.setImage(cursor.getBlob(cursor.getColumnIndex("image")))
@@ -178,35 +185,39 @@ class DatabaseSong(private val context: Context,
         }
         return arr
     }
-    fun updateFavorite(path: String,favorite:Int){
+
+    fun updateFavorite(path: String, favorite: Int) {
         val contentValues = ContentValues()
         val db = this.readableDatabase
         contentValues.put(COLUMN_FAVORITE, favorite)
         db.update(TABLE_NAME, contentValues, "path = '$path'", null)
         return
     }
-    fun getSong() : ArrayList<Song>{
-        var arr : ArrayList<Song> = ArrayList()
+
+    fun getSong(): ArrayList<Song> {
+        var arr: ArrayList<Song> = ArrayList()
         val db = this.getWritableDatabase()
         val cursor = db.rawQuery("SELECT * FROM song ", null)
         cursor.moveToFirst()
-        while (!cursor.isAfterLast) {
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
 
-            var song = Song(cursor.getString(cursor.getColumnIndex("name")),cursor.getString(cursor.getColumnIndex("artist")),
-                    cursor.getString(cursor.getColumnIndex("album")),
-                    cursor.getString(cursor.getColumnIndex("path")),cursor.getLong(cursor.getColumnIndex("duration")),
-                    cursor.getLong(cursor.getColumnIndex("albumId")),cursor.getString(cursor.getColumnIndex("art")),
-                    cursor.getInt(cursor.getColumnIndex("favorite")))
+                var song = Song(cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("artist")),
+                        cursor.getString(cursor.getColumnIndex("album")),
+                        cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("duration")),
+                        cursor.getLong(cursor.getColumnIndex("albumId")), cursor.getString(cursor.getColumnIndex("art")),
+                        cursor.getInt(cursor.getColumnIndex("favorite")))
 //            subject.setMon(cursor.getString(cursor.getColumnIndex("name")))
 //            subject.setImage(cursor.getBlob(cursor.getColumnIndex("image")))
 //            subject.setId(cursor.getString(cursor.getColumnIndex("id")))
-            arr.add(song)
-            cursor.moveToNext()
+                arr.add(song)
+                cursor.moveToNext()
+            }
         }
         return arr
     }
 
-    fun updateRecently(path: String,time:Long) {
+    fun updateRecently(path: String, time: Long) {
         val contentValues = ContentValues()
         val db = this.readableDatabase
         contentValues.put(COLUMN_RECENTLY, time)
@@ -222,16 +233,16 @@ class DatabaseSong(private val context: Context,
 //
 //    }
 
-    fun getSongRecently() : ArrayList<Song>{
-        var arr : ArrayList<Song> = ArrayList()
+    fun getSongRecently(): ArrayList<Song> {
+        var arr: ArrayList<Song> = ArrayList()
         val db = this.getWritableDatabase()
         val cursor = db.rawQuery("SELECT * FROM song ORDER BY recently DESC LIMIT 6 ", null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
-            var song = Song(cursor.getString(cursor.getColumnIndex("name")),cursor.getString(cursor.getColumnIndex("artist")),
+            var song = Song(cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("artist")),
                     cursor.getString(cursor.getColumnIndex("album")),
-                    cursor.getString(cursor.getColumnIndex("path")),cursor.getLong(cursor.getColumnIndex("duration")),
-                    cursor.getLong(cursor.getColumnIndex("albumId")),cursor.getString(cursor.getColumnIndex("art")),
+                    cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("duration")),
+                    cursor.getLong(cursor.getColumnIndex("albumId")), cursor.getString(cursor.getColumnIndex("art")),
                     cursor.getInt(cursor.getColumnIndex("favorite")))
 //            subject.setMon(cursor.getString(cursor.getColumnIndex("name")))
 //            subject.setImage(cursor.getBlob(cursor.getColumnIndex("image")))
@@ -240,5 +251,15 @@ class DatabaseSong(private val context: Context,
             cursor.moveToNext()
         }
         return arr
+    }
+    fun deleteId(name: String):Int{
+        val db = this.writableDatabase
+//        val contentValues = ContentValues()
+//        contentValues.put(KEY_ID, emp.userId) // EmpModelClass UserId
+        // Deleting Row
+        val success = db.delete(TABLE_NAME,null,null)
+        //2nd argument is String containing nullColumnHack
+        db.close() // Closing database connection
+        return success
     }
 }

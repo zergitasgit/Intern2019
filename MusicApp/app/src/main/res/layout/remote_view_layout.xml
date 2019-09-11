@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="130dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/bg_sort">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -52,42 +53,62 @@
         android:layout_height="20dp"
         android:src="@drawable/baseline_clear_black_48dp"
         android:id="@+id/iv_dismiss"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:layout_alignParentEnd="true"
         />
-
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:layout_height="45dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/bg_shuffle_false"
         android:padding="5dp"
-        android:layout_below="@+id/rl_content"
-        >
+        android:layout_below="@+id/rl_content">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/back"
-            android:layout_centerVertical="true"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:id="@+id/rl_back"
+           >
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_previous"
 
-        <ImageView
-            android:id="@+id/iv_play_pause"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerInParent="true"
+                android:layout_centerInParent="true"/>
 
-            android:src="@drawable/pause" />
+        </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/iv_next"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/next" />
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:id="@+id/rl_pause_play"
+           >
+
+            <ImageView
+                android:id="@+id/iv_play_pause"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_pause" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:id="@+id/rl_next"
+            >
+
+            <ImageView
+                android:id="@+id/iv_next"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_next" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

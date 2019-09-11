@@ -35,15 +35,12 @@ class AlbumAdapter (
                 .with(context)
                 .load(album.art)
                 .apply(RequestOptions()
-                        .placeholder(R.drawable.album_art)
+                        .placeholder(R.drawable.ic_albums)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .centerCrop()
                 )
-                .thumbnail(0.5f)
-                .transition(DrawableTransitionOptions()
-                        .crossFade()
-                )
+
                 .into(p0.ivArt)
         p0.item.setOnClickListener(View.OnClickListener {
             listener.onClick(p1)
