@@ -1,4 +1,4 @@
-package hieusenpaj.com.musicapp.Fragment.main
+package hieusenpaj.com.musicapp.fragment.main
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.*
-import android.widget.LinearLayout
 import hieusenpaj.com.musicapp.R
 import hieusenpaj.com.musicapp.`object`.Song
 import hieusenpaj.com.musicapp.activity.MainActivity

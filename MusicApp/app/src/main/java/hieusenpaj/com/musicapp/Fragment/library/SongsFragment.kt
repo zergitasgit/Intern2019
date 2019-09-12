@@ -1,30 +1,24 @@
-package hieusenpaj.com.musicapp.Fragment.library
+package hieusenpaj.com.musicapp.fragment.library
 
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 
 import hieusenpaj.com.musicapp.R
 import hieusenpaj.com.musicapp.`object`.Song
 import hieusenpaj.com.musicapp.activity.MainActivity
 import hieusenpaj.com.musicapp.adapter.SongAdapter
 import hieusenpaj.com.musicapp.db.DatabaseSong
-import kotlinx.android.synthetic.main.fragment_songs.*
 import kotlinx.android.synthetic.main.fragment_songs.view.*
-import java.util.*
-import java.util.jar.Attributes
 import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match

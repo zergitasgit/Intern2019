@@ -14,18 +14,16 @@ import android.support.annotation.RequiresApi
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
-import android.util.TypedValue
 import android.view.View
 import android.view.animation.Animation
-import hieusenpaj.com.musicapp.Fragment.main.LibraryFragment
-import hieusenpaj.com.musicapp.Fragment.main.SearchFragment
-import hieusenpaj.com.musicapp.Fragment.main.FavoriteFragment
+import hieusenpaj.com.musicapp.fragment.main.LibraryFragment
+import hieusenpaj.com.musicapp.fragment.main.SearchFragment
+import hieusenpaj.com.musicapp.fragment.main.FavoriteFragment
 import hieusenpaj.com.musicapp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.animation.TranslateAnimation
 import android.widget.RelativeLayout
 import android.widget.SeekBar
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -35,7 +33,6 @@ import hieusenpaj.com.musicapp.db.DatabasePlaylist
 import hieusenpaj.com.musicapp.db.DatabasePlaylistSong
 import hieusenpaj.com.musicapp.db.DatabaseSong
 import hieusenpaj.com.musicapp.service.MusicService
-import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -221,7 +218,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             rl_repeat.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.bg_shuffle_false));
             iv_repeat.setImageDrawable(resources.getDrawable(R.drawable.repeat))
-            tv_repeat.setTextColor(Color.parseColor("#ff4081"))
+            tv_repeat.setTextColor(Color.parseColor("#f65856"))
             tv_repeat_1.visibility = View.GONE
             edit?.putInt("repeat", 0);
             edit?.apply()
@@ -233,7 +230,7 @@ class MainActivity : AppCompatActivity() {
         if (sharedPreferences?.getInt("repeat", 0) == 0) {
             rl_repeat.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.bg_shuffle_false));
             iv_repeat.setImageDrawable(resources.getDrawable(R.drawable.repeat))
-            tv_repeat.setTextColor(Color.parseColor("#ff4081"))
+            tv_repeat.setTextColor(Color.parseColor("#f65856"))
         } else if (sharedPreferences?.getInt("repeat", 0) == 1) {
             rl_repeat.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.bg_shufffle_true));
             iv_repeat.setImageDrawable(resources.getDrawable(R.drawable.repeat_true))
@@ -268,7 +265,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             rl_shuffle.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.bg_shuffle_false));
             iv_shuffle.setImageDrawable(resources.getDrawable(R.drawable.shuffle))
-            tv_shuffle.setTextColor(Color.parseColor("#ff4081"))
+            tv_shuffle.setTextColor(Color.parseColor("#f65856"))
             if (sharedPreferences!!.getString("array", "").equals("song")) {
                 arrayList = dbSong!!.getSong()
                 var position = dbSong!!.getPositionSong(sharedPreferences?.getString("path", "")!!)
@@ -341,91 +338,13 @@ class MainActivity : AppCompatActivity() {
 
             rl_shuffle.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.bg_shuffle_false));
             iv_shuffle.setImageDrawable(resources.getDrawable(R.drawable.shuffle))
-            tv_shuffle.setTextColor(Color.parseColor("#ff4081"))
+            tv_shuffle.setTextColor(Color.parseColor("#f65856"))
 
         }
     }
 
     fun songClicked(art: String, title: String, artist: String, path: String, duration: Long, array: String, favorite: Int) {
-//        if(array.equals("song")){
-//            arrayList = dbSong!!.getSong()
-//        }else if(array.equals("album")){
-//            arrayList = dbSong!!.getSongOfAlbum(sharedPreferences!!.getLong("albumid",0))
-//        }else if(array.equals("artist")){
-//            arrayList = dbSong!!.getSongOfArttist(sharedPreferences!!.getString("artist",""))
-//        }else if(array.equals("playlist")){
-//            arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId",0))
-////            arrSong = dbSong!!.getSong()
-//            arrayList.clear()
-//            for (i in arrPath) {
 //
-//                arrSong = dbSong!!.getSongByPath(i)
-//
-//                arrayList.add(arrSong.get(0))
-//            }
-////            arrayList=arrSongPlaylist
-//        }
-//        if (sharedPreferences?.getBoolean("shuffle", false) == true) {
-//
-//            Collections.shuffle(arrayList, Random(sharedPreferences!!.getLong("seed", 0)))
-//            for( i in arrayList.indices){
-//                if(arrayList[i].path.equals(sharedPreferences?.getString("path", ""))){
-//                    edit!!.putInt("pos", i)
-//                    edit!!.apply()
-//                }
-//            }
-//        } else {
-//            if(sharedPreferences!!.getString("array","").equals("song")){
-//                arrayList = dbSong!!.getSong()
-//                var position = dbSong!!.getPositionSong(sharedPreferences?.getString("path", "")!!)
-//                edit!!.putInt("pos", position - 1)
-//                edit!!.apply()
-//            }else if(sharedPreferences!!.getString("array","").equals("album")){
-//                arrayList = dbSong!!.getSongOfAlbum(sharedPreferences!!.getLong("albumid",0))
-//                for( i in arrayList.indices){
-//                    if(arrayList[i].path.equals(sharedPreferences?.getString("path", ""))){
-//                        edit!!.putInt("pos", i)
-//                        edit!!.apply()
-//                    }
-//                }
-//            }else if(sharedPreferences!!.getString("array","").equals("artist")){
-//                arrayList = dbSong!!.getSongOfArttist(sharedPreferences!!.getString("artist",""))
-//                for( i in arrayList.indices){
-//                    if(arrayList[i].path.equals(sharedPreferences?.getString("path", ""))){
-//                        edit!!.putInt("pos", i)
-//                        edit!!.apply()
-//                    }
-//                }
-//            }
-//            else if(sharedPreferences!!.getString("array","").equals("playlist")){
-//                arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId",0))
-////            arrSong = dbSong!!.getSong()
-//                arrayList.clear()
-//                for (i in arrPath) {
-//
-//                    arrSong = dbSong!!.getSongByPath(i)
-//
-//                    arrayList.add(arrSong.get(0))
-//                }
-////                arrayList = arrSongPlaylist
-//                for (i in arrayList.indices) {
-//                    if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
-//                        edit!!.putInt("pos", i)
-//                        edit!!.putBoolean("changePlaylist",false)
-//                        edit!!.apply()
-//                    }
-//                }
-//                if(sharedPreferences!!.getBoolean("changePlaylist",true)==true){
-//
-//                        edit!!.putInt("pos", 0)
-//                        edit!!.apply()
-//
-//                }
-//            }
-//
-//
-//
-//        }
 
         behavior.peekHeight = convertToPx(126)
 
@@ -806,7 +725,6 @@ class MainActivity : AppCompatActivity() {
             if (action.equals("SERVICE_NEXT", ignoreCase = true)) {
                 // do your stuff to play action;
                 //
-                Toast.makeText(context, "next", Toast.LENGTH_SHORT).show();
                 playBC()
                 var song = arrayList.get(sharedPreferences!!.getInt("pos", 0))
                 edit?.putLong("time", song.duration)
@@ -900,7 +818,7 @@ class MainActivity : AppCompatActivity() {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 if (p2) {
                     if (mp != null) {
-                        mp!!.seekTo(p1)
+                        mp?.seekTo(p1)
                     }
 
 
@@ -970,11 +888,9 @@ class MainActivity : AppCompatActivity() {
             } else {
                 song = arrayList.get(sharedPreferences!!.getInt("pos", 0) + 1)
                 edit!!.putBoolean("isplay", true)
-                Toast.makeText(this, "" + song!!.title, Toast.LENGTH_SHORT).show()
             }
         } else {
             song = arrayList.get(sharedPreferences!!.getInt("pos", 0))
-            Toast.makeText(this, "" + song!!.title, Toast.LENGTH_SHORT).show()
 
         }
 
@@ -1077,15 +993,7 @@ class MainActivity : AppCompatActivity() {
 
     fun version() {
         arrayList = listOfSongs(this)
-//        for (i in arrayList.indices) {
-//            if (arrayList.get(i).duration.toInt() == 0) {
-//                var fdelete = File(arrayList.get(i).path)
-//                fdelete.delete()
-//                arrayList.removeAt(i)
-//                sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(fdelete)))
-//            }
 //
-//        }
         edit?.putBoolean("permission", true)
         edit?.apply()
         if (dbSong!!.getSong().size != arrayList.size) {

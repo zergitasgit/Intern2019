@@ -29,7 +29,6 @@ class DatabaseSong(private val context: Context,
             p0!!.execSQL(CREATE_PRODUCTS_TABLE)
             edit.putBoolean("saved", true)
             edit.apply()
-            Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show()
         } else {
 
         }

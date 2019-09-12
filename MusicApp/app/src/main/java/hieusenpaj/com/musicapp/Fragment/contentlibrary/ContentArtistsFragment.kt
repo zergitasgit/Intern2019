@@ -1,4 +1,4 @@
-package hieusenpaj.com.musicapp.Fragment.contentlibrary
+package hieusenpaj.com.musicapp.fragment.contentlibrary
 
 
 import android.content.Context
@@ -19,7 +19,6 @@ import hieusenpaj.com.musicapp.`object`.Song
 import hieusenpaj.com.musicapp.activity.MainActivity
 import hieusenpaj.com.musicapp.adapter.ContentArtistAdapter
 import hieusenpaj.com.musicapp.db.DatabaseSong
-import kotlinx.android.synthetic.main.fragment_content_artists.*
 import kotlinx.android.synthetic.main.fragment_content_artists.view.*
 
 // TODO: Rename parameter arguments, choose names that match

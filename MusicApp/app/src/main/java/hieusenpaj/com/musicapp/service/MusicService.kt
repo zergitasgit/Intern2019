@@ -188,13 +188,9 @@ class MusicService : Service() {
         remoteViewSmall?.setOnClickPendingIntent(R.id.iv_next, pendingNextIntent)
         remoteViewSmall?.setOnClickPendingIntent(R.id.iv_pause_play, pendingPlayIntent)
         remoteViewSmall?.setOnClickPendingIntent(R.id.iv_dismiss, pendingDismissIntent)
+        remoteViewSmall?.setOnClickPendingIntent(R.id.iv_back, pendingBackIntent)
 
-//        if (sharedPreferences?.getBoolean("isplay", false) == true) {
-//            updatePlayPause(true)
-//        } else {
-//            updatePlayPause(false)
-//        }
-//        }
+//
         val notifystyle = NotificationCompat.BigPictureStyle()
 
         notification = NotificationCompat.Builder(this, CHANNEL_ID)
@@ -204,6 +200,7 @@ class MusicService : Service() {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentIntent(pendingIntent)
+                .setStyle(NotificationCompat.BigTextStyle())
                 .setCustomBigContentView(remoteView)
                 .setCustomContentView(remoteViewSmall)
                 .build()
@@ -324,7 +321,7 @@ class MusicService : Service() {
             val serviceChannel = NotificationChannel(
                     CHANNEL_ID,
                     "Foreground Service Channel",
-                    NotificationManager.IMPORTANCE_NONE
+                    NotificationManager.IMPORTANCE_LOW
             )
 //            serviceChannel.lightColor = Color.BLUE
 //            serviceChannel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE

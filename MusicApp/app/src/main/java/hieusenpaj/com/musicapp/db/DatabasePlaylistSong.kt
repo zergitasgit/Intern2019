@@ -25,7 +25,6 @@ class DatabasePlaylistSong(private val context: Context,
             p0!!.execSQL(CREATE_PRODUCTS_TABLE_PLAYLIST_SONG)
             edit.putBoolean("playlistsong", true)
             edit.apply()
-            Toast.makeText(context, "playlist", Toast.LENGTH_SHORT).show()
 
         } else {
 

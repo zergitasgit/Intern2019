@@ -1,4 +1,4 @@
-package hieusenpaj.com.musicapp.Fragment.contentlibrary
+package hieusenpaj.com.musicapp.fragment.contentlibrary
 
 
 import android.app.Dialog
@@ -22,18 +22,13 @@ import hieusenpaj.com.musicapp.`object`.Song
 import hieusenpaj.com.musicapp.`object`.SongAdd
 import hieusenpaj.com.musicapp.activity.MainActivity
 import hieusenpaj.com.musicapp.adapter.AdapterAddSong
-import hieusenpaj.com.musicapp.adapter.AdapterContentAddSong
 import hieusenpaj.com.musicapp.adapter.AdapterContentPlaylist
 import hieusenpaj.com.musicapp.db.DatabasePlaylist
 import hieusenpaj.com.musicapp.db.DatabasePlaylistSong
 import hieusenpaj.com.musicapp.db.DatabaseSong
-import kotlinx.android.synthetic.main.activity_new_playlist.*
 import kotlinx.android.synthetic.main.dialog_add_song.*
 import kotlinx.android.synthetic.main.fragment_content_play_list.*
 import kotlinx.android.synthetic.main.fragment_content_play_list.view.*
-import android.support.v7.widget.helper.ItemTouchHelper.Callback.makeMovementFlags
-import hieusenpaj.com.musicapp.adapter.AlbumAdapter
-import android.support.v7.widget.helper.ItemTouchHelper.Callback.makeMovementFlags
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions

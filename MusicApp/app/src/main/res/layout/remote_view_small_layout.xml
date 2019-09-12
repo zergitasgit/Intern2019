@@ -1,5 +1,5 @@
 <RelativeLayout android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#fff"
     >
@@ -7,6 +7,8 @@
         android:id="@+id/iv_art"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
        />
     <LinearLayout
         android:layout_toRightOf="@+id/iv_art"
@@ -16,18 +18,24 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:id="@+id/ll"
-        android:layout_marginRight="110dp">
+        android:layout_marginRight="125dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:textColor="#424242"
             android:id="@+id/tv_name"
-            android:maxLines="1"/>
+            android:ellipsize="end"
+            android:inputType="none"
+            android:maxLines="1"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
+            android:ellipsize="end"
+            android:inputType="none"
+            android:maxLines="1"
             android:textColor="#EBEBEB"
             android:id="@+id/tv_artist"/>
 
@@ -41,19 +49,29 @@
         android:layout_marginRight="15dp"
         android:layout_centerVertical="true"/>
     <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_previous"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/iv_pause_play"
+        android:layout_marginRight="15dp"
+        />
+    <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/ic_next"
         android:id="@+id/iv_next"
-        android:layout_toLeftOf="@id/iv_dismiss"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="30dp"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"/>
     <ImageView
         android:id="@+id/iv_dismiss"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:src="@drawable/baseline_clear_black_48dp"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"/>
+
+        />
 </RelativeLayout>

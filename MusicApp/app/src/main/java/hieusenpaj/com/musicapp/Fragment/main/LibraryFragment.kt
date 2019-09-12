@@ -1,4 +1,4 @@
-package hieusenpaj.com.musicapp.Fragment.main
+package hieusenpaj.com.musicapp.fragment.main
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,11 +8,10 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import hieusenpaj.com.musicapp.Fragment.library.AlbumFragment
-import hieusenpaj.com.musicapp.Fragment.library.ArtistsFragment
-import hieusenpaj.com.musicapp.Fragment.library.PlaylistsFragment
-import hieusenpaj.com.musicapp.Fragment.library.SongsFragment
+import hieusenpaj.com.musicapp.fragment.library.AlbumFragment
+import hieusenpaj.com.musicapp.fragment.library.ArtistsFragment
+import hieusenpaj.com.musicapp.fragment.library.PlaylistsFragment
+import hieusenpaj.com.musicapp.fragment.library.SongsFragment
 import hieusenpaj.com.musicapp.R
 import hieusenpaj.com.musicapp.`object`.Song
 import hieusenpaj.com.musicapp.activity.MainActivity

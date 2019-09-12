@@ -1,4 +1,4 @@
-package hieusenpaj.com.musicapp.Fragment.library
+package hieusenpaj.com.musicapp.fragment.library
 
 
 import android.content.Intent
@@ -8,15 +8,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.Toast
-import hieusenpaj.com.musicapp.Fragment.contentlibrary.ContentPlayListFragment
+import hieusenpaj.com.musicapp.fragment.contentlibrary.ContentPlayListFragment
 import hieusenpaj.com.musicapp.R
 import hieusenpaj.com.musicapp.`object`.Playlist
 import hieusenpaj.com.musicapp.activity.NewPlaylistActivity
 import hieusenpaj.com.musicapp.adapter.AdapterPlaylist
 import hieusenpaj.com.musicapp.db.DatabasePlaylist
-import hieusenpaj.com.musicapp.db.DatabasePlaylistSong
 import kotlinx.android.synthetic.main.fragment_playlists.*
 import kotlinx.android.synthetic.main.fragment_playlists.view.*
 
@@ -51,7 +48,6 @@ class PlaylistsFragment : Fragment() {
         rv_playlist.layoutManager = LinearLayoutManager(context)
         var adapter = AdapterPlaylist(context!!,arrPlaylist,object :AdapterPlaylist.ItemSongListener{
             override fun onClick(pos: Int) {
-                Toast.makeText(context,"hi",Toast.LENGTH_SHORT).show()
 
             }
 

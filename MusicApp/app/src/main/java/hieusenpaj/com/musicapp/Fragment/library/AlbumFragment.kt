@@ -1,36 +1,26 @@
-package hieusenpaj.com.musicapp.Fragment.library
+package hieusenpaj.com.musicapp.fragment.library
 
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.BottomSheetDialog
-import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import hieusenpaj.com.musicapp.Fragment.contentlibrary.ContentAlbumFragment
-import hieusenpaj.com.musicapp.Fragment.contentlibrary.ContentArtistsFragment
+import hieusenpaj.com.musicapp.fragment.contentlibrary.ContentAlbumFragment
 
 import hieusenpaj.com.musicapp.R
 import hieusenpaj.com.musicapp.`object`.Album
 import hieusenpaj.com.musicapp.`object`.Song
 import hieusenpaj.com.musicapp.adapter.AlbumAdapter
 import hieusenpaj.com.musicapp.db.DatabaseSong
-import kotlinx.android.synthetic.main.fragment_album.*
 import kotlinx.android.synthetic.main.fragment_album.view.*
 import java.util.ArrayList
-import android.support.design.widget.CoordinatorLayout
-import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.bottom_sheet_layout.*
 
 
