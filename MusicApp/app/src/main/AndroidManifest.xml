@@ -22,11 +22,7 @@
             </intent-filter>
         </activity>
         ...
-        <receiver android:name=".VolumeChangeReceiver">
-            <intent-filter>
-                <action android:name="android.media.VOLUME_CHANGED_ACTION" />
-            </intent-filter>
-        </receiver>
+
 
         <service
             android:name=".service.MusicService"

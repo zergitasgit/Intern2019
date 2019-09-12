@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(broadcastReceiver, IntentFilter("SERVICE_NEXT"))
         registerReceiver(broadcastReceiver, IntentFilter("SERVICE_BACK"))
         registerReceiver(broadcastReceiver, IntentFilter("SERVICE_DISMISS"))
-        registerReceiver(brSound, IntentFilter("BR_SOUND"))
+        registerReceiver(brSound, IntentFilter("android.media.VOLUME_CHANGED_ACTION"))
         registerReceiver(brTele, IntentFilter("TELEPHONE"))
 
 
@@ -763,7 +763,14 @@ class MainActivity : AppCompatActivity() {
     }
     var brSound: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, p1: Intent?) {
-            sb_sound.setProgress(audioManager!!.getStreamVolume(AudioManager.STREAM_MUSIC))
+            val action = p1?.action
+            // internet lost alert dialog method call from here...
+            //            Toast.makeText(getApplicationContext(),"hieu",Toast.LENGTH_SHORT).show();
+
+            if (action!!.equals("android.media.VOLUME_CHANGED_ACTION", ignoreCase = true)) {
+
+                sb_sound.setProgress(audioManager!!.getStreamVolume(AudioManager.STREAM_MUSIC))
+            }
         }
 
     }
