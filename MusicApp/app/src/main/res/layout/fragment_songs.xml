@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Libary"
+            android:text="@string/bottom_library"
             android:textColor="@color/colorAccent"
             android:textSize="20dp" />
 
@@ -33,7 +33,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Songs"
+            android:text="@string/song"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="#000"

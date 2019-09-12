@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="Select Song"
+        android:text="@string/select_song"
         android:textColor="@color/colorAccent"
         android:textSize="19dp"
         android:textStyle="bold"
@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Cancel"
+                    android:text="@string/cancle"
                     android:textColor="@color/colorAccent"
                     android:textSize="18dp"/>
 
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Done"
+                    android:text="@string/done"
                     android:textColor="@color/colorAccent"
                     android:textSize="18dp"/>
             </RelativeLayout>

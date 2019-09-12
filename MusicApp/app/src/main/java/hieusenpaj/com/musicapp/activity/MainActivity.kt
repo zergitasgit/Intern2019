@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import hieusenpaj.com.musicapp.R.id.sb_sound
 import hieusenpaj.com.musicapp.`object`.Song
 import hieusenpaj.com.musicapp.db.DatabasePlaylist
 import hieusenpaj.com.musicapp.db.DatabasePlaylistSong
@@ -101,6 +102,7 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(broadcastReceiver, IntentFilter("SERVICE_BACK"))
         registerReceiver(broadcastReceiver, IntentFilter("SERVICE_DISMISS"))
         registerReceiver(brSound, IntentFilter("BR_SOUND"))
+        registerReceiver(brTele, IntentFilter("TELEPHONE"))
 
 
         ivControl()
@@ -374,6 +376,8 @@ class MainActivity : AppCompatActivity() {
                 arrayList.add(arrSong.get(0))
             }
 //            arrayList = arrSongPlaylist
+        }else{
+            arrayList = dbSong!!.getSongFavorite()
         }
 //        arrayList = dbSong.getSong()
         if (sharedPreferences?.getBoolean("shuffle", false) == true) {
@@ -434,11 +438,25 @@ class MainActivity : AppCompatActivity() {
 
             } else if (sharedPreferences?.getString("array", "").equals("favorite")) {
                 arrayList = dbSong!!.getSongFavorite()
-                for (i in arrayList.indices) {
-                    if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
-                        edit!!.putInt("pos", i)
+                if(arrayList.size>0) {
+                    for (i in arrayList.indices) {
+                        if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+                            edit!!.putInt("pos", i)
+                            boolean = true
+                            edit!!.apply()
+                        }
+
+                    }
+                    if (boolean == false) {
+                        edit!!.putInt("pos", 0)
+                        boolean = false
                         edit!!.apply()
                     }
+                }else{
+                    arrayList = dbSong!!.getSong()
+                    var position = dbSong!!.getPositionSong(sharedPreferences?.getString("path", "")!!)
+                    edit!!.putInt("pos", position - 1)
+                    edit!!.apply()
                 }
             }
 
@@ -622,7 +640,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handlePermiss() {
-        val perms = arrayOf("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE")
+        val perms = arrayOf("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.READ_PHONE_STATE")
         if (Build.VERSION.SDK_INT >= 23) {
             requestPermissions(perms, 3)
         } else {
@@ -748,6 +767,22 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    var brTele = object :BroadcastReceiver(){
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val action = p1?.action
+            // internet lost alert dialog method call from here...
+            //            Toast.makeText(getApplicationContext(),"hieu",Toast.LENGTH_SHORT).show();
+
+            if (action!!.equals("TELEPHONE", ignoreCase = true)) {
+                edit?.putBoolean("isplay", false)
+                edit?.apply()
+                playBC()
+//                              Toast.makeText(getApplicationContext(),"hieu",Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+    }
 
     fun hideSystemUI() {
         currentApiVersion = android.os.Build.VERSION.SDK_INT
@@ -796,7 +831,7 @@ class MainActivity : AppCompatActivity() {
 
         unregisterReceiver(broadcastReceiver)
         unregisterReceiver(brSound)
-
+        unregisterReceiver(brTele)
 
     }
 
@@ -1024,6 +1059,7 @@ class MainActivity : AppCompatActivity() {
 
             } else if (sharedPreferences?.getString("array", "").equals("favorite")) {
                 arrayList = dbSong!!.getSongFavorite()
+
 
             }
 

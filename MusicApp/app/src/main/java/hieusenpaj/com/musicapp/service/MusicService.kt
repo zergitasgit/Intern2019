@@ -33,6 +33,8 @@ import android.support.v4.content.ContextCompat.getSystemService
 import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.graphics.Color
+import android.telephony.PhoneStateListener
+import android.telephony.TelephonyManager
 import hieusenpaj.com.musicapp.db.DatabasePlaylistSong
 
 
@@ -73,6 +75,9 @@ class MusicService : Service() {
         registerReceiver(broadcastReceiver, intent1)
         registerReceiver(broadcastReceiverIv, intent1)
         registerReceiver(broadcastReceiverShuffle, intent1)
+        val filter =  IntentFilter();
+        filter.addAction(android.telephony.TelephonyManager.ACTION_PHONE_STATE_CHANGED);
+        registerReceiver(phoneBroadcast,filter)
         status = intent?.extras!!.getString("status")
         createNotificationChannel()
 
@@ -88,6 +93,7 @@ class MusicService : Service() {
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
     }
+
 
     fun updateStatus(status: String) {
         if (status.equals("next")) {
@@ -301,11 +307,24 @@ class MusicService : Service() {
 
             }else if(sharedPreferences?.getString("array","").equals("favorite")){
                 arrayList = dbSong!!.getSongFavorite()
-                for (i in arrayList.indices) {
-                    if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
-                        editor!!.putInt("pos", i)
+                if(arrayList.size>0) {
+                    for (i in arrayList.indices) {
+                        if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+                            editor!!.putInt("pos", i)
+                            boolean = true
+                            editor!!.apply()
+                        }
+                    }
+                    if (boolean == false) {
+                        editor!!.putInt("pos", 0)
+                        boolean = false
                         editor!!.apply()
                     }
+                }else{
+                    arrayList = dbSong.getSong()
+                    var position = dbSong.getPositionSong(sharedPreferences?.getString("path", "")!!)
+                    editor!!.putInt("pos", position - 1)
+                    editor!!.apply()
                 }
             }
 
@@ -340,6 +359,7 @@ class MusicService : Service() {
         unregisterReceiver(broadcastReceiver)
         unregisterReceiver(broadcastReceiverIv)
         unregisterReceiver(broadcastReceiverShuffle)
+        unregisterReceiver(phoneBroadcast)
         mp?.stop()
         mp?.release()
         editor?.putBoolean("isplay", false)
@@ -397,6 +417,39 @@ class MusicService : Service() {
             startForeground(1, notification)
         }else{
             manager?.notify(1, notification)
+        }
+
+    }
+
+
+    internal var phoneBroadcast  = object  : BroadcastReceiver(){
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            var extras = p1?.getExtras();
+            if (extras != null) {
+                var state = extras.getString(TelephonyManager.EXTRA_STATE);
+                if (state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+                    //pause here
+                    updatePlayPause(false)
+                    pausePlaying()
+                    val intent = Intent("TELEPHONE")
+                    p0?.sendBroadcast(intent)
+                }
+                else if (state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+                    //pause here
+                    updatePlayPause(false)
+                    pausePlaying()
+                    val intent = Intent("TELEPHONE")
+                    p0?.sendBroadcast(intent)
+
+                }
+                else if (state.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
+                    //play here
+                    updatePlayPause(false)
+                    pausePlaying()
+                    val intent = Intent("TELEPHONE")
+                    p0?.sendBroadcast(intent)
+                }
+            }
         }
 
     }

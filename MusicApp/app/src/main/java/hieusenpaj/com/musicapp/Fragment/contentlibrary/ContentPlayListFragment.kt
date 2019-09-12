@@ -145,7 +145,7 @@ class ContentPlayListFragment : Fragment() {
             if (checkSua == false) {
 
 
-                view.tv_sua.text = "Xong"
+                view.tv_sua.text = getResources().getString(R.string.done)
                 checkSua = true
 
                 view.ll_add_song.visibility = View.VISIBLE
@@ -158,7 +158,7 @@ class ContentPlayListFragment : Fragment() {
             } else {
                 view.rv_content_playlist.isClickable = true
                 view.rv_content_playlist.isEnabled = true
-                view.tv_sua.text = "Sửa"
+                view.tv_sua.text = getResources().getString(R.string.change)
                 checkSua = false
 
                 view.ll_add_song.visibility = View.GONE

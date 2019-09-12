@@ -30,7 +30,7 @@
         android:id="@+id/tvEmpty"
         android:layout_below="@id/toolbar"
         android:gravity="center"
-        android:text="There is no user with this name."
+        android:text="@string/no_song"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

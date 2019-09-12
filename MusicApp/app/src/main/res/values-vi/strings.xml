@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">OS13 Music Player</string>
+
+    <string name="bottom_library">Thư viện</string>
+    <string name="bottom_search">Tìm kiếm</string>
+    <string name="bottom_favorite">Yêu thích</string>
+    <string name="song">Bài hát</string>
+    <string name="artist">Nghệ sĩ</string>
+    <string name="recently_added">Nghe gần đây</string>
+    <string name="new_playlist">Playlist mới</string>
+    <string name="cancle">Hủy</string>
+    <string name="done">Xong</string>
+    <string name="change">Thay đổi</string>
+    <string name="add_song">Thêm bài hát</string>
+    <string name="select_song">Chọn bài hát</string>
+    <string name="name_playlist">Tên playlist</string>
+    <string name="sort">Sắp xếp</string>
+    <string name="title">Tên</string>
+    <string name="shuffle">Xáo trộn</string>
+    <string name="Repeat">Lặp</string>
+    <string name="no_song">Không có bài hát </string>
+    <string name="enter_name_playlist">nhập tên playlist</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

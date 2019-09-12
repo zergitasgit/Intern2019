@@ -29,7 +29,7 @@ class SearchFragment : Fragment() {
         // Inflate the layout for this fragment
         var view: View = inflater.inflate(R.layout.fragment_search, container, false)
         (activity as AppCompatActivity).setSupportActionBar(view.toolbar)
-        view.toolbar.setTitle("Search")
+        view.toolbar.setTitle(getResources().getText(R.string.bottom_search))
 
         dbSong = DatabaseSong(context!!, null)
         arrayList = dbSong!!.getSong()
@@ -37,6 +37,18 @@ class SearchFragment : Fragment() {
         songAdapter = SongAdapter(context!!, arrayList, object : SongAdapter.ItemSongListener {
             override fun onClick(position: Int, art: String, title: String, artist: String, path: String, duration: Long,favorite : Int) {
 
+                editor!!.putString("path", path)
+                editor!!.putString("art", art)
+                editor!!.putString("artist", artist)
+                editor!!.putString("name", title)
+
+                editor!!.putLong("time", duration)
+                editor!!.putBoolean("isplay", true)
+                editor!!.putString("array", "song")
+                editor!!.apply()
+
+
+                (activity as MainActivity).songClicked(art, title, artist, path, duration, "song",favorite)
             }
 
         })

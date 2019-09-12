@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="10dp"
-                android:text="Sửa"
+                android:text="@string/change"
                 android:textColor="@color/colorAccent"
                 android:textSize="18dp" />
         </RelativeLayout>
@@ -105,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="Add Song"
+                android:text="@string/add_song"
                 android:textColor="@color/colorAccent"
                 android:textSize="18dp" />
 

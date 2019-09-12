@@ -121,7 +121,7 @@ class NewPlaylistActivity : AppCompatActivity() {
                 onBackPressed()
 
             } else {
-                Toast.makeText(this, "nhập tên playlist", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, this.getString(R.string.enter_name_playlist), Toast.LENGTH_SHORT).show()
             }
         })
 

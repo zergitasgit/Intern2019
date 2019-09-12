@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Library"
+        android:text="@string/bottom_library"
         android:textColor="#000"
         android:textSize="30dp" />
 
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Playlists"
+        android:text="Playlist"
         android:textColor="@color/colorAccent"
         android:textSize="20dp" />
 
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Artists"
+        android:text="@string/artist"
         android:textColor="@color/colorAccent"
         android:textSize="20dp" />
 
@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Albums"
+        android:text="Album"
         android:textColor="@color/colorAccent"
         android:textSize="20dp" />
 
@@ -81,7 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Songs"
+        android:text="@string/song"
         android:textColor="@color/colorAccent"
         android:textSize="20dp" />
 
@@ -97,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Recently Added"
+        android:text="@string/recently_added"
         android:textColor="#000"
         android:textSize="26dp" />
     <android.support.v7.widget.RecyclerView
