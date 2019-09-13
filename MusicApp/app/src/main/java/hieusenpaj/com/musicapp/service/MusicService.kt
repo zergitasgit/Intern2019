@@ -74,7 +74,7 @@ class MusicService : Service() {
         intent1.addAction("SHUFFLE_TRUE")
         registerReceiver(broadcastReceiver, intent1)
         registerReceiver(broadcastReceiverIv, intent1)
-        registerReceiver(broadcastReceiverShuffle, intent1)
+//        registerReceiver(broadcastReceiverShuffle, intent1)
         val filter =  IntentFilter();
         filter.addAction(android.telephony.TelephonyManager.ACTION_PHONE_STATE_CHANGED);
         registerReceiver(phoneBroadcast,filter)
@@ -107,7 +107,12 @@ class MusicService : Service() {
                     editor!!.putInt("pos", 0)
                     editor!!.apply()
                 } else {
-                    song = arrayList.get(sharedPreferences!!.getInt("pos", 0) + 1)
+                    if(sharedPreferences!!.getInt("pos", 0) + 1>arrayList.size){
+                        song = arrayList.get(0)
+
+                    }else {
+                        song = arrayList.get(sharedPreferences!!.getInt("pos", 0) + 1)
+                    }
                     name = song.title
                     path = song.path
                     art = song.art
@@ -245,6 +250,9 @@ class MusicService : Service() {
 //            arrayList = arrSongPlaylist
         }else if(sharedPreferences?.getString("array","").equals("favorite")){
             arrayList = dbSong!!.getSongFavorite()
+            if(arrayList.size == 0){
+                arrayList = dbSong!!.getSong()
+            }
         }
 
 //        arrayList = dbSong.getSong()
@@ -254,6 +262,12 @@ class MusicService : Service() {
             for (i in arrayList.indices) {
                 if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
                     editor!!.putInt("pos", i)
+                    boolean = true
+                    editor!!.apply()
+                }
+                if (boolean==false){
+                    editor!!.putInt("pos", 0)
+                    boolean = false
                     editor!!.apply()
                 }
             }
@@ -324,6 +338,8 @@ class MusicService : Service() {
                     arrayList = dbSong.getSong()
                     var position = dbSong.getPositionSong(sharedPreferences?.getString("path", "")!!)
                     editor!!.putInt("pos", position - 1)
+                    editor!!.putString("array","song")
+
                     editor!!.apply()
                 }
             }
@@ -358,7 +374,7 @@ class MusicService : Service() {
 
         unregisterReceiver(broadcastReceiver)
         unregisterReceiver(broadcastReceiverIv)
-        unregisterReceiver(broadcastReceiverShuffle)
+//        unregisterReceiver(broadcastReceiverShuffle)
         unregisterReceiver(phoneBroadcast)
         mp?.stop()
         mp?.release()
@@ -468,75 +484,90 @@ class MusicService : Service() {
             }
         }
     }
-    internal var broadcastReceiverShuffle: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val action = intent.action
-
-            if (action!!.equals("SHUFFLE_TRUE", ignoreCase = true)) {
-
-                Collections.shuffle(arrayList, Random(sharedPreferences!!.getLong("seed", 0)))
-                for (i in arrayList.indices) {
-                    if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
-                        editor!!.putInt("pos", i)
-                        editor!!.apply()
-                    }
-                }
-
-            } else if (action.equals("SHUFFLE_FALSE", ignoreCase = true)) {
-
-                if (sharedPreferences!!.getString("array", "").equals("song")) {
-                    arrayList = dbSong.getSong()
-                    var position = dbSong.getPositionSong(sharedPreferences?.getString("path", "")!!)
-                    editor!!.putInt("pos", position - 1)
-                    editor!!.apply()
-                } else if (sharedPreferences!!.getString("array", "").equals("album")) {
-                    arrayList = dbSong.getSongOfAlbum(sharedPreferences!!.getLong("albumid", 0))
-                    for (i in arrayList.indices) {
-                        if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
-                            editor!!.putInt("pos", i)
-                            editor!!.apply()
-                        }
-                    }
-                } else if (sharedPreferences!!.getString("array", "").equals("artist")) {
-                    arrayList = dbSong.getSongOfArttist(sharedPreferences!!.getString("artist", ""))
-                    for (i in arrayList.indices) {
-                        if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
-                            editor!!.putInt("pos", i)
-                            editor!!.apply()
-                        }
-                    }
-                }
-                else if(sharedPreferences!!.getString("array","").equals("playlist")){
-                    arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId",0))
-//            arrSong = dbSong.getSong()
-                    arrayList.clear()
-                    for (i in arrPath) {
-
-                        arrSong = dbSong.getSongByPath(i)
-
-                        arrayList.add(arrSong.get(0))
-                    }
-//                    arrayList = arrSongPlaylist
-                    for (i in arrayList.indices) {
-                        if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
-                            editor!!.putInt("pos",i)
-                            editor!!.apply()
-                        }
-                    }
-
-                } else if(sharedPreferences?.getString("array","").equals("favorite")){
-                    arrayList = dbSong!!.getSongFavorite()
-                    for (i in arrayList.indices) {
-                        if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
-                            editor!!.putInt("pos", i)
-                            editor!!.apply()
-                        }
-                    }
-                }
-
-            }
-        }
-    }
+//    internal var broadcastReceiverShuffle: BroadcastReceiver = object : BroadcastReceiver() {
+//        override fun onReceive(context: Context, intent: Intent) {
+//            val action = intent.action
+//
+//            if (action!!.equals("SHUFFLE_TRUE", ignoreCase = true)) {
+//
+//                Collections.shuffle(arrayList, Random(sharedPreferences!!.getLong("seed", 0)))
+//                for (i in arrayList.indices) {
+//                    if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+//                        editor!!.putInt("pos", i)
+//                        editor!!.apply()
+//                    }
+//                }
+//
+//            } else if (action.equals("SHUFFLE_FALSE", ignoreCase = true)) {
+//
+//                if (sharedPreferences!!.getString("array", "").equals("song")) {
+//                    arrayList = dbSong.getSong()
+//                    var position = dbSong.getPositionSong(sharedPreferences?.getString("path", "")!!)
+//                    editor!!.putInt("pos", position - 1)
+//                    editor!!.apply()
+//                } else if (sharedPreferences!!.getString("array", "").equals("album")) {
+//                    arrayList = dbSong.getSongOfAlbum(sharedPreferences!!.getLong("albumid", 0))
+//                    for (i in arrayList.indices) {
+//                        if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+//                            editor!!.putInt("pos", i)
+//                            editor!!.apply()
+//                        }
+//                    }
+//                } else if (sharedPreferences!!.getString("array", "").equals("artist")) {
+//                    arrayList = dbSong.getSongOfArttist(sharedPreferences!!.getString("artist", ""))
+//                    for (i in arrayList.indices) {
+//                        if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+//                            editor!!.putInt("pos", i)
+//                            editor!!.apply()
+//                        }
+//                    }
+//                }
+//                else if(sharedPreferences!!.getString("array","").equals("playlist")){
+//                    arrPath = dbPlaylistSong.getPath(sharedPreferences!!.getLong("playlistId",0))
+////            arrSong = dbSong.getSong()
+//                    arrayList.clear()
+//                    for (i in arrPath) {
+//
+//                        arrSong = dbSong.getSongByPath(i)
+//
+//                        arrayList.add(arrSong.get(0))
+//                    }
+////                    arrayList = arrSongPlaylist
+//                    for (i in arrayList.indices) {
+//                        if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+//                            editor!!.putInt("pos",i)
+//                            editor!!.apply()
+//                        }
+//                    }
+//
+//                } else if(sharedPreferences?.getString("array","").equals("favorite")){
+//                    arrayList = dbSong!!.getSongFavorite()
+//                    if(arrayList.size>0) {
+//                        for (i in arrayList.indices) {
+//                            if (arrayList[i].path.equals(sharedPreferences?.getString("path", ""))) {
+//                                editor!!.putInt("pos", i)
+//                                boolean = true
+//                                editor!!.apply()
+//                            }
+//                        }
+//                        if (boolean == false) {
+//                            editor!!.putInt("pos", 0)
+//                            boolean = false
+//                            editor!!.apply()
+//                        }
+//                    }else{
+//                        arrayList = dbSong.getSong()
+//                        var position = dbSong.getPositionSong(sharedPreferences?.getString("path", "")!!)
+//                        editor!!.putInt("pos", position - 1)
+//                        editor!!.putString("array","song")
+//
+//                        editor!!.apply()
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
 
 
     internal var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -579,6 +610,7 @@ class MusicService : Service() {
                         editor!!.putInt("pos", 0)
 
                     } else {
+
                         song = arrayList.get(sharedPreferences!!.getInt("pos", 0) - 1)
                         editor!!.putBoolean("isplay", true)
                         editor!!.putInt("pos", sharedPreferences!!.getInt("pos", 0) - 1)
@@ -701,9 +733,14 @@ class MusicService : Service() {
                 editor!!.putInt("pos", 0)
 
             } else {
-                song = arrayList.get(sharedPreferences!!.getInt("pos", 0) + 1)
-                editor!!.putBoolean("isplay", true)
-                editor!!.putInt("pos", sharedPreferences?.getInt("pos", 0)!! + 1)
+                if(sharedPreferences!!.getInt("pos", 0) + 1>arrayList.size){
+                    song = arrayList.get(0)
+                    editor!!.putInt("pos", 0)
+                }else {
+                    song = arrayList.get(sharedPreferences!!.getInt("pos", 0) + 1)
+                    editor!!.putBoolean("isplay", true)
+                    editor!!.putInt("pos", sharedPreferences?.getInt("pos", 0)!! + 1)
+                }
 
 
             }
