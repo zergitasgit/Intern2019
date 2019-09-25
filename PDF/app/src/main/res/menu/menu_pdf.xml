@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+
+    <item
+        android:id="@+id/menu_page"
+        android:title="Go to Page"
+        />
+    <item
+        android:id="@+id/menu_night"
+
+        android:title="Enable night mode"/>
+    <item
+        android:id="@+id/menu_mode"
+
+        android:title="Horizontal mode"/>
+    <item
+        android:id="@+id/menu_properties"
+
+        android:title="Properties"/>
+</menu>

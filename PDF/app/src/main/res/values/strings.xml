@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PDF</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="increment">+</string>
+    <string name="decrement">-</string>
+    <string name="display">1</string>
+</resources>

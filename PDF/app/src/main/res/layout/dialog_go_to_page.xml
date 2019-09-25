@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
+    android:layout_margin="25dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="#000"
+        android:text="Enter page"
+        android:textSize="18dp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"/>
+
+    <com.travijuu.numberpicker.library.NumberPicker
+        android:id="@+id/number_picker_custom"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:focusable="true"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        numberpicker:min="0"
+        numberpicker:max="10"
+        numberpicker:value="-5"
+        numberpicker:unit="1"
+        numberpicker:custom_layout="@layout/number_picker_layout_custom"  />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:textSize="17dp"
+        android:textColor="#000"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="15dp"
+        android:id="@+id/tv_ok_page"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/number_picker_custom"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:textSize="17dp"
+        android:textColor="#000"
+        android:id="@+id/tv_cancel_page"
+        android:layout_toLeftOf="@id/tv_ok_page"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/number_picker_custom"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="15dp"/>
+</RelativeLayout>
