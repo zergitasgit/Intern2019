@@ -7,18 +7,18 @@
 
     <item
         android:id="@+id/menu_page"
-        android:title="Go to Page"
+        android:title="@string/go_to_page"
         />
     <item
         android:id="@+id/menu_night"
 
-        android:title="Enable night mode"/>
+        android:title="@string/e_night_mode"/>
     <item
         android:id="@+id/menu_mode"
 
-        android:title="Horizontal mode"/>
+        android:title="@string/h_mode"/>
     <item
         android:id="@+id/menu_properties"
 
-        android:title="Properties"/>
+        android:title="@string/properties"/>
 </menu>

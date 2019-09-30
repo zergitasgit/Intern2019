@@ -48,7 +48,7 @@ class PdfActivity : AppCompatActivity(), OnPageChangeListener, OnLoadCompleteLis
         editor = sharedPreferences?.edit()
 
         setSupportActionBar(toolbar)
-        toolbar.setTitle("PDF")
+        toolbar.setTitle("PDF Viewer")
         toolbar.iv_back.setOnClickListener {
             onBackPressed()
         }
@@ -161,7 +161,7 @@ class PdfActivity : AppCompatActivity(), OnPageChangeListener, OnLoadCompleteLis
                     .load()
             editor!!.putBoolean("ishorizontal", true)
             editor!!.apply()
-            item?.title = "Vertical mode"
+            item?.title = resources.getString(R.string.v_mode)
         } else {
             pdfView.fromFile(File(path))
                     .defaultPage(0)
@@ -174,7 +174,7 @@ class PdfActivity : AppCompatActivity(), OnPageChangeListener, OnLoadCompleteLis
                     .load()
             editor!!.putBoolean("ishorizontal", false)
             editor!!.apply()
-            item?.title = "Horizontal mode"
+            item?.title = resources.getString(R.string.h_mode)
         }
     }
 
@@ -190,7 +190,7 @@ class PdfActivity : AppCompatActivity(), OnPageChangeListener, OnLoadCompleteLis
                     .onPageError(this)
                     .enableAnnotationRendering(true)
                     .load()
-            item.title = "Horizontal mode"
+            item.title = resources.getString(R.string.h_mode)
         } else {
             pdfView.fromFile(File(path))
                     .defaultPage(0)
@@ -202,7 +202,7 @@ class PdfActivity : AppCompatActivity(), OnPageChangeListener, OnLoadCompleteLis
                     .onPageError(this)
                     .swipeHorizontal(true)
                     .load()
-            item.title = "Vertical mode"
+            item.title = resources.getString(R.string.v_mode)
         }
     }
     private fun checkNightMode(item: MenuItem){
@@ -210,21 +210,21 @@ class PdfActivity : AppCompatActivity(), OnPageChangeListener, OnLoadCompleteLis
             frame_night_mode.visibility = View.GONE
             editor!!.putBoolean("night",false)
             editor!!.apply()
-            item.title = "Enable night mode"
+            item.title = resources.getString(R.string.e_night_mode)
         }else{
             frame_night_mode.visibility = View.VISIBLE
             editor!!.putBoolean("night",true)
             editor!!.apply()
-            item.title = "Disable night mode"
+            item.title =resources.getString(R.string.d_night_mode)
         }
     }
     private fun dislayNightMode(item: MenuItem){
         if(!sharedPreferences!!.getBoolean("night",false)){
             frame_night_mode.visibility = View.GONE
-            item.title = "Enable night mode"
+            item.title = resources.getString(R.string.e_night_mode)
         }else{
             frame_night_mode.visibility = View.VISIBLE
-            item.title = "Disable night mode"
+            item.title = resources.getString(R.string.d_night_mode)
         }
     }
 

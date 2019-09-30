@@ -1,40 +1,27 @@
 package hieusenpaj.com.pdf.fragment
 
 
-import android.app.Dialog
 import android.content.*
-import android.graphics.drawable.ColorDrawable
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
-import android.text.Editable
 import android.view.*
-import android.view.inputmethod.InputMethodManager
-import android.widget.LinearLayout
-import android.widget.Toast
-
 import hieusenpaj.com.pdf.R
 import hieusenpaj.com.pdf.`object`.PDF
 import hieusenpaj.com.pdf.activity.PdfActivity
 import hieusenpaj.com.pdf.adapter.PDFAdapter
 import hieusenpaj.com.pdf.db.DbPDF
-import kotlinx.android.synthetic.main.dialog_rename.*
 import kotlinx.android.synthetic.main.fragment_dislay_pdf.*
 import kotlinx.android.synthetic.main.fragment_dislay_pdf.view.*
 import java.io.File
 import java.text.SimpleDateFormat
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.content.FileProvider
-import hieusenpaj.com.pdf.R.drawable.pdf
 import hieusenpaj.com.pdf.dialog.DeleteDialog
 import hieusenpaj.com.pdf.dialog.DetailDialog
 import hieusenpaj.com.pdf.dialog.RenameDialog
-import kotlinx.android.synthetic.main.dialog_delete.*
-import kotlinx.android.synthetic.main.dialog_detail.*
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -88,8 +75,8 @@ class DislayPDFFragment : Fragment() {
         override fun onReceive(p0: Context?, p1: Intent?) {
 
             val action = p1?.action
-            var string = p1?.extras?.getString("string")
-            if (string!!.isEmpty() || string!!.length == 0) {
+            val string = p1?.extras?.getString("string")
+            if (string!!.isEmpty() || string.length == 0) {
                 recycleView()
             }
 
@@ -123,7 +110,7 @@ class DislayPDFFragment : Fragment() {
         }
 //        arrFile = arrFileSearch
 
-        var adapter = PDFAdapter(context!!, arrFileSearch, object : PDFAdapter.ItemListener {
+        val adapter = PDFAdapter(context!!, arrFileSearch, object : PDFAdapter.ItemListener {
             override fun onClick(path: String, favorite: Int, name: String, date: String, size: String) {
                 startIntent(path, favorite, name, date, size)
             }
@@ -190,8 +177,7 @@ class DislayPDFFragment : Fragment() {
                 } else {// add path of  files to your arraylist for later use
                     if (listFile[i].name.endsWith(".pdf")) {
                         //Do what ever u want
-//                        filepath.add(listFile[i].name)
-                        var pdf = PDF(listFile[i].name, getModifile(listFile[i]), getSize(listFile[i]), listFile[i].absolutePath, 0, 0)
+                        val pdf = PDF(listFile[i].name, getModifile(listFile[i]), getSize(listFile[i]), listFile[i].absolutePath, 0, 0)
                         arrFile.add(pdf)
                     }
 
@@ -283,12 +269,12 @@ class DislayPDFFragment : Fragment() {
     }
 
     private fun share(file: File) {
-        val shareIntent = Intent(Intent.ACTION_SEND);
-        shareIntent.setType("application/pdf");
-        var fileUri = FileProvider.getUriForFile(context!!, "com.myfileprovider", file);
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-        context!!.startActivity(Intent.createChooser(shareIntent, "Share"));
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.setType("application/pdf")
+        val fileUri = FileProvider.getUriForFile(context!!, "com.myfileprovider", file)
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
+        context!!.startActivity(Intent.createChooser(shareIntent, "Share"))
     }
 
 }

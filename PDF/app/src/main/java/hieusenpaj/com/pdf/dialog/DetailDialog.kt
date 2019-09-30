@@ -18,10 +18,10 @@ class DetailDialog(context: Context,private var name: String,
         window!!.setBackgroundDrawable(ColorDrawable(0))
         setContentView(R.layout.dialog_detail)
         window!!.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        tv_name.text = "File Name: " + name
-        tv_path.text = "Path: " + path
-        tv_date.text = "Last Modified: " + date
-        tv_size.text = "Size: " + size
+        tv_name.text = context.resources.getString(R.string.file_name)+ " " +name
+        tv_path.text = context.resources.getString(R.string.path) +" " + path
+        tv_date.text = context.resources.getString(R.string.last_modifiled) +" " + date
+        tv_size.text = context.resources.getString(R.string.size) +" " + size
         tv_ok_detail.setOnClickListener {
             dismiss()
         }

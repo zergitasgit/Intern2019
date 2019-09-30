@@ -16,7 +16,6 @@
     <EditText
         android:layout_width="70dp"
         android:layout_height="match_parent"
-        android:text="@string/display"
         android:textColor="@android:color/black"
         android:inputType="number"
         android:id="@+id/display"

@@ -24,7 +24,7 @@ class PageDialog(context: Context, private val listener: OnClickDialog,private v
         display.requestFocus()
         number_picker_custom.setDisplayFocusable(true)
         number_picker_custom.max = size
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         tv_ok_page.setOnClickListener {
             if(!TextUtils.isEmpty(display.text.toString())){
 //                pdfView.jumpTo(ed_page.text.toString().toInt())

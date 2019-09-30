@@ -41,9 +41,7 @@ class FavoriteFragment : Fragment() {
     var editor: SharedPreferences.Editor? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_favorite, container, false)
-//       context!!.registerReceiver(brFavorite, IntentFilter("FAVORITE"))
         context!!.registerReceiver(brSearch, IntentFilter("SEARCH"))
         context!!.registerReceiver(brPop, IntentFilter("POPMENU"))
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
@@ -54,7 +52,6 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         var dbPdf = DbPDF(context!!, null)
         arr = dbPdf.getFavorite()
         view.rv_pdf.layoutManager = LinearLayoutManager(context)
@@ -215,11 +212,11 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun share(file: File) {
-        val shareIntent = Intent(Intent.ACTION_SEND);
-        shareIntent.setType("application/pdf");
-        var fileUri = FileProvider.getUriForFile(context!!, "com.myfileprovider", file);
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-        context!!.startActivity(Intent.createChooser(shareIntent, "Share"));
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.setType("application/pdf")
+        var fileUri = FileProvider.getUriForFile(context!!, "com.myfileprovider", file)
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
+        context!!.startActivity(Intent.createChooser(shareIntent, "Share"))
     }
 }

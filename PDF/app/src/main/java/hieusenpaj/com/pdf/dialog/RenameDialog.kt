@@ -29,7 +29,7 @@ class RenameDialog(context: Context,private var name:String,
             ed_rename.text = Editable.Factory.getInstance().newEditable(rename)
             ed_rename.setSelectAllOnFocus(true)
             ed_rename.requestFocus();
-            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+            window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
             tv_ok.setOnClickListener {
                 if (ed_rename.text.toString()!=rename) {
                     renameFile(File(path), ed_rename.text.toString() + ".pdf")

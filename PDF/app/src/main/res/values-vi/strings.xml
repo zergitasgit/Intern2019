@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">PDF Viewer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="increment">+</string>
+    <string name="decrement">-</string>
+    <string name="rename">Đổi tên</string>
+    <string name="share">Chia sẻ</string>
+    <string name="delete">Xóa</string>
+    <string name="detail">Thuộc tính</string>
+    <string name="page">1</string>
+    <string name="cancle">Hủy</string>
+    <string name="delete_file">Xóa file</string>
+    <string name="delete_file_ques">Bạn muốn xóa file này?</string>
+    <string name="file_name">Tên file: </string>
+    <string name="path">Đường dẫn: </string>
+    <string name="last_modifiled">Sửa đổi lần cuối: </string>
+    <string name="size">Kích cỡ: </string>
+    <string name="go_to_page">Đi đến trang</string>
+    <string name="enter_page">Nhập trang</string>
+    <string name="e_night_mode">Bật chế độ ban đêm</string>
+    <string name="d_night_mode">Hủy chế độ ban đêm</string>
+    <string name="h_mode">Vuốt ngang</string>
+    <string name="v_mode">Vuốt dọc</string>
+    <string name="properties">Thuộc tính</string>
+</resources>

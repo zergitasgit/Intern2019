@@ -27,14 +27,14 @@ class DeleteDialog(context: Context,
             dismiss()
             listener.onClick(path)
             val intentBr = Intent("POPMENU")
-            context!!.sendBroadcast(intentBr)
+            context.sendBroadcast(intentBr)
         }
     }
     interface OnClickDialog {
         fun onClick(path: String)
     }
     private fun delete(path: String) {
-        var file = File(path)
+        val file = File(path)
         file.delete()
 
     }

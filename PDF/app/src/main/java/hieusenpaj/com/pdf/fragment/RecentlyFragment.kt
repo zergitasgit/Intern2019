@@ -232,11 +232,11 @@ class RecentlyFragment : Fragment() {
     }
 
     private fun share(file: File) {
-        val shareIntent = Intent(Intent.ACTION_SEND);
-        shareIntent.setType("application/pdf");
-        var fileUri = FileProvider.getUriForFile(context!!, "com.myfileprovider", file);
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.setType("application/pdf")
+        var fileUri = FileProvider.getUriForFile(context!!, "com.myfileprovider", file)
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-        context!!.startActivity(Intent.createChooser(shareIntent, "Share"));
+        shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
+        context!!.startActivity(Intent.createChooser(shareIntent, "Share"))
     }
 }

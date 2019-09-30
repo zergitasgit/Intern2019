@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textColor="#000"
-        android:text="Enter page"
+        android:text="@string/enter_page"
         android:textSize="18dp"
         android:layout_marginTop="20dp"
         android:textStyle="bold"/>
@@ -42,7 +42,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
+        android:text="@string/cancle"
         android:textSize="17dp"
         android:textColor="#000"
         android:id="@+id/tv_cancel_page"
