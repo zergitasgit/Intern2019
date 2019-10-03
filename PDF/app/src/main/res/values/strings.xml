@@ -19,9 +19,8 @@
     <string name="size">Size: </string>
     <string name="go_to_page">Go to page</string>
     <string name="enter_page">Enter page</string>
-    <string name="e_night_mode">Enable night mode</string>
-    <string name="d_night_mode">Disable night mode</string>
-    <string name="h_mode">Horizontal mode</string>
-    <string name="v_mode">Vertical mode</string>
+    <string name="night_mode">Night mode</string>
+    <string name="h_mode">Horizontal</string>
+    <string name="v_mode">Vertical</string>
     <string name="properties">Properties</string>
 </resources>

@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="15dp"
-    android:background="#fff">
+    android:background="@drawable/bg_dialog"
+    >
 
     <TextView
         android:layout_width="wrap_content"

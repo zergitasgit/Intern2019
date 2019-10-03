@@ -5,7 +5,7 @@
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/pdf"
+        android:src="@drawable/ic_pdf_pink"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
         android:id="@+id/iv_pdf"
@@ -48,7 +48,7 @@
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@drawable/ic_menu"
+        android:src="@drawable/ic_more"
         android:id="@+id/iv_pop_menu"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"

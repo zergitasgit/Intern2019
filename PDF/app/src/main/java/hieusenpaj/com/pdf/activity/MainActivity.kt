@@ -33,18 +33,27 @@ class MainActivity : AppCompatActivity() {
     var arrIcon = ArrayList<Int>()
     var pos: Int? = null
     var tabAdapter: TabAdapter? = null
-    var listIconResource = intArrayOf(R.drawable.pdf, R.drawable.history_ha, R.drawable.favorite
-            , R.drawable.pdf_sele, R.drawable.history_sele, R.drawable.favorite_sele)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setBgStatusbar()
         setContentView(R.layout.activity_main)
         handlePermission()
         registerReceiver(brHistory, IntentFilter("HISTORY"))
         setUpToolBar()
 
     }
+    private fun setBgStatusbar(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
+            val background = resources.getDrawable(R.drawable.gradient)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.setStatusBarColor(resources.getColor(android.R.color.transparent))
+            window.setNavigationBarColor(resources.getColor(android.R.color.transparent))
+            window.setBackgroundDrawable(background)
+        }
+    }
 
 
 

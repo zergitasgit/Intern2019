@@ -1,20 +1,23 @@
 package hieusenpaj.com.pdf.fragment
 
 
+import android.annotation.SuppressLint
 import android.content.*
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.FileProvider
+import android.support.v7.view.menu.MenuBuilder
+import android.support.v7.view.menu.MenuPopupHelper
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.ListPopupWindow
 import android.support.v7.widget.PopupMenu
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 
 import hieusenpaj.com.pdf.R
+import hieusenpaj.com.pdf.`object`.ItemMain
 import hieusenpaj.com.pdf.`object`.PDF
 import hieusenpaj.com.pdf.activity.PdfActivity
+import hieusenpaj.com.pdf.adapter.ItemMainAdapter
 import hieusenpaj.com.pdf.adapter.PDFAdapter
 import hieusenpaj.com.pdf.db.DbPDF
 import hieusenpaj.com.pdf.dialog.DeleteDialog
@@ -67,7 +70,7 @@ class FavoriteFragment : Fragment() {
 
         }, object : PDFAdapter.MenuItemListener {
             override fun onClick(position: Int, it: View, name: String, path: String, date: String, size: String) {
-                showPopup(it, name, path, date, size)
+                showListPopupWindow(it, name, path, date, size)
 
             }
 
@@ -123,7 +126,7 @@ class FavoriteFragment : Fragment() {
 
         }, object : PDFAdapter.MenuItemListener {
             override fun onClick(position: Int, it: View, name: String, path: String, date: String, size: String) {
-                showPopup(it, name, path, date, size)
+                showListPopupWindow(it, name, path, date, size)
 
             }
 
@@ -163,54 +166,69 @@ class FavoriteFragment : Fragment() {
 
     }
 
-    private fun showPopup(view: View, name: String, path: String, date: String, size: String) {
-        var popup: PopupMenu? = null;
-        popup = PopupMenu(context!!, view)
-        popup.inflate(R.menu.menu_pop_pdf)
 
-        popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
+    private fun showListPopupWindow(anchor: View, name: String, path: String, date: String, size: String) {
+        val listPopupItems = ArrayList<ItemMain>()
+        listPopupItems.add(ItemMain(resources.getString(R.string.rename), R.drawable.ic_edit))
+        listPopupItems.add(ItemMain(resources.getString(R.string.share), R.drawable.ic_share))
+        listPopupItems.add(ItemMain(resources.getString(R.string.delete), R.drawable.ic_delete))
+        listPopupItems.add(ItemMain(resources.getString(R.string.detail), R.drawable.ic_detail))
 
-            when (item!!.itemId) {
-                R.id.rename -> {
-//
-                    val dialogRename = RenameDialog(context!!, name, path, object : RenameDialog.OnClickDialog {
-                        override fun onClick(name: String,pathNew:String) {
-                            dbPdf!!.updateName(path, name)
-                            dbPdf!!.updatePath(pathNew,path)
-                        }
 
-                    })
-                    dialogRename.show()
-
-                }
-                R.id.share -> {
-                    share(File(path))
-                }
-                R.id.delete -> {
-//
-                    val deleteDialog = DeleteDialog(context!!, path, object : DeleteDialog.OnClickDialog {
-                        override fun onClick(path: String) {
-                            dbPdf!!.deleteFile(path)
-                            arr = dbPdf!!.getFavorite()
-                            recycleview()
-                        }
-                    })
-                    deleteDialog.show()
-
-                }
-                R.id.detail -> {
-                    val detailDialog = DetailDialog(context!!, name, path, date, size)
-                    detailDialog.show()
-
-                }
-            }
-
-            true
-        })
-
-        popup.show()
+        val listPopupWindow = createListPopupWindow(anchor, name, path, date, size, listPopupItems)
+        listPopupWindow.show()
     }
 
+
+    private fun createListPopupWindow(anchor: View, name: String, path: String, date: String, size: String,
+                                      items: ArrayList<ItemMain>): ListPopupWindow {
+        val popup = ListPopupWindow(context!!)
+        val adapter = ItemMainAdapter(context!!, items, object : ItemMainAdapter.ItemListener {
+            override fun onClick(position: Int) {
+                when (position) {
+                    0 -> {
+
+                        val dialogRename = RenameDialog(context!!, name, path, object : RenameDialog.OnClickDialog {
+                            override fun onClick(name: String,pathNew:String) {
+                                dbPdf!!.updateName(path, name)
+                                dbPdf!!.updatePath(pathNew,path)
+                            }
+
+                        })
+                        dialogRename.show()
+                        popup.dismiss()
+                    }
+                    1 -> {
+                        share(File(path))
+                        popup.dismiss()
+                    }
+                    2 -> {
+                        val deleteDialog = DeleteDialog(context!!, path, object : DeleteDialog.OnClickDialog {
+                            override fun onClick(path: String) {
+                                dbPdf!!.deleteFile(path)
+                                arr = dbPdf!!.getFavorite()
+                                recycleview()
+                            }
+                        })
+                        deleteDialog.show()
+                        popup.dismiss()
+                    }
+                    3 -> {
+                        val detailDialog = DetailDialog(context!!, name, path, date, size)
+                        detailDialog.show()
+                        popup.dismiss()
+                    }
+                }
+//                showListPopupWindow(it)
+            }
+
+        })
+        popup.setAnchorView(anchor)
+        popup.setWidth(convertToPx(150))
+        popup.setHeight(convertToPx(175))
+        popup.setAdapter(adapter)
+        return popup
+    }
     private fun share(file: File) {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.setType("application/pdf")
@@ -218,5 +236,11 @@ class FavoriteFragment : Fragment() {
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
         context!!.startActivity(Intent.createChooser(shareIntent, "Share"))
+    }
+    private fun convertToPx(dp: Int): Int {
+        // Get the screen's density scale
+        val scale = resources.displayMetrics.density
+        // Convert the dps to pixels, based on density scale
+        return (dp * scale + 0.5f).toInt()
     }
 }

@@ -19,8 +19,7 @@
     <string name="size">Kích cỡ: </string>
     <string name="go_to_page">Đi đến trang</string>
     <string name="enter_page">Nhập trang</string>
-    <string name="e_night_mode">Bật chế độ ban đêm</string>
-    <string name="d_night_mode">Hủy chế độ ban đêm</string>
+    <string name="night_mode">Ban đêm</string>
     <string name="h_mode">Vuốt ngang</string>
     <string name="v_mode">Vuốt dọc</string>
     <string name="properties">Thuộc tính</string>
