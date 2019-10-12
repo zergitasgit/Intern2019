@@ -4,6 +4,7 @@
     android:layout_height="50dp">
 
     <TextView
+        android:fontFamily="@font/font_medium"
         android:id="@+id/tv_number_song_of_artist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -11,6 +12,7 @@
         android:layout_marginLeft="15dp" />
 
     <TextView
+        android:fontFamily="@font/font_medium"
         android:id="@+id/tv_name_song_of_artist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

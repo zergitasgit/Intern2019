@@ -23,4 +23,9 @@
     <string name="h_mode">Horizontal</string>
     <string name="v_mode">Vertical</string>
     <string name="properties">Properties</string>
+    <string name="rate_app">Rate App</string>
+    <string name="not_now">Not Now</string>
+    <string name="rate_now">Rate Now</string>
+    <string name="do_you_love_this_app_nratting_for_us">Do you love this?\nRatting for us!</string>
+
 </resources>

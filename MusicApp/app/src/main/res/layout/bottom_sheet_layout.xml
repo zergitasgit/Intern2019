@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/rl_title">
             <TextView
+                android:fontFamily="@font/font_medium"
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,7 +55,7 @@
             android:layout_below="@+id/frame"
             android:id="@+id/rl_artist">
             <TextView
-
+android:fontFamily="@font/font_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -85,6 +86,7 @@
             android:id="@+id/rl_cancel"
             >
             <TextView
+                android:fontFamily="@font/font_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

@@ -32,6 +32,7 @@
                     android:src="@drawable/back_toolbar" />
 
                 <TextView
+                    android:fontFamily="@font/font_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bottom_library"
@@ -39,11 +40,11 @@
                     android:textSize="18dp" />
             </LinearLayout>
             <TextView
+                android:fontFamily="@font/font_blod"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Playlist"
                 android:textColor="#000"
-                android:textStyle="bold"
                 android:layout_centerHorizontal="true"
                 android:textSize="20dp"
                 />
@@ -72,6 +73,7 @@
             </ImageView>
 
             <TextView
+                android:fontFamily="@font/font_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"

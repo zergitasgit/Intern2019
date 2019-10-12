@@ -86,10 +86,12 @@
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true"
                             android:singleLine="true"
+                            android:fontFamily="@font/font_medium"
                             android:textColor="#000"
                             android:textSize="16dp" />
 
                         <TextView
+                            android:fontFamily="@font/font_medium"
                             android:id="@+id/tv_name_artist_collapsed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -161,6 +163,7 @@
                             android:focusable="true" />
 
                         <TextView
+                            android:fontFamily="@font/font_medium"
                             android:id="@+id/tv_sb_start"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -169,6 +172,7 @@
                             android:text="start" />
 
                         <TextView
+                            android:fontFamily="@font/font_medium"
                             android:id="@+id/tv_sb_end"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -181,6 +185,7 @@
                     </RelativeLayout>
 
                     <TextView
+                        android:fontFamily="@font/font_medium"
                         android:id="@+id/tv_name_song_expanded"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -202,6 +207,7 @@
 
 
                         <TextView
+                            android:fontFamily="@font/font_medium"
                             android:id="@+id/tv_name_artist_expanded"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -327,6 +333,7 @@
                                     android:src="@drawable/shuffle" />
 
                                 <TextView
+                                    android:fontFamily="@font/font_medium"
                                     android:id="@+id/tv_shuffle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -355,6 +362,7 @@
                                     android:src="@drawable/repeat" />
 
                                 <TextView
+                                    android:fontFamily="@font/font_medium"
                                     android:id="@+id/tv_repeat_1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -366,6 +374,7 @@
                                     android:visibility="gone" />
 
                                 <TextView
+                                    android:fontFamily="@font/font_medium"
                                     android:id="@+id/tv_repeat"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

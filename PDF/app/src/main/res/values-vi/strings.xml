@@ -23,4 +23,9 @@
     <string name="h_mode">Vuốt ngang</string>
     <string name="v_mode">Vuốt dọc</string>
     <string name="properties">Thuộc tính</string>
+    <string name="rate_app">Đánh giá ứng dụng</string>
+    <string name="not_now">Để sau</string>
+    <string name="rate_now">Đánh giá</string>
+    <string name="do_you_love_this_app_nratting_for_us">Nếu thích?\nHãy đánh giá tốt cho ứng dụng!</string>
+
 </resources>

@@ -9,6 +9,8 @@
     >
 
    <TextView
+       android:fontFamily="@font/font_blod"
+       android:textColor="@color/Black"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_margin="15dp"

@@ -18,6 +18,11 @@ import com.document.pdfviewer.fragment.FavoriteFragment
 import com.document.pdfviewer.fragment.RecentlyFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.IntentFilter
+import android.view.View
+import android.widget.RelativeLayout
+import com.document.pdfviewer.Ads
+import com.document.pdfviewer.dialog.RateDialog
+import com.document.pdfviewer.utils.Utils
 import com.znitenda.A
 import com.znitenda.ZAndroidSDK
 
@@ -27,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     var arrIcon = ArrayList<Int>()
     var pos: Int? = null
     var tabAdapter: TabAdapter? = null
+    private lateinit var rateDialog: RateDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,8 +45,50 @@ class MainActivity : AppCompatActivity() {
 
         A.f(this)
         ZAndroidSDK.init(this)
+initAds()
+        rateDialog = RateDialog(this, object : RateDialog.OnClickDialog {
+            override fun onCancel() {
+                finish()
+            }
+
+            override fun onRate() {
+                Utils.rateApp(this@MainActivity)
+            }
+        })
     }
-    private fun setBgStatusbar(){
+
+    override fun onBackPressed() {
+        rateDialog.show()
+    }
+
+    /**
+     * init ads
+     */
+    private fun initAds() {
+        val rl = findViewById<RelativeLayout>(R.id.ads_rl)
+        Ads.initBanner(this, rl, object : Ads.OnAdsListener {
+            override fun onAdClose() {
+
+            }
+
+            override fun onError() {
+                rl.visibility = View.GONE
+            }
+
+            override fun onAdLoaded() {
+                rl.visibility = View.VISIBLE
+
+            }
+
+            override fun onAdOpened() {
+                rl.visibility = View.VISIBLE
+
+            }
+        })
+    }
+
+
+    private fun setBgStatusbar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             val background = resources.getDrawable(R.drawable.gradient)
@@ -52,13 +100,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun handlePermission() {
         val perms = arrayOf("android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE"
-                )
+        )
         if (Build.VERSION.SDK_INT >= 23) {
             requestPermissions(perms, 3)
-        }else{
+        } else {
             setUpViewPager()
             setTabView()
         }
@@ -150,6 +197,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
     var brHistory = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, p1: Intent?) {
 

@@ -23,6 +23,7 @@
             android:src="@drawable/back_toolbar" />
 
         <TextView
+android:fontFamily="@font/font_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bottom_library"
@@ -31,11 +32,11 @@
 
     </LinearLayout>
         <TextView
+            android:fontFamily="@font/font_blod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/song"
             android:textSize="20dp"
-            android:textStyle="bold"
             android:textColor="#000"
             android:layout_centerInParent="true"
 

@@ -18,6 +18,7 @@
             android:src="@drawable/back_toolbar"/>
 
         <TextView
+            android:fontFamily="@font/font_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/artist"

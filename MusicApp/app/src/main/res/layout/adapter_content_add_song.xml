@@ -23,6 +23,7 @@
         android:layout_marginLeft="10dp"
        >
         <TextView
+            android:fontFamily="@font/font_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_name_song"
@@ -31,6 +32,7 @@
             android:layout_marginTop="5dp"
             />
         <TextView
+            android:fontFamily="@font/font_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

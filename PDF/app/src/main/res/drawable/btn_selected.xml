@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true"
-        android:drawable="@drawable/selected" /> <!-- pressed -->
-    <item android:state_focused="true"
-        android:drawable="@drawable/selected" /> <!-- focused -->
-    <item android:drawable="@drawable/selected" /> <!-- default -->
+ <item android:state_pressed="true">
+     <shape>
+         <solid android:color="#E6E6E6"/>
+         <corners android:radius="@dimen/_4sdp"/>
+     </shape>
+ </item>
+ <item>
+     <shape>
+         <solid android:color="#ffffff"/>
+         <corners android:radius="@dimen/_4sdp"/>
+     </shape>
+ </item>
 </selector>

@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.ListPopupWindow
 import android.view.*
+import android.widget.RelativeLayout
+import com.document.pdfviewer.Ads
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener
@@ -53,7 +55,34 @@ class PdfActivity : AppCompatActivity(), OnPageChangeListener, OnLoadCompleteLis
         setUpPdfView()
 
         A.f(this)
+        initAds()
 
+    }
+
+    /**
+     * init ads
+     */
+    private fun initAds() {
+        val rl = findViewById<RelativeLayout>(R.id.ads_rl)
+        Ads.initBanner(this, rl, object : Ads.OnAdsListener {
+            override fun onAdClose() {
+
+            }
+
+            override fun onError() {
+                rl.visibility = View.GONE
+            }
+
+            override fun onAdLoaded() {
+                rl.visibility = View.VISIBLE
+
+            }
+
+            override fun onAdOpened() {
+                rl.visibility = View.VISIBLE
+
+            }
+        })
     }
 
     private fun setBgStatusbar() {
@@ -136,9 +165,9 @@ class PdfActivity : AppCompatActivity(), OnPageChangeListener, OnLoadCompleteLis
             listPopupItems.add(ItemPDF(resources.getString(R.string.night_mode), R.drawable.ic_night_mode, R.drawable.ic_ic_on))
 
         }
-        if(!sharedPreferences!!.getBoolean("ishorizontal", false)) {
+        if (!sharedPreferences!!.getBoolean("ishorizontal", false)) {
             listPopupItems.add(ItemPDF(resources.getString(R.string.h_mode), R.drawable.ic_horizontal, 0))
-        }else{
+        } else {
             listPopupItems.add(ItemPDF(resources.getString(R.string.v_mode), R.drawable.ic_horizontal, 0))
 
         }
@@ -197,12 +226,14 @@ class PdfActivity : AppCompatActivity(), OnPageChangeListener, OnLoadCompleteLis
         dialog.show()
 
     }
+
     private fun convertToPx(dp: Int): Int {
         // Get the screen's density scale
         val scale = resources.displayMetrics.density
         // Convert the dps to pixels, based on density scale
         return (dp * scale + 0.5f).toInt()
     }
+
     private fun checkHorizontal(view: View, adapter: ItemPDFAdapter) {
         if (!sharedPreferences!!.getBoolean("ishorizontal", false)) {
             pdfView.fromFile(File(path))

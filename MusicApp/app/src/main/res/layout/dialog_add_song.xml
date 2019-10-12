@@ -8,6 +8,7 @@
     android:background="#FFFFFF">
 
     <TextView
+        android:fontFamily="@font/font_blod"
         android:id="@+id/tv_select_song"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +16,6 @@
         android:text="@string/select_song"
         android:textColor="@color/colorAccent"
         android:textSize="19dp"
-        android:textStyle="bold"
         />
 
     <android.support.v7.widget.RecyclerView
@@ -46,13 +46,15 @@
                 android:layout_height="60dp"
                 android:background="#FFFFFF"
                 android:id="@+id/rl_cancle">
+
                 <TextView
+                    android:fontFamily="@font/font_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
                     android:text="@string/cancle"
                     android:textColor="@color/colorAccent"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
 
             </RelativeLayout>
         </RelativeLayout>
@@ -71,6 +73,7 @@
                 android:background="#FFFFFF"
                 android:id="@+id/rl_done">
                 <TextView
+                    android:fontFamily="@font/font_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
