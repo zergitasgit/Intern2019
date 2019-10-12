@@ -37,6 +37,5 @@ dependencies {
 
     implementation project(':android-pdf-viewer')
     implementation 'com.github.travijuu:numberpicker:1.0.7'
-    //noinspection GradlePath
     implementation files('libs\\andzen.jar')
 }
