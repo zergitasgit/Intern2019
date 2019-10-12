@@ -138,9 +138,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        rateDialog.show()
+        if (isCollapsed) rateDialog.show()
+        else super.onBackPressed()
     }
-
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener {
 
