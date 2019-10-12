@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_library"
+        android:icon="@drawable/ic_library"
+        android:title="@string/bottom_library">
+
+    </item>
+
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/bottom_search">
+
+    </item>
+
+    <item
+        android:id="@+id/navigation_favourite"
+        android:icon="@drawable/ic_favourite"
+        android:title="@string/bottom_favorite">
+
+    </item>
+
+</menu>

@@ -1,0 +1,104 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="20dp"
+    app:behavior_hideable="true"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_sort">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rl_title">
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="@string/title"
+                android:textColor="@color/colorAccent"
+                android:textSize="18dp" />
+            <ImageView
+                android:id="@+id/iv_title"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/tick"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="15dp"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
+
+        <FrameLayout
+            android:id="@+id/frame"
+            android:layout_below="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EBEBEB"></FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frame"
+            android:id="@+id/rl_artist">
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="@string/artist"
+                android:textColor="@color/colorAccent"
+                android:textSize="18dp" />
+            <ImageView
+                android:id="@+id/iv_artist"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/tick"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="15dp"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:background="#00FFFFFF">
+        </FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_sort"
+            android:id="@+id/rl_cancel"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/cancle"
+                android:textColor="@color/colorAccent"
+                android:textSize="18dp"
+
+                />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+
+
+</android.support.constraint.ConstraintLayout>

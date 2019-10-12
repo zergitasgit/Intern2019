@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
+    >
+
+    <item
+        android:title=""
+        android:icon="@drawable/ic_more_white"
+        app:showAsAction="always"
+      >
+        <menu>
+            <item
+                android:id="@+id/menu_page"
+                android:icon="@drawable/ic_go_to_page"
+                android:title="@string/go_to_page"
+                app:showAsAction="ifRoom"
+
+                />
+            <item
+                android:id="@+id/menu_night"
+                android:icon="@drawable/ic_night_mode"
+                android:title="@string/night_mode"
+                app:showAsAction="ifRoom"
+                app:itemIconPadding="28dp"
+                />
+            <item
+                android:id="@+id/menu_mode"
+                android:icon="@drawable/ic_horizontal"
+                android:title="@string/h_mode"
+                app:showAsAction="ifRoom"
+                />
+            <item
+                android:id="@+id/menu_properties"
+                android:icon="@drawable/ic_detail"
+                android:title="@string/properties"
+                app:showAsAction="ifRoom"
+                />
+        </menu>
+    </item>
+
+
+
+
+</menu>
