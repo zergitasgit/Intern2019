@@ -4,6 +4,15 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
+    <FrameLayout
+        android:id="@+id/frame_night_mode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#50FFFF00"
+        android:visibility="gone">
+
+    </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,6 +30,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <FrameLayout
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true">
+
+                    <ImageView
+                        android:id="@+id/iv_more"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_more_white" />
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/iv_favorite"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="60dp"
+                    android:src="@drawable/ic_like" />
+
                 <ImageView
                     android:id="@+id/iv_back"
                     android:layout_width="25dp"
@@ -37,29 +70,6 @@
                     android:textColor="#fff"
                     android:textSize="18dp" />
 
-                <ImageView
-                    android:id="@+id/iv_favorite"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="60dp"
-                    android:src="@drawable/ic_like" />
-                <FrameLayout
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true">
-                    <ImageView
-                        android:id="@+id/iv_more"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/ic_more_white" />
-                </FrameLayout>
-
-
 
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
@@ -72,12 +82,10 @@
             />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/frame_night_mode"
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/ads_rl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#50FFFF00"
-        android:visibility="gone">
-
-    </FrameLayout>
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

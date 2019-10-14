@@ -10,6 +10,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:fontFamily="@font/font_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -26,6 +27,7 @@
     </FrameLayout>
 
     <TextView
+        android:fontFamily="@font/font_medium"
         android:id="@+id/tv_playlists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,6 +45,7 @@
     </FrameLayout>
 
     <TextView
+        android:fontFamily="@font/font_medium"
         android:id="@+id/tv_artists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,6 +63,7 @@
     </FrameLayout>
 
     <TextView
+        android:fontFamily="@font/font_medium"
         android:id="@+id/tv_albums"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,6 +81,7 @@
     </FrameLayout>
 
     <TextView
+        android:fontFamily="@font/font_medium"
         android:id="@+id/tv_songs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,6 +99,7 @@
     </FrameLayout>
 
     <TextView
+        android:fontFamily="@font/font_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"

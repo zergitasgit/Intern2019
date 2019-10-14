@@ -29,6 +29,7 @@
                     android:src="@drawable/back_toolbar" />
 
                 <TextView
+                    android:fontFamily="@font/font_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Playlist"
@@ -37,6 +38,7 @@
             </LinearLayout>
 
             <TextView
+                android:fontFamily="@font/font_medium"
                 android:id="@+id/tv_sua"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

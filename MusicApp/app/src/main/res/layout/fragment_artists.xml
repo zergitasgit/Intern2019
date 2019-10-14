@@ -25,6 +25,7 @@
             android:src="@drawable/back_toolbar" />
 
         <TextView
+            android:fontFamily="@font/font_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bottom_library"
@@ -32,12 +33,12 @@
             android:textSize="20dp" />
     </LinearLayout>
     <TextView
+        android:fontFamily="@font/font_blod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:text="@string/artist"
         android:textSize="20dp"
-        android:textStyle="bold"
         android:textColor="#000"
         android:layout_centerInParent="true"/>
     </RelativeLayout>

@@ -25,6 +25,7 @@
     </android.support.v7.widget.CardView>
 
     <TextView
+        android:fontFamily="@font/font_medium"
         android:paddingLeft="16dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
@@ -40,6 +41,7 @@
         android:maxLines="1" />
 
     <TextView
+        android:fontFamily="@font/font_medium"
         android:paddingLeft="16dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"

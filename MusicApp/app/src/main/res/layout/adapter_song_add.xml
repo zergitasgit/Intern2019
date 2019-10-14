@@ -8,6 +8,7 @@
         android:id="@+id/tv_song_add"
         android:layout_centerVertical="true"
         android:textSize="16dp"
+        android:fontFamily="@font/font_medium"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="35dp"
         android:maxLines="1"/>

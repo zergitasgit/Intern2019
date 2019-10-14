@@ -22,4 +22,10 @@
     <string name="no_song">There is no song with this name</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="rate_app">Rate App</string>
+    <string name="not_now">Not Now</string>
+    <string name="rate_now">Rate Now</string>
+    <string name="do_you_love_this_app_nratting_for_us">Do you love this?\nRatting for us!</string>
+
 </resources>

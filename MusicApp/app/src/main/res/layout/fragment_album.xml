@@ -24,6 +24,7 @@
                 android:src="@drawable/back_toolbar" />
 
             <TextView
+                android:fontFamily="@font/font_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bottom_library"
@@ -32,6 +33,7 @@
         </LinearLayout>
 
         <TextView
+            android:fontFamily="@font/font_medium"
             android:id="@+id/tv_sort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,13 +43,13 @@
             android:textColor="@color/colorAccent"
             android:textSize="20dp" />
         <TextView
+            android:fontFamily="@font/font_blod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="Album"
             android:textColor="#000"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textSize="20dp"/>
     </RelativeLayout>
 
 

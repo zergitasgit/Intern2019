@@ -30,11 +30,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.document.pdfviewer.utils.Utils
 import com.os13musicapp.os13musicplayer.`object`.Song
 import com.os13musicapp.os13musicplayer.db.DatabasePlaylistSong
 import com.os13musicapp.os13musicplayer.db.DatabaseSong
 import com.os13musicapp.os13musicplayer.service.MusicService
 import com.os13musicapp.os13musicplayer.Ads
+import com.os13musicapp.os13musicplayer.dialogs.RateDialog
 import com.znitenda.ZAndroidSDK
 import java.util.*
 
@@ -66,6 +68,7 @@ class MainActivity : AppCompatActivity() {
     var boolean: Boolean = false
     lateinit var behavior: BottomSheetBehavior<RelativeLayout>
     var currentApiVersion: Int = 0
+    private lateinit var rateDialog: RateDialog
     @SuppressLint("CommitPrefEdits")
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,8 +125,22 @@ class MainActivity : AppCompatActivity() {
 
         Ads.loadBannerAds(this, layout_ads)
         ZAndroidSDK.init(this)
+        rateDialog = RateDialog(this, object : RateDialog.OnClickDialog {
+            override fun onCancel() {
+                finish()
+            }
+
+            override fun onRate() {
+                Utils.rateApp(this@MainActivity)
+            }
+        })
+
     }
 
+    override fun onBackPressed() {
+        if (isCollapsed) rateDialog.show()
+        else super.onBackPressed()
+    }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener {
 
