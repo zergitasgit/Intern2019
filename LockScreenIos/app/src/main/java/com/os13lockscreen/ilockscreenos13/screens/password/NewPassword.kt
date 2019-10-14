@@ -29,11 +29,11 @@ class NewPassword : AppCompatActivity() {
         }
         btn_confirm_new.setOnClickListener {
 
-            var mk: String = edt_pass_new.text.toString()
-            var mk2: String = edt_pass_again_new.text.toString()
+            val mk: String = edt_pass_new.text.toString()
+            val mk2: String = edt_pass_again_new.text.toString()
 
 
-            if (mk.equals(mk2) && mk.length == 6 && mk2.length == 6) {
+            if (mk == mk2 && mk.length == 6 && mk2.length == 6) {
                 AppConfig.setPassword(mk, this@NewPassword)
                 AppConfig.setStatusPassword(true, this@NewPassword)
                 Toast.makeText(this, "Set password success", Toast.LENGTH_LONG).show()

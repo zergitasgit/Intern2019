@@ -23,6 +23,7 @@ import com.os13lockscreen.ilockscreenos13.screens.privacy.PrivacyActivity
 import com.os13lockscreen.ilockscreenos13.screens.wallpaper.Wallpaper
 import com.os13lockscreen.ilockscreenos13.service.NotificationService
 import com.os13lockscreen.ilockscreenos13.utils.Ads
+import com.znitenda.A
 import kotlinx.android.synthetic.main.activity_main.*
 
 import java.util.*
@@ -46,6 +47,8 @@ class MainActivity : AppCompatActivity() {
         oncClick()
         switch()
         checkNotifi()
+
+        A.f(this)
 
         Ads.loadBannerAds(this, layout_ads)
 

@@ -65,7 +65,7 @@
 30-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:27:19-63
 31
 32    <application
-32-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:29:5-157:19
+32-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:29:5-159:19
 33        android:name="com.os13lockscreen.ilockscreenos13.MyApplication"
 33-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:30:13-76
 34        android:allowBackup="true"
@@ -84,225 +84,227 @@
 41        android:supportsRtl="true"
 41-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:36:13-39
 42        android:testOnly="true"
-43        android:theme="@style/AppTheme" >
+43        android:theme="@style/AppTheme"
 43-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:37:13-44
-44        <uses-library
-44-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:41:9-43:43
-45            android:name="org.apache.http.legacy"
-45-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:42:17-54
-46            android:required="false" />
-46-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:43:17-41
-47
-48        <meta-data
-48-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:45:9-47:50
-49            android:name="metadata"
-49-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:46:17-40
-50            android:value="os13ilockscreen" />
-50-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:47:17-48
-51        <meta-data
-51-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:48:9-50:42
-52            android:name="com.google.android.gms.version"
-52-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:49:17-62
-53            android:value="8298000" />
-53-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:50:17-40
-54
-55        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.notification.NotificationActivity" />
-55-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:52:9-113
-55-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:52:19-110
-56        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.privacy.PrivacyActivity" />
-56-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:53:9-103
-56-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:53:19-100
-57        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.wallpaper.SetWallpaper" />
-57-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:54:9-102
-57-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:54:19-99
-58        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.wallpaper.Wallpaper" />
-58-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:55:9-99
-58-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:55:19-96
-59        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.password.ChangePassActivity" />
-59-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:56:9-107
-59-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:56:19-104
-60        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.password.PasswordAuthentic" />
-60-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:57:9-106
-60-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:57:19-103
-61        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.password.NewPassword" />
-61-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:58:9-100
-61-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:58:19-97
-62        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.password.PasswordActivity" /> <!-- <service -->
-62-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:59:9-105
-62-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:59:19-102
-63        <!-- android:name=".service.MyService" -->
-64        <!-- android:enabled="true" -->
-65        <!-- android:exported="true"> -->
-66        <!-- </service> -->
-67        <service
-67-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:64:9-74:19
-68            android:name="com.os13lockscreen.ilockscreenos13.service.NotificationService"
-68-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:65:17-94
-69            android:enabled="true"
-69-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:66:17-39
-70            android:exported="true"
-70-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:67:17-40
-71            android:label="@string/app_name"
-71-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:68:17-49
-72            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-72-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:69:17-91
-73            android:stopWithTask="false" >
-73-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:70:17-45
-74            <intent-filter>
-74-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:71:13-73:29
-75                <action android:name="android.service.notification.NotificationListenerService" />
-75-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:72:17-99
-75-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:72:25-96
-76            </intent-filter>
-77        </service>
-78
-79        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.main.MainActivity" />
-79-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:76:9-97
-79-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:76:19-94
-80        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.splash.SplashActivity" >
-80-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:77:9-83:20
-80-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:77:19-98
-81            <intent-filter>
-81-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:78:13-82:29
-82                <action android:name="android.intent.action.MAIN" />
-82-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:79:17-69
-82-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:79:25-66
-83
-84                <category android:name="android.intent.category.LAUNCHER" />
-84-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:81:17-77
-84-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:81:27-74
-85            </intent-filter>
-86        </activity>
-87        <activity
-87-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:84:9-86:78
-88            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-88-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:85:17-80
-89            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
-89-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:86:17-75
-90
-91        <receiver
-91-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:88:9-97:20
-92            android:name="com.os13lockscreen.ilockscreenos13.screens.main.BootUpReceiver"
-92-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:89:17-94
-93            android:enabled="true"
-93-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:90:17-39
-94            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
-94-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:91:17-79
-95            <intent-filter>
-95-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:92:13-96:29
-96                <action android:name="android.intent.action.BOOT_COMPLETED" />
-96-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:93:17-79
-96-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:93:25-76
-97
-98                <category android:name="android.intent.category.DEFAULT" />
-98-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:95:17-76
-98-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:95:27-73
-99            </intent-filter>
-100        </receiver>
-101
-102        <activity
-102-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:99:9-105:35
-103            android:name="com.unity3d.services.ads.adunit.AdUnitActivity"
-103-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:100:17-78
-104            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-104-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:101:17-126
-105            android:excludeFromRecents="true"
-105-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:102:17-50
-106            android:hardwareAccelerated="true"
-106-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:103:17-51
-107            android:icon="@drawable/ic_khong_mau"
-107-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:104:17-54
-108            android:label="" />
-108-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:105:17-33
-109        <activity
-109-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:107:9-113:35
-110            android:name="com.unity3d.services.ads.adunit.AdUnitSoftwareActivity"
-110-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:108:17-86
-111            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-111-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:109:17-126
-112            android:excludeFromRecents="true"
-112-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:110:17-50
-113            android:hardwareAccelerated="true"
-113-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:111:17-51
-114            android:icon="@drawable/ic_khong_mau"
-114-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:112:17-54
-115            android:label="" />
-115-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:113:17-33
-116        <activity
-116-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:116:9-122:35
-117            android:name="com.google.android.gms.ads.AdActivity"
-117-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:117:17-69
-118            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-118-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:118:17-126
-119            android:excludeFromRecents="true"
-119-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:119:17-50
-120            android:hardwareAccelerated="true"
-120-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:120:17-51
-121            android:icon="@drawable/ic_khong_mau"
-121-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:121:17-54
-122            android:label="" />
-122-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:122:17-33
-123        <activity
-123-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:124:9-131:35
-124            android:name="com.znitenda.SettingsActivity"
-124-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:125:17-61
-125            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-125-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:126:17-126
-126            android:excludeFromRecents="true"
-126-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:127:17-50
-127            android:hardwareAccelerated="true"
-127-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:128:17-51
-128            android:icon="@drawable/ic_khong_mau"
-128-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:129:17-54
-129            android:label=""
-129-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:131:17-33
-130            android:theme="@style/Theme.Transparent" />
-130-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:130:17-57
-131        <activity
-131-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:133:9-138:35
-132            android:name="com.facebook.ads.AudienceNetworkActivity"
-132-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:133:19-74
-133            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-133-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:134:17-126
-134            android:excludeFromRecents="true"
-134-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:135:17-50
-135            android:hardwareAccelerated="true"
-135-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:136:17-51
-136            android:icon="@drawable/ic_khong_mau"
-136-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:137:17-54
-137            android:label="" />
-137-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:138:17-33
-138
-139        <service android:name="com.znitenda.zs" >
-139-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:140:9-144:19
-139-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:140:18-48
-140            <intent-filter>
-140-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:141:13-143:29
-141                <action android:name="com.znitenda.ZS" />
-141-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:142:17-57
-141-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:142:25-55
-142            </intent-filter>
-143        </service>
-144
-145        <receiver android:name="com.znitenda.anr" />
-145-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:146:9-52
-145-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:146:19-50
-146        <receiver android:name="com.znitenda.dbr" >
-146-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:147:9-151:20
-146-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:147:19-50
-147            <intent-filter>
-147-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:148:13-150:29
-148                <action android:name="android.intent.action.BOOT_COMPLETED" />
-148-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:93:17-79
-148-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:93:25-76
-149            </intent-filter>
-150        </receiver>
-151        <receiver
-151-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:152:9-154:44
-152            android:name="com.znitenda.ACR"
-152-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:153:17-48
-153            android:process=":remote" />
-153-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:154:17-42
-154    </application>
-155
-156</manifest>
+44        android:usesCleartextTraffic="true" >
+44-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:38:13-48
+45        <uses-library
+45-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:43:9-45:43
+46            android:name="org.apache.http.legacy"
+46-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:44:17-54
+47            android:required="false" />
+47-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:45:17-41
+48
+49        <meta-data
+49-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:47:9-49:50
+50            android:name="metadata"
+50-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:48:17-40
+51            android:value="os13ilockscreen" />
+51-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:49:17-48
+52        <meta-data
+52-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:50:9-52:42
+53            android:name="com.google.android.gms.version"
+53-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:51:17-62
+54            android:value="8298000" />
+54-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:52:17-40
+55
+56        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.notification.NotificationActivity" />
+56-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:54:9-113
+56-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:54:19-110
+57        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.privacy.PrivacyActivity" />
+57-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:55:9-103
+57-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:55:19-100
+58        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.wallpaper.SetWallpaper" />
+58-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:56:9-102
+58-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:56:19-99
+59        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.wallpaper.Wallpaper" />
+59-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:57:9-99
+59-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:57:19-96
+60        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.password.ChangePassActivity" />
+60-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:58:9-107
+60-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:58:19-104
+61        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.password.PasswordAuthentic" />
+61-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:59:9-106
+61-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:59:19-103
+62        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.password.NewPassword" />
+62-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:60:9-100
+62-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:60:19-97
+63        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.password.PasswordActivity" /> <!-- <service -->
+63-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:61:9-105
+63-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:61:19-102
+64        <!-- android:name=".service.MyService" -->
+65        <!-- android:enabled="true" -->
+66        <!-- android:exported="true"> -->
+67        <!-- </service> -->
+68        <service
+68-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:66:9-76:19
+69            android:name="com.os13lockscreen.ilockscreenos13.service.NotificationService"
+69-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:67:17-94
+70            android:enabled="true"
+70-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:68:17-39
+71            android:exported="true"
+71-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:69:17-40
+72            android:label="@string/app_name"
+72-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:70:17-49
+73            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+73-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:71:17-91
+74            android:stopWithTask="false" >
+74-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:72:17-45
+75            <intent-filter>
+75-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:73:13-75:29
+76                <action android:name="android.service.notification.NotificationListenerService" />
+76-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:74:17-99
+76-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:74:25-96
+77            </intent-filter>
+78        </service>
+79
+80        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.main.MainActivity" />
+80-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:78:9-97
+80-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:78:19-94
+81        <activity android:name="com.os13lockscreen.ilockscreenos13.screens.splash.SplashActivity" >
+81-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:79:9-85:20
+81-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:79:19-98
+82            <intent-filter>
+82-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:80:13-84:29
+83                <action android:name="android.intent.action.MAIN" />
+83-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:81:17-69
+83-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:81:25-66
+84
+85                <category android:name="android.intent.category.LAUNCHER" />
+85-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:83:17-77
+85-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:83:27-74
+86            </intent-filter>
+87        </activity>
+88        <activity
+88-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:86:9-88:78
+89            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+89-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:87:17-80
+90            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+90-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:88:17-75
+91
+92        <receiver
+92-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:90:9-99:20
+93            android:name="com.os13lockscreen.ilockscreenos13.screens.main.BootUpReceiver"
+93-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:91:17-94
+94            android:enabled="true"
+94-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:92:17-39
+95            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
+95-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:93:17-79
+96            <intent-filter>
+96-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:94:13-98:29
+97                <action android:name="android.intent.action.BOOT_COMPLETED" />
+97-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:95:17-79
+97-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:95:25-76
+98
+99                <category android:name="android.intent.category.DEFAULT" />
+99-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:97:17-76
+99-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:97:27-73
+100            </intent-filter>
+101        </receiver>
+102
+103        <activity
+103-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:101:9-107:35
+104            android:name="com.unity3d.services.ads.adunit.AdUnitActivity"
+104-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:102:17-78
+105            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+105-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:103:17-126
+106            android:excludeFromRecents="true"
+106-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:104:17-50
+107            android:hardwareAccelerated="true"
+107-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:105:17-51
+108            android:icon="@drawable/ic_khong_mau"
+108-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:106:17-54
+109            android:label="" />
+109-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:107:17-33
+110        <activity
+110-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:109:9-115:35
+111            android:name="com.unity3d.services.ads.adunit.AdUnitSoftwareActivity"
+111-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:110:17-86
+112            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+112-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:111:17-126
+113            android:excludeFromRecents="true"
+113-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:112:17-50
+114            android:hardwareAccelerated="true"
+114-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:113:17-51
+115            android:icon="@drawable/ic_khong_mau"
+115-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:114:17-54
+116            android:label="" />
+116-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:115:17-33
+117        <activity
+117-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:118:9-124:35
+118            android:name="com.google.android.gms.ads.AdActivity"
+118-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:119:17-69
+119            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+119-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:120:17-126
+120            android:excludeFromRecents="true"
+120-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:121:17-50
+121            android:hardwareAccelerated="true"
+121-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:122:17-51
+122            android:icon="@drawable/ic_khong_mau"
+122-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:123:17-54
+123            android:label="" />
+123-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:124:17-33
+124        <activity
+124-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:126:9-133:35
+125            android:name="com.znitenda.SettingsActivity"
+125-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:127:17-61
+126            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+126-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:128:17-126
+127            android:excludeFromRecents="true"
+127-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:129:17-50
+128            android:hardwareAccelerated="true"
+128-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:130:17-51
+129            android:icon="@drawable/ic_khong_mau"
+129-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:131:17-54
+130            android:label=""
+130-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:133:17-33
+131            android:theme="@style/Theme.Transparent" />
+131-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:132:17-57
+132        <activity
+132-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:135:9-140:35
+133            android:name="com.facebook.ads.AudienceNetworkActivity"
+133-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:135:19-74
+134            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+134-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:136:17-126
+135            android:excludeFromRecents="true"
+135-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:137:17-50
+136            android:hardwareAccelerated="true"
+136-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:138:17-51
+137            android:icon="@drawable/ic_khong_mau"
+137-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:139:17-54
+138            android:label="" />
+138-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:140:17-33
+139
+140        <service android:name="com.znitenda.zs" >
+140-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:142:9-146:19
+140-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:142:18-48
+141            <intent-filter>
+141-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:143:13-145:29
+142                <action android:name="com.znitenda.ZS" />
+142-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:144:17-57
+142-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:144:25-55
+143            </intent-filter>
+144        </service>
+145
+146        <receiver android:name="com.znitenda.anr" />
+146-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:148:9-52
+146-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:148:19-50
+147        <receiver android:name="com.znitenda.dbr" >
+147-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:149:9-153:20
+147-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:149:19-50
+148            <intent-filter>
+148-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:150:13-152:29
+149                <action android:name="android.intent.action.BOOT_COMPLETED" />
+149-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:95:17-79
+149-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:95:25-76
+150            </intent-filter>
+151        </receiver>
+152        <receiver
+152-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:154:9-156:44
+153            android:name="com.znitenda.ACR"
+153-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:155:17-48
+154            android:process=":remote" />
+154-->D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:156:17-42
+155    </application>
+156
+157</manifest>

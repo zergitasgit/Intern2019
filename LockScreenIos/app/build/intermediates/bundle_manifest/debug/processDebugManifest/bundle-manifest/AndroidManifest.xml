@@ -40,7 +40,8 @@
         android:showOnLockScreen="true"
         android:supportsRtl="true"
         android:testOnly="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true" >
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.example.ibikenavigationkotlin.utils.AppConfig
 import com.os13lockscreen.ilockscreenos13.R
 import com.os13lockscreen.ilockscreenos13.utils.Ads
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_password_authentic.*
 import kotlinx.android.synthetic.main.activity_password_authentic.layout_ads
 
@@ -34,7 +33,7 @@ class PasswordAuthentic : AppCompatActivity() {
         btn_confirm_new.setOnClickListener {
             var y = edt_pass_new.text.toString()
             var x = AppConfig.getPassord(this)
-            if (y.equals(x)) {
+            if (y == x) {
                 val intent = Intent(this, PasswordActivity::class.java)
                 startActivity(intent)
                 finish()

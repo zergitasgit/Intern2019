@@ -1,4 +1,4 @@
-#Wed Aug 28 18:35:42 ICT 2019
+#Mon Oct 14 11:35:14 ICT 2019
 base.0=D\:\\Android\\zergitas-2019\\internship\\Intern2019\\LockScreenIos\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\out\\classes.dex
 path.1=classes2.dex
 renamed.1=classes2.dex

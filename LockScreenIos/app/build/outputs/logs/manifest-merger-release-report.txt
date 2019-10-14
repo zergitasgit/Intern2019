@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-159:12
-INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-159:12
-INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-159:12
-INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-159:12
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-161:12
+INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-161:12
+INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-161:12
+INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-161:12
 MERGED from [com.google.android.material:material:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\4b572913f1a424e7576b45966b745c44\material-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.theartofdev.edmodo:android-image-cropper:2.8.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\ff62186ea0063fe590dac5b83e23d867\android-image-cropper-2.8.0\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat:1.0.2] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\8a90935574f82694cec42fb7c78743b1\appcompat-1.0.2\AndroidManifest.xml:17:1-22:12
@@ -11,7 +11,7 @@ MERGED from [androidx.core:core-ktx:1.0.2] C:\Users\bongm\.gradle\caches\transfo
 MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\c4ef5ca596413fc5b60e6754465386ae\constraintlayout-1.1.3\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\ac922daef181581ca41118461ecc252e\recyclerview-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [com.github.zcweng:switch-button:0.0.3] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\239402391a645bb9fbd80ad18184a097\switch-button-0.0.3\AndroidManifest.xml:2:1-11:12
-MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\c41adcb5db4e70f705f71b9d85e38dfc\jetified-glide-4.9.0\AndroidManifest.xml:2:1-12:12
+MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\f4803725d22019cb27fe31dbb5d14f78\jetified-glide-4.9.0\AndroidManifest.xml:2:1-12:12
 MERGED from [androidx.multidex:multidex:2.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\a00b8a0073ee9516bb80bc57e583b412\multidex-2.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\5036e040bfb2ed21141db5907dc80a84\fragment-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\17a5aaf00c7b911ced147a44b861d49d\vectordrawable-animated-1.0.0\AndroidManifest.xml:17:1-22:12
@@ -32,7 +32,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\bo
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\6de075386d20be281a87dfa1b2d6ac45\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\27bc33bc5e89f584b9b261dfc907e0db\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.exifinterface:exifinterface:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\9391fdbedb6374aa1914c6e28bb2f8c7\exifinterface-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\d57c010bbcf38796e875690dd8abe4ed\jetified-gifdecoder-4.9.0\AndroidManifest.xml:2:1-11:12
+MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\1e6006ed4d77c4a5432b29b3bb863d6d\jetified-gifdecoder-4.9.0\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\d83fe64bffd2c3a18b5121db5e3cda89\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\9444e3cf77d3306ef4a80ba458253a45\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.print:print:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\9233c21f8ab497c46d13c1cb3bad199c\print-1.0.0\AndroidManifest.xml:17:1-22:12
@@ -42,22 +42,22 @@ MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\bongm\.gradle\ca
 MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\0a9b612aa422320e030825edc18a2ab1\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\1004b84c1a71b13cd57fe025e0cc7af9\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\de0d15be3df3800b00daf51b84bb8611\core-runtime-2.0.0\AndroidManifest.xml:17:1-22:12
-INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-159:12
-INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-159:12
-INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-159:12
+INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-161:12
+INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-161:12
+INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-161:12
 	package
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:4:9-53
 		INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml
 		INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-159:12
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-161:12
 		INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml
 	xmlns:tools
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:3:9-55
 	android:versionCode
 		INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-159:12
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:1-161:12
 		INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:2:11-69
@@ -128,19 +128,19 @@ ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\
 	android:name
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:27:19-63
 application
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:29:5-157:19
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:29:5-159:19
 MERGED from [com.google.android.material:material:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\4b572913f1a424e7576b45966b745c44\material-1.0.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\4b572913f1a424e7576b45966b745c44\material-1.0.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\c4ef5ca596413fc5b60e6754465386ae\constraintlayout-1.1.3\AndroidManifest.xml:9:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\c4ef5ca596413fc5b60e6754465386ae\constraintlayout-1.1.3\AndroidManifest.xml:9:5-20
-MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\c41adcb5db4e70f705f71b9d85e38dfc\jetified-glide-4.9.0\AndroidManifest.xml:10:5-20
-MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\c41adcb5db4e70f705f71b9d85e38dfc\jetified-glide-4.9.0\AndroidManifest.xml:10:5-20
+MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\f4803725d22019cb27fe31dbb5d14f78\jetified-glide-4.9.0\AndroidManifest.xml:10:5-20
+MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\f4803725d22019cb27fe31dbb5d14f78\jetified-glide-4.9.0\AndroidManifest.xml:10:5-20
 MERGED from [androidx.core:core:1.0.2] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\4c11edde0e8743f1e03fb17544729eec\core-1.0.2\AndroidManifest.xml:22:5-89
 MERGED from [androidx.core:core:1.0.2] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\4c11edde0e8743f1e03fb17544729eec\core-1.0.2\AndroidManifest.xml:22:5-89
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\46255efc366cc1950fe34a7c472345c4\versionedparcelable-1.0.0\AndroidManifest.xml:22:5-23:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\46255efc366cc1950fe34a7c472345c4\versionedparcelable-1.0.0\AndroidManifest.xml:22:5-23:19
-MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\d57c010bbcf38796e875690dd8abe4ed\jetified-gifdecoder-4.9.0\AndroidManifest.xml:9:5-20
-MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\d57c010bbcf38796e875690dd8abe4ed\jetified-gifdecoder-4.9.0\AndroidManifest.xml:9:5-20
+MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\1e6006ed4d77c4a5432b29b3bb863d6d\jetified-gifdecoder-4.9.0\AndroidManifest.xml:9:5-20
+MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\1e6006ed4d77c4a5432b29b3bb863d6d\jetified-gifdecoder-4.9.0\AndroidManifest.xml:9:5-20
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.0.2] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\4c11edde0e8743f1e03fb17544729eec\core-1.0.2\AndroidManifest.xml:22:18-86
 	android:supportsRtl
@@ -148,229 +148,233 @@ MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\
 	android:label
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:33:13-45
 	tools:ignore
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:38:13-52
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:39:13-52
 	android:roundIcon
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:34:13-58
 	android:showOnLockScreen
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:35:13-44
+	tools:targetApi
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:40:13-32
 	android:icon
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:32:13-47
 	android:allowBackup
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:31:13-39
 	android:theme
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:37:13-44
+	android:usesCleartextTraffic
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:38:13-48
 	android:name
 		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:30:13-76
 uses-library#org.apache.http.legacy
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:41:9-43:43
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:43:9-45:43
 	android:required
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:43:17-41
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:45:17-41
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:42:17-54
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:44:17-54
 meta-data#metadata
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:45:9-47:50
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:47:9-49:50
 	android:value
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:47:17-48
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:49:17-48
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:46:17-40
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:48:17-40
 meta-data#com.google.android.gms.version
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:48:9-50:42
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:50:9-52:42
 	android:value
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:50:17-40
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:52:17-40
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:49:17-62
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:51:17-62
 activity#com.os13lockscreen.ilockscreenos13.screens.notification.NotificationActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:52:9-113
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:54:9-113
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:52:19-110
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:54:19-110
 activity#com.os13lockscreen.ilockscreenos13.screens.privacy.PrivacyActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:53:9-103
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:55:9-103
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:53:19-100
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:55:19-100
 activity#com.os13lockscreen.ilockscreenos13.screens.wallpaper.SetWallpaper
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:54:9-102
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:56:9-102
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:54:19-99
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:56:19-99
 activity#com.os13lockscreen.ilockscreenos13.screens.wallpaper.Wallpaper
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:55:9-99
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:57:9-99
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:55:19-96
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:57:19-96
 activity#com.os13lockscreen.ilockscreenos13.screens.password.ChangePassActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:56:9-107
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:58:9-107
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:56:19-104
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:58:19-104
 activity#com.os13lockscreen.ilockscreenos13.screens.password.PasswordAuthentic
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:57:9-106
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:59:9-106
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:57:19-103
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:59:19-103
 activity#com.os13lockscreen.ilockscreenos13.screens.password.NewPassword
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:58:9-100
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:60:9-100
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:58:19-97
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:60:19-97
 activity#com.os13lockscreen.ilockscreenos13.screens.password.PasswordActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:59:9-105
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:61:9-105
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:59:19-102
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:61:19-102
 service#com.os13lockscreen.ilockscreenos13.service.NotificationService
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:64:9-74:19
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:66:9-76:19
 	android:enabled
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:66:17-39
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:68:17-39
 	android:label
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:68:17-49
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:70:17-49
 	android:exported
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:67:17-40
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:69:17-40
 	android:permission
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:69:17-91
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:71:17-91
 	android:stopWithTask
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:70:17-45
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:72:17-45
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:65:17-94
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:67:17-94
 intent-filter#action:name:android.service.notification.NotificationListenerService
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:71:13-73:29
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:73:13-75:29
 action#android.service.notification.NotificationListenerService
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:72:17-99
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:74:17-99
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:72:25-96
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:74:25-96
 activity#com.os13lockscreen.ilockscreenos13.screens.main.MainActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:76:9-97
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:78:9-97
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:76:19-94
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:78:19-94
 activity#com.os13lockscreen.ilockscreenos13.screens.splash.SplashActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:77:9-83:20
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:79:9-85:20
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:77:19-98
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:79:19-98
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:78:13-82:29
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:80:13-84:29
 action#android.intent.action.MAIN
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:79:17-69
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:81:17-69
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:79:25-66
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:81:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:81:17-77
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:83:17-77
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:81:27-74
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:83:27-74
 activity#com.theartofdev.edmodo.cropper.CropImageActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:84:9-86:78
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:86:9-88:78
 	android:theme
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:86:17-75
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:88:17-75
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:85:17-80
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:87:17-80
 receiver#com.os13lockscreen.ilockscreenos13.screens.main.BootUpReceiver
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:88:9-97:20
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:90:9-99:20
 	android:enabled
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:90:17-39
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:92:17-39
 	android:permission
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:91:17-79
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:93:17-79
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:89:17-94
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:91:17-94
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED+category:name:android.intent.category.DEFAULT
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:92:13-96:29
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:94:13-98:29
 action#android.intent.action.BOOT_COMPLETED
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:93:17-79
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:95:17-79
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:93:25-76
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:95:25-76
 category#android.intent.category.DEFAULT
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:95:17-76
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:97:17-76
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:95:27-73
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:97:27-73
 activity#com.unity3d.services.ads.adunit.AdUnitActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:99:9-105:35
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:101:9-107:35
 	android:label
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:105:17-33
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:107:17-33
 	android:excludeFromRecents
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:102:17-50
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:104:17-50
 	android:hardwareAccelerated
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:103:17-51
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:105:17-51
 	android:configChanges
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:101:17-126
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:103:17-126
 	android:icon
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:104:17-54
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:106:17-54
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:100:17-78
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:102:17-78
 activity#com.unity3d.services.ads.adunit.AdUnitSoftwareActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:107:9-113:35
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:109:9-115:35
 	android:label
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:113:17-33
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:115:17-33
 	android:excludeFromRecents
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:110:17-50
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:112:17-50
 	android:hardwareAccelerated
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:111:17-51
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:113:17-51
 	android:configChanges
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:109:17-126
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:111:17-126
 	android:icon
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:112:17-54
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:114:17-54
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:108:17-86
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:110:17-86
 activity#com.google.android.gms.ads.AdActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:116:9-122:35
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:118:9-124:35
 	android:label
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:122:17-33
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:124:17-33
 	android:excludeFromRecents
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:119:17-50
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:121:17-50
 	android:hardwareAccelerated
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:120:17-51
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:122:17-51
 	android:configChanges
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:118:17-126
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:120:17-126
 	android:icon
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:121:17-54
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:123:17-54
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:117:17-69
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:119:17-69
 activity#com.znitenda.SettingsActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:124:9-131:35
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:126:9-133:35
 	android:label
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:131:17-33
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:133:17-33
 	android:excludeFromRecents
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:127:17-50
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:129:17-50
 	android:hardwareAccelerated
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:128:17-51
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:130:17-51
 	android:configChanges
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:126:17-126
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:128:17-126
 	android:icon
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:129:17-54
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:131:17-54
 	android:theme
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:130:17-57
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:132:17-57
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:125:17-61
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:127:17-61
 activity#com.facebook.ads.AudienceNetworkActivity
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:133:9-138:35
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:135:9-140:35
 	android:label
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:138:17-33
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:140:17-33
 	android:excludeFromRecents
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:135:17-50
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:137:17-50
 	android:hardwareAccelerated
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:136:17-51
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:138:17-51
 	android:configChanges
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:134:17-126
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:136:17-126
 	android:icon
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:137:17-54
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:139:17-54
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:133:19-74
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:135:19-74
 service#com.znitenda.zs
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:140:9-144:19
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:142:9-146:19
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:140:18-48
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:142:18-48
 intent-filter#action:name:com.znitenda.ZS
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:141:13-143:29
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:143:13-145:29
 action#com.znitenda.ZS
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:142:17-57
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:144:17-57
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:142:25-55
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:144:25-55
 receiver#com.znitenda.anr
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:146:9-52
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:148:9-52
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:146:19-50
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:148:19-50
 receiver#com.znitenda.dbr
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:147:9-151:20
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:149:9-153:20
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:147:19-50
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:149:19-50
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:148:13-150:29
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:150:13-152:29
 receiver#com.znitenda.ACR
-ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:152:9-154:44
+ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:154:9-156:44
 	android:process
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:154:17-42
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:156:17-42
 	android:name
-		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:153:17-48
+		ADDED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml:155:17-48
 uses-sdk
 INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\Android\zergitas-2019\internship\Intern2019\LockScreenIos\app\src\main\AndroidManifest.xml
@@ -389,8 +393,8 @@ MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\bongm\.gradle\ca
 MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\ac922daef181581ca41118461ecc252e\recyclerview-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [com.github.zcweng:switch-button:0.0.3] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\239402391a645bb9fbd80ad18184a097\switch-button-0.0.3\AndroidManifest.xml:7:5-9:41
 MERGED from [com.github.zcweng:switch-button:0.0.3] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\239402391a645bb9fbd80ad18184a097\switch-button-0.0.3\AndroidManifest.xml:7:5-9:41
-MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\c41adcb5db4e70f705f71b9d85e38dfc\jetified-glide-4.9.0\AndroidManifest.xml:6:5-8:41
-MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\c41adcb5db4e70f705f71b9d85e38dfc\jetified-glide-4.9.0\AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\f4803725d22019cb27fe31dbb5d14f78\jetified-glide-4.9.0\AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\f4803725d22019cb27fe31dbb5d14f78\jetified-glide-4.9.0\AndroidManifest.xml:6:5-8:41
 MERGED from [androidx.multidex:multidex:2.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\a00b8a0073ee9516bb80bc57e583b412\multidex-2.0.0\AndroidManifest.xml:20:5-43
 MERGED from [androidx.multidex:multidex:2.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\a00b8a0073ee9516bb80bc57e583b412\multidex-2.0.0\AndroidManifest.xml:20:5-43
 MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\5036e040bfb2ed21141db5907dc80a84\fragment-1.0.0\AndroidManifest.xml:20:5-44
@@ -431,8 +435,8 @@ MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\bongm\.gradle\caches\tra
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\27bc33bc5e89f584b9b261dfc907e0db\cardview-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.exifinterface:exifinterface:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\9391fdbedb6374aa1914c6e28bb2f8c7\exifinterface-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.exifinterface:exifinterface:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\9391fdbedb6374aa1914c6e28bb2f8c7\exifinterface-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\d57c010bbcf38796e875690dd8abe4ed\jetified-gifdecoder-4.9.0\AndroidManifest.xml:5:5-7:41
-MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\d57c010bbcf38796e875690dd8abe4ed\jetified-gifdecoder-4.9.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\1e6006ed4d77c4a5432b29b3bb863d6d\jetified-gifdecoder-4.9.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\1e6006ed4d77c4a5432b29b3bb863d6d\jetified-gifdecoder-4.9.0\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\d83fe64bffd2c3a18b5121db5e3cda89\documentfile-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\d83fe64bffd2c3a18b5121db5e3cda89\documentfile-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\bongm\.gradle\caches\transforms-2\files-2.1\9444e3cf77d3306ef4a80ba458253a45\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
