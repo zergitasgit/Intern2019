@@ -8,7 +8,8 @@ import android.support.v7.app.AppCompatActivity
 abstract class  BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindingView()
+        handlePermission()
+
 
     }
 
@@ -28,7 +29,7 @@ abstract class  BaseActivity : AppCompatActivity() {
         when (requestCode) {
             3/*200*/ -> {
                 if (grantResults[0] == 0) {
-
+                    bindingView()
                 }
 
                 return
@@ -36,5 +37,6 @@ abstract class  BaseActivity : AppCompatActivity() {
             else -> return
         }
     }
+
 
 }

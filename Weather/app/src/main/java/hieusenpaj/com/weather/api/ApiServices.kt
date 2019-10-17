@@ -14,6 +14,7 @@ interface ApiServices {
     fun getForecastWeather(@Query("lat") lat:Double,@Query("lon") lon :Double,
                            @Query("key") key:String,
                            @Query("days") day:String) : Call<ForecastDay>
+  
 
 
 }

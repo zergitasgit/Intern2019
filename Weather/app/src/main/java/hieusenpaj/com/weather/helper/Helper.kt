@@ -1,8 +1,10 @@
 package hieusenpaj.com.weather.helper
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -25,11 +27,11 @@ class Helper {
             return screenHeight + (56 * scale + 0.5f).toInt()
         }
 
+
         @SuppressLint("MissingPermission")
         fun getLocation(activity: Activity): Add? {
             var lo: Add? = null
             var locationNetwork: Location? = null
-
             val locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
             if (hasNetwork) {
@@ -61,17 +63,61 @@ class Helper {
                 if (localNetworkLocation != null)
                     locationNetwork = localNetworkLocation
                 if (locationNetwork != null) {
-                  
-                    lo = Add(String.format("%.2f",locationNetwork!!.latitude).toDouble() ,
-                            String.format("%.2f",locationNetwork!!.longitude).toDouble())
+
+                    lo = Add( locationNetwork!!.latitude,
+                            locationNetwork!!.longitude)
                 }
 
 
             } else {
                 lo = Add(0.0, 0.0)
             }
+
             return lo
 
+        }
+
+
+        @SuppressLint("SimpleDateFormat")
+        fun getDate(dt: Long): String {
+
+
+            val date = Date(dt * 1000L)
+            val simpleDateFormat = SimpleDateFormat("EEEE")
+            return simpleDateFormat.format(date)
+
+        }
+        fun getDay(dt: Long) :String{
+            val date = Date(dt * 1000L)
+            val simpleDateFormat = SimpleDateFormat("MM/dd")
+            return simpleDateFormat.format(date)
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        fun getTime(string: String): String {
+
+
+            var time:String?=null
+            val formatter = SimpleDateFormat("hh:mm")
+            formatter.timeZone = TimeZone.getTimeZone("UTC")
+            val value = formatter.parse(string)
+
+            val dateFormatter = SimpleDateFormat("hh:mm") //this format changeable
+            dateFormatter.timeZone = TimeZone.getTimeZone(getCurrentTimeZone())
+            time = dateFormatter.format(value)
+            return time
+
+
+
+
+//
+
+        }
+
+        fun getCurrentTimeZone(): String {
+            val tz = Calendar.getInstance().timeZone
+//        System.out.println(tz.displayName)
+            return tz.id
         }
 
     }
