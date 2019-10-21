@@ -18,6 +18,7 @@ import java.util.*
 
 class Helper {
     companion object {
+
         fun getHeightScreen(activity: Activity): Int {
             val displayMetrics = DisplayMetrics()
             activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -25,6 +26,7 @@ class Helper {
             val scale = displayMetrics.density
 ///       screenWidth = displayMetrics.widthPixels
             return screenHeight + (56 * scale + 0.5f).toInt()
+
         }
 
 
@@ -64,8 +66,8 @@ class Helper {
                     locationNetwork = localNetworkLocation
                 if (locationNetwork != null) {
 
-                    lo = Add( locationNetwork!!.latitude,
-                            locationNetwork!!.longitude)
+                    lo = Add( String.format("%.2f",locationNetwork!!.latitude).toDouble(),
+                            String.format("%.2f",locationNetwork!!.longitude).toDouble())
                 }
 
 

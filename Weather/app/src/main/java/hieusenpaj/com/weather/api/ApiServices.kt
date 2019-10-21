@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiServices {
-    @GET("current/daily")
+    @GET("current")
     fun getCurrentWeather(@Query("lat") lat:Double,@Query("lon") lon :Double,
                           @Query("key") key:String): Call<CurrentWeather>
     @GET("forecast/daily")

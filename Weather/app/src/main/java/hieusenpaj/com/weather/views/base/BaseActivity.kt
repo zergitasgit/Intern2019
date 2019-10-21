@@ -16,7 +16,7 @@ abstract class  BaseActivity : AppCompatActivity() {
     abstract fun bindingView()
     private fun handlePermission() {
         val perms = arrayOf("android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"
-        )
+        ,"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.READ_EXTERNAL_STORAGE")
         if (Build.VERSION.SDK_INT >= 23) {
             requestPermissions(perms, 3)
         }else{

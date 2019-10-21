@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:wcv="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="hieusenpaj.com.weather.models.City"/>
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/rl"
+        >
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/iv_item_city"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            >
+        </ImageView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_item_city"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_city"
+                android:text="@{item.city}"
+                android:textStyle="bold">
+
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_country"
+                android:text="@{item.country}"
+                android:layout_marginTop="5dp">
+            </TextView>
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EBEBEB"
+            android:layout_toRightOf="@+id/iv_item_city"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentBottom="true">
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</layout>

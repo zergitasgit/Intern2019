@@ -175,4 +175,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Acti
         binding.swipeRefreshLayout.setRefreshDrawable(SmartisanDrawable(activity, binding.swipeRefreshLayout))
         binding.swipeRefreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_MATERIAL)
     }
+    fun getWeatherSearch(lat: Double,lon: Double){
+        getWeatherCurrent(lat,lon)
+    }
 }
