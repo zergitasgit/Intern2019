@@ -3,36 +3,33 @@ package hieusenpaj.com.weather.viewmodels
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.support.annotation.RequiresApi
-import android.support.asynclayoutinflater.R.id.time
-import android.text.TextUtils.split
 import android.util.Log
 import android.widget.Toast
 import com.baoyz.widget.PullRefreshLayout
 import com.baoyz.widget.SmartisanDrawable
 import com.bumptech.glide.Glide
 import com.github.tianma8023.model.Time
-import com.github.tianma8023.ssv.SunriseSunsetView
 import hieusenpaj.com.weather.api.ApiServices
 import hieusenpaj.com.weather.api.ApiUtils
-import hieusenpaj.com.weather.databinding.ActivityMainBinding
+import hieusenpaj.com.weather.data.DataCity
+import hieusenpaj.com.weather.databinding.ItemViewPagerBinding
 import hieusenpaj.com.weather.helper.Helper
+import hieusenpaj.com.weather.models.City
 import hieusenpaj.com.weather.models.current.CurrentWeather
 import hieusenpaj.com.weather.models.forecastDay.ForecastDay
 import hieusenpaj.com.weather.views.ForecastActivity
-import hieusenpaj.com.weather.views.SearchActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZoneId
+
 import java.util.*
+import kotlin.collections.ArrayList
 
 
-class WeatherViewModel(private var activity: Activity, private var binding: ActivityMainBinding) : Observable() {
+class WeatherViewModel(private var activity: Activity, private var binding: ItemViewPagerBinding,private var arrayList: ArrayList<City>,
+                       private var lat: Double,private var lon: Double) : Observable() {
 
 
     var apiServices: ApiServices? = null
@@ -40,22 +37,25 @@ class WeatherViewModel(private var activity: Activity, private var binding: Acti
     var location: String? = null
 
     init {
+
         apiServices = ApiUtils.getApiService()
-        var lat = Helper.getLocation(activity)?.lat
-        var lon = Helper.getLocation(activity)?.lon
-        var network = Helper.getLocation(activity)
+//        var lat = Helper.getLocation(activity)?.lat
+//        Helper.getLocation(activity)?.lat
+//        if(arrayList.size==0){
+//            lat = Helper.getLocation(activity)!!.lat
+//            lon = Helper.getLocation(activity)!!.lon
+//        }
+
+        val network = Helper.getLocation(activity)
 
         if (!network!!.lat.equals(0.0) || !network.lat.equals(null)) {
-            getWeatherCurrent(lat!!, lon!!)
+            getWeatherCurrent(lat, lon)
             getWeatherForecast(lat, lon)
         } else {
             Toast.makeText(activity, "Check lại network", Toast.LENGTH_SHORT).show()
         }
         refeshView()
-        binding.ivSearch.setOnClickListener {
-            val intent = Intent(activity, SearchActivity::class.java)
-            activity.startActivity(intent)
-        }
+//
 
     }
 
@@ -74,8 +74,9 @@ class WeatherViewModel(private var activity: Activity, private var binding: Acti
                 val windSpeed = currentWeather.data[0].wind_spd.toInt()
 
 
+
                 binding.tvTemp.text = temp
-                binding.tvLocal.text = location
+//                binding.tvLocal.text = location
                 binding.tvStatus.text = status
                 binding.tvHumidity.text = humidity.toString() + "%" + "\n" + "Humidity"
                 binding.tvVisibility.text = visibility.toString() + "Km" + "\n" + "Visibility"
@@ -103,6 +104,8 @@ class WeatherViewModel(private var activity: Activity, private var binding: Acti
 
         binding.tvForecast.setOnClickListener {
             val intent = Intent(activity, ForecastActivity::class.java)
+            intent.putExtra("lat",lat)
+            intent.putExtra("lon",lon)
             activity.startActivity(intent)
         }
 
@@ -155,12 +158,12 @@ class WeatherViewModel(private var activity: Activity, private var binding: Acti
 
     private fun refeshView() {
         binding.swipeRefreshLayout.setOnRefreshListener(PullRefreshLayout.OnRefreshListener {
-            var lat = Helper.getLocation(activity)?.lat
-            var lon = Helper.getLocation(activity)?.lon
+//            var lat = Helper.getLocation(activity)?.lat
+//            var lon = Helper.getLocation(activity)?.lon
             var network = Helper.getLocation(activity)
 
             if (!network!!.lat.equals(0.0) || !network.lat.equals(null)) {
-                getWeatherCurrent(lat!!, lon!!)
+                getWeatherCurrent(lat, lon)
                 getWeatherForecast(lat, lon)
             } else {
                 Toast.makeText(activity, "Check lại network", Toast.LENGTH_SHORT).show()

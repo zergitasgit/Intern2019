@@ -6,318 +6,57 @@
 
         <variable
             name="viewModel"
-            type="hieusenpaj.com.weather.viewmodels.WeatherViewModel" />
+            type="hieusenpaj.com.weather.viewmodels.MainViewModel" />
     </data>
-    <com.baoyz.widget.PullRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="#EBEBEB">
-    <ScrollView
-        android:id="@+id/root_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
-        android:scrollbars="none">
-
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="56dp"
+
             >
 
             <RelativeLayout
-                android:id="@+id/rl"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="match_parent">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-
-                    >
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        >
-
-                        <ImageView
-                            android:id="@+id/iv_setting"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="20dp" />
-
-                        <TextView
-                            android:id="@+id/tv_local"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="@string/app_name" />
-                        <ImageView
-                            android:id="@+id/iv_search"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="20dp"
-                            android:src="@drawable/ic_search"
-                            android:layout_alignParentEnd="true"
-                            />
-                    </RelativeLayout>
-
-                </android.support.v7.widget.Toolbar>
-
-
+                <ImageView
+                    android:id="@+id/iv_setting"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/list"
+                    android:layout_marginLeft="12dp" />
 
                 <TextView
-                    android:id="@+id/tv_temp"
+                    android:id="@+id/tv_local"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginTop="25dp"
-                    android:text="@string/app_name"
-                    android:textSize="50dp"
-                    android:textStyle="bold" />
+                    android:layout_centerInParent="true"
+                    android:text="@string/app_name" />
 
-                <TextView
-                    android:id="@+id/tv_temp_small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
-                    android:layout_marginTop="35dp"
-                    android:layout_toRightOf="@+id/tv_temp"
-                    android:text="°C"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_temp"
-                    android:layout_margin="25dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="15dp"
-                    android:background="@drawable/bg_view"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp"
-                       >
-
-                        <ImageView
-                            android:id="@+id/iv_status"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-
-                            android:layout_centerVertical="true"/>
-
-                        <TextView
-                            android:id="@+id/tv_day_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/iv_status"
-                            android:layout_marginLeft="7dp"
-                            android:layout_marginRight="40dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_temp_min_max"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp">
-
-                        <ImageView
-                            android:id="@+id/iv_status1"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"/>
-
-                        <TextView
-                            android:id="@+id/tv_day_status1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
-                            android:layout_toRightOf="@id/iv_status1"
-                            android:layout_marginRight="40dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_temp_min_max1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="15dp">
-
-                        <ImageView
-                            android:id="@+id/iv_status2"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true" />
-
-                        <TextView
-                            android:id="@+id/tv_day_status2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
-                            android:layout_toRightOf="@id/iv_status2"
-                            android:layout_marginRight="40dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_temp_min_max2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true" />
-
-
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/tv__forecast"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="center_horizontal"
-                        android:text="5-day forecast" />
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_search"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/ic_search" />
             </RelativeLayout>
 
+        </android.support.v7.widget.Toolbar>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="15dp"
-                android:background="@drawable/bg_view"
-                android:orientation="vertical">
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_weight="1.0"
-                        >
-
-
-                        <TextView
-                            android:id="@+id/tv_wind_speed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:gravity="center_horizontal" />
-
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_weight="1.0"
-                     >
-
-
-                        <TextView
-                            android:id="@+id/tv_humidity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:gravity="center_horizontal" />
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_weight="1.0"
-                        >
-
-                        <TextView
-                            android:id="@+id/tv_visibility"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:gravity="center_horizontal" />
-
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_weight="1.0"
-                      >
-
-                        <TextView
-                            android:id="@+id/tv_uv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:gravity="center_horizontal" />
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-            </LinearLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_margin="15dp"
-                android:background="@drawable/bg_view">
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-
-                <com.github.tianma8023.ssv.SunriseSunsetView
-                    android:id="@+id/ssv"
-                    android:layout_width="180dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    app:ssv_label_text_color="@color/colorAccent"
-                    app:ssv_label_text_size="10sp"
-                    app:ssv_shadow_color="#EBEBEB"
-                    app:ssv_sun_color="#000"
-                    app:ssv_sun_radius="10dp"
-                    app:ssv_track_color="#fff"
-
-                    />
-                </FrameLayout>
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
-    </com.baoyz.widget.PullRefreshLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </LinearLayout>
 </layout>

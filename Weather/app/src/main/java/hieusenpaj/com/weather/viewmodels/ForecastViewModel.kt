@@ -15,18 +15,19 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class ForecastViewModel(private var activity: Activity, private var binding: ActivityForecastBinding) :Observable() {
+class ForecastViewModel(private var activity: Activity, private var binding: ActivityForecastBinding,
+                        private var lat: Double,private var lon: Double) :Observable() {
     var apiServices: ApiServices? = null
     var temp: String? = null
     var location: String? = null
     init {
         apiServices = ApiUtils.getApiService()
-        var lat = Helper.getLocation(activity)?.lat
-        var lon = Helper.getLocation(activity)?.lon
+//        var lat = Helper.getLocation(activity)?.lat
+//        var lon = Helper.getLocation(activity)?.lon
         var network = Helper.getLocation(activity)
 
         if (!network!!.lat.equals(0.0) || !network.lat.equals(null)) {
-            getWeatherForecast(lat!!, lon!!)
+            getWeatherForecast(lat, lon)
         } else {
             Toast.makeText(activity, "Check lại network", Toast.LENGTH_SHORT).show()
         }

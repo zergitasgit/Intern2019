@@ -3,8 +3,6 @@ package hieusenpaj.com.weather.db
 import android.annotation.SuppressLint
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import com.snappydb.DB
-import com.snappydb.DBFactory
 import hieusenpaj.com.weather.models.Add
 import hieusenpaj.com.weather.models.City
 import java.io.File
@@ -12,7 +10,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class DBCity(private val context: Context) {
-    var db: DB? = null
+
 
     companion object {
         private val DB_NAME = "city.db"
@@ -53,35 +51,21 @@ class DBCity(private val context: Context) {
         `is`.close()
     }
 
-    fun getCityByName(name: String): Add {
-        var add: Add? = null
-        val cursor = this.openDatabase().rawQuery("SELECT * FROM worldcities WHERE city = '$name'", null)
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast) {
-            if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
-                add = Add(cursor.getString(cursor.getColumnIndex("lat")).toDouble(),
-                        cursor.getString(cursor.getColumnIndex("lng")).toDouble())
 
-                cursor.moveToNext()
-            }
-        }
-
-        return add!!
-    }
 
     fun getListCity(string: String): ArrayList<City> {
         var arr = ArrayList<City>()
         val cursor = this.openDatabase().rawQuery("SELECT * FROM worldcities WHERE city LIKE  '$string%' LIMIT 20 ", null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
-            var city = cursor.getString(cursor.getColumnIndex("city"))
-            var country = cursor.getString(cursor.getColumnIndex("field5"))
-            var lat = cursor.getString(cursor.getColumnIndex("lat"))
+            val city = cursor.getString(cursor.getColumnIndex("city"))
+            val country = cursor.getString(cursor.getColumnIndex("field5"))
+            val lat = cursor.getString(cursor.getColumnIndex("lat"))
 
-            var lon = cursor.getString(cursor.getColumnIndex("lng"))
+            val lon = cursor.getString(cursor.getColumnIndex("lng"))
 
 
-            arr.add(City(city, country,lat.toDouble(),lon.toDouble()))
+            arr.add(City(city, country,lat.toDouble(),lon.toDouble(),"","",false))
             cursor.moveToNext()
         }
 

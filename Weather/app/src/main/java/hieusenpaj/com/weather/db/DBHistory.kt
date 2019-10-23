@@ -3,12 +3,13 @@ package hieusenpaj.com.weather.db
 import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import hieusenpaj.com.weather.models.City
 
-class DBHistory (private val context: Context,
-                 factory: SQLiteDatabase.CursorFactory?)
+class DBHistory(private val context: Context,
+                factory: SQLiteDatabase.CursorFactory?)
     : SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
     override fun onCreate(p0: SQLiteDatabase?) {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("hieu", Context.MODE_PRIVATE)
@@ -18,7 +19,8 @@ class DBHistory (private val context: Context,
                     TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY," +
                     COLUMN_CITY
-                    + " TEXT," + COLUMN_COUNTRY + " TEXT," + COLUMN_LAT + " TEXT," +
+                    + " TEXT," + COLUMN_COUNTRY + " TEXT," + COLUMN_LAT + " TEXT," + COLUMN_TEMP + " TEXT," +
+                    COLUMN_STATUS + " TEXT," +
                     COLUMN_LON + " TEXT," + COLUMN_HISTORY + " REAL" + ")")
 
             p0!!.execSQL(CREATE_PRODUCTS_TABLE)
@@ -41,42 +43,120 @@ class DBHistory (private val context: Context,
         val COLUMN_CITY = "city"
         val COLUMN_COUNTRY = "country"
         val COLUMN_LAT = "lat"
+        val COLUMN_TEMP = "temp"
+        val COLUMN_STATUS = "status"
         val COLUMN_LON = "lon"
         val COLUMN_HISTORY = "history"
 
+
     }
-    fun insertHistory(city: String, country: String, lat: String, lon: String,history:Long) {
+
+    fun insertHistory(city: String, country: String, lat: String, lon: String, temp: String, status: String, history: Long) {
         val values = ContentValues()
         values.put(COLUMN_CITY, city)
         values.put(COLUMN_COUNTRY, country)
         values.put(COLUMN_LAT, lat)
         values.put(COLUMN_LON, lon)
+        values.put(COLUMN_TEMP, temp)
+        values.put(COLUMN_STATUS, status)
         values.put(COLUMN_HISTORY, history)
 
         val db = this.writableDatabase
         db.insert(TABLE_NAME, null, values)
         db.close()
     }
-    fun getCity(): ArrayList<City> {
+
+    fun updateHistory(city: String, time: Long) {
+        val contentValues = ContentValues()
+        val db = this.readableDatabase
+        contentValues.put(COLUMN_HISTORY, time)
+        db.update(TABLE_NAME, contentValues, "city = '$city'", null)
+        return
+    }
+
+    fun updateLocal(city: String, country: String, lat: String, lon: String, temp: String, status: String) {
+        val values = ContentValues()
+        val db = this.readableDatabase
+        values.put(COLUMN_CITY, city)
+        values.put(COLUMN_COUNTRY, country)
+        values.put(COLUMN_LAT, lat)
+        values.put(COLUMN_LON, lon)
+        values.put(COLUMN_TEMP, temp)
+        values.put(COLUMN_STATUS, status)
+        db.update(TABLE_NAME, values, "_id = 1", null)
+        return
+    }
+
+
+    fun getCityHistory(isHistory: Boolean): ArrayList<City> {
+        var cursor: Cursor? = null
         var arr: ArrayList<City> = ArrayList()
         val db = this.getWritableDatabase()
-        val cursor = db.rawQuery("SELECT * FROM his ORDER BY history DESC ", null)
-        cursor.moveToFirst()
+        if (isHistory) {
+            cursor = db.rawQuery("SELECT * FROM his ORDER BY history DESC ", null)
+        } else {
+            cursor = db.rawQuery("SELECT * FROM his ", null)
+        }
+        cursor!!.moveToFirst()
         if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {
 
-                var city = cursor.getString(cursor.getColumnIndex("city"))
-                var country = cursor.getString(cursor.getColumnIndex("country"))
-                var lat = cursor.getString(cursor.getColumnIndex("lat"))
+                val city = cursor.getString(cursor.getColumnIndex("city"))
+                val country = cursor.getString(cursor.getColumnIndex("country"))
+                val lat = cursor.getString(cursor.getColumnIndex("lat"))
 
-                var lon = cursor.getString(cursor.getColumnIndex("lon"))
+                val lon = cursor.getString(cursor.getColumnIndex("lon"))
+                val temp = cursor.getString(cursor.getColumnIndex("temp"))
+                val status = cursor.getString(cursor.getColumnIndex("status"))
 
-
-                arr.add(City(city, country,lat.toDouble(),lon.toDouble()))
+                arr.add(City(city, country, lat.toDouble(), lon.toDouble(), temp, status,false))
                 cursor.moveToNext()
             }
         }
         return arr
     }
 
+    fun getCityByName(name: String): ArrayList<City> {
+        var cursor: Cursor? = null
+        var arr: ArrayList<City> = ArrayList()
+        val db = this.getWritableDatabase()
+
+        cursor = db.rawQuery("SELECT * FROM his WHERE city = '$name' ", null)
+
+        cursor!!.moveToFirst()
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val city = cursor.getString(cursor.getColumnIndex("city"))
+                val country = cursor.getString(cursor.getColumnIndex("country"))
+                val lat = cursor.getString(cursor.getColumnIndex("lat"))
+
+                val lon = cursor.getString(cursor.getColumnIndex("lon"))
+
+                val temp = cursor.getString(cursor.getColumnIndex("temp"))
+                val status = cursor.getString(cursor.getColumnIndex("status"))
+                arr.add(City(city, country, lat.toDouble(), lon.toDouble(), temp, status,false))
+                cursor.moveToNext()
+            }
+        }
+        return arr
+    }
+
+    fun getCityByNameSearch(name: String): Int {
+        var cursor: Cursor? = null
+        var id: Int? = null
+        val db = this.getWritableDatabase()
+
+        cursor = db.rawQuery("SELECT * FROM his WHERE city = '$name' ", null)
+
+        cursor!!.moveToFirst()
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+
+                id = cursor.getInt(cursor.getColumnIndex("_id"))
+
+                cursor.moveToNext()
+            }
+        }
+        return id!!
+    }
 }

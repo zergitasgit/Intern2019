@@ -1,24 +1,15 @@
 package hieusenpaj.com.weather.views
 
-import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
-import android.widget.Toast
 import hieusenpaj.com.weather.R
-import hieusenpaj.com.weather.adapter.CityAdapter
-import hieusenpaj.com.weather.data.DataCity
-import hieusenpaj.com.weather.databinding.ActivityMainBinding
+import hieusenpaj.com.weather.adapter.SearchCityAdapter
 import hieusenpaj.com.weather.databinding.ActivitySearchBinding
-import hieusenpaj.com.weather.helper.Helper
 import hieusenpaj.com.weather.models.City
 import hieusenpaj.com.weather.viewmodels.CityViewModel
-import hieusenpaj.com.weather.viewmodels.WeatherViewModel
 import hieusenpaj.com.weather.views.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : BaseActivity(){
     var cityViewModel:CityViewModel?=null
@@ -31,7 +22,7 @@ class SearchActivity : BaseActivity(){
     }
 
     private var list: ArrayList<City>? = null
-    private var adapter: CityAdapter? = null
+    private var adapter: SearchCityAdapter? = null
     private var listAdd :ArrayList<City> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {

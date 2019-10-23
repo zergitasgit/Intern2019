@@ -121,6 +121,12 @@ class Helper {
 //        System.out.println(tz.displayName)
             return tz.id
         }
+        fun convertToPx(activity: Activity,dp: Int): Int {
+            // Get the screen's density scale
+            val scale = activity.resources.displayMetrics.density
+            // Convert the dps to pixels, based on density scale
+            return (dp * scale + 0.5f).toInt()
+        }
 
     }
 
