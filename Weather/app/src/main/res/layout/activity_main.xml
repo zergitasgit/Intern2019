@@ -9,11 +9,18 @@
             type="hieusenpaj.com.weather.viewmodels.MainViewModel" />
     </data>
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rootView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#EBEBEB">
+        android:background="#EBEBEB"
+        android:fitsSystemWindows="true">
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -31,8 +38,8 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/list"
-                    android:layout_marginLeft="12dp" />
+                    android:layout_marginLeft="12dp"
+                    android:src="@drawable/list" />
 
                 <TextView
                     android:id="@+id/tv_local"
@@ -53,10 +60,17 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-    </LinearLayout>
+        <io.github.yavski.fabspeeddial.FabSpeedDial
+            android:id="@+id/fab_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|end"
+            app:fabGravity="bottom_end"
+            app:fabMenu="@menu/menu_float_button"
+            app:miniFabBackgroundTintList="@array/fab_menu_item_colors"
+            app:miniFabDrawableTint="@android:color/white"
+            app:miniFabTitleTextColorList="@array/fab_menu_item_colors"
+            app:touchGuardDrawable="@drawable/background" />
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

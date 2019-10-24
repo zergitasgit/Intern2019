@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Weather</string>
+
+    <string name="menu_item_call">Call</string>
+    <string name="menu_item_text">Text</string>
+    <string name="menu_item_email">Email</string>
 </resources>

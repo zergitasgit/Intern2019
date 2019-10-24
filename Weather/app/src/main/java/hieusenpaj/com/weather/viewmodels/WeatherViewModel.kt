@@ -2,7 +2,9 @@ package hieusenpaj.com.weather.viewmodels
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.util.Log
@@ -33,11 +35,17 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
 
 
     var apiServices: ApiServices? = null
-    var temp: String? = null
+//    var temp: String? = null
     var location: String? = null
+    private var sha: SharedPreferences? = null
+    private var edit: SharedPreferences.Editor? = null
+    private  var temp :Int?=null
+
+
 
     init {
-
+        sha = activity.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        edit = sha!!.edit()
         apiServices = ApiUtils.getApiService()
 //        var lat = Helper.getLocation(activity)?.lat
 //        Helper.getLocation(activity)?.lat
@@ -65,7 +73,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(call: Call<CurrentWeather>, response: Response<CurrentWeather>) {
                 val currentWeather = response.body()
-                val temp = (currentWeather.data[0].temp.toInt()).toString()
+                 temp = (currentWeather.data[0].temp.toInt())
                 val location = currentWeather.data[0].city_name
                 val status = currentWeather.data[0].weather.description
                 val visibility = currentWeather.data[0].vis.toInt()
@@ -74,8 +82,12 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
                 val windSpeed = currentWeather.data[0].wind_spd.toInt()
 
 
+                if(!sha!!.getBoolean("F",false)) {
+                    binding.tvTemp.text = temp.toString()
+                }else{
+                    binding.tvTemp.text = Helper.convertCtoF(temp!!).toString()
 
-                binding.tvTemp.text = temp
+                }
 //                binding.tvLocal.text = location
                 binding.tvStatus.text = status
                 binding.tvHumidity.text = humidity.toString() + "%" + "\n" + "Humidity"
@@ -85,13 +97,13 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
 
 
 //                    binding.tvWindSpeed.text = getTime(currentWeather.data[0].sunset)
-                val srArr = Helper.getTime(currentWeather.data[0].sunrise).split(":")
+                val srArr = Helper.getTime(currentWeather.data[0].sunrise,currentWeather.data[0].timezone).split(":")
                 val sunriseHour = Integer.valueOf(srArr[0])
                 val sunriseMinute = Integer.valueOf(srArr[1])
-                val ssArrSet = Helper.getTime(currentWeather.data[0].sunset).split(":")
-                val sunsetHour = Integer.valueOf(ssArrSet[0]) + 12
+                val ssArrSet = Helper.getTime(currentWeather.data[0].sunset,currentWeather.data[0].timezone).split(":")
+                val sunsetHour = Integer.valueOf(ssArrSet[0])+12
                 val sunsetMinute = Integer.valueOf(ssArrSet[1])
-                refreshSSV(sunriseHour, sunriseMinute, sunsetHour, sunsetMinute)
+                refreshSSV(currentWeather.data[0].timezone,sunriseHour, sunriseMinute, sunsetHour, sunsetMinute)
 
 
             }
@@ -142,18 +154,16 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
                         .load(ApiUtils.ICON + fw.data[2].weather.icon + ".png")
                         .into(binding.ivStatus2)
 
-                Log.e("TAG", "hi")
-
             }
 
         })
     }
 
 
-    private fun refreshSSV(sunriseHour: Int, sunriseMinute: Int, sunsetHour: Int, sunsetMinute: Int) {
+    private fun refreshSSV(timeZone: String,sunriseHour: Int, sunriseMinute: Int, sunsetHour: Int, sunsetMinute: Int) {
         binding.ssv.setSunriseTime(Time(sunriseHour, sunriseMinute))
         binding.ssv.setSunsetTime(Time(sunsetHour, sunsetMinute))
-        binding.ssv.startAnimate()
+        binding.ssv.startAnimate(timeZone)
     }
 
     private fun refeshView() {
@@ -180,5 +190,12 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
     }
     fun getWeatherSearch(lat: Double,lon: Double){
         getWeatherCurrent(lat,lon)
+    }
+    fun changeTemp(){
+        if(sha!!.getBoolean("F",false)){
+            binding.tvTemp.text = Helper.convertCtoF(temp!!).toString()
+        }else{
+            binding.tvTemp.text = temp.toString()
+        }
     }
 }

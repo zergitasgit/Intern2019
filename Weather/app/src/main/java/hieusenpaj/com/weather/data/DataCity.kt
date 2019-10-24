@@ -55,6 +55,10 @@ class DataCity {
             val dbHistory =DBHistory(activity,null)
             dbHistory.updateLocal(city,country,lat,lon,temp,status)
         }
+        fun deleteId(activity: Activity,city: String){
+            val dbHistory =DBHistory(activity,null)
+            dbHistory.deleteId(city)
+        }
 
 
 

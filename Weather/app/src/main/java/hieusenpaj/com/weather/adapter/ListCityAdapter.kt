@@ -13,9 +13,10 @@ import hieusenpaj.com.weather.databinding.ItemCityBinding
 import hieusenpaj.com.weather.databinding.ItemListCityBinding
 import hieusenpaj.com.weather.models.City
 
-class ListCityAdapter (private val context: Activity,
-                       private var arr : ArrayList<City>,
-                       private val listener: ItemListener): RecyclerView.Adapter<ListCityAdapter.ViewHolder>() {
+class ListCityAdapter(private val context: Activity,
+                      private var arr: ArrayList<City>,
+                      private val listener: ItemListener,
+                      private val deleteListener: DeleteItemListener) : RecyclerView.Adapter<ListCityAdapter.ViewHolder>() {
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ListCityAdapter.ViewHolder {
         val view: ItemListCityBinding = DataBindingUtil
                 .inflate(LayoutInflater.from(context),
@@ -24,53 +25,65 @@ class ListCityAdapter (private val context: Activity,
 
     }
 
-    override fun getItemCount(): Int =arr.size
+    override fun getItemCount(): Int = arr.size
 
     override fun onBindViewHolder(p0: ListCityAdapter.ViewHolder, p1: Int) {
         p0.binding.setItem(arr[p1])
 
         Glide.with(context)
-                .load(ApiUtils.ICON+arr[p1].status+".png")
+                .load(ApiUtils.ICON + arr[p1].status + ".png")
                 .into(p0.binding.ivStatus)
 
-        if (arr[p1].ischeck){
-            p0.binding.ivDelete.visibility = View.VISIBLE
-            p0.binding.tv.visibility = View.GONE
-            p0.binding.tvTemp.visibility = View.GONE
-            p0.binding.ivStatus.visibility = View.GONE
-            p0.binding.ivDelete.setOnClickListener {
-                listener.onClick(p1,arr[p1].city,arr[p1].country,arr[p1].lat,arr[p1].lon)
+        if (arr[p1].ischeck) {
+            if(p1>0) {
+                p0.binding.ivDelete.visibility = View.VISIBLE
+                p0.binding.tv.visibility = View.GONE
+                p0.binding.tvTemp.visibility = View.GONE
+                p0.binding.ivStatus.visibility = View.GONE
+                p0.binding.ivDelete.setOnClickListener {
+                    deleteListener.onClick(p1, arr[p1].city, arr[p1].country, arr[p1].lat, arr[p1].lon)
+                }
             }
 
-        }else{
+        } else {
             p0.binding.ivDelete.visibility = View.GONE
             p0.binding.tv.visibility = View.VISIBLE
             p0.binding.tvTemp.visibility = View.VISIBLE
             p0.binding.ivStatus.visibility = View.VISIBLE
 
             p0.binding.rl.setOnClickListener {
-                listener.onClick(p1,arr[p1].city,arr[p1].country,arr[p1].lat,arr[p1].lon)
+                listener.onClick(p1, arr[p1].city, arr[p1].country, arr[p1].lat, arr[p1].lon)
             }
         }
 
     }
-    class ViewHolder(binding: ItemListCityBinding): RecyclerView.ViewHolder(binding.root){
+
+    class ViewHolder(binding: ItemListCityBinding) : RecyclerView.ViewHolder(binding.root) {
         val binding = binding
 
     }
-    fun setUpDelete(){
-        for (i in arr.indices){
-            if(i!=0) {
-                arr[i].ischeck = true
-            }
+
+    fun setUpDelete(isCheck:Boolean) {
+        for (i in arr.indices) {
+
+                arr[i].ischeck = isCheck
+
         }
         notifyDataSetChanged()
     }
-    fun getArr():ArrayList<City>{
-        return arr
+
+    fun delete(pos: Int) {
+        arr.removeAt(pos)
+        notifyItemRemoved(pos)
+        notifyItemRangeChanged(pos, arr.size);
     }
+
     interface ItemListener {
-        fun onClick(pos:Int,city:String,country:String,lat:Double,lon:Double)
+        fun onClick(pos: Int, city: String, country: String, lat: Double, lon: Double)
     }
-    
+
+    interface DeleteItemListener {
+        fun onClick(pos: Int, city: String, country: String, lat: Double, lon: Double)
+    }
+
 }

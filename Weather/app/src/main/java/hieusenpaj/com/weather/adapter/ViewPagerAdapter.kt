@@ -30,7 +30,7 @@ class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>) : Pager
         weatherViewModel = WeatherViewModel(activity, binding,arr,arr[position].lat,arr[position].lon)
         binding.setViewModel(weatherViewModel)
         binding.executePendingBindings()
-        binding.rl.layoutParams.height = Helper.getHeightScreen(activity) - Helper.convertToPx(activity,56)
+        binding.rl.layoutParams.height = Helper.getHeightScreen(activity)
         container.addView(binding.root)
         return binding.root
 
@@ -42,6 +42,9 @@ class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>) : Pager
     }
     fun getModel(): WeatherViewModel{
         return weatherViewModel!!
+    }
+    fun changeTemp(){
+        weatherViewModel!!.changeTemp()
     }
 
 

@@ -1,10 +1,18 @@
 package hieusenpaj.com.weather.viewmodels
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.support.design.internal.NavigationMenu
+import android.support.design.widget.Snackbar
 import android.support.v4.view.ViewPager
+import android.text.TextUtils
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
+import hieusenpaj.com.weather.R
 import hieusenpaj.com.weather.adapter.ViewPagerAdapter
 import hieusenpaj.com.weather.api.ApiUtils
 import hieusenpaj.com.weather.data.DataCity
@@ -17,6 +25,7 @@ import hieusenpaj.com.weather.models.City
 import hieusenpaj.com.weather.models.current.CurrentWeather
 import hieusenpaj.com.weather.views.ListCityActivity
 import hieusenpaj.com.weather.views.SearchActivity
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,12 +36,16 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
 ) : Observable() {
     private var arr = ArrayList<City>()
     private var viewPagerAdapter: ViewPagerAdapter? = null
+    private var sha: SharedPreferences? = null
+    private var edit: SharedPreferences.Editor? = null
 
     init {
-        var arrayList = DataCity.getCityViewPager(activity)
-        var lat = Helper.getLocation(activity)!!.lat
-        var lon = Helper.getLocation(activity)!!.lon
-        var apiServices = ApiUtils.getApiService()
+        sha = activity.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        edit = sha!!.edit()
+        val arrayList = DataCity.getCityViewPager(activity)
+        val lat = Helper.getLocation(activity)!!.lat
+        val lon = Helper.getLocation(activity)!!.lon
+        val apiServices = ApiUtils.getApiService()
 //        Log.e("hi",arr.size.toString())
 //        Toast.makeText(activity,arr.size.toString(),Toast.LENGTH_SHORT).show()
 
@@ -48,13 +61,13 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
                     val location = currentWeather.data[0].city_name
                     val temp = (currentWeather.data[0].temp.toInt()).toString()
                     val country = currentWeather.data[0].country_code
-                    val status =currentWeather.data[0].weather.icon
+                    val status = currentWeather.data[0].weather.icon
 
                     arrayList.clear()
-                    arrayList.add(City(location, country, lat, lon,temp,status,false))
+                    arrayList.add(City(location, country, lat, lon, temp, status, false))
                     DataCity.insertHistory(activity, location, currentWeather.data[0].country_code, Helper.getLocation(activity)?.lat.toString(),
                             Helper.getLocation(activity)?.lon.toString(),
-                            temp,status,System.currentTimeMillis())
+                            temp, status, System.currentTimeMillis())
 //                    viewPagerAdapter = ViewPagerAdapter(activity, arrayList)
                     binding.viewPager.offscreenPageLimit = 1
                     viewPagerAdapter = ViewPagerAdapter(activity, arrayList)
@@ -64,10 +77,9 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
                 }
             })
         } else {
-            if (!lat.equals(arrayList[0].lat) && !lon.equals(arrayList[0].lon)) {
+            if (!lat.equals(arrayList[0].lat) || !lon.equals(arrayList[0].lon)) {
                 apiServices.getCurrentWeather(lat, lon, ApiUtils.KEY).enqueue(object : Callback<CurrentWeather> {
                     override fun onFailure(call: Call<CurrentWeather>?, t: Throwable?) {
-
                     }
 
                     override fun onResponse(call: Call<CurrentWeather>?, response: Response<CurrentWeather>?) {
@@ -75,8 +87,8 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
                         val location = currentWeather.data[0].city_name
                         val temp = (currentWeather.data[0].temp.toInt()).toString()
                         val country = currentWeather.data[0].country_code
-                        val status =currentWeather.data[0].weather.icon
-                        DataCity.updateLocal(activity, location, country, lat.toString(), lon.toString(),temp,status)
+                        val status = currentWeather.data[0].weather.icon
+                        DataCity.updateLocal(activity, location, country, lat.toString(), lon.toString(), temp, status)
 
 
 //                    viewPagerAdapter = ViewPagerAdapter(activity, arrayList)
@@ -86,7 +98,6 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
                         binding.viewPager.adapter = viewPagerAdapter
                         setLocal(arr, binding.viewPager.currentItem)
                         setUpViewPager(binding)
-
                     }
                 })
             } else {
@@ -106,7 +117,11 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
             val intent = Intent(activity, ListCityActivity::class.java)
             activity.startActivity(intent)
         }
+        itemMenuSelect()
 
+    }
+    fun brChangTemp(){
+        viewPagerAdapter!!.changeTemp()
     }
 
     //    fun getArr(): Arr {
@@ -117,9 +132,60 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
         var arr = DataCity.getCityViewPager(activity)
         return arr
     }
-    fun getIdCity(name:String) :Int{
-        var  id = DataCity.getIdCity(activity,name)
+
+    fun getIdCity(name: String): Int {
+        var id = DataCity.getIdCity(activity, name)
         return id
+    }
+
+    fun itemMenuSelect() {
+
+        binding.fabSpeed.setMenuListener(object : SimpleMenuListenerAdapter() {
+            override fun onMenuItemSelected(menuItem: MenuItem?): Boolean {
+
+                when (menuItem!!.itemId) {
+                    R.id.action_call -> changeTemp(menuItem);
+                }
+
+
+
+                return true
+            }
+
+
+            @SuppressLint("RestrictedApi")
+            override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
+                var menuItem = navigationMenu!!.findItem(R.id.action_call)
+                setUpTemp(menuItem)
+                return true
+            }
+
+
+        })
+
+    }
+
+    fun setUpTemp(menuItem: MenuItem) {
+        if (sha!!.getBoolean("F", false)) {
+            menuItem.setTitle("°F")
+        } else {
+            menuItem.setTitle("°C")
+        }
+    }
+
+    fun changeTemp(menuItem: MenuItem) {
+        if (!sha!!.getBoolean("F", false)) {
+            edit!!.putBoolean("F", true)
+            edit!!.apply()
+
+
+        } else {
+            edit!!.putBoolean("F", false)
+            edit!!.apply()
+
+        }
+        val intent = Intent("CHANGE_TEMP")
+        activity.sendBroadcast(intent)
     }
 
 

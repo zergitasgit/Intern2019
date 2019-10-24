@@ -21,6 +21,7 @@ import com.github.tianma8023.model.Time;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * A view which can show sunrise and sunset animation
@@ -336,13 +337,14 @@ public class SunriseSunsetView extends View {
         mLabelHorizontalOffset = labelHorizontalOffset;
     }
 
-    public void startAnimate() {
+    public void startAnimate(String timezone) {
         if (mSunriseTime == null || mSunsetTime == null) {
             throw new RuntimeException("You need to set both sunrise and sunset time before start animation");
         }
         int sunrise = mSunriseTime.transformToMinutes();
         int sunset = mSunsetTime.transformToMinutes();
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        TimeZone tz = TimeZone.getTimeZone(timezone);
+        Calendar calendar = Calendar.getInstance(tz);
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         int currentMinute = calendar.get(Calendar.MINUTE);
         int currentTime = currentHour * Time.MINUTES_PER_HOUR + currentMinute;

@@ -36,7 +36,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="81dp"
                         android:text="@string/app_name"
                         android:textSize="50dp"
                         android:textStyle="bold" />
@@ -46,11 +46,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/toolbar"
-                        android:layout_marginTop="35dp"
+                        android:layout_marginTop="91dp"
                         android:layout_toRightOf="@+id/tv_temp"
                         android:text="°C"
                         android:textSize="15dp"
                         android:textStyle="bold" />
+
 
                     <TextView
                         android:id="@+id/tv_status"

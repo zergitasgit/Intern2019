@@ -87,7 +87,18 @@ class DBHistory(private val context: Context,
         return
     }
 
+    fun deleteId(city: String): Boolean {
+        // Gets the data repository in write mode
+        val db = writableDatabase
+        // Define 'where' part of query.
+        val selection = COLUMN_CITY + " LIKE ?"
+        // Specify arguments in placeholder order.
+        val selectionArgs = arrayOf(city)
+        // Issue SQL statement.
+        db.delete(TABLE_NAME, selection, selectionArgs)
 
+        return true
+    }
     fun getCityHistory(isHistory: Boolean): ArrayList<City> {
         var cursor: Cursor? = null
         var arr: ArrayList<City> = ArrayList()

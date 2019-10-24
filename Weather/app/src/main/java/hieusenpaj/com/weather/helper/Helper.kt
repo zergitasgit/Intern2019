@@ -96,16 +96,13 @@ class Helper {
         }
 
         @SuppressLint("SimpleDateFormat")
-        fun getTime(string: String): String {
-
-
+        fun getTime(string: String,timeZone: String): String {
             var time:String?=null
             val formatter = SimpleDateFormat("hh:mm")
             formatter.timeZone = TimeZone.getTimeZone("UTC")
             val value = formatter.parse(string)
-
             val dateFormatter = SimpleDateFormat("hh:mm") //this format changeable
-            dateFormatter.timeZone = TimeZone.getTimeZone(getCurrentTimeZone())
+            dateFormatter.timeZone = TimeZone.getTimeZone(timeZone)
             time = dateFormatter.format(value)
             return time
 
@@ -126,6 +123,14 @@ class Helper {
             val scale = activity.resources.displayMetrics.density
             // Convert the dps to pixels, based on density scale
             return (dp * scale + 0.5f).toInt()
+        }
+        fun convertCtoF(value:Int):Int{
+            val F = value * (9 / 5) + 32
+            return F
+        }
+        fun convertFtoC(value:Int):Int{
+            val C = ((value-5) * 5) / 9
+            return C
         }
 
     }

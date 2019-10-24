@@ -38,6 +38,8 @@ class MainActivity : BaseActivity() {
 //        setContentView(R.layout.activity_main)
         registerReceiver(broadcastReceiver, IntentFilter("SEARCH"))
         registerReceiver(brList, IntentFilter("SEARCH_LIST"))
+        registerReceiver(brDelete, IntentFilter("DELETE"))
+        registerReceiver(brTemp, IntentFilter("CHANGE_TEMP"))
 
 
     }
@@ -48,12 +50,39 @@ class MainActivity : BaseActivity() {
 
 
     }
-    private var brList = object :BroadcastReceiver() {
+
+    private var brList = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, p1: Intent?) {
             val action = p1?.action
             val pos = p1?.extras!!.getInt("pos")
+            arrayList = model!!.getCity()
+            viewPagerAdapter = ViewPagerAdapter(this@MainActivity, arrayList)
+            binding!!.viewPager.adapter = viewPagerAdapter
             if (action!!.equals("SEARCH_LIST", ignoreCase = true)) {
                 binding!!.viewPager.currentItem = pos
+            }
+        }
+    }
+    private var brDelete = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val action = p1?.action
+
+
+            if (action!!.equals("DELETE", ignoreCase = true)) {
+                arrayList = model!!.getCity()
+                viewPagerAdapter = ViewPagerAdapter(this@MainActivity, arrayList)
+                binding!!.viewPager.adapter = viewPagerAdapter
+            }
+        }
+    }
+    private var brTemp = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val action = p1?.action
+
+
+            if (action!!.equals("CHANGE_TEMP", ignoreCase = true)) {
+
+               model!!.brChangTemp()
             }
         }
     }
@@ -75,11 +104,11 @@ class MainActivity : BaseActivity() {
                 arrayList = model!!.getCity()
                 viewPagerAdapter = ViewPagerAdapter(this@MainActivity, arrayList)
                 binding!!.viewPager.adapter = viewPagerAdapter
-                if(pos.equals(" ")) {
+                if (pos.equals(" ")) {
                     binding!!.viewPager.currentItem = arrayList.size - 1
-                }else{
+                } else {
                     var id = model!!.getIdCity(pos)
-                    binding!!.viewPager.currentItem = id -1
+                    binding!!.viewPager.currentItem = id - 1
                 }
                 model!!.setLocal(arrayList, binding!!.viewPager.currentItem)
                 viewPagerAdapter!!.getModel().getWeatherSearch(lat!!, lon!!)
@@ -93,6 +122,9 @@ class MainActivity : BaseActivity() {
         super.onDestroy()
         unregisterReceiver(broadcastReceiver)
         unregisterReceiver(brList)
+        unregisterReceiver(brDelete)
+        unregisterReceiver(brTemp)
+
 
     }
 

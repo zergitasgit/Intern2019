@@ -36,10 +36,10 @@
                 android:textSize="16dp" />
             <ImageView
                 android:id="@+id/iv_edit"
-                android:layout_width="20dp"
+                android:layout_width="35dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:paddingRight="15dp"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/edit"/>
         </RelativeLayout>
