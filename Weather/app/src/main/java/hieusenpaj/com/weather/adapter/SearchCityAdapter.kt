@@ -1,6 +1,7 @@
 package hieusenpaj.com.weather.adapter
 
 import android.app.Activity
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,7 +11,7 @@ import hieusenpaj.com.weather.R
 import hieusenpaj.com.weather.databinding.ItemCityBinding
 import hieusenpaj.com.weather.models.City
 
-class SearchCityAdapter(private val context: Activity,
+class SearchCityAdapter(private val context: Context,
                         private var arr : ArrayList<City>,
                         private val listener: ItemListener):RecyclerView.Adapter<SearchCityAdapter.ViewHolder>() {
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): SearchCityAdapter.ViewHolder {

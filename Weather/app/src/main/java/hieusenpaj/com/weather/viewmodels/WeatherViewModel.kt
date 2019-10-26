@@ -80,6 +80,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
                 val uv = currentWeather.data[0].uv.toInt()
                 val humidity = currentWeather.data[0].rh
                 val windSpeed = currentWeather.data[0].wind_spd.toInt()
+                val ahi = currentWeather.data[0].aqi
 
 
                 if(!sha!!.getBoolean("F",false)) {
@@ -94,6 +95,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
                 binding.tvVisibility.text = visibility.toString() + "Km" + "\n" + "Visibility"
                 binding.tvUv.text = uv.toString() + "\n" + "UV"
                 binding.tvWindSpeed.text = windSpeed.toString() + "m/s" + "\n" + "Wind speed"
+                binding.tvAhi.text = "Aqi : " + ahi
 
 
 //                    binding.tvWindSpeed.text = getTime(currentWeather.data[0].sunset)

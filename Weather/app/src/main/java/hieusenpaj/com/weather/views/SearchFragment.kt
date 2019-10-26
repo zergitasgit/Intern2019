@@ -2,37 +2,40 @@ package hieusenpaj.com.weather.views
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.view.Menu
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
+import android.view.*
 import android.widget.SearchView
 import hieusenpaj.com.weather.R
 import hieusenpaj.com.weather.adapter.SearchCityAdapter
-import hieusenpaj.com.weather.databinding.ActivitySearchBinding
+import hieusenpaj.com.weather.databinding.FragmentSearchBinding
 import hieusenpaj.com.weather.models.City
-import hieusenpaj.com.weather.viewmodels.CityViewModel
+import hieusenpaj.com.weather.viewmodels.SearchCityViewModel
 import hieusenpaj.com.weather.views.base.BaseActivity
 
-class SearchActivity : BaseActivity(){
-    var cityViewModel:CityViewModel?=null
-    override fun bindingView() {
-        val binding : ActivitySearchBinding  = DataBindingUtil.setContentView(this@SearchActivity, R.layout.activity_search)
-        cityViewModel= CityViewModel(this@SearchActivity, binding)
-        binding.setViewModel(cityViewModel)
-        binding.executePendingBindings()
-        setSupportActionBar(binding.toolbarSearch)
-    }
+class SearchFragment : Fragment() {
+    var cityViewModel: SearchCityViewModel? = null
+
 
     private var list: ArrayList<City>? = null
     private var adapter: SearchCityAdapter? = null
-    private var listAdd :ArrayList<City> = ArrayList()
+    private var listAdd: ArrayList<City> = ArrayList()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_search)
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setHasOptionsMenu(true)
+        val binding = DataBindingUtil.inflate<FragmentSearchBinding>(inflater, R.layout.fragment_search, container
+                , false)
+        val view = binding.root
+        cityViewModel = SearchCityViewModel(context!!, binding)
+        binding.viewModel = cityViewModel
+        binding.executePendingBindings()
+
+        return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater!!.inflate(R.menu.menu_search, menu)
         val searchViewItem = menu!!.findItem(R.id.action_search)
 
         //getting the search view
@@ -48,7 +51,6 @@ class SearchActivity : BaseActivity(){
         searchView.requestFocusFromTouch()
 
 //        searchViewItem?.expandActionView()
-
 
 
 //
@@ -70,6 +72,7 @@ class SearchActivity : BaseActivity(){
 
 
 
-        return super.onCreateOptionsMenu(menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
+
 }

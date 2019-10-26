@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.view.ViewPager
+import android.view.Menu
 import android.widget.Toast
 import hieusenpaj.com.weather.R
 import hieusenpaj.com.weather.adapter.ViewPagerAdapter
@@ -29,6 +30,7 @@ class MainActivity : BaseActivity() {
         model = MainViewModel(this, binding!!)
         binding!!.viewModel = model
         binding!!.executePendingBindings()
+        setSupportActionBar(binding!!.toolbar)
 //
 
     }
@@ -126,6 +128,11 @@ class MainActivity : BaseActivity() {
         unregisterReceiver(brTemp)
 
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main,menu)
+        return true
     }
 
     fun setUpViewPager(binding: ActivityMainBinding) {

@@ -9,7 +9,7 @@
             type="hieusenpaj.com.weather.viewmodels.MainViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/rootView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +26,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-
             >
 
             <RelativeLayout
@@ -47,30 +46,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/app_name" />
-
-                <ImageView
-                    android:id="@+id/iv_search"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:src="@drawable/ic_search" />
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
-
-        <io.github.yavski.fabspeeddial.FabSpeedDial
-            android:id="@+id/fab_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom|end"
-            app:fabGravity="bottom_end"
-            app:fabMenu="@menu/menu_float_button"
-            app:miniFabBackgroundTintList="@array/fab_menu_item_colors"
-            app:miniFabDrawableTint="@android:color/white"
-            app:miniFabTitleTextColorList="@array/fab_menu_item_colors"
-            app:touchGuardDrawable="@drawable/background" />
     </android.support.design.widget.CoordinatorLayout>
 </layout>

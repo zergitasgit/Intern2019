@@ -1,6 +1,6 @@
 package hieusenpaj.com.weather.data
 
-import android.app.Activity
+import android.content.Context
 import android.util.Log
 import hieusenpaj.com.weather.db.DBCity
 import hieusenpaj.com.weather.db.DBHistory
@@ -9,24 +9,24 @@ import hieusenpaj.com.weather.models.City
 
 class DataCity {
     companion object{
-        fun getListCity(activity:Activity,name: String):ArrayList<City>{
-            val dbCity = DBCity(activity)
+        fun getListCity(context:Context,name: String):ArrayList<City>{
+            val dbCity = DBCity(context)
             val arr = dbCity.getListCity(name)
             return arr
 
         }
-        fun getCityViewPager(activity: Activity):ArrayList<City>{
-            val dbHistory =DBHistory(activity,null)
+        fun getCityViewPager(context: Context):ArrayList<City>{
+            val dbHistory =DBHistory(context,null)
             val arr = dbHistory.getCityHistory(false)
             return arr
         }
-        fun getCityHistory(activity: Activity):ArrayList<City>{
-            val dbHistory =DBHistory(activity,null)
+        fun getCityHistory(context: Context):ArrayList<City>{
+            val dbHistory =DBHistory(context,null)
             val arr = dbHistory.getCityHistory(true)
             return arr
         }
-        fun checkCitySearch(activity: Activity,string: String):Boolean{
-            val dbHistory= DBHistory(activity,null)
+        fun checkCitySearch(context: Context,string: String):Boolean{
+            val dbHistory= DBHistory(context,null)
             var boolean = false
             val arr = dbHistory.getCityByName(string)
             Log.e("hieu",arr.size.toString())
@@ -35,28 +35,28 @@ class DataCity {
             }
             return boolean
         }
-        fun getIdCity(activity: Activity,name: String):Int{
-            val dbHistory= DBHistory(activity,null)
+        fun getIdCity(context: Context,name: String):Int{
+            val dbHistory= DBHistory(context,null)
             val id = dbHistory.getCityByNameSearch(name)
             return id
         }
 
-        fun insertHistory(activity: Activity,city: String, country: String, lat: String, lon: String,temp:String,status:String,
+        fun insertHistory(context: Context,city: String, country: String, lat: String, lon: String,temp:String,status:String,
                           history:Long){
-            val dbHistory =DBHistory(activity,null)
+            val dbHistory =DBHistory(context,null)
             dbHistory.insertHistory(city,country,lat,lon,temp,status,history)
 
         }
-        fun updateHistory(activity: Activity,city: String,tim:Long){
-            val dbHistory =DBHistory(activity,null)
+        fun updateHistory(context: Context,city: String,tim:Long){
+            val dbHistory =DBHistory(context,null)
             dbHistory.updateHistory(city,tim)
         }
-        fun updateLocal(activity: Activity,city: String, country: String, lat: String, lon: String,temp:String,status:String){
-            val dbHistory =DBHistory(activity,null)
+        fun updateLocal(context: Context,city: String, country: String, lat: String, lon: String,temp:String,status:String){
+            val dbHistory =DBHistory(context,null)
             dbHistory.updateLocal(city,country,lat,lon,temp,status)
         }
-        fun deleteId(activity: Activity,city: String){
-            val dbHistory =DBHistory(activity,null)
+        fun deleteId(context: Context,city: String){
+            val dbHistory =DBHistory(context,null)
             dbHistory.deleteId(city)
         }
 

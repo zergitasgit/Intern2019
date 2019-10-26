@@ -1,31 +1,19 @@
 package hieusenpaj.com.weather.viewmodels
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.support.design.internal.NavigationMenu
-import android.support.design.widget.Snackbar
 import android.support.v4.view.ViewPager
-import android.text.TextUtils
-import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
-import hieusenpaj.com.weather.R
 import hieusenpaj.com.weather.adapter.ViewPagerAdapter
 import hieusenpaj.com.weather.api.ApiUtils
 import hieusenpaj.com.weather.data.DataCity
 import hieusenpaj.com.weather.databinding.ActivityMainBinding
-import hieusenpaj.com.weather.databinding.ActivitySearchBinding
-import hieusenpaj.com.weather.db.DBCity
-import hieusenpaj.com.weather.db.DBHistory
 import hieusenpaj.com.weather.helper.Helper
 import hieusenpaj.com.weather.models.City
 import hieusenpaj.com.weather.models.current.CurrentWeather
 import hieusenpaj.com.weather.views.ListCityActivity
-import hieusenpaj.com.weather.views.SearchActivity
-import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -109,15 +97,15 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
             }
         }
 
-        binding.ivSearch.setOnClickListener {
-            val intent = Intent(activity, SearchActivity::class.java)
-            activity.startActivity(intent)
-        }
+//        binding.ivSearch.setOnClickListener {
+//            val intent = Intent(activity, SearchFragment::class.java)
+//            activity.startActivity(intent)
+//        }
         binding.ivSetting.setOnClickListener {
             val intent = Intent(activity, ListCityActivity::class.java)
             activity.startActivity(intent)
         }
-        itemMenuSelect()
+//        itemMenuSelect()
 
     }
     fun brChangTemp(){
@@ -138,32 +126,32 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
         return id
     }
 
-    fun itemMenuSelect() {
-
-        binding.fabSpeed.setMenuListener(object : SimpleMenuListenerAdapter() {
-            override fun onMenuItemSelected(menuItem: MenuItem?): Boolean {
-
-                when (menuItem!!.itemId) {
-                    R.id.action_call -> changeTemp(menuItem);
-                }
-
-
-
-                return true
-            }
-
-
-            @SuppressLint("RestrictedApi")
-            override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
-                var menuItem = navigationMenu!!.findItem(R.id.action_call)
-                setUpTemp(menuItem)
-                return true
-            }
-
-
-        })
-
-    }
+//    fun itemMenuSelect() {
+//
+//        binding.fabSpeed.setMenuListener(object : SimpleMenuListenerAdapter() {
+//            override fun onMenuItemSelected(menuItem: MenuItem?): Boolean {
+//
+//                when (menuItem!!.itemId) {
+//                    R.id.action_call -> changeTemp(menuItem);
+//                }
+//
+//
+//
+//                return true
+//            }
+//
+//
+//            @SuppressLint("RestrictedApi")
+//            override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
+//                var menuItem = navigationMenu!!.findItem(R.id.action_call)
+//                setUpTemp(menuItem)
+//                return true
+//            }
+//
+//
+//        })
+//
+//    }
 
     fun setUpTemp(menuItem: MenuItem) {
         if (sha!!.getBoolean("F", false)) {

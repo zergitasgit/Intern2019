@@ -1,6 +1,6 @@
 package hieusenpaj.com.weather.adapter
 
-import android.app.Activity
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import hieusenpaj.com.weather.databinding.ItemCityBinding
 import hieusenpaj.com.weather.databinding.ItemListCityBinding
 import hieusenpaj.com.weather.models.City
 
-class ListCityAdapter(private val context: Activity,
+class ListCityAdapter(private val context: Context,
                       private var arr: ArrayList<City>,
                       private val listener: ItemListener,
                       private val deleteListener: DeleteItemListener) : RecyclerView.Adapter<ListCityAdapter.ViewHolder>() {
