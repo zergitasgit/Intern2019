@@ -5,12 +5,16 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import hieusenpaj.com.weather.data.DataCity
 import hieusenpaj.com.weather.models.Add
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -66,13 +70,13 @@ class Helper {
                     locationNetwork = localNetworkLocation
                 if (locationNetwork != null) {
 
-                    lo = Add( String.format("%.2f",locationNetwork!!.latitude).toDouble(),
-                            String.format("%.2f",locationNetwork!!.longitude).toDouble())
+                    lo = Add( locationNetwork!!.latitude,
+                            locationNetwork!!.longitude)
                 }
 
 
             } else {
-                lo = Add(0.0, 0.0)
+                lo = null
             }
 
             return lo
@@ -132,6 +136,13 @@ class Helper {
             val C = ((value-5) * 5) / 9
             return C
         }
+//        fun getIcon(code:Int,activity: Activity):Drawable{
+//            val arr = DataCity.getIcon(activity, code)
+//            val drawable = BitmapDrawable(activity.getResources(), BitmapFactory.decodeByteArray(arr[0].icDay,
+//                    0, arr[0].icNight!!.size))
+//            return drawable
+//        }
+
 
     }
 

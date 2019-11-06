@@ -69,16 +69,17 @@ class SearchCityViewModel(private var context: Context, private var binding: Fra
 //                    viewPagerAdapter = ViewPagerAdapter(context, arrayList)
                         val intent = Intent("SEARCH")
                         if (!DataCity.checkCitySearch(context, city)) {
-                            intent.putExtra("city", " ")
+                            intent.putExtra("have",false)
                             DataCity.insertHistory(context, city, country, lat.toString(), lon.toString(), temp, status, System.currentTimeMillis())
                         } else {
                             DataCity.updateHistory(context, city, System.currentTimeMillis())
-                            intent.putExtra("city", city)
+                            intent.putExtra("have",true)
+
                         }
 
 //                        val intentBack = Intent(context, MainActivity::class.java)
 //                        context.startActivity(intentBack)
-
+                        intent.putExtra("city", city)
                         intent.putExtra("lat", lat)
                         intent.putExtra("lon", lon)
 

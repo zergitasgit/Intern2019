@@ -21,8 +21,10 @@ class ManagerViewModel(private var context: Context, private var binding: Fragme
     private var adapter: ListCityAdapter? = null
     private var arr: ArrayList<City> = ArrayList()
     private var arrDelete: ArrayList<String> = ArrayList()
-    private var check: Boolean = false
 
+    companion object {
+        var check: Boolean = false
+    }
     init {
         arr = DataCity.getCityViewPager(context)
         setUpAdapter(arr)
@@ -36,14 +38,14 @@ class ManagerViewModel(private var context: Context, private var binding: Fragme
                     DataCity.deleteId(context,i)
                 }
                 adapter!!.setUpDelete(false)
-                binding.ivEdit.setImageDrawable(context.getResources().getDrawable(R.drawable.edit))
+                binding.ivEdit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_edit))
                 check = false
                 val intent = Intent("DELETE")
                 context.sendBroadcast(intent)
             } else {
 
                 adapter!!.setUpDelete(true)
-                binding.ivEdit.setImageDrawable(context.getResources().getDrawable(R.drawable.tick))
+                binding.ivEdit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_done))
                 check = true
             }
         }
@@ -61,19 +63,20 @@ class ManagerViewModel(private var context: Context, private var binding: Fragme
             transaction.replace(R.id.container, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
+            check=true
         }
     }
     fun onBack(){
         if(check){
             arr = DataCity.getCityViewPager(context)
             setUpAdapter(arr)
-            binding.ivEdit.setImageDrawable(context.getResources().getDrawable(R.drawable.edit))
+            binding.ivEdit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_edit))
             check = false
 
         }else{
 //            context.finish()
-            Toast.makeText(context,"hieu",Toast.LENGTH_SHORT).show()
-//            (context as AppCompatActivity).onBackPressed()
+
+            (context as AppCompatActivity).finish()
         }
     }
     private fun setUpAdapter(arr: ArrayList<City>){

@@ -2,6 +2,8 @@ package hieusenpaj.com.weather.viewmodels
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -20,7 +22,11 @@ class ForecastViewModel(private var activity: Activity, private var binding: Act
     var apiServices: ApiServices? = null
     var temp: String? = null
     var location: String? = null
+    private var sha: SharedPreferences? = null
+    private var edit: SharedPreferences.Editor? = null
     init {
+        sha = activity.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        edit = sha!!.edit()
         apiServices = ApiUtils.getApiService()
 //        var lat = Helper.getLocation(activity)?.lat
 //        var lon = Helper.getLocation(activity)?.lon
@@ -84,15 +90,26 @@ class ForecastViewModel(private var activity: Activity, private var binding: Act
                 Glide.with(activity)
                         .load(ApiUtils.ICON+fw.data[2].weather.icon+".png")
                         .into(binding.ivDes5)
+                var arr:IntArray?=null
+                var arrNight:IntArray?=null
+                if (sha!!.getBoolean("F", false)) {
+                    arr = intArrayOf(Helper.convertCtoF(fw.data[0].max_temp.toInt()), Helper.convertCtoF(fw.data[1].max_temp.toInt())
+                            , Helper.convertCtoF(fw.data[2].max_temp.toInt())
+                            ,  Helper.convertCtoF(fw.data[3].max_temp.toInt()),  Helper.convertCtoF(fw.data[4].max_temp.toInt()))
 
+                    arrNight = intArrayOf(Helper.convertCtoF(fw.data[0].min_temp.toInt()), Helper.convertCtoF(fw.data[1].min_temp.toInt()),
+                            Helper.convertCtoF(fw.data[2].min_temp.toInt())
+                    ,Helper.convertCtoF( fw.data[3].min_temp.toInt()), Helper.convertCtoF(fw.data[4].min_temp.toInt()))
+                }else{
+                    arr = intArrayOf(fw.data[0].max_temp.toInt(), fw.data[1].max_temp.toInt(), fw.data[2].max_temp.toInt()
+                            , fw.data[3].max_temp.toInt(), fw.data[4].max_temp.toInt())
+                    arrNight = intArrayOf(fw.data[0].min_temp.toInt(), fw.data[1].min_temp.toInt(), fw.data[2].min_temp.toInt()
+                    , fw.data[3].min_temp.toInt(), fw.data[4].min_temp.toInt())
+                }
 
-                val arr: IntArray = intArrayOf(fw.data[0].max_temp.toInt(), fw.data[1].max_temp.toInt(), fw.data[2].max_temp.toInt()
-                        , fw.data[3].max_temp.toInt(), fw.data[4].max_temp.toInt())
                 binding.lineChar.setTempDay(arr)
                 binding.lineChar.invalidate()
 
-                val arrNight: IntArray = intArrayOf(fw.data[0].min_temp.toInt(), fw.data[1].min_temp.toInt(), fw.data[2].min_temp.toInt()
-                        , fw.data[3].min_temp.toInt(), fw.data[4].min_temp.toInt())
                 binding.lineCharNight.setTempDay(arrNight)
                 binding.lineCharNight.invalidate()
 

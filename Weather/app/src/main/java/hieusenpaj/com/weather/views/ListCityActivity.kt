@@ -4,6 +4,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import hieusenpaj.com.weather.R
 import hieusenpaj.com.weather.viewmodels.ManagerViewModel
 import hieusenpaj.com.weather.views.base.BaseActivity
@@ -29,8 +30,8 @@ class ListCityActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
+        if (getFragmentManager().backStackEntryCount > 0) {
+            getFragmentManager().popBackStack()
         } else {
             super.onBackPressed()
             fragment.onBack()

@@ -1,6 +1,7 @@
 package hieusenpaj.com.weather.adapter
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,13 +12,19 @@ import hieusenpaj.com.weather.R
 import hieusenpaj.com.weather.api.ApiUtils
 import hieusenpaj.com.weather.databinding.ItemCityBinding
 import hieusenpaj.com.weather.databinding.ItemListCityBinding
+import hieusenpaj.com.weather.helper.Helper
 import hieusenpaj.com.weather.models.City
+import hieusenpaj.com.weather.viewmodels.WeatherViewModel
 
 class ListCityAdapter(private val context: Context,
                       private var arr: ArrayList<City>,
                       private val listener: ItemListener,
                       private val deleteListener: DeleteItemListener) : RecyclerView.Adapter<ListCityAdapter.ViewHolder>() {
+    private var sha: SharedPreferences? = null
+    private var edit: SharedPreferences.Editor? = null
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ListCityAdapter.ViewHolder {
+        sha = context.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        edit = sha!!.edit()
         val view: ItemListCityBinding = DataBindingUtil
                 .inflate(LayoutInflater.from(context),
                         R.layout.item_list_city, p0, false)
@@ -54,6 +61,13 @@ class ListCityAdapter(private val context: Context,
             p0.binding.rl.setOnClickListener {
                 listener.onClick(p1, arr[p1].city, arr[p1].country, arr[p1].lat, arr[p1].lon)
             }
+        }
+        if (sha!!.getBoolean("F", false)) {
+            p0.binding.tvTemp.text = Helper.convertCtoF(arr[p1].temp.toInt()).toString()
+            p0.binding.tv.text ="°F"
+        }else{
+            p0.binding.tvTemp.text = arr[p1].temp
+            p0.binding.tv.text ="°C"
         }
 
     }

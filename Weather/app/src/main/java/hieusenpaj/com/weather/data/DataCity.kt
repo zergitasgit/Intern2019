@@ -2,9 +2,11 @@ package hieusenpaj.com.weather.data
 
 import android.content.Context
 import android.util.Log
+import hieusenpaj.com.weather.db.DBBackground
 import hieusenpaj.com.weather.db.DBCity
 import hieusenpaj.com.weather.db.DBHistory
 import hieusenpaj.com.weather.models.Add
+import hieusenpaj.com.weather.models.BackGround
 import hieusenpaj.com.weather.models.City
 
 class DataCity {
@@ -59,6 +61,15 @@ class DataCity {
             val dbHistory =DBHistory(context,null)
             dbHistory.deleteId(city)
         }
+
+        fun getBg(context: Context,code:Int):ArrayList<BackGround>{
+            val dbBg = DBBackground(context)
+            return dbBg.getBG(code)
+        }
+//        fun getIcon(context: Context,code:Int):ArrayList<BackGround>{
+//            val dbBg = DBBackground(context)
+//            return dbBg.getIcon(code)
+//        }
 
 
 

@@ -28,7 +28,6 @@ class SearchCityAdapter(private val context: Context,
         p0.binding.setItem(arr[p1])
         p0.binding.rl.setOnClickListener {
             listener.onClick(p1,arr[p1].city,arr[p1].country,arr[p1].lat,arr[p1].lon,arr[p1].temp,arr[p1].status)
-            Toast.makeText(context,arr[p1].country,Toast.LENGTH_SHORT).show()
         }
 
     }

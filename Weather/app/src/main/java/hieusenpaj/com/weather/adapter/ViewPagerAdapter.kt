@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
@@ -27,17 +28,23 @@ class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>) : Pager
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val binding : ItemViewPagerBinding = ItemViewPagerBinding.inflate(LayoutInflater.from(activity), container, false)
-        weatherViewModel = WeatherViewModel(activity, binding,arr,arr[position].lat,arr[position].lon)
+        weatherViewModel = WeatherViewModel(activity, binding,arr,arr[position].lat,arr[position].lon,position)
         binding.setViewModel(weatherViewModel)
         binding.executePendingBindings()
         binding.rl.layoutParams.height = Helper.getHeightScreen(activity)
         container.addView(binding.root)
+
+
         return binding.root
 
     }
 
+    override fun getItemPosition(`object`: Any): Int {
+        return POSITION_NONE
+    }
+
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as com.baoyz.widget.PullRefreshLayout)
+        container.removeView(`object` as CoordinatorLayout)
 
     }
     fun getModel(): WeatherViewModel{
@@ -45,6 +52,9 @@ class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>) : Pager
     }
     fun changeTemp(){
         weatherViewModel!!.changeTemp()
+    }
+    fun scroll(){
+
     }
 
 

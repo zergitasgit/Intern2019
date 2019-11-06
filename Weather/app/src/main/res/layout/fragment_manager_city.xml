@@ -25,7 +25,7 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:src="@drawable/iv_back" />
+                android:src="@drawable/ic_back" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="15dp"
-                android:src="@drawable/edit" />
+                android:src="@drawable/ic_edit" />
         </RelativeLayout>
 
         <FrameLayout
@@ -68,7 +68,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="20dp"
-                android:src="@drawable/ic_search_city"></ImageView>
+                android:src="@drawable/ic_add"></ImageView>
         </RelativeLayout>
 
     </LinearLayout>
