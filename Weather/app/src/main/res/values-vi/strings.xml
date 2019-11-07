@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Weather</string>
+
+
+
+    <string name="today">Hôm nay</string>
+    <string name="wind">Tốc độ gió</string>
+    <string name="humi">Độ ẩm</string>
+    <string name="vis">Tầm nhìn</string>
+    <string name="sunrise">Mặt trời mọc</string>
+    <string name="sunset">Mặt trời lặn</string>
+    <string name="dayforecast">Dự báo 5 ngày sau</string>
+    <string name="mana">Quản lý thành phố</string>
+    <string name="share">Chia sẻ</string>
+    <string name="rate">Đánh giá</string>
+</resources>

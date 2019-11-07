@@ -2,8 +2,10 @@ package hieusenpaj.com.weather.db
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import hieusenpaj.com.weather.models.BackGround
+import hieusenpaj.com.weather.models.Language
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -12,8 +14,8 @@ class DBBackground(private val context: Context) {
 
 
     companion object {
-        private val DB_NAME = "bg.db"
-        private val dbName = "bg"
+        private val DB_NAME = "icon.db"
+        private val dbName = "icon"
 //        private val DB_PATH = "/data/data/hieusenpaj.com.weather/databases/"
     }
 
@@ -51,19 +53,39 @@ class DBBackground(private val context: Context) {
     }
     fun getBG(code:Int):ArrayList<BackGround>{
         var arr = ArrayList<BackGround>()
-        val cursor = this.openDatabase().rawQuery("SELECT * FROM bg WHERE code = '$code' ", null)
+        val cursor = this.openDatabase().rawQuery("SELECT * FROM icon WHERE code = '$code' ", null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
-            val bgDay = cursor.getBlob(cursor.getColumnIndex("bg_day"))
-            val bgNight = cursor.getBlob(cursor.getColumnIndex("bg_night"))
+            val bgDay = cursor.getString(cursor.getColumnIndex("bg_day"))
+            val bgNight = cursor.getString(cursor.getColumnIndex("bg_night"))
+            val ivDay = cursor.getBlob(cursor.getColumnIndex("iv_day"))
+            val ivNight = cursor.getBlob(cursor.getColumnIndex("iv_night"))
 
 
 
-            arr.add(BackGround(code,bgDay,bgNight,bgNight,bgNight))
+            arr.add(BackGround(code,bgDay,bgNight,ivDay,ivNight))
             cursor.moveToNext()
         }
 
         return arr
+    }
+    fun getLanguage(code: String): Language {
+
+        var la: Language? = null
+        val cursor = this.openDatabase().rawQuery("SELECT * FROM icon WHERE code = '$code' ", null)
+
+        cursor!!.moveToFirst()
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+
+                var en = cursor.getString(cursor.getColumnIndex("bg_day"))
+                var vn = cursor.getString(cursor.getColumnIndex("vn"))
+                la = Language(en!!,vn!!)
+
+                cursor.moveToNext()
+            }
+        }
+        return la!!
     }
 //    fun getIcon(code: Int):ArrayList<BackGround>{
 //        var arr = ArrayList<BackGround>()

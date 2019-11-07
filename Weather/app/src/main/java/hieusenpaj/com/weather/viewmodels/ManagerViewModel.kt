@@ -16,7 +16,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 
 
-class ManagerViewModel(private var context: Context, private var binding: FragmentManagerCityBinding
+class ManagerViewModel(private var context: Activity, private var binding: FragmentManagerCityBinding
 ) : Observable() {
     private var adapter: ListCityAdapter? = null
     private var arr: ArrayList<City> = ArrayList()

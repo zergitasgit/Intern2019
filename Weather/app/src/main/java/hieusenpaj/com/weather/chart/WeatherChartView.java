@@ -166,11 +166,11 @@ public class WeatherChartView extends View {
         mTextSize = a.getDimensionPixelSize(R.styleable.WeatherChartView_textSize,
                 (int) (14 * densityText));
         mColorDay = a.getColor(R.styleable.WeatherChartView_dayColor,
-                getResources().getColor(R.color.colorAccent));
+                getResources().getColor(R.color.bg));
         mColorNight = a.getColor(R.styleable.WeatherChartView_nightColor,
                 getResources().getColor(R.color.colorPrimary));
 
-        int textColor = a.getColor(R.styleable.WeatherChartView_textColor, Color.BLACK);
+        int textColor = a.getColor(R.styleable.WeatherChartView_textColor, Color.WHITE);
         a.recycle();
 
         mDensity = getResources().getDisplayMetrics().density;

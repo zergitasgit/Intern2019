@@ -12,12 +12,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#21212b">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="#fff">
+          >
 
             <ImageView
                 android:id="@+id/iv_back"
@@ -31,8 +32,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Manage cities"
-                android:textSize="16dp" />
+                android:text="@string/mana"
+                android:textSize="16dp"
+                android:textColor="#fff"/>
 
             <ImageView
                 android:id="@+id/iv_edit"
@@ -43,13 +45,6 @@
                 android:paddingRight="15dp"
                 android:src="@drawable/ic_edit" />
         </RelativeLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EBEBEB">
-
-        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -63,8 +58,8 @@
 
             <ImageView
                 android:id="@+id/iv_search_city"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="20dp"

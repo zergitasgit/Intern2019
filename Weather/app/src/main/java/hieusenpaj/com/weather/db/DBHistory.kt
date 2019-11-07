@@ -7,6 +7,9 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import hieusenpaj.com.weather.models.City
+import hieusenpaj.com.weather.models.Language
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DBHistory(private val context: Context,
                 factory: SQLiteDatabase.CursorFactory?)
@@ -20,7 +23,7 @@ class DBHistory(private val context: Context,
                     + COLUMN_ID + " INTEGER PRIMARY KEY," +
                     COLUMN_CITY
                     + " TEXT," + COLUMN_COUNTRY + " TEXT," + COLUMN_LAT + " TEXT," + COLUMN_TEMP + " TEXT," +
-                    COLUMN_STATUS + " TEXT," +
+                    COLUMN_STATUS + " TEXT," + COLUMN_CODE + " TEXT," + COLUMN_TIMEZONE + " TEXT," +
                     COLUMN_LON + " TEXT," + COLUMN_HISTORY + " REAL" + ")")
 
             p0!!.execSQL(CREATE_PRODUCTS_TABLE)
@@ -47,11 +50,14 @@ class DBHistory(private val context: Context,
         val COLUMN_STATUS = "status"
         val COLUMN_LON = "lon"
         val COLUMN_HISTORY = "history"
+        val COLUMN_CODE = "code"
+        val COLUMN_TIMEZONE = "timezone"
 
 
     }
 
-    fun insertHistory(city: String, country: String, lat: String, lon: String, temp: String, status: String, history: Long) {
+    fun insertHistory(city: String, country: String, lat: String, lon: String, temp: String, status: String, history: Long,
+                      code:String,timeZone: String) {
         val values = ContentValues()
         values.put(COLUMN_CITY, city)
         values.put(COLUMN_COUNTRY, country)
@@ -60,7 +66,8 @@ class DBHistory(private val context: Context,
         values.put(COLUMN_TEMP, temp)
         values.put(COLUMN_STATUS, status)
         values.put(COLUMN_HISTORY, history)
-
+        values.put(COLUMN_CODE, code)
+        values.put(COLUMN_TIMEZONE, timeZone)
         val db = this.writableDatabase
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -74,7 +81,8 @@ class DBHistory(private val context: Context,
         return
     }
 
-    fun updateLocal(city: String, country: String, lat: String, lon: String, temp: String, status: String) {
+    fun updateLocal(city: String, country: String, lat: String, lon: String, temp: String, status: String,
+                    code: String,timeZone: String,pos:Int) {
         val values = ContentValues()
         val db = this.readableDatabase
         values.put(COLUMN_CITY, city)
@@ -83,7 +91,9 @@ class DBHistory(private val context: Context,
         values.put(COLUMN_LON, lon)
         values.put(COLUMN_TEMP, temp)
         values.put(COLUMN_STATUS, status)
-        db.update(TABLE_NAME, values, "_id = 1", null)
+        values.put(COLUMN_CODE, code)
+        values.put(COLUMN_TIMEZONE, timeZone)
+        db.update(TABLE_NAME, values, "_id = '$pos'", null)
         return
     }
 
@@ -119,8 +129,10 @@ class DBHistory(private val context: Context,
                 val lon = cursor.getString(cursor.getColumnIndex("lon"))
                 val temp = cursor.getString(cursor.getColumnIndex("temp"))
                 val status = cursor.getString(cursor.getColumnIndex("status"))
+                val code = cursor.getString(cursor.getColumnIndex("code"))
+                val timeZone = cursor.getString(cursor.getColumnIndex("timezone"))
 
-                arr.add(City(city, country, lat.toDouble(), lon.toDouble(), temp, status,false))
+                arr.add(City(city, country, lat.toDouble(), lon.toDouble(), temp, status,code,timeZone,false))
                 cursor.moveToNext()
             }
         }
@@ -145,7 +157,9 @@ class DBHistory(private val context: Context,
 
                 val temp = cursor.getString(cursor.getColumnIndex("temp"))
                 val status = cursor.getString(cursor.getColumnIndex("status"))
-                arr.add(City(city, country, lat.toDouble(), lon.toDouble(), temp, status,false))
+                val code = cursor.getString(cursor.getColumnIndex("code"))
+                val timeZone = cursor.getString(cursor.getColumnIndex("timezone"))
+                arr.add(City(city, country, lat.toDouble(), lon.toDouble(), temp, status,code,timeZone,false))
                 cursor.moveToNext()
             }
         }
@@ -170,4 +184,5 @@ class DBHistory(private val context: Context,
         }
         return id!!
     }
+
 }

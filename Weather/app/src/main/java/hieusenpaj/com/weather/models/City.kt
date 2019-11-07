@@ -6,5 +6,7 @@ class City(var city:String,
            var lon : Double,
            var temp:String,
            var status:String,
+           var code :String,
+           var timezone :String,
            var ischeck:Boolean) {
 }

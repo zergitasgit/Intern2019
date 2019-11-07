@@ -117,10 +117,11 @@ class Helper {
 
         }
 
-        fun getCurrentTimeZone(): String {
-            val tz = Calendar.getInstance().timeZone
+        fun getCurrentTimeZone(timeZone: String): Int {
+            val calendar = Calendar.getInstance(TimeZone.getTimeZone(timeZone))
 //        System.out.println(tz.displayName)
-            return tz.id
+            val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+            return currentHour
         }
         fun convertToPx(activity: Activity,dp: Int): Int {
             // Get the screen's density scale
@@ -136,12 +137,18 @@ class Helper {
             val C = ((value-5) * 5) / 9
             return C
         }
-//        fun getIcon(code:Int,activity: Activity):Drawable{
-//            val arr = DataCity.getIcon(activity, code)
-//            val drawable = BitmapDrawable(activity.getResources(), BitmapFactory.decodeByteArray(arr[0].icDay,
-//                    0, arr[0].icNight!!.size))
-//            return drawable
-//        }
+        fun getIcon(code:Int,activity: Activity,timeZone: String):Drawable{
+            val arr = DataCity.getBg(activity, code)
+            var drawable :Drawable?=null
+            if (getCurrentTimeZone(timeZone) < 18) {
+                drawable = BitmapDrawable(activity.getResources(), BitmapFactory.decodeByteArray(arr[0].icDay,
+                        0, arr[0].icDay.size))
+            }else{
+                drawable = BitmapDrawable(activity.getResources(), BitmapFactory.decodeByteArray(arr[0].icNight,
+                        0, arr[0].icNight.size))
+            }
+            return drawable!!
+        }
 
 
     }

@@ -11,23 +11,15 @@
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="80dp"
         android:id="@+id/rl"
         >
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/iv_item_city"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            >
-        </ImageView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/iv_item_city"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:orientation="vertical"
             >
             <TextView
@@ -35,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_city"
                 android:text="@{item.city}"
+                android:textSize="18dp"
                 android:textStyle="bold">
 
             </TextView>
@@ -50,8 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#EBEBEB"
-            android:layout_toRightOf="@+id/iv_item_city"
-            android:layout_marginLeft="10dp"
             android:layout_alignParentBottom="true">
 
         </FrameLayout>

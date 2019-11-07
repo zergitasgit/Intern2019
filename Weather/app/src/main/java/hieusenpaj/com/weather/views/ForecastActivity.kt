@@ -17,7 +17,7 @@ class ForecastActivity : BaseActivity() {
         val binding : ActivityForecastBinding = DataBindingUtil.setContentView(this, R.layout.activity_forecast)
         val intent=intent
         binding.setViewModel(ForecastViewModel(this, binding,intent.getDoubleExtra("lat",0.0),
-                intent.getDoubleExtra("lon",0.0)))
+                intent.getDoubleExtra("lon",0.0),intent.getStringExtra("bg")))
         binding.executePendingBindings()
     }
 

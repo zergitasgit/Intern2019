@@ -11,9 +11,9 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/ll_forecast"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -32,14 +32,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="5-day forecast"
+                android:text="@string/dayforecast"
+                android:textColor="#fff"
                 android:textSize="16dp" />
         </RelativeLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#EBEBEB">
+            android:background="#50FFFFFF">
 
         </FrameLayout>
 
@@ -69,12 +70,14 @@
                             android:id="@+id/tv_ee"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Today" />
+                            android:text="Today"
+                            android:textColor="#fff"/>
 
                         <TextView
                             android:id="@+id/tv_mm_dd"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="#fff"/>
 
 
                     </LinearLayout>
@@ -84,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
 
-                    android:background="#EBEBEB">
+                    android:background="#50FFFFFF">
 
                 </FrameLayout>
 
@@ -106,7 +109,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:gravity="center_horizontal" />
+                        android:gravity="center_horizontal"
+                        android:textColor="#fff"/>
 
 
                 </LinearLayout>
@@ -133,13 +137,14 @@
                         <TextView
                             android:id="@+id/tv_ee_2"
                             android:layout_width="wrap_content"
-
+                            android:textColor="#fff"
                             android:layout_height="wrap_content" />
 
                         <TextView
                             android:id="@+id/tv_mm_dd_2"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="#fff"/>
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -147,7 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
 
-                    android:background="#EBEBEB">
+                    android:background="#50FFFFFF">
 
                 </FrameLayout>
 
@@ -166,6 +171,7 @@
 
                     <TextView
                         android:id="@+id/tv_des_2"
+                        android:textColor="#fff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -196,10 +202,11 @@
                         <TextView
                             android:id="@+id/tv_ee_3"
                             android:layout_width="wrap_content"
-
+                            android:textColor="#fff"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            android:textColor="#fff"
                             android:id="@+id/tv_mm_dd_3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
@@ -210,7 +217,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
 
-                    android:background="#EBEBEB">
+                    android:background="#50FFFFFF">
 
                 </FrameLayout>
 
@@ -229,6 +236,7 @@
 
                     <TextView
                         android:id="@+id/tv_des_3"
+                        android:textColor="#fff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -259,10 +267,11 @@
                         <TextView
                             android:id="@+id/tv_ee_4"
                             android:layout_width="wrap_content"
-
+                            android:textColor="#fff"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            android:textColor="#fff"
                             android:id="@+id/tv_mm_dd_4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
@@ -272,7 +281,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#EBEBEB">
+                    android:background="#50FFFFFF">
 
                 </FrameLayout>
 
@@ -290,6 +299,7 @@
 
                     <TextView
                         android:id="@+id/tv_des_4"
+                        android:textColor="#fff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -319,10 +329,11 @@
                         <TextView
                             android:id="@+id/tv_ee_5"
                             android:layout_width="wrap_content"
-
+                            android:textColor="#fff"
                             android:layout_height="wrap_content" />
 
                         <TextView
+                            android:textColor="#fff"
                             android:id="@+id/tv_mm_dd_5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
@@ -333,7 +344,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
 
-                    android:background="#EBEBEB">
+                    android:background="#50FFFFFF">
 
                 </FrameLayout>
 
@@ -351,7 +362,7 @@
                         android:layout_marginTop="20dp" />
 
                     <TextView
-
+                        android:textColor="#fff"
                         android:id="@+id/tv_des_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -368,18 +379,17 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="20dp"
-            wcv:dayColor="@color/colorAccent"
+            wcv:dayColor="#fff"
             wcv:nightColor="@color/colorPrimary"
-            wcv:textColor="@android:color/black"
+            wcv:textColor="@android:color/white"
             wcv:textSize="14sp" />
         <hieusenpaj.com.weather.chart.WeatherChartView
             android:id="@+id/line_char_night"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="20dp"
-            wcv:dayColor="@color/colorPrimary"
-            wcv:nightColor="@color/colorPrimary"
-            wcv:textColor="@android:color/black"
+            wcv:dayColor="#fff"
+            wcv:textColor="@android:color/white"
             wcv:textSize="14sp" />
 
     </LinearLayout>

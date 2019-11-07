@@ -8,6 +8,7 @@ import hieusenpaj.com.weather.db.DBHistory
 import hieusenpaj.com.weather.models.Add
 import hieusenpaj.com.weather.models.BackGround
 import hieusenpaj.com.weather.models.City
+import hieusenpaj.com.weather.models.Language
 
 class DataCity {
     companion object{
@@ -44,24 +45,28 @@ class DataCity {
         }
 
         fun insertHistory(context: Context,city: String, country: String, lat: String, lon: String,temp:String,status:String,
-                          history:Long){
+                          history:Long,code :String,timeZone:String){
             val dbHistory =DBHistory(context,null)
-            dbHistory.insertHistory(city,country,lat,lon,temp,status,history)
+            dbHistory.insertHistory(city,country,lat,lon,temp,status,history,code,timeZone)
 
         }
         fun updateHistory(context: Context,city: String,tim:Long){
             val dbHistory =DBHistory(context,null)
             dbHistory.updateHistory(city,tim)
         }
-        fun updateLocal(context: Context,city: String, country: String, lat: String, lon: String,temp:String,status:String){
+        fun updateLocal(context: Context,city: String, country: String, lat: String, lon: String,temp:String,status:String,
+                        code: String,timeZone: String,pos:Int){
             val dbHistory =DBHistory(context,null)
-            dbHistory.updateLocal(city,country,lat,lon,temp,status)
+            dbHistory.updateLocal(city,country,lat,lon,temp,status,code,timeZone,pos)
         }
         fun deleteId(context: Context,city: String){
             val dbHistory =DBHistory(context,null)
             dbHistory.deleteId(city)
         }
-
+        fun getLanguage(context: Context,code: String):Language{
+            val dbHistory =DBBackground(context)
+            return dbHistory.getLanguage(code)
+        }
         fun getBg(context: Context,code:Int):ArrayList<BackGround>{
             val dbBg = DBBackground(context)
             return dbBg.getBG(code)

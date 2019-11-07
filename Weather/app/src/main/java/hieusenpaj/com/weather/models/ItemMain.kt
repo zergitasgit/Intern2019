@@ -1,4 +1,6 @@
 package hieusenpaj.com.weather.models
 
-class ItemMain(var title:String) {
+class ItemMain( var string: String,
+                var image: Int) {
+
 }

@@ -70,13 +70,23 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
                             val location = currentWeather.data[0].city_name
                             val temp = (currentWeather.data[0].temp.toInt()).toString()
                             val country = currentWeather.data[0].country_code
-                            val status = currentWeather.data[0].weather.icon
+                            val code = currentWeather.data[0].weather.code
+                            val timeZone = currentWeather.data[0].timezone
+                            var bg :String?=null
 
                             arrayList.clear()
-                            arrayList.add(City(location, country, lat!!, lon!!, temp, status, false))
-                            DataCity.insertHistory(activity, location, currentWeather.data[0].country_code, Helper.getLocation(activity)?.lat.toString(),
+                            if (Helper.getCurrentTimeZone(timeZone) < 18) {
+                               bg = DataCity.getBg(activity,code)[0].imageDay
+                            }else{
+                                bg= DataCity.getBg(activity,code)[0].imageNight
+                            }
+                            arrayList.add(City(location, country, lat!!, lon!!, temp,bg ,code.toString(),
+                                    timeZone,false))
+
+                            DataCity.insertHistory(activity, location, currentWeather.data[0].country_code,
+                                    Helper.getLocation(activity)?.lat.toString(),
                                     Helper.getLocation(activity)?.lon.toString(),
-                                    temp, status, System.currentTimeMillis())
+                                    temp, bg, System.currentTimeMillis(),code.toString(),timeZone)
 //                    viewPagerAdapter = ViewPagerAdapter(activity, arrayList)
                             viewPagerAdapter = ViewPagerAdapter(activity, arrayList)
                             binding.viewPager.adapter = viewPagerAdapter
@@ -98,8 +108,16 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
                             val location = currentWeather.data[0].city_name
                             val temp = (currentWeather.data[0].temp.toInt()).toString()
                             val country = currentWeather.data[0].country_code
-                            val status = currentWeather.data[0].weather.icon
-                            DataCity.updateLocal(activity, location, country, lat.toString(), lon.toString(), temp, status)
+                            val code = currentWeather.data[0].weather.code
+                            val timeZone = currentWeather.data[0].timezone
+                            if (Helper.getCurrentTimeZone(timeZone) < 18) {
+                            DataCity.updateLocal(activity, location, country, lat.toString(), lon.toString(), temp,
+                                    DataCity.getBg(activity,code)[0].imageDay,code.toString(),timeZone,0)
+                            }else{
+                                DataCity.updateLocal(activity, location, country, lat.toString(), lon.toString(), temp,
+                                        DataCity.getBg(activity,code)[0].imageNight,code.toString(),timeZone,0)
+                            }
+
 
 
 //                    viewPagerAdapter = ViewPagerAdapter(activity, arrayList)

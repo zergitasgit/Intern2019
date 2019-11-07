@@ -20,18 +20,20 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             android:background="#00FFFFFF"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:elevation="0dp"
             >
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:elevation="0dp"
+                android:elevation="4dp"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
-                app:layout_scrollFlags="scroll|enterAlways|snap">
+
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -39,17 +41,27 @@
 
                     <ImageView
                         android:id="@+id/iv_setting"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="12dp"
+                        android:padding="10dp"
                         android:src="@drawable/ic_menu" />
 
                     <TextView
                         android:id="@+id/tv_local"
+                        android:textColor="#fff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true" />
+                    <ImageView
+                        android:id="@+id/iv_menu"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_more" />
                 </RelativeLayout>
 
             </android.support.v7.widget.Toolbar>
@@ -86,9 +98,11 @@
                             android:layout_marginLeft="25dp"
                             android:layout_marginTop="81dp"
                             android:textSize="50dp"
+                            android:textColor="#fff"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:textColor="#fff"
                             android:id="@+id/tv_temp_small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -101,18 +115,23 @@
 
 
                         <TextView
+                            android:textColor="#fff"
                             android:id="@+id/tv_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tv_temp"
+                            android:textSize="17dp"
                             android:layout_margin="25dp" />
 
                         <TextView
+                            android:textColor="#fff"
                             android:id="@+id/tv_ahi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tv_status"
-                            android:layout_marginLeft="25dp"></TextView>
+                            android:layout_marginLeft="25dp">
+
+                        </TextView>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -123,6 +142,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+
                                 android:id="@+id/tv_c"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -171,6 +191,7 @@
                                     android:layout_centerVertical="true" />
 
                                 <TextView
+                                    android:textColor="#fff"
                                     android:id="@+id/tv_day_status"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -179,6 +200,7 @@
                                     android:layout_toRightOf="@id/iv_status" />
 
                                 <TextView
+                                    android:textColor="#fff"
                                     android:id="@+id/tv_temp_min_max"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -200,6 +222,7 @@
                                     android:layout_centerVertical="true" />
 
                                 <TextView
+                                    android:textColor="#fff"
                                     android:id="@+id/tv_day_status1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -208,6 +231,7 @@
                                     android:layout_toRightOf="@id/iv_status1" />
 
                                 <TextView
+                                    android:textColor="#fff"
                                     android:id="@+id/tv_temp_min_max1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -227,6 +251,7 @@
                                     android:layout_centerVertical="true" />
 
                                 <TextView
+                                    android:textColor="#fff"
                                     android:id="@+id/tv_day_status2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -235,6 +260,7 @@
                                     android:layout_toRightOf="@id/iv_status2" />
 
                                 <TextView
+                                    android:textColor="#fff"
                                     android:id="@+id/tv_temp_min_max2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -244,17 +270,19 @@
                             </RelativeLayout>
 
                             <TextView
+                                android:textColor="#fff"
                                 android:id="@+id/tv__forecast"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:gravity="center_horizontal"
-                                android:text="5-day forecast" />
+                                android:text="@string/dayforecast" />
                         </LinearLayout>
                     </RelativeLayout>
 
 
                     <LinearLayout
+                        android:id="@+id/ll_content"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="15dp"
@@ -280,16 +308,18 @@
                                     android:orientation="vertical">
 
                                     <TextView
+                                        android:textColor="#fff"
                                         android:id="@+id/tv_wind_speed_content"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content" />
 
                                     <TextView
+                                        android:textColor="#fff"
                                         android:id="@+id/tv_wind_speed"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
-                                        android:text="Wind Speed" />
+                                        android:text="@string/wind" />
                                 </LinearLayout>
 
 
@@ -308,16 +338,18 @@
                                     android:orientation="vertical">
 
                                     <TextView
+                                        android:textColor="#fff"
                                         android:id="@+id/tv_humidity_content"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content" />
 
                                     <TextView
+                                        android:textColor="#fff"
                                         android:id="@+id/tv_humidity"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
-                                        android:text="Humidity" />
+                                        android:text="@string/humi" />
                                 </LinearLayout>
                             </RelativeLayout>
 
@@ -343,16 +375,18 @@
                                     android:orientation="vertical">
 
                                     <TextView
+                                        android:textColor="#fff"
                                         android:id="@+id/tv_visibility_content"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content" />
 
                                     <TextView
+                                        android:textColor="#fff"
                                         android:id="@+id/tv_visibility"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
-                                        android:text="Visibility" />
+                                        android:text="@string/vis" />
                                 </LinearLayout>
 
 
@@ -371,11 +405,13 @@
                                     android:orientation="vertical">
 
                                     <TextView
+                                        android:textColor="#fff"
                                         android:id="@+id/tv_uv_content"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content" />
 
                                     <TextView
+                                        android:textColor="#fff"
                                         android:id="@+id/tv_uv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -388,6 +424,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_sun"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_margin="15dp"
@@ -414,14 +451,16 @@
                                 </ImageView>
 
                                 <TextView
+                                    android:textColor="#fff"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
-                                    android:text="Sunrise">
+                                    android:text="@string/sunrise">
 
                                 </TextView>
 
                                 <TextView
+                                    android:textColor="#fff"
                                     android:id="@+id/tv_sunrise"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -451,14 +490,16 @@
                                 </ImageView>
 
                                 <TextView
+                                    android:textColor="#fff"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
-                                    android:text="Sunset">
+                                    android:text="@string/sunset">
 
                                 </TextView>
 
                                 <TextView
+                                    android:textColor="#fff"
                                     android:id="@+id/tv_sunset"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

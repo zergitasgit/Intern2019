@@ -65,7 +65,7 @@ class DBCity(private val context: Context) {
             val lon = cursor.getString(cursor.getColumnIndex("lng"))
 
 
-            arr.add(City(city, country,lat.toDouble(),lon.toDouble(),"","",false))
+            arr.add(City(city, country,lat.toDouble(),lon.toDouble(),"","","","",false))
             cursor.moveToNext()
         }
 

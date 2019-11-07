@@ -19,8 +19,8 @@
             android:id="@+id/toolbarSearch"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/colorPrimary"
-
+            android:background="#21212b"
+            app:theme="@style/ToolBarStyle"
             />
 
         <android.support.v7.widget.RecyclerView

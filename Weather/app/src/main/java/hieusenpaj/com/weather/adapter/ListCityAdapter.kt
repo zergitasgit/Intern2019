@@ -1,8 +1,10 @@
 package hieusenpaj.com.weather.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
+import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +18,7 @@ import hieusenpaj.com.weather.helper.Helper
 import hieusenpaj.com.weather.models.City
 import hieusenpaj.com.weather.viewmodels.WeatherViewModel
 
-class ListCityAdapter(private val context: Context,
+class ListCityAdapter(private val context: Activity,
                       private var arr: ArrayList<City>,
                       private val listener: ItemListener,
                       private val deleteListener: DeleteItemListener) : RecyclerView.Adapter<ListCityAdapter.ViewHolder>() {
@@ -36,9 +38,13 @@ class ListCityAdapter(private val context: Context,
 
     override fun onBindViewHolder(p0: ListCityAdapter.ViewHolder, p1: Int) {
         p0.binding.setItem(arr[p1])
-
+        val drawable = Drawable.createFromStream(context.assets.open("bg/"+arr[p1].status+".jpg"), null)
+        p0.binding.rl.setBackground(drawable)
+//        Glide.with(context)
+//                .load(ApiUtils.ICON + arr[p1].status + ".png")
+//                .into(p0.binding.ivStatus)
         Glide.with(context)
-                .load(ApiUtils.ICON + arr[p1].status + ".png")
+                .load(Helper.getIcon(arr[p1].code.toInt(), context,arr[p1].timezone))
                 .into(p0.binding.ivStatus)
 
         if (arr[p1].ischeck) {

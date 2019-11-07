@@ -63,14 +63,21 @@ class SearchCityViewModel(private var context: Context, private var binding: Fra
                     override fun onResponse(call: Call<CurrentWeather>?, response: Response<CurrentWeather>?) {
                         val currentWeather = response!!.body()
                         val temp = (currentWeather.data[0].temp.toInt()).toString()
-                        val status = currentWeather.data[0].weather.icon
-
+                        val code = currentWeather.data[0].weather.code
+                        val timeZone = currentWeather.data[0].timezone
+                        var bg:String?=null
                         (context as AppCompatActivity).finish()
 //                    viewPagerAdapter = ViewPagerAdapter(context, arrayList)
                         val intent = Intent("SEARCH")
                         if (!DataCity.checkCitySearch(context, city)) {
                             intent.putExtra("have",false)
-                            DataCity.insertHistory(context, city, country, lat.toString(), lon.toString(), temp, status, System.currentTimeMillis())
+                            if (Helper.getCurrentTimeZone(timeZone) < 18) {
+                                bg =DataCity.getBg(context,code)[0].imageDay
+                            }else{
+                                bg = DataCity.getBg(context,code)[0].imageNight
+                            }
+                            DataCity.insertHistory(context, city, country, lat.toString(), lon.toString(),
+                                    temp,bg , System.currentTimeMillis(),code.toString(),timeZone)
                         } else {
                             DataCity.updateHistory(context, city, System.currentTimeMillis())
                             intent.putExtra("have",true)

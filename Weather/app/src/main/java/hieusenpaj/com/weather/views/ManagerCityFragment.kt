@@ -30,7 +30,7 @@ class ManagerCityFragment : Fragment() {
         val binding= DataBindingUtil.inflate<FragmentManagerCityBinding>(inflater, R.layout.fragment_manager_city, container
                 , false)
         val view = binding.root
-        model = ManagerViewModel(context!!, binding)
+        model = ManagerViewModel(activity!!, binding)
         binding.viewModel = model
         binding.executePendingBindings()
 //        context!!.registerReceiver(broadcastReceiver, IntentFilter("BACK"))
