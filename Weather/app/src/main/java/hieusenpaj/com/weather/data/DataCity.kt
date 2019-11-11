@@ -57,7 +57,7 @@ class DataCity {
         fun updateLocal(context: Context,city: String, country: String, lat: String, lon: String,temp:String,status:String,
                         code: String,timeZone: String,pos:Int){
             val dbHistory =DBHistory(context,null)
-            dbHistory.updateLocal(city,country,lat,lon,temp,status,code,timeZone,pos)
+            dbHistory.updateLocal(city,country,lat,lon,temp,status,code,timeZone,pos+1)
         }
         fun deleteId(context: Context,city: String){
             val dbHistory =DBHistory(context,null)

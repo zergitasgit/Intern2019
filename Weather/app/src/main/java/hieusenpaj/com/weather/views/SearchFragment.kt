@@ -50,8 +50,6 @@ class SearchFragment : Fragment() {
         searchView.clearFocus()
         searchView.requestFocusFromTouch()
 
-//        searchViewItem?.expandActionView()
-
 
 //
 //

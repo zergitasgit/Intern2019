@@ -25,6 +25,7 @@ class ManagerViewModel(private var context: Activity, private var binding: Fragm
     companion object {
         var check: Boolean = false
     }
+
     init {
         arr = DataCity.getCityViewPager(context)
         setUpAdapter(arr)
@@ -34,8 +35,8 @@ class ManagerViewModel(private var context: Activity, private var binding: Fragm
             if (check) {
 //                arrDelete.clear()
 //                Toast.makeText(context,arrDelete.size.toString(),Toast.LENGTH_SHORT).show()
-                for (i in arrDelete){
-                    DataCity.deleteId(context,i)
+                for (i in arrDelete) {
+                    DataCity.deleteId(context, i)
                 }
                 adapter!!.setUpDelete(false)
                 binding.ivEdit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_edit))
@@ -53,33 +54,36 @@ class ManagerViewModel(private var context: Activity, private var binding: Fragm
         binding.ivBack.setOnClickListener {
             onBack()
         }
-        binding.ivSearchCity.setOnClickListener{
-//            val intent = Intent(context, SearchFragment::class.java)
-//            context.startContext(intent)
-//            context.finish()
+        binding.ivSearchCity.setOnClickListener {
+            //
 
             val fragment = SearchFragment()
             val transaction = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
             transaction.replace(R.id.container, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
-            check=true
+            check = true
         }
     }
-    fun onBack(){
-        if(check){
+
+    fun onBack() {
+        if (check) {
             arr = DataCity.getCityViewPager(context)
+//            for (i in arr.indices){
+//                if(arr[i].code)
+//            }
             setUpAdapter(arr)
             binding.ivEdit.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_edit))
             check = false
 
-        }else{
+        } else {
 //            context.finish()
 
             (context as AppCompatActivity).finish()
         }
     }
-    private fun setUpAdapter(arr: ArrayList<City>){
+
+    private fun setUpAdapter(arr: ArrayList<City>) {
         adapter = ListCityAdapter(context, arr, object : ListCityAdapter.ItemListener {
             override fun onClick(pos: Int, city: String, country: String, lat: Double, lon: Double) {
                 if (!arr[pos].ischeck) {

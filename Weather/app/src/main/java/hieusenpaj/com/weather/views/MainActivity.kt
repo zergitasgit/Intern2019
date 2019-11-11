@@ -33,7 +33,7 @@ class MainActivity : BaseActivity() {
         model = MainViewModel(this, binding!!)
         binding!!.viewModel = model
         binding!!.executePendingBindings()
-//        setSupportActionBar(binding!!.toolbar)
+//
 //
 
     }
@@ -61,15 +61,12 @@ class MainActivity : BaseActivity() {
         override fun onReceive(p0: Context?, p1: Intent?) {
             val action = p1?.action
             val pos = p1?.extras!!.getInt("pos")
-//            arrayList = model!!.getCity()
-//            viewPagerAdapter = ViewPagerAdapter(this@MainActivity, arrayList)
-//            binding!!.viewPager.adapter = viewPagerAdapter
-//            binding!!.viewPager.offscreenPageLimit = arrayList.size
+//
             if (action!!.equals("SEARCH_LIST", ignoreCase = true)) {
-                model!!.moveHave(pos,true)
+                model!!.moveHave(pos, true)
 
             }
-//            model!!.setLocal(arrayList, binding!!.viewPager.currentItem)
+//
 
         }
     }
@@ -96,10 +93,10 @@ class MainActivity : BaseActivity() {
                 model = MainViewModel(this@MainActivity, binding!!)
                 binding!!.viewModel = model
                 binding!!.executePendingBindings()
-//                setSupportActionBar(binding!!.toolbar)
+//
                 arrayList = model!!.getCity()
                 binding!!.viewPager.currentItem = pos!!
-//                model!!.setLocal(arrayList, binding!!.viewPager.currentItem)
+//
 
             }
         }
@@ -113,25 +110,17 @@ class MainActivity : BaseActivity() {
             val lat = p1?.extras?.getDouble("lat")
             val lon = p1?.extras?.getDouble("lon")
             val pos = p1?.extras!!.getString("city")
-            val have  = p1.extras!!.getBoolean("have")
+            val have = p1.extras!!.getBoolean("have")
 
 //            if (string!!.isEmpty() || string.length == 0) {
 //
 //            }
 
             if (action!!.equals("SEARCH", ignoreCase = true)) {
-//                arrayList = model!!.getCity()
-//                viewPagerAdapter = ViewPagerAdapter(this@MainActivity, arrayList)
-//                binding!!.viewPager.adapter = viewPagerAdapter
-//                binding!!.viewPager.offscreenPageLimit = arrayList.size
-//                var id = model!!.getIdCity(pos)
-//                binding!!.viewPager.currentItem = id - 1
-//                model!!.setLocal(arrayList, binding!!.viewPager.currentItem)
-////                viewPagerAdapter!!.getModel().getWeatherSearch(lat!!, lon!!)
-//                setUpViewPager(binding!!)
+//
 
-                    val id = model!!.getIdCity(pos)
-                    model!!.moveHave(id - 1,have)
+                val id = model!!.getIdCity(pos)
+                model!!.moveHave(id - 1, have)
 
 
             }
@@ -142,18 +131,10 @@ class MainActivity : BaseActivity() {
         override fun onReceive(p0: Context?, p1: Intent?) {
 
             val action = p1?.action
-//            val code = p1?.extras?.getInt("code")
-
-
-//            if (string!!.isEmpty() || string.length == 0) {
 //
-//            }
 
             if (action!!.equals("BG", ignoreCase = true)) {
-//                val arrBg = DataCity.getBg(this@MainActivity,code!!)
-//                val drawable =  BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(arrBg[0].imageDay,
-//                        0, arrBg[0].imageDay.size))
-//                binding!!.rootView.setBackground(drawable)
+//
             }
         }
 
@@ -170,18 +151,13 @@ class MainActivity : BaseActivity() {
 
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
-
+    //
     fun setUpViewPager(binding: ActivityMainBinding) {
         binding.viewPager.addOnPageChangeListener(
                 object : ViewPager.OnPageChangeListener {
                     override fun onPageSelected(p0: Int) {
                         // no-op
-//                        model!!.setLocal(arrayList, binding.viewPager.currentItem)
-//                        Toast.makeText(this@MainActivity,p0.toString(),Toast.LENGTH_SHORT).show()
+//
                     }
 
                     override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {

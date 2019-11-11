@@ -65,27 +65,24 @@ class SearchCityViewModel(private var context: Context, private var binding: Fra
                         val temp = (currentWeather.data[0].temp.toInt()).toString()
                         val code = currentWeather.data[0].weather.code
                         val timeZone = currentWeather.data[0].timezone
-                        var bg:String?=null
+                        var bg: String? = null
                         (context as AppCompatActivity).finish()
 //                    viewPagerAdapter = ViewPagerAdapter(context, arrayList)
                         val intent = Intent("SEARCH")
                         if (!DataCity.checkCitySearch(context, city)) {
-                            intent.putExtra("have",false)
+                            intent.putExtra("have", false)
                             if (Helper.getCurrentTimeZone(timeZone) < 18) {
-                                bg =DataCity.getBg(context,code)[0].imageDay
-                            }else{
-                                bg = DataCity.getBg(context,code)[0].imageNight
+                                bg = DataCity.getBg(context, code)[0].imageDay
+                            } else {
+                                bg = DataCity.getBg(context, code)[0].imageNight
                             }
                             DataCity.insertHistory(context, city, country, lat.toString(), lon.toString(),
-                                    temp,bg , System.currentTimeMillis(),code.toString(),timeZone)
+                                    temp, bg, System.currentTimeMillis(), code.toString(), timeZone)
                         } else {
                             DataCity.updateHistory(context, city, System.currentTimeMillis())
-                            intent.putExtra("have",true)
+                            intent.putExtra("have", true)
 
                         }
-
-//                        val intentBack = Intent(context, MainActivity::class.java)
-//                        context.startActivity(intentBack)
                         intent.putExtra("city", city)
                         intent.putExtra("lat", lat)
                         intent.putExtra("lon", lon)
@@ -94,7 +91,6 @@ class SearchCityViewModel(private var context: Context, private var binding: Fra
                     }
                 })
 
-//                dbHistory.insertHistory(city,country,lat.toString(),lon.toString(),System.currentTimeMillis())
                 Log.e("TAG", DataCity.checkCitySearch(context, city).toString())
 
 

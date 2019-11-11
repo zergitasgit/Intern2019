@@ -31,7 +31,7 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
     private var edit: SharedPreferences.Editor? = null
     private var lon: Double? = null
     private var lat: Double? = null
-    private var check =false
+    private var check = false
     var arrayList = DataCity.getCityViewPager(activity)
 
     init {
@@ -48,14 +48,14 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
         if (locationService.canGetLocation()) {
             lat = locationService.getLat()
             lon = locationService.getLon()
-            check=true
+            check = true
 
 
         } else {
             locationService.showDialog()
-            check=false
+            check = false
         }
-        if(check){
+        if (check) {
             if (arrayList.size == 0) {
                 if (apiServices != null) {
                     apiServices.getCurrentWeather(lat!!, lon!!, ApiUtils.KEY).enqueue(object : Callback<CurrentWeather> {
@@ -72,21 +72,21 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
                             val country = currentWeather.data[0].country_code
                             val code = currentWeather.data[0].weather.code
                             val timeZone = currentWeather.data[0].timezone
-                            var bg :String?=null
+                            var bg: String? = null
 
                             arrayList.clear()
                             if (Helper.getCurrentTimeZone(timeZone) < 18) {
-                               bg = DataCity.getBg(activity,code)[0].imageDay
-                            }else{
-                                bg= DataCity.getBg(activity,code)[0].imageNight
+                                bg = DataCity.getBg(activity, code)[0].imageDay
+                            } else {
+                                bg = DataCity.getBg(activity, code)[0].imageNight
                             }
-                            arrayList.add(City(location, country, lat!!, lon!!, temp,bg ,code.toString(),
-                                    timeZone,false))
+                            arrayList.add(City(location, country, lat!!, lon!!, temp, bg, code.toString(),
+                                    timeZone, false))
 
                             DataCity.insertHistory(activity, location, currentWeather.data[0].country_code,
                                     Helper.getLocation(activity)?.lat.toString(),
                                     Helper.getLocation(activity)?.lon.toString(),
-                                    temp, bg, System.currentTimeMillis(),code.toString(),timeZone)
+                                    temp, bg, System.currentTimeMillis(), code.toString(), timeZone)
 //                    viewPagerAdapter = ViewPagerAdapter(activity, arrayList)
                             viewPagerAdapter = ViewPagerAdapter(activity, arrayList)
                             binding.viewPager.adapter = viewPagerAdapter
@@ -111,13 +111,12 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
                             val code = currentWeather.data[0].weather.code
                             val timeZone = currentWeather.data[0].timezone
                             if (Helper.getCurrentTimeZone(timeZone) < 18) {
-                            DataCity.updateLocal(activity, location, country, lat.toString(), lon.toString(), temp,
-                                    DataCity.getBg(activity,code)[0].imageDay,code.toString(),timeZone,0)
-                            }else{
                                 DataCity.updateLocal(activity, location, country, lat.toString(), lon.toString(), temp,
-                                        DataCity.getBg(activity,code)[0].imageNight,code.toString(),timeZone,0)
+                                        DataCity.getBg(activity, code)[0].imageDay, code.toString(), timeZone, 0)
+                            } else {
+                                DataCity.updateLocal(activity, location, country, lat.toString(), lon.toString(), temp,
+                                        DataCity.getBg(activity, code)[0].imageNight, code.toString(), timeZone, 0)
                             }
-
 
 
 //                    viewPagerAdapter = ViewPagerAdapter(activity, arrayList)
@@ -140,31 +139,24 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
             }
         }
 
-//        binding.ivSearch.setOnClickListener {
-//            val intent = Intent(activity, SearchFragment::class.java)
-//            activity.startActivity(intent)
-//        }
-//        binding.ivSetting.setOnClickListener {
-//            val intent = Intent(activity, ListCityActivity::class.java)
-//            activity.startActivity(intent)
-//        }
-//        itemMenuSelect()
+//
 
     }
-    fun moveHave(pos: Int,have:Boolean){
-       if(have) {
-           binding.viewPager.currentItem = pos
-//           setLocal(arrayList, binding.viewPager.currentItem)
-       }else{
-           arrayList = getCity()
-           viewPagerAdapter = ViewPagerAdapter(activity, arrayList)
-           binding.viewPager.adapter = viewPagerAdapter
-           binding.viewPager.offscreenPageLimit = arrayList.size
-//           setLocal(arrayList, binding.viewPager.currentItem)
-           setUpViewPager(binding)
-           binding.viewPager.currentItem = arrayList.size-1
 
-       }
+    fun moveHave(pos: Int, have: Boolean) {
+        if (have) {
+            binding.viewPager.currentItem = pos
+//           setLocal(arrayList, binding.viewPager.currentItem)
+        } else {
+            arrayList = getCity()
+            viewPagerAdapter = ViewPagerAdapter(activity, arrayList)
+            binding.viewPager.adapter = viewPagerAdapter
+            binding.viewPager.offscreenPageLimit = arrayList.size
+//           setLocal(arrayList, binding.viewPager.currentItem)
+            setUpViewPager(binding)
+            binding.viewPager.currentItem = arrayList.size - 1
+
+        }
     }
 
 
@@ -186,39 +178,7 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
         return id
     }
 
-//    fun itemMenuSelect() {
 //
-//        binding.fabSpeed.setMenuListener(object : SimpleMenuListenerAdapter() {
-//            override fun onMenuItemSelected(menuItem: MenuItem?): Boolean {
-//
-//                when (menuItem!!.itemId) {
-//                    R.id.action_call -> changeTemp(menuItem);
-//                }
-//
-//
-//
-//                return true
-//            }
-//
-//
-//            @SuppressLint("RestrictedApi")
-//            override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
-//                var menuItem = navigationMenu!!.findItem(R.id.action_call)
-//                setUpTemp(menuItem)
-//                return true
-//            }
-//
-//
-//        })
-//
-//    }
-
-
-//    fun setLocal(arr: ArrayList<City>, pos: Int) {
-//        binding.tvLocal.text = arr[pos].city
-//    }
-
-
 
     fun setUpViewPager(binding: ActivityMainBinding) {
         binding.viewPager.addOnPageChangeListener(
@@ -226,10 +186,6 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
                     override fun onPageSelected(p0: Int) {
                         // no-op
 
-//                        viewPagerAdapter!!.changeTemp()
-//                        setLocal(getCity(), binding.viewPager.currentItem)
-
-//                        Toast.makeText(this@MainActivity,p0.toString(),Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {

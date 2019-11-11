@@ -87,20 +87,6 @@ class DBBackground(private val context: Context) {
         }
         return la!!
     }
-//    fun getIcon(code: Int):ArrayList<BackGround>{
-//        var arr = ArrayList<BackGround>()
-//        val cursor = this.openDatabase().rawQuery("SELECT * FROM bg WHERE code = '$code' ", null)
-//        cursor.moveToFirst()
-//        while (!cursor.isAfterLast) {
-//            val ivDay = cursor.getBlob(cursor.getColumnIndex("iv_day"))
-//            val ivNight = cursor.getBlob(cursor.getColumnIndex("iv_night"))
 //
 //
-//
-//            arr.add(BackGround(code,null,null,ivDay,ivNight))
-//            cursor.moveToNext()
-//        }
-//
-//        return arr
-//    }
 }

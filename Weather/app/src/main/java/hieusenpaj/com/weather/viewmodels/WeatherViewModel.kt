@@ -15,6 +15,7 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.ListPopupWindow
 import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -25,6 +26,7 @@ import com.baoyz.widget.PullRefreshLayout
 import com.baoyz.widget.SmartisanDrawable
 import com.bumptech.glide.Glide
 import hieusenpaj.com.weather.R
+import hieusenpaj.com.weather.adapter.ItemMainAdapter
 import hieusenpaj.com.weather.api.ApiServices
 import hieusenpaj.com.weather.api.ApiUtils
 import hieusenpaj.com.weather.data.DataCity
@@ -33,6 +35,7 @@ import hieusenpaj.com.weather.db.DBBackground
 import hieusenpaj.com.weather.helper.Helper
 import hieusenpaj.com.weather.models.BackGround
 import hieusenpaj.com.weather.models.City
+import hieusenpaj.com.weather.models.ItemMain
 import hieusenpaj.com.weather.models.current.CurrentWeather
 import hieusenpaj.com.weather.models.forecastDay.ForecastDay
 import hieusenpaj.com.weather.views.ForecastActivity
@@ -40,6 +43,7 @@ import hieusenpaj.com.weather.views.ListCityActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 import java.util.*
 import kotlin.collections.ArrayList
@@ -110,21 +114,18 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
         sha = activity.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         edit = sha!!.edit()
         apiServices = ApiUtils.getApiService()
-//        var lat = Helper.getLocation(activity)?.lat
-//        Helper.getLocation(activity)?.lat
-//        if(arrayList.size==0){
-//            lat = Helper.getLocation(activity)!!.lat
-//            lon = Helper.getLocation(activity)!!.lon
-//        }
 
-//        val network = Helper.getLocation(activity)
 
 
         getWeatherCurrent(lat, lon, true)
         getWeatherForecast(lat, lon)
         binding.ivSetting.setOnClickListener {
             val intent = Intent(activity, ListCityActivity::class.java)
-            intent.putExtra("bg", arrBg[0].imageDay)
+            if (Helper.getCurrentTimeZone(timeZone!!) < 18) {
+                intent.putExtra("bg", arrBg[0].imageDay)
+            } else {
+                intent.putExtra("bg", arrBg[0].imageNight)
+            }
             activity.startActivity(intent)
         }
 
@@ -157,7 +158,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
             binding.tvF.setTextColor(Color.parseColor("#FFFFFF"))
         }
         binding.ivMenu.setOnClickListener {
-            showPopup(it)
+            showListPopupWindow(it)
         }
 
 //
@@ -226,16 +227,13 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
                 drawableF1 = Helper.getIcon(codeF1!!, activity, fw.timezone)
                 drawableF2 = Helper.getIcon(codeF2!!, activity, fw.timezone)
 
-//                icon1 = fw.data[0].weather.icon
-//                icon2 = fw.data[1].weather.icon
-//                icon3 = fw.data[2].weather.icon
-                if(Locale.getDefault().language.equals("vi")){
+                if (Locale.getDefault().language.equals("vi")) {
 
-                    binding.tvDayStatus.text = activity.resources.getString(R.string.today)+"/" + DataCity.getLanguage(activity,codeF.toString()).vn
-                    binding.tvDayStatus1.text = Helper.getDate(ts1!!) + "/" + DataCity.getLanguage(activity,codeF1.toString()).vn
-                    binding.tvDayStatus2.text = Helper.getDate(ts2!!) + "/" + DataCity.getLanguage(activity,codeF2.toString()).vn
-                }else {
-                    binding.tvDayStatus.text = activity.resources.getString(R.string.today) +"/"+ des
+                    binding.tvDayStatus.text = activity.resources.getString(R.string.today) + "/" + DataCity.getLanguage(activity, codeF.toString()).vn
+                    binding.tvDayStatus1.text = Helper.getDate(ts1!!) + "/" + DataCity.getLanguage(activity, codeF1.toString()).vn
+                    binding.tvDayStatus2.text = Helper.getDate(ts2!!) + "/" + DataCity.getLanguage(activity, codeF2.toString()).vn
+                } else {
+                    binding.tvDayStatus.text = activity.resources.getString(R.string.today) + "/" + des
                     binding.tvDayStatus1.text = Helper.getDate(ts1!!) + "/" + des1
                     binding.tvDayStatus2.text = Helper.getDate(ts2!!) + "/" + des2
                 }
@@ -269,11 +267,6 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
     }
 
 
-//    private fun refreshSSV(timeZone: String, sunriseHour: Int, sunriseMinute: Int, sunsetHour: Int, sunsetMinute: Int) {
-//        binding.ssv.setSunriseTime(Time(sunriseHour, sunriseMinute))
-//        binding.ssv.setSunsetTime(Time(sunsetHour, sunsetMinute))
-//        binding.ssv.startAnimate(timeZone)
-//    }
 
     private fun refeshView() {
         binding.swipeRefreshLayout.setOnRefreshListener(PullRefreshLayout.OnRefreshListener {
@@ -320,6 +313,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
         override fun doInBackground(vararg void: Void): Void? {
             //copy file to new folder
             val currentWeather = response.body()
+            val country = currentWeather.data[0].country_code
             temp = (currentWeather.data[0].temp.toInt())
             location = currentWeather.data[0].city_name
             desCu = currentWeather.data[0].weather.description
@@ -335,8 +329,12 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
 
             arrBg = DataCity.getBg(activity, code!!)
             if (Helper.getCurrentTimeZone(timeZone!!) < 18) {
+                DataCity.updateLocal(activity, location!!, country, lat.toString(), lon.toString(), temp.toString(),
+                        DataCity.getBg(activity, code!!)[0].imageDay, code.toString(), timeZone!!, pos)
                 drawable = Drawable.createFromStream(activity.assets.open("bg/" + arrBg[0].imageDay + ".jpg"), null)
             } else {
+                DataCity.updateLocal(activity, location!!, country, lat.toString(), lon.toString(), temp.toString(),
+                        DataCity.getBg(activity, code!!)[0].imageNight, code.toString(), timeZone!!, pos)
                 drawable = Drawable.createFromStream(activity.assets.open("bg/" + arrBg[0].imageNight + ".jpg"),
                         null)
             }
@@ -384,10 +382,10 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
             binding.tvUvContent.text = uv.toString()
             binding.tvWindSpeedContent.text = windSpeed.toString() + "m/s"
             binding.tvAhi.text = "Aqi : " + ahi
-            if(Locale.getDefault().language.equals("vi")){
-                binding.tvStatus.text = DataCity.getLanguage(activity,code.toString()).vn
+            if (Locale.getDefault().language.equals("vi")) {
+                binding.tvStatus.text = DataCity.getLanguage(activity, code.toString()).vn
 
-            }else{
+            } else {
                 binding.tvStatus.text = desCu.toString()
 
             }
@@ -396,7 +394,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
                 binding.llContent.setBackground(ContextCompat.getDrawable(activity, R.drawable.bg_view))
                 binding.llSun.setBackground(ContextCompat.getDrawable(activity, R.drawable.bg_view))
 
-            }else{
+            } else {
                 binding.llForecast.setBackground(ContextCompat.getDrawable(activity, R.drawable.bg_view_night))
                 binding.llContent.setBackground(ContextCompat.getDrawable(activity, R.drawable.bg_view_night))
                 binding.llSun.setBackground(ContextCompat.getDrawable(activity, R.drawable.bg_view_night))
@@ -416,8 +414,12 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
                 val intent = Intent(activity, ForecastActivity::class.java)
                 intent.putExtra("lat", lat)
                 intent.putExtra("lon", lon)
-                intent.putExtra("bg", arrBg[0].imageDay)
-                activity.startActivity(intent)
+                if (Helper.getCurrentTimeZone(timeZone!!) < 18) {
+                    intent.putExtra("bg", arrBg[0].imageDay)
+                } else {
+                    intent.putExtra("bg", arrBg[0].imageNight)
+                }
+                activity.startActivity (intent)
             }
         }
 
@@ -435,26 +437,51 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
 
     }
 
-    private fun showPopup(view: View) {
-        var popup: PopupMenu? = null;
-        popup = PopupMenu(activity, view)
-        popup.inflate(R.menu.menu_main)
+    private fun showListPopupWindow(it: View) {
+        val listPopupItems = ArrayList<ItemMain>()
+        listPopupItems.add(ItemMain(activity.resources.getString(R.string.share), R.drawable.ic_share))
+        listPopupItems.add(ItemMain(activity.resources.getString(R.string.rate), R.drawable.ic_rate))
 
-        popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
 
-            when (item!!.itemId) {
-                R.id.share -> {
+        val listPopupWindow = createListPopupWindow(it, listPopupItems)
+        listPopupWindow.show()
+    }
 
+
+    private fun createListPopupWindow(it: View, items: ArrayList<ItemMain>): ListPopupWindow {
+        val popup = ListPopupWindow(activity)
+        val adapter = ItemMainAdapter(activity, items, object : ItemMainAdapter.ItemListener {
+            override fun onClick(position: Int) {
+                when (position) {
+                    0 -> {
+
+                    }
+                    1 -> {
+
+                    }
+                    2 -> {
+
+                    }
+                    3 -> {
+
+
+                    }
                 }
-                R.id.rate -> {
-
-                }
-
+//                showListPopupWindow(it)
             }
 
-            true
         })
+        popup.setAnchorView(it)
+        popup.setWidth(convertToPx(150))
+        popup.setHeight(convertToPx(85))
+        popup.setAdapter(adapter)
+        return popup
+    }
 
-        popup.show()
+    private fun convertToPx(dp: Int): Int {
+        // Get the screen's density scale
+        val scale = activity.resources.displayMetrics.density
+        // Convert the dps to pixels, based on density scale
+        return (dp * scale + 0.5f).toInt()
     }
 }

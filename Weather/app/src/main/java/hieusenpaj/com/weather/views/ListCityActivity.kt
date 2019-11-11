@@ -11,13 +11,8 @@ import hieusenpaj.com.weather.views.base.BaseActivity
 
 class ListCityActivity : AppCompatActivity() {
     val fragment = ManagerCityFragment()
-//    override fun bindingView() {
-//        val binding : ActivityListCityBinding = DataBindingUtil.setContentView(this, R.layout.activity_list_city)
-//        val intent=intent
-//        model = ManagerViewModel(this,binding)
-//        binding.setViewModel(model)
-//        binding.executePendingBindings()
-//    }
+//
+//
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

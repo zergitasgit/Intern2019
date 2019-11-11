@@ -33,26 +33,11 @@ class ManagerCityFragment : Fragment() {
         model = ManagerViewModel(activity!!, binding)
         binding.viewModel = model
         binding.executePendingBindings()
-//        context!!.registerReceiver(broadcastReceiver, IntentFilter("BACK"))
 
         return view
     }
     fun onBack(){
         model!!.onBack()
-    }
-//    private var broadcastReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(p0: Context?, p1: Intent?) {
-//            val action = p1?.action
-//
-//            if (action!!.equals("BACK", ignoreCase = true)) {
-//                model!!.onBack()
-//            }
-//        }
-//    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        context!!.unregisterReceiver(broadcastReceiver)
     }
 
 }

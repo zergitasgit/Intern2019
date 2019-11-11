@@ -7,11 +7,13 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.view.PagerAdapter
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.Toast
 import hieusenpaj.com.weather.databinding.ItemViewPagerBinding
 import hieusenpaj.com.weather.helper.Helper
 import hieusenpaj.com.weather.models.City
@@ -19,7 +21,7 @@ import hieusenpaj.com.weather.viewmodels.ForecastViewModel
 import hieusenpaj.com.weather.viewmodels.WeatherViewModel
 
 class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>) : PagerAdapter() {
-    var weatherViewModel : WeatherViewModel?=null
+    var weatherViewModel: WeatherViewModel? = null
     override fun isViewFromObject(p0: View, p1: Any): Boolean {
         return p0 == p1
     }
@@ -27,13 +29,12 @@ class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>) : Pager
     override fun getCount(): Int = arr.size
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val binding : ItemViewPagerBinding = ItemViewPagerBinding.inflate(LayoutInflater.from(activity), container, false)
-        weatherViewModel = WeatherViewModel(activity, binding,arr,arr[position].lat,arr[position].lon,position)
+        val binding: ItemViewPagerBinding = ItemViewPagerBinding.inflate(LayoutInflater.from(activity), container, false)
+        weatherViewModel = WeatherViewModel(activity, binding, arr, arr[position].lat, arr[position].lon, position)
         binding.setViewModel(weatherViewModel)
         binding.executePendingBindings()
         binding.rl.layoutParams.height = Helper.getHeightScreen(activity)
         container.addView(binding.root)
-
 
         return binding.root
 
@@ -47,13 +48,16 @@ class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>) : Pager
         container.removeView(`object` as CoordinatorLayout)
 
     }
-    fun getModel(): WeatherViewModel{
+
+    fun getModel(): WeatherViewModel {
         return weatherViewModel!!
     }
-    fun changeTemp(){
+
+    fun changeTemp() {
         weatherViewModel!!.changeTemp()
     }
-    fun scroll(){
+
+    fun scroll() {
 
     }
 
