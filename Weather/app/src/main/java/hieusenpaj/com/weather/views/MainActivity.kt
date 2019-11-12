@@ -47,13 +47,12 @@ class MainActivity : BaseActivity() {
         registerReceiver(brTemp, IntentFilter("RELOAD"))
         registerReceiver(brBg, IntentFilter("BG"))
 
-
     }
 
 
     override fun onRestart() {
         super.onRestart()
-
+        model!!.changeKey(false)
 
     }
 
@@ -76,10 +75,12 @@ class MainActivity : BaseActivity() {
 
 
             if (action!!.equals("DELETE", ignoreCase = true)) {
+
                 arrayList = model!!.getCity()
-                viewPagerAdapter = ViewPagerAdapter(this@MainActivity, arrayList)
+                viewPagerAdapter = ViewPagerAdapter(this@MainActivity, arrayList,true)
                 binding!!.viewPager.adapter = viewPagerAdapter
                 binding!!.viewPager.offscreenPageLimit = arrayList.size
+                viewPagerAdapter!!.changeKey(false)
 //                model!!.setLocal(arrayList, binding!!.viewPager.currentItem)
             }
         }
@@ -93,7 +94,7 @@ class MainActivity : BaseActivity() {
                 model = MainViewModel(this@MainActivity, binding!!)
                 binding!!.viewModel = model
                 binding!!.executePendingBindings()
-//
+
                 arrayList = model!!.getCity()
                 binding!!.viewPager.currentItem = pos!!
 //
@@ -140,7 +141,10 @@ class MainActivity : BaseActivity() {
 
     }
 
+
+
     override fun onDestroy() {
+        model!!.destroy()
         super.onDestroy()
         unregisterReceiver(broadcastReceiver)
         unregisterReceiver(brList)
@@ -151,35 +155,7 @@ class MainActivity : BaseActivity() {
 
     }
 
-    //
-    fun setUpViewPager(binding: ActivityMainBinding) {
-        binding.viewPager.addOnPageChangeListener(
-                object : ViewPager.OnPageChangeListener {
-                    override fun onPageSelected(p0: Int) {
-                        // no-op
-//
-                    }
 
-                    override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
-                        // no-op
-                    }
-
-                    override fun onPageScrollStateChanged(p0: Int) {
-                        when (p0) {
-                            ViewPager.SCROLL_STATE_SETTLING -> {
-
-                            }
-                            ViewPager.SCROLL_STATE_IDLE -> {
-
-                            }
-                            else -> {
-                                // no-op
-                            }
-                        }
-                    }
-                }
-        )
-    }
 
 
 }

@@ -3,6 +3,7 @@ package hieusenpaj.com.weather.viewmodels
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -30,10 +31,18 @@ class SearchCityViewModel(private var context: Context, private var binding: Fra
     private var listAdd: ArrayList<City> = ArrayList()
     private val dbHistory = DBHistory(context, null)
     private var apiServices = ApiUtils.getApiService()
-
+    private val arrKey = java.util.ArrayList<String>()
+    var checkkey = false
+    private var sha: SharedPreferences? = null
+    private var edit: SharedPreferences.Editor? = null
     init {
+        sha = context.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        edit = sha!!.edit()
         (context as AppCompatActivity).setSupportActionBar(binding.toolbarSearch)
-
+        arrKey.add(ApiUtils.KEY)
+        arrKey.add(ApiUtils.KEY2)
+        arrKey.add(ApiUtils.KEY1)
+        arrKey.add(ApiUtils.KEY3)
         listAdd = DataCity.getCityHistory(context)
         setAdapter()
     }
@@ -52,51 +61,65 @@ class SearchCityViewModel(private var context: Context, private var binding: Fra
     }
 
     private fun setAdapter() {
-        adapter = SearchCityAdapter(context, listAdd, object : SearchCityAdapter.ItemListener {
-            override fun onClick(pos: Int, city: String, country: String, lat: Double, lon: Double, temp: String, status: String) {
 
-                apiServices.getCurrentWeather(lat, lon, ApiUtils.KEY).enqueue(object : Callback<CurrentWeather> {
-                    override fun onFailure(call: Call<CurrentWeather>?, t: Throwable?) {
+                adapter = SearchCityAdapter(context, listAdd, object : SearchCityAdapter.ItemListener {
+                    override fun onClick(pos: Int, city: String, country: String, lat: Double, lon: Double, temp: String, status: String) {
+                        for (i in arrKey) {
 
-                    }
+                            apiServices.getCurrentWeather(lat, lon, i).enqueue(object : Callback<CurrentWeather> {
+                                override fun onFailure(call: Call<CurrentWeather>?, t: Throwable?) {
 
-                    override fun onResponse(call: Call<CurrentWeather>?, response: Response<CurrentWeather>?) {
-                        val currentWeather = response!!.body()
-                        val temp = (currentWeather.data[0].temp.toInt()).toString()
-                        val code = currentWeather.data[0].weather.code
-                        val timeZone = currentWeather.data[0].timezone
-                        var bg: String? = null
-                        (context as AppCompatActivity).finish()
+                                }
+
+                                override fun onResponse(call: Call<CurrentWeather>?, response: Response<CurrentWeather>?) {
+                                    if (response!!.isSuccessful) {
+                                        if (!checkkey) {
+                                            val currentWeather = response!!.body()
+                                            val temp = (currentWeather.data[0].temp.toInt()).toString()
+                                            val code = currentWeather.data[0].weather.code
+                                            val timeZone = currentWeather.data[0].timezone
+                                            var bg: String? = null
+                                            (context as AppCompatActivity).finish()
 //                    viewPagerAdapter = ViewPagerAdapter(context, arrayList)
-                        val intent = Intent("SEARCH")
-                        if (!DataCity.checkCitySearch(context, city)) {
-                            intent.putExtra("have", false)
-                            if (Helper.getCurrentTimeZone(timeZone) < 18) {
-                                bg = DataCity.getBg(context, code)[0].imageDay
-                            } else {
-                                bg = DataCity.getBg(context, code)[0].imageNight
-                            }
-                            DataCity.insertHistory(context, city, country, lat.toString(), lon.toString(),
-                                    temp, bg, System.currentTimeMillis(), code.toString(), timeZone)
-                        } else {
-                            DataCity.updateHistory(context, city, System.currentTimeMillis())
-                            intent.putExtra("have", true)
+                                            val intent = Intent("SEARCH")
+                                            if (!DataCity.checkCitySearch(context, city)) {
+                                                intent.putExtra("have", false)
+                                                if (Helper.getCurrentTimeZone(timeZone) < 18) {
+                                                    bg = DataCity.getBg(context, code)[0].imageDay
+                                                } else {
+                                                    bg = DataCity.getBg(context, code)[0].imageNight
+                                                }
+                                                DataCity.insertHistory(context, city, country, lat.toString(), lon.toString(),
+                                                        temp, bg, System.currentTimeMillis(), code.toString(), timeZone)
+                                            } else {
+                                                DataCity.updateHistory(context, city, System.currentTimeMillis())
+                                                intent.putExtra("have", true)
+
+                                            }
+                                            intent.putExtra("city", city)
+                                            intent.putExtra("lat", lat)
+                                            intent.putExtra("lon", lon)
+
+                                            context.sendBroadcast(intent)
+                                            checkkey = true
+                                        }
+                                    } else {
+                                        checkkey = false
+
+                                    }
+                                }
+                            })
+
+
+                            Log.e("TAG", DataCity.checkCitySearch(context, city).toString())
+
 
                         }
-                        intent.putExtra("city", city)
-                        intent.putExtra("lat", lat)
-                        intent.putExtra("lon", lon)
-
-                        context.sendBroadcast(intent)
                     }
+
                 })
 
-                Log.e("TAG", DataCity.checkCitySearch(context, city).toString())
 
-
-            }
-
-        })
         binding.rv.layoutManager = LinearLayoutManager(context)
         binding.rv.setAdapter(adapter)
     }

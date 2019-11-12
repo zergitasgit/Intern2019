@@ -33,8 +33,7 @@ class ManagerViewModel(private var context: Activity, private var binding: Fragm
 
         binding.ivEdit.setOnClickListener {
             if (check) {
-//                arrDelete.clear()
-//                Toast.makeText(context,arrDelete.size.toString(),Toast.LENGTH_SHORT).show()
+//
                 for (i in arrDelete) {
                     DataCity.deleteId(context, i)
                 }

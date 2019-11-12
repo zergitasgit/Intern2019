@@ -20,7 +20,7 @@ import hieusenpaj.com.weather.models.City
 import hieusenpaj.com.weather.viewmodels.ForecastViewModel
 import hieusenpaj.com.weather.viewmodels.WeatherViewModel
 
-class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>) : PagerAdapter() {
+class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>,val search:Boolean) : PagerAdapter() {
     var weatherViewModel: WeatherViewModel? = null
     override fun isViewFromObject(p0: View, p1: Any): Boolean {
         return p0 == p1
@@ -30,7 +30,7 @@ class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>) : Pager
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val binding: ItemViewPagerBinding = ItemViewPagerBinding.inflate(LayoutInflater.from(activity), container, false)
-        weatherViewModel = WeatherViewModel(activity, binding, arr, arr[position].lat, arr[position].lon, position)
+        weatherViewModel = WeatherViewModel(activity, binding, arr, arr[position].lat, arr[position].lon, position,search)
         binding.setViewModel(weatherViewModel)
         binding.executePendingBindings()
         binding.rl.layoutParams.height = Helper.getHeightScreen(activity)
@@ -53,13 +53,15 @@ class ViewPagerAdapter(val activity: Activity, val arr: ArrayList<City>) : Pager
         return weatherViewModel!!
     }
 
-    fun changeTemp() {
-        weatherViewModel!!.changeTemp()
+    fun changeKey(checkKey:Boolean) {
+        weatherViewModel!!.changeKey(checkKey)
     }
 
-    fun scroll() {
+    fun destroy() {
+        weatherViewModel!!.destroy()
 
     }
+
 
 
 }

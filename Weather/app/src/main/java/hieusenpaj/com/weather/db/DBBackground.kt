@@ -60,10 +60,11 @@ class DBBackground(private val context: Context) {
             val bgNight = cursor.getString(cursor.getColumnIndex("bg_night"))
             val ivDay = cursor.getBlob(cursor.getColumnIndex("iv_day"))
             val ivNight = cursor.getBlob(cursor.getColumnIndex("iv_night"))
+            val check = cursor.getString(cursor.getColumnIndex("check"))
 
 
 
-            arr.add(BackGround(code,bgDay,bgNight,ivDay,ivNight))
+            arr.add(BackGround(code,bgDay,bgNight,ivDay,ivNight,check))
             cursor.moveToNext()
         }
 

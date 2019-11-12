@@ -50,7 +50,7 @@ import kotlin.collections.ArrayList
 
 
 class WeatherViewModel(private var activity: Activity, private var binding: ItemViewPagerBinding, private var arrayList: ArrayList<City>,
-                       private var lat: Double, private var lon: Double, private var pos: Int) : Observable() {
+                       private var lat: Double, private var lon: Double, private var pos: Int, private var search: Boolean) : Observable() {
 
 
     var apiServices: ApiServices? = null
@@ -108,13 +108,19 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
     private var drawable: Drawable? = null
     private val mTouchPosition: Float? = null
     private val mReleasePosition: Float? = null
+    private val arrKey = ArrayList<String>()
+    public var checkkey = false
+    public var checkkey1 = false
 
 
     init {
         sha = activity.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         edit = sha!!.edit()
         apiServices = ApiUtils.getApiService()
-
+        arrKey.add(ApiUtils.KEY)
+        arrKey.add(ApiUtils.KEY2)
+        arrKey.add(ApiUtils.KEY1)
+        arrKey.add(ApiUtils.KEY3)
 
 
         getWeatherCurrent(lat, lon, true)
@@ -152,9 +158,9 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
         }
         if (sha!!.getBoolean("F", false)) {
             binding.tvC.setTextColor(Color.parseColor("#FFFFFF"))
-            binding.tvF.setTextColor(Color.parseColor("#000000"))
+            binding.tvF.setTextColor(Color.parseColor("#005baa"))
         } else {
-            binding.tvC.setTextColor(Color.parseColor("#000000"))
+            binding.tvC.setTextColor(Color.parseColor("#005baa"))
             binding.tvF.setTextColor(Color.parseColor("#FFFFFF"))
         }
         binding.ivMenu.setOnClickListener {
@@ -163,6 +169,9 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
 
 //
 
+    }
+    fun changeKey(checkKey:Boolean){
+        this.checkkey = checkKey
     }
 
 
@@ -175,97 +184,128 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
             progressDialog!!.setMax(100)
             progressDialog!!.show()
         }
-        apiServices!!.getCurrentWeather(lat, lon, ApiUtils.KEY).enqueue(object : Callback<CurrentWeather> {
-            @SuppressLint("SetTextI18n")
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onResponse(call: Call<CurrentWeather>, response: Response<CurrentWeather>) {
-                Load(response, isShowPo).execute()
+        for (i in arrKey) {
 
-            }
+            apiServices!!.getCurrentWeather(lat, lon, i).enqueue(object : Callback<CurrentWeather> {
+                @SuppressLint("SetTextI18n")
+                @RequiresApi(Build.VERSION_CODES.O)
+                override fun onResponse(call: Call<CurrentWeather>, response: Response<CurrentWeather>) {
+                    if (response.isSuccessful) {
 
-            override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
-                Log.e("TAG", t.message)
 
-            }
 
-        })
+                        if (!checkkey) {
+                            Load(response, isShowPo).execute()
+                            checkkey = true
+                        }
+                    } else {
+                        checkkey = false
+                    }
+                }
+
+                override fun onFailure(call: Call<CurrentWeather>, t: Throwable) {
+                    Log.e("TAG", t.message)
+
+                }
+
+            })
+
+        }
 
 
     }
+
+    fun destroy() {
+
+        if (progressDialog != null && progressDialog!!.isShowing())
+            progressDialog!!.dismiss();
+
+    }
+
 
     private fun getWeatherForecast(lat: Double, lon: Double) {
-        apiServices!!.getForecastWeather(lat, lon, ApiUtils.KEY, "3").enqueue(object : Callback<ForecastDay> {
-            override fun onFailure(call: Call<ForecastDay>?, t: Throwable?) {
-                Log.e("TAG", t?.message)
-            }
+        for (i in arrKey) {
 
-            @SuppressLint("SetTextI18n")
-            override fun onResponse(call: Call<ForecastDay>?, response: Response<ForecastDay>?) {
-                val fw = response!!.body()
-                des = fw.data[0].weather.description
-                des1 = fw.data[1].weather.description
-                des2 = fw.data[2].weather.description
-                ts1 = fw.data[1].ts.toLong()
-                ts2 = fw.data[2].ts.toLong()
-
-
-
-                max1 = fw.data[0].max_temp.toInt().toString()
-                low1 = fw.data[0].low_temp.toInt().toString()
-                max2 = fw.data[1].max_temp.toInt().toString()
-                low2 = fw.data[1].low_temp.toInt().toString()
-                max3 = fw.data[2].max_temp.toInt().toString()
-                low3 = fw.data[2].low_temp.toInt().toString()
-
-
-                codeF = fw.data[0].weather.code
-                codeF1 = fw.data[1].weather.code
-                codeF2 = fw.data[2].weather.code
-
-
-                drawableF = Helper.getIcon(codeF!!, activity, fw.timezone)
-                drawableF1 = Helper.getIcon(codeF1!!, activity, fw.timezone)
-                drawableF2 = Helper.getIcon(codeF2!!, activity, fw.timezone)
-
-                if (Locale.getDefault().language.equals("vi")) {
-
-                    binding.tvDayStatus.text = activity.resources.getString(R.string.today) + "/" + DataCity.getLanguage(activity, codeF.toString()).vn
-                    binding.tvDayStatus1.text = Helper.getDate(ts1!!) + "/" + DataCity.getLanguage(activity, codeF1.toString()).vn
-                    binding.tvDayStatus2.text = Helper.getDate(ts2!!) + "/" + DataCity.getLanguage(activity, codeF2.toString()).vn
-                } else {
-                    binding.tvDayStatus.text = activity.resources.getString(R.string.today) + "/" + des
-                    binding.tvDayStatus1.text = Helper.getDate(ts1!!) + "/" + des1
-                    binding.tvDayStatus2.text = Helper.getDate(ts2!!) + "/" + des2
+            apiServices!!.getForecastWeather(lat, lon, i, "3").enqueue(object : Callback<ForecastDay> {
+                override fun onFailure(call: Call<ForecastDay>?, t: Throwable?) {
+                    Log.e("TAG", t?.message)
                 }
 
+                @SuppressLint("SetTextI18n")
+                override fun onResponse(call: Call<ForecastDay>?, response: Response<ForecastDay>?) {
+                    if (response!!.isSuccessful) {
 
-                if (!sha!!.getBoolean("F", false)) {
-                    binding.tvTempMinMax.text = max1 + "/" + low1
-                    binding.tvTempMinMax1.text = max2 + "/" + low2
-                    binding.tvTempMinMax2.text = max3 + "/" + low3
-                } else {
-                    binding.tvTempMinMax.text = Helper.convertCtoF(low1!!.toInt()).toString() + "/" + Helper.convertCtoF(max1!!.toInt()).toString()
-                    binding.tvTempMinMax1.text = Helper.convertCtoF(low2!!.toInt()).toString() + "/" + Helper.convertCtoF(max2!!.toInt()).toString()
-                    binding.tvTempMinMax2.text = Helper.convertCtoF(low3!!.toInt()).toString() + "/" + Helper.convertCtoF(max3!!.toInt()).toString()
+                        if (!checkkey1) {
+                            val fw = response!!.body()
+                            des = fw.data[0].weather.description
+                            des1 = fw.data[1].weather.description
+                            des2 = fw.data[2].weather.description
+                            ts1 = fw.data[1].ts.toLong()
+                            ts2 = fw.data[2].ts.toLong()
+
+
+
+                            max1 = fw.data[0].max_temp.toInt().toString()
+                            low1 = fw.data[0].low_temp.toInt().toString()
+                            max2 = fw.data[1].max_temp.toInt().toString()
+                            low2 = fw.data[1].low_temp.toInt().toString()
+                            max3 = fw.data[2].max_temp.toInt().toString()
+                            low3 = fw.data[2].low_temp.toInt().toString()
+
+
+                            codeF = fw.data[0].weather.code
+                            codeF1 = fw.data[1].weather.code
+                            codeF2 = fw.data[2].weather.code
+
+
+                            drawableF = Helper.getIcon(codeF!!, activity, fw.timezone)
+                            drawableF1 = Helper.getIcon(codeF1!!, activity, fw.timezone)
+                            drawableF2 = Helper.getIcon(codeF2!!, activity, fw.timezone)
+
+                            if (Locale.getDefault().language.equals("vi")) {
+
+                                binding.tvDayStatus.text = activity.resources.getString(R.string.today) + "/" + DataCity.getLanguage(activity, codeF.toString()).vn
+                                binding.tvDayStatus1.text = Helper.getDate(ts1!!) + "/" + DataCity.getLanguage(activity, codeF1.toString()).vn
+                                binding.tvDayStatus2.text = Helper.getDate(ts2!!) + "/" + DataCity.getLanguage(activity, codeF2.toString()).vn
+                            } else {
+                                binding.tvDayStatus.text = activity.resources.getString(R.string.today) + "/" + des
+                                binding.tvDayStatus1.text = Helper.getDate(ts1!!) + "/" + des1
+                                binding.tvDayStatus2.text = Helper.getDate(ts2!!) + "/" + des2
+                            }
+
+
+                            if (!sha!!.getBoolean("F", false)) {
+                                binding.tvTempMinMax.text = max1 + "/" + low1
+                                binding.tvTempMinMax1.text = max2 + "/" + low2
+                                binding.tvTempMinMax2.text = max3 + "/" + low3
+                            } else {
+                                binding.tvTempMinMax.text = Helper.convertCtoF(low1!!.toInt()).toString() + "/" + Helper.convertCtoF(max1!!.toInt()).toString()
+                                binding.tvTempMinMax1.text = Helper.convertCtoF(low2!!.toInt()).toString() + "/" + Helper.convertCtoF(max2!!.toInt()).toString()
+                                binding.tvTempMinMax2.text = Helper.convertCtoF(low3!!.toInt()).toString() + "/" + Helper.convertCtoF(max3!!.toInt()).toString()
+                            }
+
+
+
+                            Glide.with(activity)
+                                    .load(drawableF)
+                                    .into(binding.ivStatus)
+                            Glide.with(activity)
+                                    .load(drawableF1)
+                                    .into(binding.ivStatus1)
+                            Glide.with(activity)
+                                    .load(drawableF2)
+                                    .into(binding.ivStatus2)
+                            checkkey1 = true
+                        }
+                    } else {
+                        checkkey1 = false
+                    }
                 }
 
+            })
 
-
-                Glide.with(activity)
-                        .load(drawableF)
-                        .into(binding.ivStatus)
-                Glide.with(activity)
-                        .load(drawableF1)
-                        .into(binding.ivStatus1)
-                Glide.with(activity)
-                        .load(drawableF2)
-                        .into(binding.ivStatus2)
-
-            }
-
-        })
+        }
     }
-
 
 
     private fun refeshView() {
@@ -294,7 +334,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
             binding.tvTempMinMax2.text = Helper.convertCtoF(low3!!.toInt()).toString() + "/" + Helper.convertCtoF(max3!!.toInt()).toString()
 
             binding.tvC.setTextColor(Color.parseColor("#FFFFFF"))
-            binding.tvF.setTextColor(Color.parseColor("#000000"))
+            binding.tvF.setTextColor(Color.parseColor("#005baa"))
 
         } else {
             binding.tvTemp.text = temp.toString()
@@ -302,7 +342,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
             binding.tvTempMinMax.text = max1 + "/" + low1
             binding.tvTempMinMax1.text = max2 + "/" + low2
             binding.tvTempMinMax2.text = max3 + "/" + low3
-            binding.tvC.setTextColor(Color.parseColor("#000000"))
+            binding.tvC.setTextColor(Color.parseColor("#005baa"))
             binding.tvF.setTextColor(Color.parseColor("#FFFFFF"))
         }
     }
@@ -358,16 +398,16 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
         override fun onPostExecute(result: Void?) {
             //
             // Hide ProgressDialog here
-            if (progressDialog != null && progressDialog!!.isShowing() && progressDialog!!.isIndeterminate()) {
+            if (progressDialog != null && progressDialog!!.isShowing()) {
                 progressDialog!!.dismiss()
 
             }
             if (isShowPo) {
-
+///
             } else {
-                binding.swipeRefreshLayout.setRefreshing(false)
-            }
 
+            }
+            binding.swipeRefreshLayout.setRefreshing(false)
             if (!sha!!.getBoolean("F", false)) {
                 binding.tvTemp.text = temp.toString()
                 binding.tvTempSmall.text = "°C"
@@ -399,6 +439,11 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
                 binding.llContent.setBackground(ContextCompat.getDrawable(activity, R.drawable.bg_view_night))
                 binding.llSun.setBackground(ContextCompat.getDrawable(activity, R.drawable.bg_view_night))
             }
+            if (arrBg[0].check.equals("1")) {
+                binding.llForecast.setBackground(ContextCompat.getDrawable(activity, R.drawable.bg_view_night))
+                binding.llContent.setBackground(ContextCompat.getDrawable(activity, R.drawable.bg_view_night))
+                binding.llSun.setBackground(ContextCompat.getDrawable(activity, R.drawable.bg_view_night))
+            }
 
             binding.rootView.setBackground(drawable)
 
@@ -419,7 +464,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
                 } else {
                     intent.putExtra("bg", arrBg[0].imageNight)
                 }
-                activity.startActivity (intent)
+                activity.startActivity(intent)
             }
         }
 
@@ -479,9 +524,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
     }
 
     private fun convertToPx(dp: Int): Int {
-        // Get the screen's density scale
         val scale = activity.resources.displayMetrics.density
-        // Convert the dps to pixels, based on density scale
         return (dp * scale + 0.5f).toInt()
     }
 }

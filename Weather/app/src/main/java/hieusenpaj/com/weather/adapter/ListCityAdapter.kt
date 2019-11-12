@@ -11,12 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import hieusenpaj.com.weather.R
-import hieusenpaj.com.weather.api.ApiUtils
-import hieusenpaj.com.weather.databinding.ItemCityBinding
 import hieusenpaj.com.weather.databinding.ItemListCityBinding
 import hieusenpaj.com.weather.helper.Helper
 import hieusenpaj.com.weather.models.City
-import hieusenpaj.com.weather.viewmodels.WeatherViewModel
 
 class ListCityAdapter(private val context: Activity,
                       private var arr: ArrayList<City>,
