@@ -178,7 +178,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
     private fun getWeatherCurrent(lat: Double, lon: Double, isShowPo: Boolean) {
         if (isShowPo) {
             progressDialog = ProgressDialog(activity)
-            progressDialog!!.setCancelable(false)
+            progressDialog!!.setCancelable(true)
             progressDialog!!.setIndeterminate(false)
             progressDialog!!.setMessage("Loading...")
             progressDialog!!.setMax(100)
@@ -398,7 +398,7 @@ class WeatherViewModel(private var activity: Activity, private var binding: Item
         override fun onPostExecute(result: Void?) {
             //
             // Hide ProgressDialog here
-            if (progressDialog != null && progressDialog!!.isShowing()) {
+            if (progressDialog != null && progressDialog!!.isShowing() && progressDialog!!.isIndeterminate) {
                 progressDialog!!.dismiss()
 
             }

@@ -157,7 +157,7 @@ class MainViewModel(private var activity: Activity, private var binding: Activit
                     binding.viewPager.adapter = viewPagerAdapter
                     binding.viewPager.offscreenPageLimit = arrayList.size
 //                    setLocal(arrayList, binding.viewPager.currentItem)
-                    setUpViewPager(binding)
+//                    setUpViewPager(binding)
                 }
             }
         }
