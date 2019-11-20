@@ -1,20 +1,18 @@
-package hieusenpaj.com.weather.db
+package hieusenpaj.com.xbar.db
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import hieusenpaj.com.weather.models.Add
-import hieusenpaj.com.weather.models.City
+import hieusenpaj.com.xbar.`object`.Action
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-class DBCity(private val context: Context) {
-
+class DBAction(private var context: Context) {
 
     companion object {
-        private val DB_NAME = "city.db"
-        private val dbName = "City"
+        private val DB_NAME = "action.db"
+        private val dbName = "action"
 //        private val DB_PATH = "/data/data/hieusenpaj.com.weather/databases/"
     }
 
@@ -50,23 +48,17 @@ class DBCity(private val context: Context) {
         os.close()
         `is`.close()
     }
-
-
-
-    fun getListCity(string: String): ArrayList<City> {
-        var arr = ArrayList<City>()
-        val cursor = this.openDatabase().rawQuery("SELECT * FROM worldcities WHERE city LIKE  '$string%' LIMIT 20 ", null)
+    fun getAction(): ArrayList<Action> {
+        var arr = ArrayList<Action>()
+        val cursor = this.openDatabase().rawQuery("SELECT * FROM ac ", null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
-            val city = cursor.getString(cursor.getColumnIndex("city"))
-            val country = cursor.getString(cursor.getColumnIndex("field5"))
-            val lat = cursor.getString(cursor.getColumnIndex("lat"))
-            val lon = cursor.getString(cursor.getColumnIndex("lng"))
-            arr.add(City(city, country,lat.toDouble(),lon.toDouble(),"","","","",false))
+            val action = cursor.getString(cursor.getColumnIndex("action"))
+            val code = cursor.getString(cursor.getColumnIndex("code"))
+            arr.add(Action(action,code,false))
             cursor.moveToNext()
         }
+
         return arr
-
-
     }
 }
