@@ -519,7 +519,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ll_vibration">
 
                 <ImageView
 
@@ -538,6 +539,15 @@
                         android:layout_centerVertical="true"
                         android:text="Vibration"></TextView>
 
+                    <CheckBox
+                        android:id="@+id/cb_vibration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dp"
+                        android:checked="false">
+                    </CheckBox>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -551,7 +561,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ll_vib_str">
 
                 <ImageView
                     android:layout_width="20dp"
@@ -593,97 +604,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="20dp"></ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Hide in full screen"></TextView>
-
-                        <TextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="Hide the button when the statusbar is hidden">
-
-                        </TextView>
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:orientation="horizontal">
-
-                <ImageView
-
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="20dp"></ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Hide in landscape"></TextView>
-
-                        <TextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="Hide the button when the device is in landscape">
-
-                        </TextView>
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ll_keyboard">
 
                 <ImageView
 

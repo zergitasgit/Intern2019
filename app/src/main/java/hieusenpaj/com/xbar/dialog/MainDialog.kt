@@ -30,18 +30,23 @@ class MainDialog(context: Context, private var status: String,
 
 
         if (status == "width") {
-            tv_sb.text = sharedPreferences!!.getInt("sbWidth", 0).toString() + "%"
+            tv_sb.text = sharedPreferences!!.getInt("sbWidth", 100).toString() + "%"
             sb_main.progress = sharedPreferences!!.getInt("sbWidth", 100)
         }else if(status == "height"){
             tv_title.text = "Button height"
             tv_set.text = "Set the button's height"
-            tv_sb.text = sharedPreferences!!.getInt("sbHeight", 0).toString() + "%"
+            tv_sb.text = sharedPreferences!!.getInt("sbHeight", 50).toString() + "%"
             sb_main.progress = sharedPreferences!!.getInt("sbHeight", 50)
         }else if(status == "margin"){
             tv_title.text = "Bottom margin"
             tv_set.text = " Set the button's bottom margin"
             tv_sb.text = sharedPreferences!!.getInt("sbMargin", 0).toString() + "%"
             sb_main.progress = sharedPreferences!!.getInt("sbMargin", 0)
+        }else{
+            tv_title.text = "Vibration strength"
+            tv_set.text = " Set the vibration strength when pressing the action button"
+            tv_sb.text = sharedPreferences!!.getInt("sbVib", 0).toString() + "%"
+            sb_main.progress = sharedPreferences!!.getInt("sbVib", 0)
         }
         tv_cancel.setOnClickListener {
             dismiss()
@@ -66,13 +71,16 @@ class MainDialog(context: Context, private var status: String,
                 context.sendBroadcast(intent)
                 edit!!.putInt("sbMargin", sb_main.progress)
                 edit!!.apply()
+            }else{
+                edit!!.putInt("sbVib", sb_main.progress)
+                edit!!.apply()
             }
             listener.onClick(sb_main.progress)
         }
         sb_main.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 if (p2) {
-                    tv_sb.text = p1.toString() + "%"
+                    tv_sb.text = "$p1%"
                 }
 
             }
@@ -84,7 +92,6 @@ class MainDialog(context: Context, private var status: String,
             }
 
         })
-
 
     }
 

@@ -36,8 +36,9 @@ import hieusenpaj.com.xbar.`object`.Action
 import hieusenpaj.com.xbar.adapter.ActionAdapter
 import hieusenpaj.com.xbar.db.DBAction
 import hieusenpaj.com.xbar.dialog.MainDialog
-import hieusenpaj.com.xbar.service.WindownService
+import hieusenpaj.com.xbar.service.WinMService
 import kotlinx.android.synthetic.main.dialog_action.*
+import kotlinx.android.synthetic.main.dialog_keybroad.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -98,10 +99,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             return
         }
 
-        setUp()
-        setUpAccSe()
-        swicht()
-        setUpOnclick()
+        if (Settings.canDrawOverlays(this)) {
+            setUp()
+            setUpAccSe()
+            swicht()
+            setUpOnclick()
+        }
 
 
     }
@@ -109,7 +112,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     @RequiresApi(Build.VERSION_CODES.M)
     fun perSuss() {
         if (Settings.canDrawOverlays(this)) {
-            val serviceIntent = Intent(this, WindownService::class.java)
+            val serviceIntent = Intent(this, WinMService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 this.startForegroundService(serviceIntent)
             } else {
@@ -122,6 +125,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 3) {
 //            perSuss()
+            if (Settings.canDrawOverlays(this)) {
+                setUp()
+                setUpAccSe()
+                swicht()
+                setUpOnclick()
+            }
         }
     }
 
@@ -146,10 +155,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     @RequiresApi(Build.VERSION_CODES.M)
     fun swicht() {
         if (sharedPreferences!!.getBoolean("switch", false)) {
-            if(sharedPreferences!!.getBoolean("destroy",false)) {
+            if (sharedPreferences!!.getBoolean("destroy", false)) {
                 perSuss()
-
-
             }
             switch_id.isChecked = true
             tv_switch.text = "On"
@@ -175,7 +182,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun setUpAccSe() {
         if (!Utility.isAccessibilityEnabled(
                 applicationContext,
-                WindownService.ACCESSIBILITY_ID
+                WinMService.ACCESSIBILITY_ID
             )
         ) {
             if (accessibilityDialog == null) {
@@ -190,7 +197,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                     startActivityForResult(
                         intent,
-                        WindownService.ACCESSIBILITY_REQUEST_CODE
+                        WinMService.ACCESSIBILITY_REQUEST_CODE
                     )
                 }
                 builder.setNegativeButton(
@@ -269,7 +276,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
         ll_width.setOnClickListener {
-            val dialog = MainDialog(this,"width",object :MainDialog.OnClickDialog{
+            val dialog = MainDialog(this, "width", object : MainDialog.OnClickDialog {
                 override fun onClick(value: Int) {
                     tv_with.text = "$value%"
                 }
@@ -277,11 +284,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             })
             dialog.show()
         }
-        tv_with.text =sharedPreferences!!.getInt("sbWidth", 100).toString() + "%"
+        tv_with.text = sharedPreferences!!.getInt("sbWidth", 100).toString() + "%"
         ll_height.setOnClickListener {
-            val dialog = MainDialog(this,"height",object :MainDialog.OnClickDialog{
+            val dialog = MainDialog(this, "height", object : MainDialog.OnClickDialog {
                 override fun onClick(value: Int) {
-                    tv_height.text  = "$value%"
+                    tv_height.text = "$value%"
                 }
 
             })
@@ -289,18 +296,53 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         tv_height.text = sharedPreferences!!.getInt("sbHeight", 50).toString() + "%"
         ll_margin.setOnClickListener {
-            val dialog = MainDialog(this,"margin",object :MainDialog.OnClickDialog{
+            val dialog = MainDialog(this, "margin", object : MainDialog.OnClickDialog {
                 override fun onClick(value: Int) {
-                    tv_margin.text  = "$value%"
+                    tv_margin.text = "$value%"
                 }
 
             })
             dialog.show()
         }
-        tv_margin.text = sharedPreferences!!.getInt("sbMargin",0).toString() + "%"
+        tv_margin.text = sharedPreferences!!.getInt("sbMargin", 0).toString() + "%"
+
+        ll_vibration.setOnClickListener {
+            cbVib()
+        }
+        cb_vibration.setOnCheckedChangeListener { p0, p1 ->
+            val intent = Intent("VIBRATION")
+            if (p1) {
+                edit!!.putBoolean("cbVibration", true)
+                edit!!.apply()
+                intent.putExtra("cb", false)
+                sendBroadcast(intent)
+            } else {
+                edit!!.putBoolean("cbVibration", false)
+                edit!!.apply()
+                intent.putExtra("cb", true)
+                sendBroadcast(intent)
+            }
+
+        }
+        cb_vibration.isChecked = sharedPreferences!!.getBoolean("cbVibration", false)
+
+        ll_vib_str.setOnClickListener {
+            val dialog = MainDialog(this, "vib", object : MainDialog.OnClickDialog {
+                override fun onClick(value: Int) {
+                    tv_vib_str.text = "$value%"
+                }
+
+            })
+            dialog.show()
+        }
+        tv_vib_str.text = sharedPreferences!!.getInt("sbVib", 0).toString() + "%"
+
+        ll_keyboard.setOnClickListener {
+            keyBroadDialog()
+        }
     }
 
-    fun cbShadow() {
+    private fun cbShadow() {
         val intent = Intent("SHADOW")
         if (!sharedPreferences!!.getBoolean("cbShadow", false)) {
             cb_shadow.isChecked = true
@@ -317,7 +359,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    fun setOnclick(status: String) {
+    private fun cbVib() {
+        val intent = Intent("VIBRATION")
+        if (!sharedPreferences!!.getBoolean("cbVibration", false)) {
+            cb_vibration.isChecked = true
+            edit!!.putBoolean("cbVibration", true)
+            edit!!.apply()
+            intent.putExtra("cb", false)
+            sendBroadcast(intent)
+        } else {
+            cb_vibration.isChecked = false
+            edit!!.putBoolean("cbVibration", false)
+            edit!!.apply()
+            intent.putExtra("cb", true)
+            sendBroadcast(intent)
+        }
+    }
+
+    private fun setOnclick(status: String) {
         val dialog = Dialog(this)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(0))
         dialog.setContentView(R.layout.dialog_action)
@@ -360,11 +419,53 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 "on" -> tv_on_click.text = arr[sharedPreferences!!.getInt("poson", 0)].action
                 "double" -> tv_double_click.text =
                     arr[sharedPreferences!!.getInt("posdouble", 0)].action
+
             }
 
             dialog.dismiss()
         }
 
+    }
+
+    private fun keyBroadDialog() {
+        var on = false
+        val dialog = Dialog(this)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+        dialog.setContentView(R.layout.dialog_keybroad)
+        dialog.show()
+        val window = dialog.window
+        window!!.setLayout(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+
+        if (sharedPreferences!!.getBoolean("onKey", false)) {
+            dialog.rb_on.isChecked = true
+            dialog.rb_behind.isChecked = false
+        } else {
+            dialog.rb_on.isChecked = false
+            dialog.rb_behind.isChecked = true
+        }
+
+
+        dialog.tv_ok.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent("KEYBOARD")
+            if (dialog.rb_on.isChecked) {
+                intent.putExtra("on", true)
+                sendBroadcast(intent)
+                edit!!.putBoolean("onKey", true)
+                edit!!.apply()
+            } else if (dialog.rb_behind.isChecked) {
+                intent.putExtra("on", false)
+                sendBroadcast(intent)
+                edit!!.putBoolean("onKey", false)
+                edit!!.apply()
+            }
+        }
+        dialog.tv_cancel.setOnClickListener {
+            dialog.dismiss()
+        }
     }
 
 //

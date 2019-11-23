@@ -2,8 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:layout_marginTop="20dp"
+    android:layout_marginRight="10dp"
     android:layout_marginBottom="20dp"
     android:background="#FFFFFF">
 
@@ -14,36 +14,35 @@
         android:layout_margin="20dp"
         android:text="Select an action"
         android:textColor="@color/colorAccent"
-        android:textSize="19dp"
-        />
+        android:textSize="19dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_select_song"
-       >
+        android:layout_below="@id/tv_select_song">
+
     </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/rv_dialog">
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:background="#EBEBEB"
-            android:paddingRight="1px"
-            android:paddingTop="1px">
+            android:paddingTop="1px"
+            android:paddingRight="1px">
+
             <RelativeLayout
+                android:id="@+id/rl_cancle"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="#FFFFFF"
-                android:id="@+id/rl_cancle">
+                android:background="#FFFFFF">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -61,21 +60,22 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:background="#EBEBEB"
-            android:paddingRight="1px"
-            android:paddingTop="1px">
+            android:paddingTop="1px"
+            android:paddingRight="1px">
 
             <RelativeLayout
+                android:id="@+id/rl_done"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="#FFFFFF"
-                android:id="@+id/rl_done">
+                android:background="#FFFFFF">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="Ok"
                     android:textColor="@color/colorAccent"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
