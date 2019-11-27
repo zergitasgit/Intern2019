@@ -3,6 +3,8 @@ package hieusenpaj.com.xbar.activity
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.admin.DeviceAdminInfo
+import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -135,6 +137,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun setUp() {
+        val intent =  Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, "hieu");
+        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,"is locked");
+        intent.putExtra("force-locked", DeviceAdminInfo.USES_POLICY_FORCE_LOCK);
+        startActivityForResult(intent, 1);
 
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

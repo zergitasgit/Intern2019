@@ -22,6 +22,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.inputmethod.InputMethodManager
 import android.view.WindowManager
+import kotlin.math.abs
 
 
 class WinMService : AccessibilityService(), View.OnTouchListener {
@@ -47,6 +48,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         val ACTION_ENABLE_FLOATING_VIDEO = "Enable Overlay"
         var windowManager: WindowManager? = null
     }
+
 
 
     override fun onInterrupt() {
@@ -99,7 +101,8 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         v = getSystemService(android.content.Context.VIBRATOR_SERVICE) as android.os.Vibrator
-        windowManager = application.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
         sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
         edit = sharedPreferences?.edit()
         edit!!.putBoolean("destroy", false)
@@ -145,6 +148,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             MotionEvent.ACTION_DOWN -> {
                 downX = p1.x
                 downY = p1.y
+
                 return true
             }
             MotionEvent.ACTION_UP -> {
@@ -154,14 +158,13 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
                 val deltaX = downX - upX
                 val deltaY = downY - upY
 
+
                 //HORIZONTAL SCROLL
-                if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                    if (Math.abs(deltaX) > min_distance) {
+                if (abs(deltaX) > abs(deltaY)) {
+                    if (abs(deltaX) > min_distance) {
                         // left or right
                         if (deltaX < 0) {
                             right()
-
-
                             return true
                         }
                         if (deltaX > 0) {
@@ -171,49 +174,59 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
                         }
                     } else {
                         //not long enough swipe...
-                        return false
+                       onClick()
                     }
-                } else if (Math.abs(deltaX) < Math.abs(deltaY)) {
-                    if (Math.abs(deltaY) > min_distance) {
+                } else if (abs(deltaX) < abs(deltaY)) {
+                    if (abs(deltaY) > min_distance) {
                         // top or down
                         if (deltaY < 0) {
 //                            performGlobalAction(sharedPreferences!!.getInt("right",0))
-                            return true
+                            return false
                         }
                         if (deltaY > 0) {
                             up()
                             return true
                         }
                     } else {
-
-                        return false
+                        if (deltaY > 0) {
+                           onClick()
+                        }
                     }
                 } else {
-                    i++
-                    val handler = Handler()
-                    val r = Runnable {
-                        if (i != 0) {
-                            click()
-                        }
-                        i = 0
+                   onClick()
 
-                    }
-
-                    if (i == 1) {
-                        //Single click
-                        handler.postDelayed(r, 750)
-                    } else if (i == 2) {
-                        double()
-                        i = 0
-
-                    }
                 }
 
 
                 return true
             }
+
         }
         return false
+    }
+    private fun onClick(){
+        i++
+        val handler = Handler()
+        val r = Runnable {
+            if (i != 0) {
+                click()
+            }
+            i = 0
+
+
+        }
+
+        if (i == 1) {
+            //Single click
+            handler.postDelayed(r, 750)
+
+
+        } else if (i == 2) {
+            double()
+            i = 0
+
+
+        }
     }
 
     override fun onTaskRemoved(rootIntent: Intent) {
@@ -279,7 +292,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             if (action!!.equals("WIDTH", ignoreCase = true)) {
                 popupView!!.tv_win.layoutParams.width = convertToPx(process)
                 popupView!!.tv_win.requestLayout()
-//                windowManager!!.updateViewLayout(popupView, params)
+                windowManager!!.updateViewLayout(popupView, params)
             }
         }
     }
@@ -290,7 +303,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             if (action!!.equals("HEIGHT", ignoreCase = true)) {
                 popupView!!.tv_win.layoutParams.height = convertToPx(process) / 2
                 popupView!!.tv_win.requestLayout()
-//                windowManager!!.updateViewLayout(popupView, params)
+                windowManager!!.updateViewLayout(popupView, params)
 
             }
         }
@@ -301,9 +314,13 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             val process = p1.extras!!.getInt("sbMargin")
             if (action!!.equals("MARGIN", ignoreCase = true)) {
                 params!!.y = convertToPx(process)
+                windowManager!!.updateViewLayout(popupView, params)
+
+
+
                 
 
-                windowManager!!.updateViewLayout(popupView, params)
+//                windowManager!!.updateViewLayout(popupView, params)
 
             }
 
@@ -330,6 +347,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             }
         }
     }
+
 
 
     override fun onDestroy() {
@@ -401,6 +419,8 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         } else {
             popupView!!.tv_win.setBackgroundColor(Color.parseColor("#00FFFFFF"))
         }
+
+        windowManager!!.updateViewLayout(popupView, params)
 
 
 
@@ -503,7 +523,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         v!!.cancel()
     }
 
-    fun genVibratorPattern(intensity: Float, duration: Long): LongArray {
+    private fun genVibratorPattern(intensity: Float, duration: Long): LongArray {
         val dutyCycle = Math.abs(intensity * 2.0f - 1.0f)
         val hWidth = (dutyCycle * (duration - 1)).toLong() + 1
         val lWidth = (if (dutyCycle == 1.0f) 0 else 1).toLong()
