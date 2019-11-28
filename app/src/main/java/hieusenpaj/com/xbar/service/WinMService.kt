@@ -4,12 +4,12 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityService.SoftKeyboardController
 import android.annotation.SuppressLint
 import android.app.*
+import android.app.admin.DevicePolicyManager
 import android.content.*
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.PixelFormat
-import android.os.Build
-import android.os.Handler
+import android.os.*
 import android.view.*
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
@@ -18,10 +18,9 @@ import androidx.core.app.NotificationCompat
 import hieusenpaj.com.xbar.R
 import hieusenpaj.com.xbar.activity.MainActivity
 import kotlinx.android.synthetic.main.window_manager.view.*
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.view.inputmethod.InputMethodManager
 import android.view.WindowManager
+import hieusenpaj.com.xbar.AdminReceiver
 import kotlin.math.abs
 
 
@@ -258,7 +257,9 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             val action = intent.action
             val code = intent.extras!!.getString("code")
             if (action!!.equals("COLOR", ignoreCase = true)) {
-                popupView!!.tv_win.setBackgroundColor(Color.parseColor(code))
+                if (sharedPreferences!!.getBoolean("cbShadow", false)) {
+                    popupView!!.tv_win.setBackgroundColor(Color.parseColor(code))
+                }
 
             }
         }
@@ -404,7 +405,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         popupView = layoutInflater.inflate(R.layout.window_manager, null)
         windowManager!!.addView(popupView, params)
         popupView!!.tv_win.layoutParams.height =
-            (convertToPx(sharedPreferences!!.getInt("sbHeight", 100) / 2)).toInt()
+            (convertToPx(sharedPreferences!!.getInt("sbHeight", 50) / 2)).toInt()
         popupView!!.tv_win.layoutParams.width =
             (convertToPx(sharedPreferences!!.getInt("sbWidth", 100)))
         if (sharedPreferences!!.getBoolean("cbShadow", false)) {
@@ -412,7 +413,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
                 Color.parseColor(
                     sharedPreferences!!.getString(
                         "color",
-                        "#FFFFFF"
+                        "#EBEBEB"
                     )
                 )
             )
@@ -449,30 +450,45 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         setUpVib()
         Toast.makeText(applicationContext, "double", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("double", 0))
+        if(sharedPreferences!!.getInt("double", 0)==8){
+            lockScreen()
+        }
     }
 
     private fun click() {
         setUpVib()
         Toast.makeText(applicationContext, "on", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("on", 0))
+        if(sharedPreferences!!.getInt("on", 0)==8){
+            lockScreen()
+        }
     }
 
     private fun right() {
         setUpVib()
         Toast.makeText(applicationContext, "right", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("right", 0))
+        if(sharedPreferences!!.getInt("right", 0)==8){
+            lockScreen()
+        }
     }
 
     private fun left() {
         setUpVib()
         Toast.makeText(applicationContext, "left", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("left", 0))
+        if(sharedPreferences!!.getInt("left", 0)==8){
+            lockScreen()
+        }
     }
 
     private fun up() {
         setUpVib()
         Toast.makeText(applicationContext, "up", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("up", 0))
+        if(sharedPreferences!!.getInt("up", 0)==8){
+            lockScreen()
+        }
     }
 
     private fun setUpVib() {
@@ -538,6 +554,23 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
 
         return pattern
     }
+    private fun lockScreen() {
+        val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+        var admin = ComponentName(this, AdminReceiver::class.java)
+        if (pm.isScreenOn()) {
+            val policy =
+                getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            if(policy.isAdminActive(admin)){
+                policy.lockNow();
+            }else{
+                Toast.makeText(
+                    this,
+                    "You must enable this app as a device administrator\n\n" +
+                            "Please enable it and press back button to return here.", Toast.LENGTH_LONG).show()
 
+            }
+
+        }
+    }
 
 }

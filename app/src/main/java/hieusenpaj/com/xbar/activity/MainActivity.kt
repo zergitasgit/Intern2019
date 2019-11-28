@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.admin.DeviceAdminInfo
+import android.app.admin.DeviceAdminReceiver
 import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -15,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.os.Build
+import android.os.PowerManager
 import android.view.MenuItem
 
 import androidx.annotation.RequiresApi
@@ -32,6 +35,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
+import hieusenpaj.com.xbar.AdminReceiver
 import hieusenpaj.com.xbar.R
 import hieusenpaj.com.xbar.Utility
 import hieusenpaj.com.xbar.`object`.Action
@@ -68,6 +72,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    private var dpm: DevicePolicyManager? = null
     private var accessibilityDialog: AlertDialog? = null
     private var db = DBAction(this)
     private var arr = ArrayList<Action>()
@@ -79,13 +84,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val id = p0.itemId
 
         if (id == R.id.nav_home) {
-
+            val intent = Intent(Intent.ACTION_DELETE);
+            intent.setData(Uri.parse("package:" + packageName))
+            startActivity(intent);
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
+    private fun lockScreen() {
+        val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+        var admin = ComponentName(this, AdminReceiver::class.java)
+        if (pm.isScreenOn()) {
+            val policy =
+                getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            if(policy.isAdminActive(admin)){
 
+            }else{
+
+                val intent = Intent(
+                    DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN
+                ).putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin)
+                this.startActivity(intent)
+            }
+
+        }
+    }
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,15 +158,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 setUpOnclick()
             }
         }
+
     }
 
+    @SuppressLint("WrongConstant")
     fun setUp() {
-        val intent =  Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, "hieu");
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,"is locked");
-        intent.putExtra("force-locked", DeviceAdminInfo.USES_POLICY_FORCE_LOCK);
-        startActivityForResult(intent, 1);
-
+//
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val toggle = ActionBarDrawerToggle(
@@ -158,6 +179,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
     }
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun swicht() {
@@ -226,6 +248,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 "Accessibility is already enabled! :)",
                 Toast.LENGTH_LONG
             ).show()
+
+            lockScreen()
+
         }
     }
 
