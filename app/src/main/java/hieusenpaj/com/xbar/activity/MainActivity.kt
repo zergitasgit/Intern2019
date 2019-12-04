@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         val id = p0.itemId
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_un) {
             val intent = Intent(Intent.ACTION_DELETE);
             intent.setData(Uri.parse("package:" + packageName))
             startActivity(intent);
@@ -478,7 +478,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             dialog.rb_on.isChecked = false
             dialog.rb_behind.isChecked = true
         }
-
 
         dialog.tv_ok.setOnClickListener {
             dialog.dismiss()

@@ -9,6 +9,7 @@ import android.content.*
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.PixelFormat
+import android.graphics.PorterDuff
 import android.os.*
 import android.view.*
 import android.view.accessibility.AccessibilityEvent
@@ -47,7 +48,6 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         val ACTION_ENABLE_FLOATING_VIDEO = "Enable Overlay"
         var windowManager: WindowManager? = null
     }
-
 
 
     override fun onInterrupt() {
@@ -173,7 +173,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
                         }
                     } else {
                         //not long enough swipe...
-                       onClick()
+                        onClick()
                     }
                 } else if (abs(deltaX) < abs(deltaY)) {
                     if (abs(deltaY) > min_distance) {
@@ -188,11 +188,11 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
                         }
                     } else {
                         if (deltaY > 0) {
-                           onClick()
+                            onClick()
                         }
                     }
                 } else {
-                   onClick()
+                    onClick()
 
                 }
 
@@ -203,7 +203,8 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         }
         return false
     }
-    private fun onClick(){
+
+    private fun onClick() {
         i++
         val handler = Handler()
         val r = Runnable {
@@ -258,7 +259,11 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             val code = intent.extras!!.getString("code")
             if (action!!.equals("COLOR", ignoreCase = true)) {
                 if (sharedPreferences!!.getBoolean("cbShadow", false)) {
-                    popupView!!.tv_win.setBackgroundColor(Color.parseColor(code))
+//                    popupView!!.tv_win.setBackgroundColor(Color.parseColor(code))
+                    popupView!!.background.setColorFilter(
+                        Color.parseColor(code),
+                        PorterDuff.Mode.SRC_IN
+                    )
                 }
 
             }
@@ -270,15 +275,15 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             val cb = intent.extras!!.getBoolean("cb")
             if (action!!.equals("SHADOW", ignoreCase = true)) {
                 if (cb) {
-                    popupView!!.tv_win.setBackgroundColor(Color.parseColor("#00FFFFFF"))
+//                    popupView!!.tv_win.setBackgroundColor(Color.parseColor("#00FFFFFF"))
+                    popupView!!.background.setColorFilter(
+                        Color.parseColor("#00FFFFFF"),
+                        PorterDuff.Mode.SRC_IN
+                    )
                 } else {
-                    popupView!!.tv_win.setBackgroundColor(
-                        Color.parseColor(
-                            sharedPreferences!!.getString(
-                                "color",
-                                "#FFFFFF"
-                            )
-                        )
+                    popupView!!.background.setColorFilter(
+                        Color.parseColor(sharedPreferences!!.getString("color", "#00AEFF")),
+                        PorterDuff.Mode.SRC_IN
                     )
                 }
 
@@ -318,9 +323,6 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
                 windowManager!!.updateViewLayout(popupView, params)
 
 
-
-                
-
 //                windowManager!!.updateViewLayout(popupView, params)
 
             }
@@ -348,7 +350,6 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             }
         }
     }
-
 
 
     override fun onDestroy() {
@@ -409,16 +410,17 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         popupView!!.tv_win.layoutParams.width =
             (convertToPx(sharedPreferences!!.getInt("sbWidth", 100)))
         if (sharedPreferences!!.getBoolean("cbShadow", false)) {
-            popupView!!.tv_win.setBackgroundColor(
-                Color.parseColor(
-                    sharedPreferences!!.getString(
-                        "color",
-                        "#EBEBEB"
-                    )
-                )
+//            popupView!!.tv_win.setBackgroundColor(
+//                Color.parseColor(sharedPreferences!!.getString("color", "#EBEBEB")))
+            popupView!!.background.setColorFilter(
+                Color.parseColor(sharedPreferences!!.getString("color", "#00AEFF")),
+                PorterDuff.Mode.SRC_IN
             )
         } else {
-            popupView!!.tv_win.setBackgroundColor(Color.parseColor("#00FFFFFF"))
+            popupView!!.background.setColorFilter(
+                Color.parseColor(sharedPreferences!!.getString("color", "#00FFFFFF")),
+                PorterDuff.Mode.SRC_IN
+            )
         }
 
         windowManager!!.updateViewLayout(popupView, params)
@@ -450,7 +452,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         setUpVib()
         Toast.makeText(applicationContext, "double", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("double", 0))
-        if(sharedPreferences!!.getInt("double", 0)==8){
+        if (sharedPreferences!!.getInt("double", 0) == 8) {
             lockScreen()
         }
     }
@@ -459,7 +461,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         setUpVib()
         Toast.makeText(applicationContext, "on", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("on", 0))
-        if(sharedPreferences!!.getInt("on", 0)==8){
+        if (sharedPreferences!!.getInt("on", 0) == 8) {
             lockScreen()
         }
     }
@@ -468,7 +470,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         setUpVib()
         Toast.makeText(applicationContext, "right", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("right", 0))
-        if(sharedPreferences!!.getInt("right", 0)==8){
+        if (sharedPreferences!!.getInt("right", 0) == 8) {
             lockScreen()
         }
     }
@@ -477,7 +479,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         setUpVib()
         Toast.makeText(applicationContext, "left", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("left", 0))
-        if(sharedPreferences!!.getInt("left", 0)==8){
+        if (sharedPreferences!!.getInt("left", 0) == 8) {
             lockScreen()
         }
     }
@@ -486,7 +488,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         setUpVib()
         Toast.makeText(applicationContext, "up", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("up", 0))
-        if(sharedPreferences!!.getInt("up", 0)==8){
+        if (sharedPreferences!!.getInt("up", 0) == 8) {
             lockScreen()
         }
     }
@@ -554,20 +556,26 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
 
         return pattern
     }
+
     private fun lockScreen() {
         val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
         var admin = ComponentName(this, AdminReceiver::class.java)
         if (pm.isScreenOn()) {
             val policy =
                 getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            if(policy.isAdminActive(admin)){
+            if (policy.isAdminActive(admin)) {
                 policy.lockNow();
-            }else{
+            } else {
                 Toast.makeText(
                     this,
                     "You must enable this app as a device administrator\n\n" +
-                            "Please enable it and press back button to return here.", Toast.LENGTH_LONG).show()
-
+                            "Please enable it and press back button to return here.",
+                    Toast.LENGTH_LONG
+                ).show()
+                val intent = Intent(
+                    DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN
+                ).putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin)
+                this.startActivity(intent)
             }
 
         }

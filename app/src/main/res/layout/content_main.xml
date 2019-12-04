@@ -17,7 +17,16 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/colorPrimary">
+            android:background="#808080">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/icon_power"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="25dp"
+               >
+
+            </ImageView>
 
             <TextView
                 android:id="@+id/tv_switch"
@@ -25,7 +34,12 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="50dp"
-                android:text="Off"></TextView>
+                android:text="Off"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:textSize="15dp">
+
+            </TextView>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_id"
@@ -47,7 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="Actions"
-                android:textColor="@color/colorPrimary"></TextView>
+                android:textStyle="bold"
+                android:textColor="#333333"></TextView>
 
             <LinearLayout
                 android:id="@+id/ll_up"
@@ -57,9 +72,12 @@
 
                 <ImageView
                     android:id="@+id/iv_up"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_swipe_up_action">
+
+                </ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -74,14 +92,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Swipe up action"></TextView>
+                            android:text="Swipe up action"
+                            android:textColor="#333333"
+                            android:textSize="15dp"></TextView>
 
                         <TextView
                             android:id="@+id/tv_up"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp">
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp">
 
                         </TextView>
                     </LinearLayout>
@@ -102,10 +123,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/left">
+                </ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -120,14 +142,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Swipe left action"></TextView>
+                            android:text="Swipe left action"
+                            android:textColor="#333333"
+                            android:textSize="15dp"></TextView>
 
                         <TextView
                             android:id="@+id/tv_left"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp">
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp">
 
                         </TextView>
                     </LinearLayout>
@@ -147,10 +172,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_swipe_right_action"></ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -165,14 +190,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Swipe right action"></TextView>
+                            android:text="Swipe right action"
+                            android:textColor="#333333"
+                            android:textSize="15dp"></TextView>
 
                         <TextView
                             android:id="@+id/tv_right"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp">
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp"
+                            >
 
                         </TextView>
                     </LinearLayout>
@@ -193,9 +222,10 @@
 
                 <ImageView
 
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_action_on_click"></ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -210,14 +240,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Action on click"></TextView>
+                            android:text="Action on click"
+                            android:textColor="#333333"
+                            android:textSize="15dp"></TextView>
 
                         <TextView
                             android:id="@+id/tv_on_click"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp">
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp">
 
                         </TextView>
                     </LinearLayout>
@@ -237,10 +270,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_action_on_double_click"></ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -255,14 +288,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Action on double click"></TextView>
+                            android:text="Action on double click"
+                            android:textColor="#333333"
+                            android:textSize="15dp"></TextView>
 
                         <TextView
                             android:id="@+id/tv_double_click"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp">
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp">
 
                         </TextView>
                     </LinearLayout>
@@ -284,7 +320,11 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="Appearance"
-                android:textColor="@color/colorPrimary"></TextView>
+                android:textStyle="bold"
+                android:textColor="#333333"
+               >
+
+            </TextView>
 
             <LinearLayout
                 android:id="@+id/ll_color"
@@ -294,9 +334,10 @@
 
                 <ImageView
                     android:id="@+id/iv_color"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_button_color"></ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -307,7 +348,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Button color"></TextView>
+                        android:text="Button color"
+                        android:textColor="#333333"
+                        android:textSize="15dp"></TextView>
 
 
                     <RelativeLayout
@@ -326,10 +369,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_button_shadow">
 
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                </ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -340,18 +385,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Button shadow">
+                        android:text="Button shadow"
+                        android:textColor="#333333"
+                        android:textSize="15dp">
 
                     </TextView>
 
                     <CheckBox
                         android:id="@+id/cb_shadow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="15dp"
-                        android:checked="false">
+                        android:checked="false"
+                        android:background="@drawable/bg_checkbox"
+                        android:button="@null"
+                        >
 
                     </CheckBox>
 
@@ -371,10 +421,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_button_width"></ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -389,14 +439,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Button width"></TextView>
+                            android:text="Button width"
+                            android:textColor="#333333"
+                            android:textSize="15dp"></TextView>
 
                         <TextView
                             android:id="@+id/tv_with"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp">
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp">
 
                         </TextView>
                     </LinearLayout>
@@ -416,10 +469,10 @@
                 android:id="@+id/ll_height">
 
                 <ImageView
-
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_button_height"></ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -434,14 +487,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Button height"></TextView>
+                            android:text="Button height"
+                            android:textColor="#333333"
+                            android:textSize="15dp"></TextView>
 
                         <TextView
                             android:id="@+id/tv_height"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp">
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp">
 
                         </TextView>
                     </LinearLayout>
@@ -461,10 +517,10 @@
                 android:id="@+id/ll_margin">
 
                 <ImageView
-
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp">
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_bottom_margin">
 
                 </ImageView>
 
@@ -481,7 +537,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bottom margin">
+                            android:text="Bottom margin"
+                            android:textColor="#333333"
+                            android:textSize="15dp">
 
                         </TextView>
 
@@ -490,7 +548,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp">
+                            android:layout_marginTop="5dp"
+                            android:textSize="13dp">
 
                         </TextView>
                     </LinearLayout>
@@ -512,7 +571,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="Behavior"
-                android:textColor="@color/colorPrimary">
+                android:textStyle="bold"
+                android:textColor="#333333">
 
             </TextView>
 
@@ -523,10 +583,10 @@
                 android:id="@+id/ll_vibration">
 
                 <ImageView
-
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_vibration"></ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -537,16 +597,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Vibration"></TextView>
+                        android:text="Vibration"
+                        android:textColor="#333333"
+                        android:textSize="15dp">
+
+                    </TextView>
 
                     <CheckBox
                         android:id="@+id/cb_vibration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="15dp"
-                        android:checked="false">
+                        android:checked="false"
+                        android:background="@drawable/bg_checkbox"
+                        android:button="@null"
+                        >
                     </CheckBox>
 
                     <RelativeLayout
@@ -565,9 +632,10 @@
                 android:id="@+id/ll_vib_str">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_vibration_strength"></ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -582,7 +650,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Vibration strength">
+                            android:text="Vibration strength"
+                            android:textColor="#333333"
+                            android:textSize="15dp">
 
                         </TextView>
 
@@ -590,7 +660,9 @@
                             android:id="@+id/tv_vib_str"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"></TextView>
+                            android:layout_marginTop="5dp"
+
+                            android:textSize="13dp"></TextView>
                     </LinearLayout>
 
 
@@ -609,10 +681,10 @@
                 android:id="@+id/ll_keyboard">
 
                 <ImageView
-
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="20dp"></ImageView>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/icon_button_position_with_keyboard"></ImageView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -627,13 +699,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Button position with keybroad"></TextView>
+                            android:text="Button position with keybroad"
+                            android:textColor="#333333"
+                            android:textSize="15dp"></TextView>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="Behind Keybroad">
+                            android:text="Behind Keybroad"
+                            android:textSize="13dp">
 
                         </TextView>
                     </LinearLayout>

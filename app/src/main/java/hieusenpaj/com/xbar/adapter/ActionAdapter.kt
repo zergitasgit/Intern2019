@@ -23,9 +23,9 @@ class ActionAdapter(private var context: Context,
 
     override fun onBindViewHolder(holder: ActionAdapter.ViewHolder, position: Int) {
         if(arr[position].isCheck){
-            holder.iv.setImageDrawable(context.resources.getDrawable(R.drawable.baseline_radio_button_checked_black_48dp))
+            holder.iv.setImageDrawable(context.resources.getDrawable(R.drawable.icon_select_round_2))
         }else{
-            holder.iv.setImageDrawable(context.resources.getDrawable(R.drawable.baseline_radio_button_unchecked_black_48dp))
+            holder.iv.setImageDrawable(context.resources.getDrawable(R.drawable.icon_select_round_1))
 
         }
         holder.tv.text = arr[position].action

@@ -2,13 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="50dp"
+    android:layout_marginLeft="10dp"
     android:id="@+id/rl">
     <ImageView
         android:id="@+id/iv"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_margin="15dp"
-        android:src="@drawable/baseline_radio_button_unchecked_black_48dp">
+        android:src="@drawable/icon_select_round_1">
     </ImageView>
     <TextView
         android:id="@+id/tv"

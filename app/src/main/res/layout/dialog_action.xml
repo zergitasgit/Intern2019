@@ -5,22 +5,27 @@
     android:layout_marginTop="20dp"
     android:layout_marginRight="10dp"
     android:layout_marginBottom="20dp"
-    android:background="#FFFFFF">
-
-    <TextView
-        android:id="@+id/tv_select_song"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Select an action"
-        android:textColor="@color/colorAccent"
-        android:textSize="19dp" />
-
+    android:background="@drawable/bg_dialog">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/bg_rl">
+        <TextView
+            android:id="@+id/tv_select_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select an action"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:textSize="19dp" />
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_select_song"
+        android:layout_marginTop="65dp"
         android:layout_marginBottom="60dp">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -35,14 +40,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
-            android:background="#EBEBEB"
+            android:background="#000"
             android:paddingTop="1px"
-            android:paddingRight="1px">
+            android:paddingRight="1px"
+            android:paddingLeft="1px"
+            android:paddingBottom="1px"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="5dp">
 
             <RelativeLayout
                 android:id="@+id/rl_cancle"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="30dp"
                 android:background="#FFFFFF">
 
                 <TextView
@@ -50,8 +60,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="Cancel"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="18dp" />
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="16dp" />
 
             </RelativeLayout>
         </RelativeLayout>
@@ -60,23 +71,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
-            android:background="#EBEBEB"
+            android:background="#00B8FF"
             android:paddingTop="1px"
-            android:paddingRight="1px">
+            android:paddingRight="1px"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="5dp">
 
             <RelativeLayout
                 android:id="@+id/rl_done"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="#FFFFFF">
+                android:layout_height="30dp"
+                android:background="#000733">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="Ok"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="18dp" />
+                    android:textColor="#00B8FF"
+                    android:textSize="16dp" />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>

@@ -3,6 +3,8 @@
     android:orientation="vertical" android:layout_width="100dp"
     android:layout_height="50dp"
     android:id="@+id/tv_win"
+    android:background="@drawable/bg_sv"
     >
+
 
 </LinearLayout>

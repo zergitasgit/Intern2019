@@ -2,19 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@drawable/bg_dialog"
     android:layout_margin="20dp"
     >
-    <TextView
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_rl">
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button postion with keyboard"
         android:textStyle="bold"
         android:textSize="18dp"
-        android:layout_margin="20dp">
+        android:textColor="#fff"
+        android:layout_centerInParent="true"
+        >
 
     </TextView>
+    </RelativeLayout>
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -34,36 +43,77 @@
             android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="behind Keyboard"
+            android:text="Behind Keyboard"
             android:id="@+id/rb_behind"
             android:textSize="16dp"
             />
     </RadioGroup>
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
-        android:layout_marginBottom="20dp">
-        <TextView
-            android:id="@+id/tv_ok"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.0"
+            android:background="#000"
+            android:paddingTop="1px"
+            android:paddingRight="1px"
+            android:paddingLeft="1px"
+            android:paddingBottom="1px">
+
+            <RelativeLayout
+                android:id="@+id/tv_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="#FFFFFF">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Cancel"
+                    android:textColor="#333333"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="20dp"
-            android:text="OK"
-            android:textSize="16dp">
-        </TextView>
-        <TextView
-            android:id="@+id/tv_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="70dp"
-            android:text="Cancel"
-            android:textSize="16dp">
-        </TextView>
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1.0"
+            android:background="#00B8FF"
+            android:paddingTop="1px"
+            android:paddingRight="1px">
 
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/tv_ok"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="#000733">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Ok"
+                    android:textColor="#00B8FF"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
 
 
 
