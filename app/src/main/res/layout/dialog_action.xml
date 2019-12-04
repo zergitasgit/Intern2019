@@ -15,7 +15,7 @@
             android:id="@+id/tv_select_song"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select an action"
+            android:text="@string/set_action"
             android:textColor="#fff"
             android:textStyle="bold"
             android:layout_centerInParent="true"
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Cancel"
+                    android:text="@string/can"
                     android:textColor="#333333"
                     android:textStyle="bold"
                     android:textSize="16dp" />

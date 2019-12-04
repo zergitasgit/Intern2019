@@ -23,6 +23,11 @@ import android.view.inputmethod.InputMethodManager
 import android.view.WindowManager
 import hieusenpaj.com.xbar.AdminReceiver
 import kotlin.math.abs
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.R.color
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
 
 class WinMService : AccessibilityService(), View.OnTouchListener {
@@ -249,7 +254,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
                 stopForeground(true)
 //                disableSelf()
                 manager?.cancel(1)
-                Toast.makeText(context, "stop", Toast.LENGTH_SHORT).show()
+
             }
         }
     }
@@ -260,10 +265,17 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             if (action!!.equals("COLOR", ignoreCase = true)) {
                 if (sharedPreferences!!.getBoolean("cbShadow", false)) {
 //                    popupView!!.tv_win.setBackgroundColor(Color.parseColor(code))
-                    popupView!!.background.setColorFilter(
-                        Color.parseColor(code),
-                        PorterDuff.Mode.SRC_IN
-                    )
+                    try {
+                        popupView!!.background.setColorFilter(
+                            Color.parseColor(code),
+                            PorterDuff.Mode.SRC_IN
+                        )
+                    } catch (e: IllegalArgumentException) {
+                        popupView!!.background.setColorFilter(
+                            Color.parseColor("#00AEFF"),
+                            PorterDuff.Mode.SRC_IN
+                        )
+                    }
                 }
 
             }
@@ -276,15 +288,29 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             if (action!!.equals("SHADOW", ignoreCase = true)) {
                 if (cb) {
 //                    popupView!!.tv_win.setBackgroundColor(Color.parseColor("#00FFFFFF"))
-                    popupView!!.background.setColorFilter(
-                        Color.parseColor("#00FFFFFF"),
-                        PorterDuff.Mode.SRC_IN
-                    )
+                    try {
+                        popupView!!.background.setColorFilter(
+                            Color.parseColor("#00FFFFFF"),
+                            PorterDuff.Mode.SRC_IN
+                        )
+                    } catch (e: IllegalArgumentException) {
+                        popupView!!.background.setColorFilter(
+                            Color.parseColor("#00AEFF"),
+                            PorterDuff.Mode.SRC_IN
+                        )
+                    }
                 } else {
-                    popupView!!.background.setColorFilter(
-                        Color.parseColor(sharedPreferences!!.getString("color", "#00AEFF")),
-                        PorterDuff.Mode.SRC_IN
-                    )
+                    try {
+                        popupView!!.background.setColorFilter(
+                            Color.parseColor(sharedPreferences!!.getString("color", "#00AEFF")),
+                            PorterDuff.Mode.SRC_IN
+                        )
+                    } catch (e: IllegalArgumentException) {
+                        popupView!!.background.setColorFilter(
+                            Color.parseColor("#00AEFF"),
+                            PorterDuff.Mode.SRC_IN
+                        )
+                    }
                 }
 
 
@@ -360,13 +386,22 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             }
         }
         windowManager = null
-        unregisterReceiver(broadcastReceiver)
-        unregisterReceiver(brColor)
-        unregisterReceiver(brShadow)
-        unregisterReceiver(brWidth)
-        unregisterReceiver(brHeight)
-        unregisterReceiver(brMargin)
-        unregisterReceiver(brKey)
+        try {
+            unregisterReceiver(broadcastReceiver)
+            unregisterReceiver(brColor)
+            unregisterReceiver(brShadow)
+            unregisterReceiver(brWidth)
+            unregisterReceiver(brHeight)
+            unregisterReceiver(brMargin)
+            unregisterReceiver(brKey)
+
+        } catch (e: IllegalArgumentException) {
+
+            e.printStackTrace()
+        }
+
+
+
 
 
         edit!!.putBoolean("destroy", true)
@@ -412,15 +447,33 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         if (sharedPreferences!!.getBoolean("cbShadow", false)) {
 //            popupView!!.tv_win.setBackgroundColor(
 //                Color.parseColor(sharedPreferences!!.getString("color", "#EBEBEB")))
-            popupView!!.background.setColorFilter(
-                Color.parseColor(sharedPreferences!!.getString("color", "#00AEFF")),
-                PorterDuff.Mode.SRC_IN
-            )
+            try {
+
+
+                popupView!!.background.setColorFilter(
+                    Color.parseColor(sharedPreferences!!.getString("color", "#000000")),
+                    PorterDuff.Mode.SRC_IN
+                )
+            } catch (e: IllegalArgumentException) {
+                popupView!!.background.setColorFilter(
+                    Color.parseColor("#00AEFF"),
+                    PorterDuff.Mode.SRC_IN
+                )
+            }
         } else {
-            popupView!!.background.setColorFilter(
-                Color.parseColor(sharedPreferences!!.getString("color", "#00FFFFFF")),
-                PorterDuff.Mode.SRC_IN
-            )
+            try {
+                popupView!!.background.setColorFilter(
+                    Color.parseColor(sharedPreferences!!.getString("color", "#00FFFFFF")),
+                    PorterDuff.Mode.SRC_IN
+                )
+            } catch (e: IllegalArgumentException) {
+                popupView!!.background.setColorFilter(
+                    Color.parseColor("#00AEFF"),
+                    PorterDuff.Mode.SRC_IN
+                )
+            }
+
+
         }
 
         windowManager!!.updateViewLayout(popupView, params)
@@ -450,7 +503,6 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
 
     private fun double() {
         setUpVib()
-        Toast.makeText(applicationContext, "double", Toast.LENGTH_SHORT).show()
         performGlobalAction(sharedPreferences!!.getInt("double", 0))
         if (sharedPreferences!!.getInt("double", 0) == 8) {
             lockScreen()
@@ -459,7 +511,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
 
     private fun click() {
         setUpVib()
-        Toast.makeText(applicationContext, "on", Toast.LENGTH_SHORT).show()
+
         performGlobalAction(sharedPreferences!!.getInt("on", 0))
         if (sharedPreferences!!.getInt("on", 0) == 8) {
             lockScreen()
@@ -468,7 +520,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
 
     private fun right() {
         setUpVib()
-        Toast.makeText(applicationContext, "right", Toast.LENGTH_SHORT).show()
+
         performGlobalAction(sharedPreferences!!.getInt("right", 0))
         if (sharedPreferences!!.getInt("right", 0) == 8) {
             lockScreen()
@@ -477,7 +529,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
 
     private fun left() {
         setUpVib()
-        Toast.makeText(applicationContext, "left", Toast.LENGTH_SHORT).show()
+
         performGlobalAction(sharedPreferences!!.getInt("left", 0))
         if (sharedPreferences!!.getInt("left", 0) == 8) {
             lockScreen()
@@ -486,7 +538,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
 
     private fun up() {
         setUpVib()
-        Toast.makeText(applicationContext, "up", Toast.LENGTH_SHORT).show()
+
         performGlobalAction(sharedPreferences!!.getInt("up", 0))
         if (sharedPreferences!!.getInt("up", 0) == 8) {
             lockScreen()
@@ -568,14 +620,14 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             } else {
                 Toast.makeText(
                     this,
-                    "You must enable this app as a device administrator\n\n" +
-                            "Please enable it and press back button to return here.",
+                    application.resources.getString(R.string.ad),
                     Toast.LENGTH_LONG
                 ).show()
                 val intent = Intent(
                     DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN
                 ).putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, admin)
-                this.startActivity(intent)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                applicationContext.startActivity(intent)
             }
 
         }

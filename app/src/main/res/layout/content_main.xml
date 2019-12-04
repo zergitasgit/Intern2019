@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="50dp"
-                android:text="Off"
+                android:text="@string/off"
                 android:textStyle="bold"
                 android:textColor="#333333"
                 android:textSize="15dp">
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="Actions"
+                android:text="@string/action"
                 android:textStyle="bold"
                 android:textColor="#333333"></TextView>
 
@@ -92,7 +92,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Swipe up action"
+                            android:text="@string/sw_up"
                             android:textColor="#333333"
                             android:textSize="15dp"></TextView>
 
@@ -142,7 +142,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Swipe left action"
+                            android:text="@string/sw_left"
                             android:textColor="#333333"
                             android:textSize="15dp"></TextView>
 
@@ -190,7 +190,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Swipe right action"
+                            android:text="@string/sw_ri"
                             android:textColor="#333333"
                             android:textSize="15dp"></TextView>
 
@@ -240,7 +240,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Action on click"
+                            android:text="@string/ac_on"
                             android:textColor="#333333"
                             android:textSize="15dp"></TextView>
 
@@ -288,7 +288,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Action on double click"
+                            android:text="@string/ac_dou"
                             android:textColor="#333333"
                             android:textSize="15dp"></TextView>
 
@@ -319,7 +319,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="Appearance"
+                android:text="@string/appea"
                 android:textStyle="bold"
                 android:textColor="#333333"
                >
@@ -348,7 +348,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Button color"
+                        android:text="@string/bu_color"
                         android:textColor="#333333"
                         android:textSize="15dp"></TextView>
 
@@ -385,7 +385,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Button shadow"
+                        android:text="@string/bu_shadow"
                         android:textColor="#333333"
                         android:textSize="15dp">
 
@@ -439,7 +439,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Button width"
+                            android:text="@string/bu_with"
                             android:textColor="#333333"
                             android:textSize="15dp"></TextView>
 
@@ -487,7 +487,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Button height"
+                            android:text="@string/bu_height"
                             android:textColor="#333333"
                             android:textSize="15dp"></TextView>
 
@@ -537,7 +537,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bottom margin"
+                            android:text="@string/bo_margin"
                             android:textColor="#333333"
                             android:textSize="15dp">
 
@@ -570,7 +570,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="Behavior"
+                android:text="@string/behavior"
                 android:textStyle="bold"
                 android:textColor="#333333">
 
@@ -597,7 +597,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Vibration"
+                        android:text="@string/vib"
                         android:textColor="#333333"
                         android:textSize="15dp">
 
@@ -650,7 +650,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Vibration strength"
+                            android:text="@string/vib_str"
                             android:textColor="#333333"
                             android:textSize="15dp">
 
@@ -699,15 +699,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Button position with keybroad"
+                            android:text="@string/key"
                             android:textColor="#333333"
                             android:textSize="15dp"></TextView>
 
                         <TextView
+                            android:id="@+id/tv_key"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="Behind Keybroad"
+                            android:text="@string/be_key"
                             android:textSize="13dp">
 
                         </TextView>

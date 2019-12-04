@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button postion with keyboard"
+        android:text="@string/key"
         android:textStyle="bold"
         android:textSize="18dp"
         android:textColor="#fff"
@@ -34,7 +34,7 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="On Keyboard"
+            android:text="@string/on_key"
             android:id="@+id/rb_on"
             android:textSize="16dp"
              />
@@ -43,7 +43,7 @@
             android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Behind Keyboard"
+            android:text="@string/be_key"
             android:id="@+id/rb_behind"
             android:textSize="16dp"
             />
@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Cancel"
+                    android:text="@string/can"
                     android:textColor="#333333"
                     android:textSize="16dp"
                     android:textStyle="bold" />

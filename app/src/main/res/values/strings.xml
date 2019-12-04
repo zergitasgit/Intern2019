@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">XBAR</string>
+    <string name="app_name">Swipe Navigation Bar</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,13 +8,52 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
 
     <string name="accessibility_description">Placeholder Accessibility Description</string>
+
+    <string name="un">Uninstall</string>
+    <string name="rate">Rate</string>
+    <string name="share">Share</string>
+
+    <string name="on">On</string>
+    <string name="off">Off</string>
+
+    <string name="action">Actions</string>
+    <string name="sw_up">Swipe up action</string>
+    <string name="sw_left">Swipe left action</string>
+    <string name="sw_ri">Swipe right action</string>
+    <string name="ac_on">Action on click</string>
+    <string name="ac_dou">Action on double click</string>
+
+    <string name="appea">Appearance</string>
+    <string name="bu_color">Button color</string>
+    <string name="bu_shadow">Button shadow</string>
+    <string name="bu_with">Button width</string>
+    <string name="bu_height">Button height</string>
+    <string name="bo_margin">Bottom margin</string>
+
+
+    <string name="behavior">Behavior</string>
+    <string name="vib">Vibration</string>
+    <string name="vib_str">Vibration strength</string>
+    <string name="key">Button position with keyboard</string>
+
+    <string name="on_key">On keyboard</string>
+    <string name="be_key">Behind keyboard</string>
+    <string name="can">Cancel</string>
+
+
+    <string name="set_vib_str">Set the vibration strength when pressing the action button</string>
+    <string name="set_height">Set the button height</string>
+    <string name="set_width">Set the button width </string>
+    <string name="mar">Set the button bottom margin</string>
+    <string name="set_action">Select an action</string>
+    <string name="ad">You must enable this app as a device administrator</string>
+    <string name="ass">Access accessibility permission</string>
+
+    <string name="dis">Auto-Disable</string>
+    <string name="en">Enable</string>
+
+
 
 </resources>

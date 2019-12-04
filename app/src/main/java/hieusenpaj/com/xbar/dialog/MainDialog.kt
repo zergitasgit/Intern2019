@@ -33,18 +33,18 @@ class MainDialog(context: Context, private var status: String,
             tv_sb.text = sharedPreferences!!.getInt("sbWidth", 100).toString() + "%"
             sb_main.progress = sharedPreferences!!.getInt("sbWidth", 100)
         }else if(status == "height"){
-            tv_title.text = "Button height"
-            tv_set.text = "Set the button's height"
+            tv_title.text = context.resources.getString(R.string.bu_height)
+            tv_set.text = context.resources.getString(R.string.set_height)
             tv_sb.text = sharedPreferences!!.getInt("sbHeight", 50).toString() + "%"
             sb_main.progress = sharedPreferences!!.getInt("sbHeight", 50)
         }else if(status == "margin"){
-            tv_title.text = "Bottom margin"
-            tv_set.text = " Set the button's bottom margin"
+            tv_title.text = context.resources.getString(R.string.bo_margin)
+            tv_set.text = context.resources.getString(R.string.mar)
             tv_sb.text = sharedPreferences!!.getInt("sbMargin", 0).toString() + "%"
             sb_main.progress = sharedPreferences!!.getInt("sbMargin", 0)
         }else{
-            tv_title.text = "Vibration strength"
-            tv_set.text = " Set the vibration strength when pressing the action button"
+            tv_title.text =context.resources.getString(R.string.vib_str)
+            tv_set.text = context.resources.getString(R.string.set_vib_str)
             tv_sb.text = sharedPreferences!!.getInt("sbVib", 0).toString() + "%"
             sb_main.progress = sharedPreferences!!.getInt("sbVib", 0)
         }

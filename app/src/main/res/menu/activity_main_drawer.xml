@@ -7,14 +7,14 @@
         <item
             android:id="@+id/nav_un"
             android:icon="@drawable/uninstall"
-            android:title="Uninstall" />
+            android:title="@string/un" />
         <item
             android:id="@+id/nav_rate"
             android:icon="@drawable/star"
-            android:title="Rate" />
+            android:title="@string/rate" />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/share"
-            android:title="Share" />
+            android:title="@string/share" />
 
 </menu>

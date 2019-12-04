@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Swipe Navigation Bar</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string name="accessibility_description">Placeholder Accessibility Description</string>
+
+    <string name="un">Gỡ cài đặt</string>
+    <string name="rate">Đánh giá</string>
+    <string name="share">Chia sẻ</string>
+
+    <string name="on">Bật</string>
+    <string name="off">Tắt</string>
+
+    <string name="action">Hành động</string>
+    <string name="sw_up">Vuốt lên</string>
+    <string name="sw_left">Vuốt trái</string>
+    <string name="sw_ri">Vuốt phải</string>
+    <string name="ac_on">Nhấp 1 lần</string>
+    <string name="ac_dou">Nhấp 2 lần</string>
+
+    <string name="appea">Tùy chỉnh</string>
+    <string name="bu_color">Màu nút</string>
+    <string name="bu_shadow">Bóng nút</string>
+    <string name="bu_with">Chiều dài nút</string>
+    <string name="bu_height">Chiều cao nút</string>
+    <string name="bo_margin">Lề dưới</string>
+
+
+    <string name="behavior">Hành vi</string>
+    <string name="vib">Rung</string>
+    <string name="vib_str">Độ rung</string>
+    <string name="key">Vị trí nút cùng bàn phím</string>
+
+    <string name="on_key">Trên bàn phím</string>
+    <string name="be_key">Dưới bàn phím</string>
+    <string name="can">Hủy</string>
+
+
+    <string name="set_vib_str">Đặt cường độ rung khi nhấn nút</string>
+    <string name="set_height">Đặt chiều cao nút</string>
+    <string name="set_width">Đặt chiều dài nút</string>
+    <string name="mar">Đặt lề dưới</string>
+    <string name="set_action">Chọn hành động</string>
+    <string name="ad">Bạn phải bật ứng dụng này với tư cách quản trị viên thiết bị</string>
+    <string name="ass">truy cập quyền accessibility</string>
+    <string name="dis">Tự động tắt</string>
+    <string name="en">Bật</string>
+
+</resources>

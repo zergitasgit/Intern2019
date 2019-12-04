@@ -62,11 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             sendBroadcast(intent)
             edit!!.putString("color", string)
             edit!!.apply()
-            Toast.makeText(
-                this@MainActivity,
-                "Selected Color: #" + Integer.toHexString(color),
-                Toast.LENGTH_SHORT
-            ).show()
+
 
 
         }
@@ -98,9 +94,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (pm.isScreenOn()) {
             val policy =
                 getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            if(policy.isAdminActive(admin)){
+            if (policy.isAdminActive(admin)) {
 
-            }else{
+            } else {
 
                 val intent = Intent(
                     DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN
@@ -110,6 +106,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,8 +121,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivityForResult(intent, 3)
             return
         }
-
-        if (Settings.canDrawOverlays(this)) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (Settings.canDrawOverlays(this)) {
+                setUp()
+                setUpAccSe()
+                swicht()
+                setUpOnclick()
+            }
+        } else {
             setUp()
             setUpAccSe()
             swicht()
@@ -137,7 +140,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun perSuss() {
-        if (Settings.canDrawOverlays(this)) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (Settings.canDrawOverlays(this)) {
+                val serviceIntent = Intent(this, WinMService::class.java)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    this.startForegroundService(serviceIntent)
+                } else {
+                    this.startService(serviceIntent)
+                }
+            }
+        } else {
             val serviceIntent = Intent(this, WinMService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 this.startForegroundService(serviceIntent)
@@ -188,20 +200,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 perSuss()
             }
             switch_id.isChecked = true
-            tv_switch.text = "On"
+            tv_switch.text = resources.getString(R.string.on)
 
         }
         switch_id.setOnCheckedChangeListener(
             CompoundButton.OnCheckedChangeListener { compoundButton, b ->
                 if (switch_id.isChecked) {
                     perSuss()
-                    tv_switch.text = "On"
+                    tv_switch.text =  resources.getString(R.string.on)
                     edit!!.putBoolean("switch", true)
                     edit!!.apply()
                 } else {
                     val intent = Intent("STOP")
                     sendBroadcast(intent)
-                    tv_switch.text = "Off"
+                    tv_switch.text =  resources.getString(R.string.off)
                     edit!!.putBoolean("switch", false)
                     edit!!.apply()
                 }
@@ -217,12 +229,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (accessibilityDialog == null) {
                 val builder = AlertDialog.Builder(this@MainActivity)
                 builder.setMessage(
-                    "It is good practice to explain to the user why you need " +
-                            "the Accessibility permission and how it is used to automatically " +
-                            "disable the view to avoid the \"Screen Overlay Detected\" popup"
+                   resources.getString(R.string.ass)
                 )
-                    .setTitle("Auto-Disable")
-                builder.setPositiveButton("enable") { dialog, id ->
+                    .setTitle(resources.getString(R.string.dis))
+                builder.setPositiveButton( resources.getString(R.string.en)) { dialog, id ->
                     val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                     startActivityForResult(
                         intent,
@@ -233,21 +243,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     "no thanks"
                 ) { dialog, id ->
                     dialog.dismiss()
-                    Toast.makeText(
-                        this@MainActivity,
-                        "XBar is not enabled :(",
-                        Toast.LENGTH_LONG
-                    ).show()
+
                 }
                 accessibilityDialog = builder.create()
             }
             accessibilityDialog!!.show()
         } else {
-            Toast.makeText(
-                this@MainActivity,
-                "Accessibility is already enabled! :)",
-                Toast.LENGTH_LONG
-            ).show()
+
 
             lockScreen()
 
@@ -473,10 +475,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (sharedPreferences!!.getBoolean("onKey", false)) {
             dialog.rb_on.isChecked = true
+            tv_key.text = resources.getString(R.string.on_key)
             dialog.rb_behind.isChecked = false
         } else {
             dialog.rb_on.isChecked = false
             dialog.rb_behind.isChecked = true
+            tv_key.text = resources.getString(R.string.be_key)
         }
 
         dialog.tv_ok.setOnClickListener {
@@ -486,11 +490,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 intent.putExtra("on", true)
                 sendBroadcast(intent)
                 edit!!.putBoolean("onKey", true)
+                tv_key.text = resources.getString(R.string.on_key)
                 edit!!.apply()
             } else if (dialog.rb_behind.isChecked) {
                 intent.putExtra("on", false)
                 sendBroadcast(intent)
                 edit!!.putBoolean("onKey", false)
+                tv_key.text = resources.getString(R.string.be_key)
                 edit!!.apply()
             }
         }

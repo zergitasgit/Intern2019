@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Button width"
+            android:text="@string/bu_with"
             android:textColor="#fff"
             android:textSize="18dp"
             android:textStyle="bold">
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:text="Set the button's width"></TextView>
+        android:text="@string/set_width"></TextView>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Cancel"
+                    android:text="@string/can"
                     android:textColor="#333333"
                     android:textSize="16dp"
                     android:textStyle="bold" />
