@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
     }
+    //
 
     private var dpm: DevicePolicyManager? = null
     private var accessibilityDialog: AlertDialog? = null
