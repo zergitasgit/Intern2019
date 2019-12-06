@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="hieusenpaj.com.weather.viewmodels.SearchCityViewModel" />
+            type="com.weather.forecastweather.viewmodels.SearchCityViewModel" />
     </data>
 
     <LinearLayout

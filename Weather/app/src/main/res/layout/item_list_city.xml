@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="hieusenpaj.com.weather.models.City" />
+            type="com.weather.forecastweather.models.City" />
     </data>
 
     <RelativeLayout
