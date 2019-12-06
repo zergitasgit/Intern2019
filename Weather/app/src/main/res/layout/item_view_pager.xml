@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="hieusenpaj.com.weather.viewmodels.WeatherViewModel" />
+            type="com.weather.forecastweather.viewmodels.WeatherViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

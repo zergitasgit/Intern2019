@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="hieusenpaj.com.weather.viewmodels.ForecastViewModel" />
+            type="com.weather.forecastweather.viewmodels.ForecastViewModel" />
     </data>
 
     <LinearLayout
@@ -374,7 +374,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <hieusenpaj.com.weather.chart.WeatherChartView
+        <com.weather.forecastweather.chart.WeatherChartView
             android:id="@+id/line_char"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -383,7 +383,7 @@
             wcv:nightColor="@color/colorPrimary"
             wcv:textColor="@android:color/white"
             wcv:textSize="14sp" />
-        <hieusenpaj.com.weather.chart.WeatherChartView
+        <com.weather.forecastweather.chart.WeatherChartView
             android:id="@+id/line_char_night"
             android:layout_width="match_parent"
             android:layout_height="150dp"

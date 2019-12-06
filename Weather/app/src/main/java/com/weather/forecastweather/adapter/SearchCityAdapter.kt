@@ -1,0 +1,39 @@
+package com.weather.forecastweather.adapter
+
+import android.content.Context
+import android.databinding.DataBindingUtil
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import com.weather.forecastweather.R
+import com.weather.forecastweather.databinding.ItemCityBinding
+import com.weather.forecastweather.models.City
+
+class SearchCityAdapter(private val context: Context,
+                        private var arr : ArrayList<City>,
+                        private val listener: ItemListener):RecyclerView.Adapter<SearchCityAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
+        val view: ItemCityBinding = DataBindingUtil
+                .inflate(LayoutInflater.from(context),
+                        R.layout.item_city, p0, false)
+        return ViewHolder(view)
+
+    }
+
+    override fun getItemCount(): Int =arr.size
+
+    override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
+        p0.binding.setItem(arr[p1])
+        p0.binding.rl.setOnClickListener {
+            listener.onClick(p1,arr[p1].city,arr[p1].country,arr[p1].lat,arr[p1].lon,arr[p1].temp,arr[p1].status)
+        }
+
+    }
+    class ViewHolder(binding: ItemCityBinding):RecyclerView.ViewHolder(binding.root){
+        val binding = binding
+
+    }
+    interface ItemListener {
+        fun onClick(pos:Int,city:String,country:String,lat:Double,lon:Double,temp:String,status:String)
+    }
+}

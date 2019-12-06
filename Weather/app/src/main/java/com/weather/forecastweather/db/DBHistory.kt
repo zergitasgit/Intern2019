@@ -1,0 +1,186 @@
+package com.weather.forecastweather.db
+
+import android.content.ContentValues
+import android.content.Context
+import android.content.SharedPreferences
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import com.weather.forecastweather.models.City
+import kotlin.collections.ArrayList
+
+class DBHistory(private val context: Context,
+                factory: SQLiteDatabase.CursorFactory?)
+    : SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
+    override fun onCreate(p0: SQLiteDatabase?) {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        val edit: SharedPreferences.Editor = sharedPreferences.edit()
+        if (sharedPreferences.getBoolean("history", false) == false) {
+            val CREATE_PRODUCTS_TABLE = ("CREATE TABLE " +
+                    TABLE_NAME + "("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY," +
+                    COLUMN_CITY
+                    + " TEXT," + COLUMN_COUNTRY + " TEXT," + COLUMN_LAT + " TEXT," + COLUMN_TEMP + " TEXT," +
+                    COLUMN_STATUS + " TEXT," + COLUMN_CODE + " TEXT," + COLUMN_TIMEZONE + " TEXT," +
+                    COLUMN_LON + " TEXT," + COLUMN_HISTORY + " REAL" + ")")
+
+            p0!!.execSQL(CREATE_PRODUCTS_TABLE)
+            edit.putBoolean("history", true)
+            edit.apply()
+        } else {
+
+        }
+
+    }
+
+    override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
+    }
+
+    companion object {
+        private val DATABASE_VERSION = 1
+        private val DATABASE_NAME = "history.db"
+        val TABLE_NAME = "his"
+        val COLUMN_ID = "_id"
+        val COLUMN_CITY = "city"
+        val COLUMN_COUNTRY = "country"
+        val COLUMN_LAT = "lat"
+        val COLUMN_TEMP = "temp"
+        val COLUMN_STATUS = "status"
+        val COLUMN_LON = "lon"
+        val COLUMN_HISTORY = "history"
+        val COLUMN_CODE = "code"
+        val COLUMN_TIMEZONE = "timezone"
+
+
+    }
+
+    fun insertHistory(city: String, country: String, lat: String, lon: String, temp: String, status: String, history: Long,
+                      code:String,timeZone: String) {
+        val values = ContentValues()
+        values.put(COLUMN_CITY, city)
+        values.put(COLUMN_COUNTRY, country)
+        values.put(COLUMN_LAT, lat)
+        values.put(COLUMN_LON, lon)
+        values.put(COLUMN_TEMP, temp)
+        values.put(COLUMN_STATUS, status)
+        values.put(COLUMN_HISTORY, history)
+        values.put(COLUMN_CODE, code)
+        values.put(COLUMN_TIMEZONE, timeZone)
+        val db = this.writableDatabase
+        db.insert(TABLE_NAME, null, values)
+        db.close()
+    }
+
+    fun updateHistory(city: String, time: Long) {
+        val contentValues = ContentValues()
+        val db = this.readableDatabase
+        contentValues.put(COLUMN_HISTORY, time)
+        db.update(TABLE_NAME, contentValues, "city = '$city'", null)
+        return
+    }
+
+    fun updateLocal(city: String, country: String, lat: String, lon: String, temp: String, status: String,
+                    code: String,timeZone: String,pos:Int) {
+        val values = ContentValues()
+        val db = this.readableDatabase
+        values.put(COLUMN_CITY, city)
+        values.put(COLUMN_COUNTRY, country)
+        values.put(COLUMN_LAT, lat)
+        values.put(COLUMN_LON, lon)
+        values.put(COLUMN_TEMP, temp)
+        values.put(COLUMN_STATUS, status)
+        values.put(COLUMN_CODE, code)
+        values.put(COLUMN_TIMEZONE, timeZone)
+        db.update(TABLE_NAME, values, "_id = '$pos'", null)
+        return
+    }
+
+    fun deleteId(city: String): Boolean {
+        // Gets the data repository in write mode
+        val db = writableDatabase
+        // Define 'where' part of query.
+        val selection = COLUMN_CITY + " LIKE ?"
+        // Specify arguments in placeholder order.
+        val selectionArgs = arrayOf(city)
+        // Issue SQL statement.
+        db.delete(TABLE_NAME, selection, selectionArgs)
+
+        return true
+    }
+    fun getCityHistory(isHistory: Boolean): ArrayList<City> {
+        var cursor: Cursor? = null
+        var arr: ArrayList<City> = ArrayList()
+        val db = this.getWritableDatabase()
+        if (isHistory) {
+            cursor = db.rawQuery("SELECT * FROM his ORDER BY history DESC ", null)
+        } else {
+            cursor = db.rawQuery("SELECT * FROM his ", null)
+        }
+        cursor!!.moveToFirst()
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+
+                val city = cursor.getString(cursor.getColumnIndex("city"))
+                val country = cursor.getString(cursor.getColumnIndex("country"))
+                val lat = cursor.getString(cursor.getColumnIndex("lat"))
+
+                val lon = cursor.getString(cursor.getColumnIndex("lon"))
+                val temp = cursor.getString(cursor.getColumnIndex("temp"))
+                val status = cursor.getString(cursor.getColumnIndex("status"))
+                val code = cursor.getString(cursor.getColumnIndex("code"))
+                val timeZone = cursor.getString(cursor.getColumnIndex("timezone"))
+
+                arr.add(City(city, country, lat.toDouble(), lon.toDouble(), temp, status,code,timeZone,false))
+                cursor.moveToNext()
+            }
+        }
+        return arr
+    }
+
+    fun getCityByName(name: String): ArrayList<City> {
+        var cursor: Cursor? = null
+        var arr: ArrayList<City> = ArrayList()
+        val db = this.getWritableDatabase()
+
+        cursor = db.rawQuery("SELECT * FROM his WHERE city = '$name' ", null)
+
+        cursor!!.moveToFirst()
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                val city = cursor.getString(cursor.getColumnIndex("city"))
+                val country = cursor.getString(cursor.getColumnIndex("country"))
+                val lat = cursor.getString(cursor.getColumnIndex("lat"))
+
+                val lon = cursor.getString(cursor.getColumnIndex("lon"))
+
+                val temp = cursor.getString(cursor.getColumnIndex("temp"))
+                val status = cursor.getString(cursor.getColumnIndex("status"))
+                val code = cursor.getString(cursor.getColumnIndex("code"))
+                val timeZone = cursor.getString(cursor.getColumnIndex("timezone"))
+                arr.add(City(city, country, lat.toDouble(), lon.toDouble(), temp, status,code,timeZone,false))
+                cursor.moveToNext()
+            }
+        }
+        return arr
+    }
+
+    fun getCityByNameSearch(name: String): Int {
+        var cursor: Cursor? = null
+        var id: Int? = null
+        val db = this.getWritableDatabase()
+
+        cursor = db.rawQuery("SELECT * FROM his WHERE city = '$name' ", null)
+
+        cursor!!.moveToFirst()
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+
+                id = cursor.getInt(cursor.getColumnIndex("_id"))
+
+                cursor.moveToNext()
+            }
+        }
+        return id!!
+    }
+
+}

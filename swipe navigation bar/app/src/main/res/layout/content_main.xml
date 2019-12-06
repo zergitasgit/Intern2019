@@ -1,724 +1,729 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main">
 
-    <LinearLayout
-        android:id="@+id/nav_host_fragment"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#EBEBEB"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/nav_host_fragment"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="#808080">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/icon_power"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-               >
-
-            </ImageView>
-
-            <TextView
-                android:id="@+id/tv_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="50dp"
-                android:text="@string/off"
-                android:textStyle="bold"
-                android:textColor="#333333"
-                android:textSize="15dp">
-
-            </TextView>
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="15dp" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#fff"
+            android:layout_height="match_parent"
+            android:background="#EBEBEB"
             android:orientation="vertical">
 
-            <TextView
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="#808080">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="25dp"
+                    android:background="@drawable/icon_power">
+
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/tv_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="50dp"
+                    android:text="@string/off"
+                    android:textColor="#333333"
+                    android:textSize="15dp"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp" />
+            </RelativeLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/action"
-                android:textStyle="bold"
-                android:textColor="#333333"></TextView>
+                android:background="#fff"
+                android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_up"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:text="@string/action"
+                    android:textColor="#333333"
+                    android:textStyle="bold"></TextView>
 
-                <ImageView
-                    android:id="@+id/iv_up"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_swipe_up_action">
+                <LinearLayout
+                    android:id="@+id/ll_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
 
-                </ImageView>
+                    <ImageView
+                        android:id="@+id/iv_up"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_swipe_up_action">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/sw_up"
-                            android:textColor="#333333"
-                            android:textSize="15dp"></TextView>
-
-                        <TextView
-                            android:id="@+id/tv_up"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp"
-                            android:textSize="13dp">
-
-                        </TextView>
-                    </LinearLayout>
+                    </ImageView>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
+                        android:layout_height="match_parent">
 
-
-            <LinearLayout
-                android:id="@+id/ll_left"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/left">
-                </ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/sw_left"
-                            android:textColor="#333333"
-                            android:textSize="15dp"></TextView>
-
-                        <TextView
-                            android:id="@+id/tv_left"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp"
-                            android:textSize="13dp">
+                            android:orientation="vertical">
 
-                        </TextView>
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sw_up"
+                                android:textColor="#333333"
+                                android:textSize="15dp"></TextView>
+
+                            <TextView
+                                android:id="@+id/tv_up"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="5dp"
+                                android:textSize="13dp">
+
+                            </TextView>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#EBEBEB"></RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/left"></ImageView>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
+                        android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/ll_right"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_swipe_right_action"></ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/sw_ri"
-                            android:textColor="#333333"
-                            android:textSize="15dp"></TextView>
-
-                        <TextView
-                            android:id="@+id/tv_right"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp"
-                            android:textSize="13dp"
-                            >
+                            android:orientation="vertical">
 
-                        </TextView>
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sw_left"
+                                android:textColor="#333333"
+                                android:textSize="15dp"></TextView>
+
+                            <TextView
+                                android:id="@+id/tv_left"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="5dp"
+                                android:textSize="13dp">
+
+                            </TextView>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#EBEBEB"></RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_swipe_right_action"></ImageView>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
+                        android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/ll_on_click"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:orientation="horizontal">
-
-                <ImageView
-
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_action_on_click"></ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ac_on"
-                            android:textColor="#333333"
-                            android:textSize="15dp"></TextView>
-
-                        <TextView
-                            android:id="@+id/tv_on_click"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp"
-                            android:textSize="13dp">
+                            android:orientation="vertical">
 
-                        </TextView>
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sw_ri"
+                                android:textColor="#333333"
+                                android:textSize="15dp"></TextView>
+
+                            <TextView
+                                android:id="@+id/tv_right"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="5dp"
+                                android:textSize="13dp">
+
+                            </TextView>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#EBEBEB"></RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_on_click"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_action_on_click"></ImageView>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
+                        android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/ll_double_click"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_action_on_double_click"></ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ac_dou"
-                            android:textColor="#333333"
-                            android:textSize="15dp"></TextView>
-
-                        <TextView
-                            android:id="@+id/tv_double_click"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp"
-                            android:textSize="13dp">
+                            android:orientation="vertical">
 
-                        </TextView>
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ac_on"
+                                android:textColor="#333333"
+                                android:textSize="15dp"></TextView>
 
-                </RelativeLayout>
+                            <TextView
+                                android:id="@+id/tv_on_click"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="5dp"
+                                android:textSize="13dp">
+
+                            </TextView>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#EBEBEB"></RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_double_click"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_action_on_double_click"></ImageView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ac_dou"
+                                android:textColor="#333333"
+                                android:textSize="15dp"></TextView>
+
+                            <TextView
+                                android:id="@+id/tv_double_click"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="5dp"
+                                android:textSize="13dp">
+
+                            </TextView>
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#fff"
-            android:orientation="vertical">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/appea"
-                android:textStyle="bold"
-                android:textColor="#333333"
-               >
+                android:layout_marginTop="10dp"
+                android:background="#fff"
+                android:orientation="vertical">
 
-            </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:text="@string/appea"
+                    android:textColor="#333333"
+                    android:textStyle="bold">
 
-            <LinearLayout
-                android:id="@+id/ll_color"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:orientation="horizontal">
+                </TextView>
 
-                <ImageView
-                    android:id="@+id/iv_color"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_button_color"></ImageView>
+                <LinearLayout
+                    android:id="@+id/ll_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="@string/bu_color"
-                        android:textColor="#333333"
-                        android:textSize="15dp"></TextView>
-
+                    <ImageView
+                        android:id="@+id/iv_color"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_button_color"></ImageView>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
+                        android:layout_height="match_parent">
 
-
-            <LinearLayout
-                android:id="@+id/ll_shadow"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_button_shadow">
-
-                </ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="@string/bu_shadow"
-                        android:textColor="#333333"
-                        android:textSize="15dp">
-
-                    </TextView>
-
-                    <CheckBox
-                        android:id="@+id/cb_shadow"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dp"
-                        android:checked="false"
-                        android:background="@drawable/bg_checkbox"
-                        android:button="@null"
-                        >
-
-                    </CheckBox>
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_width"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_button_width"></ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/bu_with"
-                            android:textColor="#333333"
-                            android:textSize="15dp"></TextView>
-
-                        <TextView
-                            android:id="@+id/tv_with"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp"
-                            android:textSize="13dp">
-
-                        </TextView>
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:orientation="horizontal"
-                android:id="@+id/ll_height">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_button_height"></ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/bu_height"
+                            android:text="@string/bu_color"
                             android:textColor="#333333"
                             android:textSize="15dp"></TextView>
 
-                        <TextView
-                            android:id="@+id/tv_height"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp"
-                            android:textSize="13dp">
 
-                        </TextView>
-                    </LinearLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#EBEBEB"></RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_shadow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_button_shadow">
+
+                    </ImageView>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
+                        android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:orientation="horizontal"
-                android:id="@+id/ll_margin">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_bottom_margin">
-
-                </ImageView>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/bo_margin"
+                            android:layout_centerVertical="true"
+                            android:text="@string/bu_shadow"
                             android:textColor="#333333"
                             android:textSize="15dp">
 
                         </TextView>
 
-                        <TextView
-                            android:id="@+id/tv_margin"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <CheckBox
+                            android:id="@+id/cb_shadow"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginTop="5dp"
-                            android:textSize="13dp">
+                            android:layout_marginRight="15dp"
+                            android:background="@drawable/bg_checkbox"
+                            android:button="@null"
+                            android:checked="false">
 
-                        </TextView>
-                    </LinearLayout>
-
-                </RelativeLayout>
-            </LinearLayout>
-        </LinearLayout>
+                        </CheckBox>
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#fff"
-            android:orientation="vertical">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#EBEBEB"></RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/behavior"
-                android:textStyle="bold"
-                android:textColor="#333333">
-
-            </TextView>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:orientation="horizontal"
-                android:id="@+id/ll_vibration">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_vibration"></ImageView>
-
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/ll_width"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
 
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="@string/vib"
-                        android:textColor="#333333"
-                        android:textSize="15dp">
-
-                    </TextView>
-
-                    <CheckBox
-                        android:id="@+id/cb_vibration"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dp"
-                        android:checked="false"
-                        android:background="@drawable/bg_checkbox"
-                        android:button="@null"
-                        >
-                    </CheckBox>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_button_width"></ImageView>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/bu_with"
+                                android:textColor="#333333"
+                                android:textSize="15dp"></TextView>
+
+                            <TextView
+                                android:id="@+id/tv_with"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="5dp"
+                                android:textSize="13dp">
+
+                            </TextView>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#EBEBEB"></RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_button_height"></ImageView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/bu_height"
+                                android:textColor="#333333"
+                                android:textSize="15dp"></TextView>
+
+                            <TextView
+                                android:id="@+id/tv_height"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="5dp"
+                                android:textSize="13dp">
+
+                            </TextView>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#EBEBEB"></RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_bottom_margin">
+
+                    </ImageView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/bo_margin"
+                                android:textColor="#333333"
+                                android:textSize="15dp">
+
+                            </TextView>
+
+                            <TextView
+                                android:id="@+id/tv_margin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginTop="5dp"
+                                android:textSize="13dp">
+
+                            </TextView>
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
 
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:orientation="horizontal"
-                android:id="@+id/ll_vib_str">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#fff"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_vibration_strength"></ImageView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:text="@string/behavior"
+                    android:textColor="#333333"
+                    android:textStyle="bold">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                </TextView>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/ll_vibration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_vibration"></ImageView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/vib_str"
+                            android:layout_centerVertical="true"
+                            android:text="@string/vib"
                             android:textColor="#333333"
                             android:textSize="15dp">
 
                         </TextView>
 
-                        <TextView
-                            android:id="@+id/tv_vib_str"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                        <CheckBox
+                            android:id="@+id/cb_vibration"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="15dp"
+                            android:background="@drawable/bg_checkbox"
+                            android:button="@null"
+                            android:checked="false"></CheckBox>
 
-                            android:textSize="13dp"></TextView>
-                    </LinearLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#EBEBEB"></RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
 
+
+                <LinearLayout
+                    android:id="@+id/ll_vib_str"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_vibration_strength"></ImageView>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#EBEBEB"></RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
+                        android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:orientation="horizontal"
-                android:id="@+id/ll_keyboard">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/icon_button_position_with_keyboard"></ImageView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/vib_str"
+                                android:textColor="#333333"
+                                android:textSize="15dp">
 
-                <RelativeLayout
+                            </TextView>
+
+                            <TextView
+                                android:id="@+id/tv_vib_str"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+
+                                android:textSize="13dp"></TextView>
+                        </LinearLayout>
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#EBEBEB"></RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_keyboard"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="70dp"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/icon_button_position_with_keyboard"></ImageView>
 
-                        <TextView
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/key"
-                            android:textColor="#333333"
-                            android:textSize="15dp"></TextView>
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tv_key"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="@string/be_key"
-                            android:textSize="13dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/key"
+                                android:textColor="#333333"
+                                android:textSize="15dp"></TextView>
 
-                        </TextView>
-                    </LinearLayout>
+                            <TextView
+                                android:id="@+id/tv_key"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@string/be_key"
+                                android:textSize="13dp">
 
-                </RelativeLayout>
+                            </TextView>
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-
-    </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>
+    <RelativeLayout
+        android:id="@+id/rl_ads"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone" />
+</LinearLayout>
