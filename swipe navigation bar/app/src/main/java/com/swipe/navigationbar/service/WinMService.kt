@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.PorterDuff
 import android.os.*
+import android.util.Log
 import android.view.*
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
@@ -372,12 +373,13 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (popupView != null) {
-            if (popupView!!.windowToken != null) {
-                windowManager!!.removeViewImmediate(popupView)
-            }
-        }
-        windowManager = null
+        Log.e("DEBUG","on destroy")
+//        if (popupView != null) {
+//            if (popupView!!.windowToken != null) {
+//                windowManager!!.removeViewImmediate(popupView)
+//            }
+//        }
+//        windowManager = null
         try {
             unregisterReceiver(broadcastReceiver)
             unregisterReceiver(brColor)
