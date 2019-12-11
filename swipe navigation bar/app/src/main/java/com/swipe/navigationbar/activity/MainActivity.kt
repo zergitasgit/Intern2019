@@ -286,7 +286,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .setDialogType(ColorPickerDialog.TYPE_PRESETS)
                 .setAllowPresets(false)
                 .setDialogId(0)
-                .setColor(Color.parseColor(sharedPreferences!!.getString("color", "#000000")))
+                .setColor(Color.parseColor(sharedPreferences!!.getString("color", "#00AEFF")))
                 .setShowAlphaSlider(true)
                 .show(this)
         }

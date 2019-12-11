@@ -8,6 +8,7 @@ import android.content.*
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.PorterDuff
+import android.opengl.Visibility
 import android.os.*
 import android.util.Log
 import android.view.*
@@ -322,8 +323,15 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             val action = intent.action
             val process = intent.extras!!.getInt("sbWidth")
             if (action!!.equals("WIDTH", ignoreCase = true)) {
-                popupView!!.tv_win.layoutParams.width = convertToPx(process)
-                popupView!!.tv_win.requestLayout()
+
+                if(process==0){
+                    popupView!!.tv_win.visibility = View.GONE
+                }else{
+                    popupView!!.tv_win.visibility = View.VISIBLE
+
+                    popupView!!.tv_win.layoutParams.width = convertToPx(process)
+                    popupView!!.requestLayout()
+                }
                 windowManager!!.updateViewLayout(popupView, params)
             }
         }
@@ -333,8 +341,15 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             val action = intent.action
             val process = intent.extras!!.getInt("sbHeight")
             if (action!!.equals("HEIGHT", ignoreCase = true)) {
-                popupView!!.tv_win.layoutParams.height = convertToPx(process) / 2
-                popupView!!.tv_win.requestLayout()
+
+                if(process==0){
+                    popupView!!.tv_win.visibility = View.GONE
+                }else{
+                    popupView!!.tv_win.visibility = View.VISIBLE
+
+                    popupView!!.tv_win.layoutParams.height = convertToPx(process/2)
+                    popupView!!.requestLayout()
+                }
                 windowManager!!.updateViewLayout(popupView, params)
 
             }
