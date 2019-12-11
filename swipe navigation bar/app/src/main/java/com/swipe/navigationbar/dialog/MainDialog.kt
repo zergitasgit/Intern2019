@@ -35,8 +35,8 @@ class MainDialog(context: Context, private var status: String,
         }else if(status == "height"){
             tv_title.text = context.resources.getString(R.string.bu_height)
             tv_set.text = context.resources.getString(R.string.set_height)
-            tv_sb.text = sharedPreferences!!.getInt("sbHeight", 50).toString() + "%"
-            sb_main.progress = sharedPreferences!!.getInt("sbHeight", 50)
+            tv_sb.text = sharedPreferences!!.getInt("sbHeight", 25).toString() + "%"
+            sb_main.progress = sharedPreferences!!.getInt("sbHeight", 25)
         }else if(status == "margin"){
             tv_title.text = context.resources.getString(R.string.bo_margin)
             tv_set.text = context.resources.getString(R.string.mar)

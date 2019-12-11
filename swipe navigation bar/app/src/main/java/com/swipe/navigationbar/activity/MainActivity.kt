@@ -223,11 +223,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun setUpAccSe() {
-        if (!Utility.isAccessibilityEnabled(
-                applicationContext,
-                WinMService.ACCESSIBILITY_ID
-            )
-        ) {
+//        if (!Utility.isAccessibilityEnabled(
+//                applicationContext,
+//                WinMService.ACCESSIBILITY_ID
+//            )
+//        )
+        if (!WinMService.isEnabled){
             if (accessibilityDialog == null) {
                 val builder = AlertDialog.Builder(this@MainActivity)
                 builder.setMessage(
@@ -251,10 +252,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             accessibilityDialog!!.show()
         } else {
-
-
             lockScreen()
-
         }
     }
 
@@ -275,12 +273,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ll_double_click.setOnClickListener {
             setOnclick("double")
         }
-        tv_up.text = sharedPreferences!!.getString("tvup", "")
-        tv_left.text = sharedPreferences!!.getString("tvleft", "")
-        tv_right.text = sharedPreferences!!.getString("tvright", "")
-        tv_on_click.text = sharedPreferences!!.getString("tvon", "")
-        tv_double_click.text = sharedPreferences!!.getString("tvdouble", "")
-        cb_shadow.isChecked = sharedPreferences!!.getBoolean("cbShadow", false)
+        tv_up.text = sharedPreferences!!.getString("tvup", "Home")
+        tv_left.text = sharedPreferences!!.getString("tvleft", "Recent applications")
+        tv_right.text = sharedPreferences!!.getString("tvright", "Back")
+        tv_on_click.text = sharedPreferences!!.getString("tvon", "Pull down notification")
+        tv_double_click.text = sharedPreferences!!.getString("tvdouble", "Quick settings")
+        cb_shadow.isChecked = sharedPreferences!!.getBoolean("cbShadow", true)
 
 
         ll_color.setOnClickListener {
@@ -330,7 +328,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             })
             dialog.show()
         }
-        tv_height.text = sharedPreferences!!.getInt("sbHeight", 50).toString() + "%"
+        tv_height.text = sharedPreferences!!.getInt("sbHeight", 25).toString() + "%"
         ll_margin.setOnClickListener {
             val dialog = MainDialog(this, "margin", object : MainDialog.OnClickDialog {
                 override fun onClick(value: Int) {
@@ -380,7 +378,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun cbShadow() {
         val intent = Intent("SHADOW")
-        if (!sharedPreferences!!.getBoolean("cbShadow", false)) {
+        if (!sharedPreferences!!.getBoolean("cbShadow", true)) {
             cb_shadow.isChecked = true
             edit!!.putBoolean("cbShadow", true)
             edit!!.apply()

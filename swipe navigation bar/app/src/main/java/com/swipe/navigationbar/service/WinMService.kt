@@ -45,6 +45,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         val ACTION_DISABLE_FLOATING_VIDEO = "Disable Overlay"
         val ACTION_ENABLE_FLOATING_VIDEO = "Enable Overlay"
         var windowManager: WindowManager? = null
+        var isEnabled = false
     }
 
 
@@ -94,6 +95,12 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
     var manager: NotificationManager? = null
     var notification: Notification? = null
     var v: Vibrator? = null
+
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        isEnabled=true
+
+    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -227,10 +234,10 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         }
     }
 
-    override fun onTaskRemoved(rootIntent: Intent) {
-        super.onTaskRemoved(rootIntent)
-        onDestroy()
-    }
+//    override fun onTaskRemoved(rootIntent: Intent) {
+//        super.onTaskRemoved(rootIntent)
+//        onDestroy()
+//    }
 
     private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -256,7 +263,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
             val action = intent.action
             val code = intent.extras!!.getString("code")
             if (action!!.equals("COLOR", ignoreCase = true)) {
-                if (sharedPreferences!!.getBoolean("cbShadow", false)) {
+                if (sharedPreferences!!.getBoolean("cbShadow", true)) {
 //                    popupView!!.tv_win.setBackgroundColor(Color.parseColor(code))
                     try {
                         popupView!!.background.setColorFilter(
@@ -374,12 +381,12 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
     override fun onDestroy() {
         super.onDestroy()
         Log.e("DEBUG","on destroy")
-//        if (popupView != null) {
-//            if (popupView!!.windowToken != null) {
-//                windowManager!!.removeViewImmediate(popupView)
-//            }
-//        }
-//        windowManager = null
+        if (popupView != null) {
+            if (popupView!!.windowToken != null) {
+                windowManager!!.removeViewImmediate(popupView)
+            }
+        }
+        windowManager = null
         try {
             unregisterReceiver(broadcastReceiver)
             unregisterReceiver(brColor)
@@ -402,6 +409,7 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         edit!!.putBoolean("switch", false)
 
         edit!!.apply()
+        isEnabled = false
 
     }
 
@@ -435,17 +443,17 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         popupView = layoutInflater.inflate(R.layout.window_manager, null)
         windowManager!!.addView(popupView, params)
         popupView!!.tv_win.layoutParams.height =
-            (convertToPx(sharedPreferences!!.getInt("sbHeight", 50) / 2)).toInt()
+            (convertToPx(sharedPreferences!!.getInt("sbHeight", 25) / 2)).toInt()
         popupView!!.tv_win.layoutParams.width =
             (convertToPx(sharedPreferences!!.getInt("sbWidth", 100)))
-        if (sharedPreferences!!.getBoolean("cbShadow", false)) {
+        if (sharedPreferences!!.getBoolean("cbShadow", true)) {
 //            popupView!!.tv_win.setBackgroundColor(
 //                Color.parseColor(sharedPreferences!!.getString("color", "#EBEBEB")))
             try {
 
 
                 popupView!!.background.setColorFilter(
-                    Color.parseColor(sharedPreferences!!.getString("color", "#000000")),
+                    Color.parseColor(sharedPreferences!!.getString("color", "#00AEFF")),
                     PorterDuff.Mode.SRC_IN
                 )
             } catch (e: IllegalArgumentException) {
@@ -498,9 +506,9 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
     private fun double() {
         setUpVib()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            performGlobalAction(sharedPreferences!!.getInt("double", 0))
+            performGlobalAction(sharedPreferences!!.getInt("double", 5))
         }
-        if (sharedPreferences!!.getInt("double", 0) == 8) {
+        if (sharedPreferences!!.getInt("double", 5) == 8) {
             lockScreen()
         }
     }
@@ -509,9 +517,10 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         setUpVib()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            performGlobalAction(sharedPreferences!!.getInt("on", 0))
+            performGlobalAction(sharedPreferences!!.getInt("on", 4))
+
         }
-        if (sharedPreferences!!.getInt("on", 0) == 8) {
+        if (sharedPreferences!!.getInt("on", 4) == 8) {
             lockScreen()
         }
     }
@@ -520,9 +529,10 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         setUpVib()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            performGlobalAction(sharedPreferences!!.getInt("right", 0))
+            performGlobalAction(sharedPreferences!!.getInt("right", 1))
+
         }
-        if (sharedPreferences!!.getInt("right", 0) == 8) {
+        if (sharedPreferences!!.getInt("right", 1) == 8) {
             lockScreen()
         }
     }
@@ -531,9 +541,9 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         setUpVib()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            performGlobalAction(sharedPreferences!!.getInt("left", 0))
+            performGlobalAction(sharedPreferences!!.getInt("left", 3))
         }
-        if (sharedPreferences!!.getInt("left", 0) == 8) {
+        if (sharedPreferences!!.getInt("left", 3) == 8) {
             lockScreen()
         }
     }
@@ -542,9 +552,9 @@ class WinMService : AccessibilityService(), View.OnTouchListener {
         setUpVib()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            performGlobalAction(sharedPreferences!!.getInt("up", 0))
+            performGlobalAction(sharedPreferences!!.getInt("up", 2))
         }
-        if (sharedPreferences!!.getInt("up", 0) == 8) {
+        if (sharedPreferences!!.getInt("up", 2) == 8) {
             lockScreen()
         }
     }
