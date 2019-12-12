@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="reflow_disabled_button_alpha">122</integer>
+</resources>

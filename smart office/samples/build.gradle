@@ -1,0 +1,73 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlinVersion = '1.3.20'
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+ext.mySupportVersion = "1.0.0"
+ext.myLifeCycleVersion = "2.1.0"
+ext.myRoomVersion = "2.1.0"
+ext.myBuildToolsVersion="28.0.3"
+ext.myMinSdkVersion=16
+ext.myTargetSdkVersion=28
+ext.myCompileSdkVersion=28
+
+ext.pdfnetGroup = {dependencyHandler->
+    delegate = dependencyHandler
+
+    implementation "com.pdftron:pdftron@aar"
+
+    implementation "com.pdftron:floatingactionbutton@aar"
+    implementation "com.pdftron:pagecropper@aar"
+}
+
+ext.supportLibGroup = {dependencyHandler->
+    delegate = dependencyHandler
+
+    implementation "androidx.legacy:legacy-support-v4:$mySupportVersion"
+    implementation "androidx.appcompat:appcompat:$mySupportVersion"
+    implementation "androidx.recyclerview:recyclerview:$mySupportVersion"
+    implementation "com.google.android.material:material:$mySupportVersion"
+    implementation "androidx.constraintlayout:constraintlayout:1.1.3"
+    implementation "androidx.lifecycle:lifecycle-extensions:$myLifeCycleVersion"
+    implementation "androidx.preference:preference:1.1.0"
+
+    implementation "commons-io:commons-io:2.4"
+    implementation "org.apache.commons:commons-lang3:3.5"
+    implementation "com.google.code.gson:gson:2.8.0"
+
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxjava:2.2.2"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
+
+    implementation "com.squareup.picasso:picasso:2.5.2"
+    implementation "jp.wasabeef:richeditor-android:1.2.2"
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        flatDir {
+            dirs '../../lib', '../../lib/full'
+        }
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
