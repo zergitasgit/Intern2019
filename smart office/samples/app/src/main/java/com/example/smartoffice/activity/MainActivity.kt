@@ -5,30 +5,41 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.ListPopupWindow
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.smartoffice.Helper
+import com.example.smartoffice.Helper.Companion.convertToPx
+import com.example.smartoffice.ItemMain
 import com.example.smartoffice.R
+import com.example.smartoffice.`object`.Office
 import com.example.smartoffice.adapter.FilesAdapter
+import com.example.smartoffice.adapter.ItemMainAdapter
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.File
-import java.io.FilenameFilter
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var fileAdapter: FilesAdapter
     private var mTreeSteps = 0
-    private var pathFile :String?=null
+    private var pathFile: String? = null
     private var fileAllDoc = ArrayList<File>()
-
+    var isAllDoc = false
+    var arrSearch  = ArrayList<Office>();
+    var arrOffice = ArrayList<Office>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +70,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         val id = p0.itemId
 
@@ -70,39 +80,98 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        val searchViewItem = menu!!.findItem(R.id.action_search)
 
-    private fun showFiles(path: String) {
+
+        //getting the search view
+        val searchView = searchViewItem.actionView as SearchView
+
+        //making the searchview consume all the toolbar when open
+        searchView.maxWidth = Int.MAX_VALUE
+        searchView.queryHint = "Search"
+
+//
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                arrSearch.clear()
+                for (office in arrOffice) {
+                    if (office.title.toLowerCase().contains(p0!!.toLowerCase())) {
+                        arrSearch.add(office)
+                    }
+                }
+                var list = arrSearch.sortedWith(compareBy { it.title })
+                showRv(list)
+
+                return false
+            }
+
+        })
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+
+
+    private fun showFiles(path: String, isAll: Boolean) {
         pathFile = path
-        val files = getFiles(path)
-        var filename: ArrayList<File> = ArrayList<File>()
+        arrOffice.clear()
 
 
-        for (i in files!!.indices) {
-            if (!files[i].isFile && !files[i].name.startsWith(".")) {
 
-                    filename.add(files[i])
+        if (!isAll) {
+            val files = Helper.getFiles(path)
+            for (i in files!!.indices) {
+                if (!files[i].isFile && !files[i].name.startsWith(".")) {
+                    arrOffice.add(
+                        Office(
+                            files[i].name,
+                            Helper.getSize(files[i]),
+                            files[i].absolutePath,
+                            true
+                        )
+                    )
 
+                }
+                if (files[i].isFile && files[i].name.endsWith(".pdf")) {
+                    arrOffice.add(
+                        Office(
+                            files[i].name,
+                            Helper.getSize(files[i]),
+                            files[i].absolutePath,
+                            false
+                        )
+                    )
+                }
             }
-            if (files[i].isFile && files[i].name.endsWith(".pdf")) {
-                filename.add(files[i])
-            }
+        } else {
+            arrOffice = Helper.getAllDocuments(this)
         }
-        var list = filename.sortedWith(compareBy { it.name })
+        var list = arrOffice.sortedWith(compareBy { it.title })
+        showRv(list)
+
+    }
+    private fun showRv(arr:List<Office>){
         rv.layoutManager = LinearLayoutManager(this)
-        fileAdapter = FilesAdapter(this, list, object : FilesAdapter.Listener {
-            override fun onClick(file:File) {
-                if (file.isDirectory) {
-                    if(file.name == "All Documents"){
-                        fileAllDoc.clear()
-                        fileAllDoc = getAllDoc(File(Environment.getExternalStorageDirectory().absolutePath))
-                        list = fileAllDoc.sortedWith(compareBy { it.name })
-                        Toast.makeText(this@MainActivity,list.size.toString(),Toast.LENGTH_SHORT).show()
-                        fileAdapter.notifyDataSetChanged()
-                    }else {
+        fileAdapter = FilesAdapter(this, arr, object : FilesAdapter.Listener {
+            override fun onClick(path: String, isFolder: Boolean, title: String) {
+                if (isFolder) {
+                    if (title == "All Documents") {
                         mTreeSteps++
-                        showFiles(file.absolutePath)
+                        isAllDoc = true
+                        showFiles(path, true)
+                    } else {
+                        isAllDoc = false
+                        mTreeSteps++
+                        showFiles(path, false)
                     }
                 } else {
+
                 }
             }
 
@@ -111,38 +180,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    fun getFiles(dir: String): List<File>? {
-        return getFiles(dir, null)
-    }
 
-    fun getFiles(dir: String, matchRegex: String?): List<File>? {
-        val file = File(dir)
-        var files: Array<File?>? = null
-        files = if (matchRegex != null) {
-            val filter = FilenameFilter { dir, fileName -> fileName.matches(matchRegex.toRegex()) }
-            file.listFiles(filter)
-        } else {
-            file.listFiles()
-        }
-        return if (files != null) listOf(*files) else null
-    }
 
-    fun getAllDoc(dir: File): ArrayList<File> {
 
-        val listFile = dir.listFiles()
-        if (listFile != null) {
-            for (i in listFile.indices) {
-                if (listFile[i].isDirectory) { // if its a directory need to get the files under that directory
-                    getAllDoc(listFile[i])
-                } else { // add path of  files to your arraylist for later use
-                    if (listFile[i].name.endsWith(".pdf")) { //Do what ever u want
-                        fileAllDoc.add(listFile[i])
-                    }
-                }
-            }
-        }
-        return fileAllDoc
-    }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     private fun handlePermission() {
@@ -152,8 +192,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (Build.VERSION.SDK_INT >= 23) {
             requestPermissions(perms, 3)
         } else {
-            creatFolder()
-            showFiles(Environment.getExternalStorageDirectory().absolutePath)
+            Helper.createFolder()
+            showFiles(Environment.getExternalStorageDirectory().absolutePath, false)
 
         }
 
@@ -169,8 +209,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (requestCode) {
             3 -> {
                 if (grantResults[0] == 0) {
-                    creatFolder()
-                    showFiles(Environment.getExternalStorageDirectory().absolutePath)
+                    Helper.createFolder()
+                    showFiles(Environment.getExternalStorageDirectory().absolutePath, false)
 
 
                 }
@@ -184,16 +224,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (mTreeSteps > 0) {
             mTreeSteps--
-            showFiles(getPreviousPath()!!)
+
+            showFiles(getPreviousPath()!!, false)
+
             return
-        }else{
-            showFiles(pathFile!!)
+        } else {
+            showFiles(pathFile!!, false)
         }
         super.onBackPressed()
     }
 
     private fun getPreviousPath(): String? {
-        val path: String =pathFile!!
+        val path: String = pathFile!!
         val lastIndexOf = pathFile!!.lastIndexOf(File.separator)
         if (lastIndexOf < 0) {
 
@@ -201,28 +243,49 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         return path.substring(0, lastIndexOf)
     }
+    private fun showListPopupWindow(anchor: View) {
+        val listPopupItems = ArrayList<ItemMain>()
+        listPopupItems.add(ItemMain("hieu", R.drawable.filte))
+        listPopupItems.add(ItemMain("hiep", R.drawable.filte))
 
-    private fun getSize(file: File): String {
-        var size = file.length() // Get size and convert bytes into Kb.
-        var suffix = ""
-        if (size >= 1024) {
-            suffix = "KB";
-            size /= 1024;
-            if (size >= 1024) {
-                suffix = "MB";
-                size /= 1024;
+
+
+        val listPopupWindow = createListPopupWindow(anchor, listPopupItems)
+        listPopupWindow.show()
+    }
+
+
+    private fun createListPopupWindow(anchor: View,
+                                      items: ArrayList<ItemMain>): ListPopupWindow {
+        val popup = ListPopupWindow(this)
+        val adapter = ItemMainAdapter(this, items, object : ItemMainAdapter.ItemListener {
+            override fun onClick(position: Int) {
+                when (position) {
+                    0 -> {
+
+                    }
+                    1 -> {
+
+                    }
+                    2 -> {
+
+                    }
+                    3 -> {
+
+
+                    }
+                }
+//                showListPopupWindow(it)
             }
-        }
-        return size.toString() + suffix
-    }
-    private fun creatFolder(){
-        val folder =  File(Environment.getExternalStorageDirectory().absolutePath +File.separator + "All Documents");
 
-        if(!folder.exists()){
-            folder.mkdir();
-        }
-
+        })
+        popup.setAnchorView(anchor)
+        popup.setWidth(convertToPx(150,this))
+        popup.setHeight(convertToPx(185,this))
+        popup.setAdapter(adapter)
+        return popup
     }
+
 }
 
 

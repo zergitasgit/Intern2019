@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartoffice.R
+import com.example.smartoffice.`object`.Office
 import kotlinx.android.synthetic.main.item_file.view.*
 import java.io.File
 
 class FilesAdapter (private var context: Context,
-                    private var arr:List<File>,
+                    private var arr:List<Office>,
                     private var listener:Listener
 ) : RecyclerView.Adapter<FilesAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,17 +23,17 @@ class FilesAdapter (private var context: Context,
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val file = arr[position]
-        holder.tvName.text = file.name
-        holder.iv_file.setImageResource(if (file.isDirectory) R.drawable.ic_folder_primary_24dp else R.drawable.ic_file_primary_24dp)
-        if (file.isDirectory) {
+        val office = arr[position]
+        holder.tvName.text = office.title
+        holder.iv_file.setImageResource(if (office.isFolder) R.drawable.ic_folder_primary_24dp else R.drawable.ic_file_primary_24dp)
+        if (office.isFolder) {
             holder.tvSize.visibility = View.GONE
         } else {
             holder.tvSize.visibility = View.VISIBLE
-            holder.tvSize.text = getSize(file)
+            holder.tvSize.text = office.size
         }
         holder.ll.setOnClickListener {
-            listener.onClick(file)
+            listener.onClick(office.path,office.isFolder,office.title)
         }
 
     }
@@ -44,7 +45,7 @@ class FilesAdapter (private var context: Context,
 
     }
     interface Listener{
-        fun onClick(file:File)
+        fun onClick(path:String,isFolder:Boolean,title:String)
     }
 
     private fun getSize(file: File): String {

@@ -16,7 +16,41 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorAccent"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/ed_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Search"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="40dp"
+                    android:visibility="gone">
+
+                </EditText>
+                <ImageView
+                    android:id="@+id/iv_search"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="40dp"
+                    android:src="@drawable/filte"
+                    android:layout_centerVertical="true">
+
+                </ImageView>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/filte"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="10dp">
+
+                </ImageView>
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
