@@ -1,6 +1,7 @@
 package com.example.smartoffice.adapter
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +11,20 @@ import com.example.smartoffice.ItemMain
 import com.example.smartoffice.R
 import kotlinx.android.synthetic.main.item_menu.view.*
 
-class ItemMainAdapter(private val context: Context,
-                      private var arr: ArrayList<ItemMain>,
-                      private val listener: ItemListener) : BaseAdapter()  {
+class PopupFilterAdapter(private val context: Context,
+                         private var arr: ArrayList<ItemMain>,
+                         private val listener: ItemListener) : BaseAdapter()  {
+    var sharedPreferences: SharedPreferences ?=null
+    var edit : SharedPreferences.Editor?= null
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
+        sharedPreferences = context.getSharedPreferences("hieu",Context.MODE_PRIVATE)
+        edit = sharedPreferences!!.edit()
         val view = LayoutInflater.from(context).inflate(R.layout.item_menu, null)
         view.ll.setOnClickListener {
             listener.onClick(p0)
         }
-        view.iv.setImageResource(arr[p0].image)
+//        view.iv.setImageResource(arr[p0].image)
+
         view.tv.text = arr[p0].string
         return view
     }

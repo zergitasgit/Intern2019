@@ -31,11 +31,18 @@ class Helper {
 
             val extensions: MutableList<String> = ArrayList()
             extensions.add("pdf")
-            extensions.add("csv")
+            extensions.add("PDF")
+            extensions.add("txt")
             extensions.add("doc")
+            extensions.add("DOC")
+            extensions.add("DOCX")
             extensions.add("docx")
             extensions.add("xls")
             extensions.add("xlsx")
+            extensions.add("XLSX")
+            extensions.add("ppt")
+            extensions.add("pptx")
+            extensions.add("PPTX")
 
             val mimes: MutableList<String> = ArrayList()
             for (ext in extensions) {

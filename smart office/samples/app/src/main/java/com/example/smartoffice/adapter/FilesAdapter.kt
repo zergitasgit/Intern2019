@@ -33,7 +33,7 @@ class FilesAdapter (private var context: Context,
             holder.tvSize.text = office.size
         }
         holder.ll.setOnClickListener {
-            listener.onClick(office.path,office.isFolder,office.title)
+            listener.onClick(office.title,office.size,office.path,office.isFolder)
         }
 
     }
@@ -45,7 +45,7 @@ class FilesAdapter (private var context: Context,
 
     }
     interface Listener{
-        fun onClick(path:String,isFolder:Boolean,title:String)
+        fun onClick(title:String,size:String,path:String,isFolder:Boolean)
     }
 
     private fun getSize(file: File): String {
