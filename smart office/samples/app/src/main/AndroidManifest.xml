@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.smartoffice">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +21,8 @@
             android:name="pdftron_license_key"
             android:value="${pdftronLicenseKey}" />
 
-        <activity android:name=".activity.MainActivity"
+        <activity
+            android:name=".activity.MainActivity"
             android:windowSoftInputMode="stateVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,19 +35,16 @@
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:theme="@style/CustomAppTheme"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.pdftron.demo.app.SimpleReaderActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:theme="@style/CustomAppTheme"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.pdftron.demo.app.AdvancedReaderActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:theme="@style/CustomAppTheme"
             android:windowSoftInputMode="adjustPan">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
@@ -63,7 +63,6 @@
                 <data android:mimeType="text/markdown" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
@@ -167,7 +166,6 @@
                     android:pathPattern=".*\\.MD"
                     android:scheme="file" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -367,9 +365,7 @@
                     android:pathPattern=".*\\.MD"
                     android:scheme="https" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name="com.pdftron.demo.app.SettingsActivity"
             android:parentActivityName="com.pdftron.demo.app.AdvancedReaderActivity"

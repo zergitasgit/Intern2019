@@ -14,7 +14,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
-        manifestPlaceholders = [pdftronLicenseKey:PDFTRON_LICENSE_KEY]
+        manifestPlaceholders = [pdftronLicenseKey: PDFTRON_LICENSE_KEY]
 
         ndk {
             // Tells Gradle to build outputs for the following ABIs and package
@@ -40,8 +40,10 @@ dependencies {
     implementation "com.pdftron:tools@aar"
     implementation "com.pdftron:demo@aar"
 
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     pdfnetGroup dependencies
     supportLibGroup dependencies
 

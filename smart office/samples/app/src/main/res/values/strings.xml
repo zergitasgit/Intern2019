@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Complete Reader</string>
+    <string name="app_name">Smart Office</string>
 
     <string name="missing_license_key">PDFTron must be initialized</string>
 

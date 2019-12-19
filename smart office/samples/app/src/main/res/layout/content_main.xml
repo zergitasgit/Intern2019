@@ -11,7 +11,8 @@
         android:text="Cap quyen"
         android:textColor="#fff"
         android:layout_centerInParent="true"
-        android:id="@+id/btn_perm">
+        android:id="@+id/btn_perm"
+        android:visibility="gone">
 
     </Button>
 

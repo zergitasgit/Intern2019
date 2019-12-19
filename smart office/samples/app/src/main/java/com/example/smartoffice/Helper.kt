@@ -1,14 +1,21 @@
 package com.example.smartoffice
 
-import android.R.attr
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.WindowManager
 import android.webkit.MimeTypeMap
+import android.widget.Toast
 import com.example.smartoffice.`object`.Office
-import com.pdftron.pdf.utils.Utils.getContentResolver
+import com.pdftron.demo.app.SimpleReaderActivity
+import com.pdftron.pdf.config.PDFViewCtrlConfig
+import com.pdftron.pdf.config.ToolManagerBuilder
+import com.pdftron.pdf.config.ViewerConfig
+import com.pdftron.pdf.utils.Utils
 import java.io.File
 import java.io.FilenameFilter
 
@@ -18,6 +25,8 @@ class Helper {
         private const val orderBy = MediaStore.Files.FileColumns.DATE_ADDED + " DESC"
 
         fun getAllDocuments(context: Context):ArrayList<Office> {
+
+
             val arr = ArrayList<Office>();
             val contentResolver = context.contentResolver
             val uri: Uri = MediaStore.Files.getContentUri("external")
@@ -73,6 +82,7 @@ class Helper {
             }
             return arr
         }
+
         private fun makeFile(cursor: Cursor):Office{
             val mimeColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE)
             val pathColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
@@ -159,6 +169,60 @@ class Helper {
             // Convert the dps to pixels, based on density scale
             return (dp * scale + 0.5f).toInt()
         }
+        fun openSimpleReaderActivity(context: Context,path: String) {
+            val tmBuilder = ToolManagerBuilder.from()
+                .setUseDigitalSignature(false)
+                .setAutoResizeFreeText(false)
+
+
+            var cutoutMode = 0
+            if (Utils.isPie()) {
+                cutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            }
+            var builder = ViewerConfig.Builder()
+            builder = builder
+                .fullscreenModeEnabled(true)
+                .multiTabEnabled(false)
+                .documentEditingEnabled(true)
+                .longPressQuickMenuEnabled(true)
+                .showPageNumberIndicator(true)
+                .showBottomNavBar(true)
+                .showThumbnailView(true)
+                .showBookmarksView(false)
+                .showSearchView(true)
+                .showShareOption(true)
+                .showDocumentSettingsOption(true)
+                .showAnnotationToolbarOption(true)
+                .showOpenFileOption(true)
+                .showOpenUrlOption(true)
+                .showEditPagesOption(true)
+                .showPrintOption(false)
+                .showCloseTabOption(true)
+                .showAnnotationsList(true)
+                .showOutlineList(false)
+                .showUserBookmarksList(true)
+                .showCropOption(false)
+                .showSaveCopyOption(false)
+                .saveCopyExportPath(Environment.getExternalStorageDirectory().absolutePath)
+                .pdfViewCtrlConfig(PDFViewCtrlConfig.getDefaultConfig(context))
+                .toolManagerBuilder(tmBuilder)
+
+            if (Utils.isPie()) {
+                builder = builder.layoutInDisplayCutoutMode(cutoutMode)
+            }
+            val config = builder.build()
+            SimpleReaderActivity.openDocument(context, Uri.parse(path),config)
+            Toast.makeText(context,path.substring(path.lastIndexOf('/')+1 ,path.lastIndexOf('.')),Toast.LENGTH_SHORT).show()
+//            val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+//            intent.data = Uri.fromFile(File(File(path).name.e))
+//            sendBroadcast(intent)
+
+        }
+
+
     }
+
+
+
 
 }

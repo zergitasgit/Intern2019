@@ -2,9 +2,13 @@ package com.example.smartoffice.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
@@ -15,7 +19,6 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -60,16 +63,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setUp()
-        handlePermission()
 
+        handlePermission()
+        setUp()
         setUpSearch()
         setUpFilter()
 
 
     }
 
-    @SuppressLint("WrongConstant")
+    @SuppressLint("WrongConstant", "CommitPrefEdits")
     private fun setUp() {
 //
         sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE);
@@ -88,24 +91,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
-        btn_perm.setOnClickListener {
-            handlePermission()
-        }
+
 
     }
 
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        val id = p0.itemId
+
+        if (sharedPreferences!!.getBoolean("permission", false)) {
+            when (p0.itemId) {
+                R.id.nav_his -> {
+
+                    hideKeybroad()
+                    showFilterRv(dbOffice.getPDFRecently().toList())
+                    tv_title.text = "History"
+                }
+                R.id.nav_view -> {
+                    hideKeybroad()
+                    mTreeSteps++
+                    Load(
+                        Environment.getExternalStorageDirectory().absolutePath + "/All Documents",
+                        true
+                    ).execute()
 
 
-        when (id) {
-            R.id.nav_his -> {showFilterRv(dbOffice.getPDFRecently().toList())
-        }
-            R.id.nav_view -> {
-                mTreeSteps++
-                Load(Environment.getExternalStorageDirectory().absolutePath+"/All Documents", true).execute()
-
+                }
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
@@ -115,14 +125,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun setUpSearch() {
         iv_search.setOnClickListener {
 
+
+
             iv_search.visibility = View.GONE
             ed_search.visibility = View.VISIBLE
+            tv_title.visibility = View.GONE
             isSearch = true
             ed_search.requestFocus()
-            var imm: InputMethodManager =
+            val imm: InputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(ed_search, InputMethodManager.SHOW_IMPLICIT)
             ed_search.addTextChangedListener(object : TextWatcher {
+                @SuppressLint("DefaultLocale")
                 override fun afterTextChanged(p0: Editable?) {
                     if (!TextUtils.isEmpty(p0!!.toString())) {
                         iv_search_logic.visibility = View.VISIBLE
@@ -131,18 +145,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             ed_search.text.clear()
 
                         }
-                        arrSearch.clear()
-                        for (office in arrFilter) {
-                            if (office.title.toLowerCase().contains(p0.toString().toLowerCase())) {
-                                arrSearch.add(office)
-                            }
-                        }
-                        var list = arrSearch.sortedWith(compareBy { it.title })
-                        showRv(list)
+
                     } else {
                         iv_search_logic.visibility = View.GONE
                     }
-
+                    arrSearch.clear()
+                    for (office in arrFilter) {
+                        if (office.title.toLowerCase().contains(p0.toString().toLowerCase())) {
+                            arrSearch.add(office)
+                        }
+                    }
+                    val list = arrSearch.sortedWith(compareBy { it.title })
+                    showRv(list)
                 }
 
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -156,13 +170,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
     }
-
+    fun Context.updateContentProvider(vararg path: String) {
+        MediaScannerConnection.scanFile(this,
+            path, null
+        ) { _, _ -> }
+    }
     private fun setUpFilter() {
         iv_filter.setOnClickListener {
             showListPopupWindow(it)
         }
     }
-
 
 
     private fun showRv(arr: List<Office>) {
@@ -180,11 +197,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         Load(path, false).execute()
                     }
                 } else {
-                    if(dbOffice.checkPath(path)){
-                        dbOffice.updateHistory(path,System.currentTimeMillis())
-                    }else{
+//                    val intent = Intent(this@MainActivity,DislayOfficeActicity::class.java)
+//                    intent.putExtra("path",path)
+//                    startActivity(intent)
+                    Helper.openSimpleReaderActivity(this@MainActivity, path)
+                    if (dbOffice.checkPath(path)) {
+                        dbOffice.updateHistory(path, System.currentTimeMillis())
+                    } else {
                         dbOffice.insertOffice(title, size, path, System.currentTimeMillis())
                     }
+                    edit!!.putString("title", title);
+                    edit!!.apply()
+
 
                 }
             }
@@ -203,6 +227,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (Build.VERSION.SDK_INT >= 23) {
             requestPermissions(perms, 3)
         } else {
+            edit!!.putBoolean("permission", true);
+            edit!!.apply()
             Helper.createFolder()
             Load(Environment.getExternalStorageDirectory().absolutePath, false)
 
@@ -221,10 +247,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             3 -> {
 
                 if (grantResults[0] == 0) {
+                    edit!!.putBoolean("permission", true);
+                    edit!!.apply()
                     btn_perm.visibility = View.GONE
                     Helper.createFolder()
                     Load(Environment.getExternalStorageDirectory().absolutePath, false).execute()
+
+
+                    val sharedPreferences = getSharedPreferences("hieu",Context.MODE_PRIVATE)
+                    val path = sharedPreferences!!.getString("title", "hieu.pdf").substring(
+                        0,
+                        sharedPreferences!!.getString("title", "hieu.pdf").lastIndexOf(".")
+                    )
+                    val file =
+                        File(Environment.getExternalStorageDirectory().absolutePath + "/" + path+".pdf")
+
+                        this.updateContentProvider(Environment.getExternalStorageDirectory().absolutePath + "/" + path+".pdf")
+
                     arrFilter = Helper.getAllDocuments(this)
+                } else {
+                    btn_perm.visibility = View.VISIBLE
+                    btn_perm.setOnClickListener {
+                        handlePermission()
+                    }
                 }
 
 
@@ -244,6 +289,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             if (ed_search.hasFocus()) {
                 ed_search.visibility = View.GONE
+                tv_title.visibility = View.VISIBLE
                 iv_search.visibility = View.VISIBLE
                 iv_search_logic.visibility = View.GONE
                 ed_search.text.clear()
@@ -293,28 +339,37 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             override fun onClick(position: Int) {
                 when (position) {
                     0 -> {
-                        showFilterRv(list!!)
+                        Load(
+                            Environment.getExternalStorageDirectory().absolutePath + "/All Documents",
+                            true
+                        ).execute()
+                        mTreeSteps++
                         popup.dismiss()
                     }
                     1 -> {
-                        showFilterPdf()
+                        showFilter("pdf")
+
                         popup.dismiss()
                     }
                     2 -> {
-                        showFilterWord()
+                        showFilter("word")
+
                         popup.dismiss()
                     }
                     3 -> {
-                        showFilterTxt()
+                        showFilter("txt")
+
                         popup.dismiss()
 
                     }
                     4 -> {
-                        showFilterExcel()
+                        showFilter("excel")
+
                         popup.dismiss()
                     }
                     5 -> {
-                        showFilterPpt()
+                        showFilter("ppt")
+
                         popup.dismiss()
                     }
 
@@ -326,71 +381,82 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
         })
-        popup.setAnchorView(anchor)
-        popup.setWidth(convertToPx(180, this))
-        popup.setHeight(convertToPx(310, this))
+        popup.anchorView = anchor
+        popup.width = (convertToPx(180, this))
+        popup.height = (convertToPx(310, this))
         popup.setAdapter(adapter)
         return popup
     }
 
-    private fun showFilterTxt() {
+    private fun showFilter(filter: String) {
 
-        var arr = ArrayList<Office>()
-        for (office in arrFilter) {
-            if (office.title.endsWith(".txt")) arr.add(office)
+        val arr = ArrayList<Office>()
+        when (filter) {
+            "txt" -> {
+                for (office in arrFilter) {
+                    if (office.title.endsWith(".txt")) arr.add(office)
+                }
+            }
+            "pdf" -> {
+                for (office in arrFilter) {
+                    if (office.title.endsWith(".pdf") || office.title.endsWith(".PDF")) arr.add(
+                        office
+                    )
+                }
+            }
+            "word" -> {
+                for (office in arrFilter) {
+                    if (office.title.endsWith(".doc") || office.title.endsWith(".docx")
+                        || office.title.endsWith(".DOC") || office.title.endsWith(".DOCX")
+                    ) arr.add(office)
+                }
+            }
+            "excel" -> {
+                for (office in arrFilter) {
+                    if (office.title.endsWith(".xls") || office.title.endsWith(".xlsx") || office.title.endsWith(
+                            ".XLSX"
+                        )
+                    ) arr.add(office)
+                }
+            }
+            "ppt" -> {
+                for (office in arrOffice) {
+                    if (office.title.endsWith(".ppt") || office.title.endsWith(".pptx") || office.title.endsWith(
+                            ".PPTX"
+                        )
+                    ) arr.add(office)
+                }
+            }
         }
+
         showFilterRv(arr)
+        ganFilPath()
     }
 
-    private fun showFilterPdf() {
-        var arr = ArrayList<Office>()
-        for (office in arrFilter) {
-            if (office.title.endsWith(".pdf") || office.title.endsWith(".PDF")) arr.add(office)
-        }
-        showFilterRv(arr)
-    }
 
-    private fun showFilterWord() {
-        var arr = ArrayList<Office>()
-        for (office in arrFilter) {
-            if (office.title.endsWith(".doc") || office.title.endsWith(".docx")
-                || office.title.endsWith(".DOC") || office.title.endsWith(".DOCX")
-            ) arr.add(office)
+    private fun ganFilPath() {
+        mTreeSteps++
+        if (pathFile == Environment.getExternalStorageDirectory().absolutePath) {
+            pathFile = Environment.getExternalStorageDirectory().absolutePath + "/All Documents"
         }
-        showFilterRv(arr)
-    }
 
-    private fun showFilterExcel() {
-        var arr = ArrayList<Office>()
-        for (office in arrFilter) {
-            if (office.title.endsWith(".xls") || office.title.endsWith(".xlsx") || office.title.endsWith(
-                    ".XLSX"
-                )
-            ) arr.add(office)
-        }
-        showFilterRv(arr)
-    }
-
-    private fun showFilterPpt() {
-        var arr = ArrayList<Office>()
-        for (office in arrOffice) {
-            if (office.title.endsWith(".ppt") || office.title.endsWith(".pptx") || office.title.endsWith(
-                    ".PPTX"
-                )
-            ) arr.add(office)
-        }
-        showFilterRv(arr)
     }
 
     private fun showFilterRv(arr: List<Office>) {
         rv.layoutManager = LinearLayoutManager(this)
         fileAdapter = FilesAdapter(this, arr, object : FilesAdapter.Listener {
             override fun onClick(title: String, size: String, path: String, isFolder: Boolean) {
-                if(dbOffice.checkPath(path)){
-                    dbOffice.updateHistory(path,System.currentTimeMillis())
-                }else{
+//                val intent = Intent(this@MainActivity,DislayOfficeActicity::class.java)
+//                intent.putExtra("path",path)
+//                startActivity(intent)
+                Helper.openSimpleReaderActivity(this@MainActivity, path)
+                if (dbOffice.checkPath(path)) {
+                    dbOffice.updateHistory(path, System.currentTimeMillis())
+                } else {
                     dbOffice.insertOffice(title, size, path, System.currentTimeMillis())
                 }
+                edit!!.putString("title", title);
+                edit!!.apply()
 
 
             }
@@ -398,7 +464,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
         rv.adapter = fileAdapter
     }
-    inner class Load(private var path: String, private var isAll: Boolean) : AsyncTask<Void, Int, Void>() {
+
+    @SuppressLint("StaticFieldLeak")
+    inner class Load(
+        private var path: String, private var isAll: Boolean
+    ) : AsyncTask<Void, Int, Void>() {
 
         override fun doInBackground(vararg void: Void): Void? {
             pathFile = path
@@ -418,7 +488,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         )
 
                     }
-                    var name = files[i].name
+                    val name = files[i].name
                     if (files[i].isFile && name.endsWith(".pdf") || name.endsWith(".PDF") || name.endsWith(
                             ".txt"
                         ) || name.endsWith(".doc") ||
@@ -441,11 +511,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
             } else {
+                val sharedPreferences = getSharedPreferences("hieu",Context.MODE_PRIVATE)
+                val path = sharedPreferences!!.getString("title", "hieu.pdf").substring(
+                    0,
+                    sharedPreferences!!.getString("title", "hieu.pdf").lastIndexOf(".")
+                )
+                val file =
+                    File(Environment.getExternalStorageDirectory().absolutePath + "/" + path+".pdf")
+
+                updateContentProvider(Environment.getExternalStorageDirectory().absolutePath + "/" + path+".pdf")
                 arrOffice = Helper.getAllDocuments(this@MainActivity)
             }
             list = arrOffice.sortedWith(compareBy { it.title })
-            for (i in list!!.indices){
-                if (list!![i].title =="All Documents"){
+            for (i in list!!.indices) {
+                if (list!![i].title == "All Documents") {
                     Collections.swap(list, i, 0);
                 }
             }
@@ -459,10 +538,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onPostExecute(result: Void?) {
             //
             // Hide ProgressDialog here
-            if (progressDialog != null && progressDialog!!.isShowing() ) {
+            if (progressDialog != null && progressDialog!!.isShowing()) {
                 progressDialog!!.dismiss()
 
             }
+
+            tv_title.text = pathFile
             showRv(list!!)
 
         }
@@ -470,7 +551,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onPreExecute() {
             progressDialog = ProgressDialog(this@MainActivity)
             progressDialog!!.setCancelable(true)
-            progressDialog!!.isIndeterminate= false
+            progressDialog!!.isIndeterminate = false
             progressDialog!!.setMessage("Loading...")
             progressDialog!!.max = 100
             progressDialog!!.show()
@@ -479,11 +560,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onProgressUpdate(vararg values: Int?) {
             super.onProgressUpdate(*values)
 
-                progressDialog!!.progress =values[0]!!.inv()
+            progressDialog!!.progress = values[0]!!.inv()
 
         }
 
 
+    }
+
+    private fun hideKeybroad() {
+//        ed_search.requestFocus()
+//        ed_search.visibility = View.GONE
+//        iv_search.visibility = View.VISIBLE
+        val view: View = if (currentFocus == null) View(this) else currentFocus!!
+        val inputMethodManager =
+            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
 
