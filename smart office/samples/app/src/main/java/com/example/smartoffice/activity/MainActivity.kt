@@ -9,16 +9,14 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.media.MediaScannerConnection
 import android.net.Uri
-import android.os.AsyncTask
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -72,6 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+
     @SuppressLint("WrongConstant", "CommitPrefEdits")
     private fun setUp() {
 //
@@ -94,6 +93,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     }
+
+
 
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
@@ -149,6 +150,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     } else {
                         iv_search_logic.visibility = View.GONE
                     }
+//                    arrFilter = Helper.getAllDocuments(this@MainActivity)
                     arrSearch.clear()
                     for (office in arrFilter) {
                         if (office.title.toLowerCase().contains(p0.toString().toLowerCase())) {
@@ -170,11 +172,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
     }
+
     fun Context.updateContentProvider(vararg path: String) {
-        MediaScannerConnection.scanFile(this,
+        MediaScannerConnection.scanFile(
+            this,
             path, null
         ) { _, _ -> }
     }
+
     private fun setUpFilter() {
         iv_filter.setOnClickListener {
             showListPopupWindow(it)
@@ -250,23 +255,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     edit!!.putBoolean("permission", true);
                     edit!!.apply()
                     btn_perm.visibility = View.GONE
+                    rl_per.visibility = View.GONE
                     Helper.createFolder()
                     Load(Environment.getExternalStorageDirectory().absolutePath, false).execute()
 
 
-                    val sharedPreferences = getSharedPreferences("hieu",Context.MODE_PRIVATE)
+                    val sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
                     val path = sharedPreferences!!.getString("title", "hieu.pdf").substring(
                         0,
                         sharedPreferences!!.getString("title", "hieu.pdf").lastIndexOf(".")
                     )
                     val file =
-                        File(Environment.getExternalStorageDirectory().absolutePath + "/" + path+".pdf")
+                        File(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
 
-                        this.updateContentProvider(Environment.getExternalStorageDirectory().absolutePath + "/" + path+".pdf")
+                    if (file.exists()) {
+                        Toast.makeText(this@MainActivity, "co", Toast.LENGTH_SHORT).show()
+                        updateContentProvider(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
+
+                    }
+
 
                     arrFilter = Helper.getAllDocuments(this)
                 } else {
                     btn_perm.visibility = View.VISIBLE
+                    rl_per.visibility = View.VISIBLE
                     btn_perm.setOnClickListener {
                         handlePermission()
                     }
@@ -317,12 +329,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun showListPopupWindow(anchor: View) {
         val listPopupItems = ArrayList<ItemMain>()
-        listPopupItems.add(ItemMain("All"))
-        listPopupItems.add(ItemMain("Pdf"))
-        listPopupItems.add(ItemMain("Word"))
-        listPopupItems.add(ItemMain("Text"))
-        listPopupItems.add(ItemMain("Excel"))
-        listPopupItems.add(ItemMain("Power point"))
+        listPopupItems.add(ItemMain("All",R.drawable.ic_all))
+        listPopupItems.add(ItemMain("Pdf",R.drawable.ic_pdf))
+        listPopupItems.add(ItemMain("Word",R.drawable.ic_word))
+        listPopupItems.add(ItemMain("Text",R.drawable.ic_txt))
+        listPopupItems.add(ItemMain("Excel",R.drawable.ic_excel))
+        listPopupItems.add(ItemMain("Power point",R.drawable.ic_ppt))
 
 
         val listPopupWindow = createListPopupWindow(anchor, listPopupItems)
@@ -511,15 +523,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
             } else {
-                val sharedPreferences = getSharedPreferences("hieu",Context.MODE_PRIVATE)
-                val path = sharedPreferences!!.getString("title", "hieu.pdf").substring(
-                    0,
-                    sharedPreferences!!.getString("title", "hieu.pdf").lastIndexOf(".")
-                )
-                val file =
-                    File(Environment.getExternalStorageDirectory().absolutePath + "/" + path+".pdf")
 
-                updateContentProvider(Environment.getExternalStorageDirectory().absolutePath + "/" + path+".pdf")
+
                 arrOffice = Helper.getAllDocuments(this@MainActivity)
             }
             list = arrOffice.sortedWith(compareBy { it.title })

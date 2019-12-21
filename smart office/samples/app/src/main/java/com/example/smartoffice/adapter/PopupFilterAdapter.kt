@@ -26,6 +26,7 @@ class PopupFilterAdapter(private val context: Context,
 //        view.iv.setImageResource(arr[p0].image)
 
         view.tv.text = arr[p0].string
+        view.iv.setImageResource(arr[p0].image)
         return view
     }
 

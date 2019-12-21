@@ -5,6 +5,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.WindowManager
@@ -26,7 +27,29 @@ class Helper {
 
         fun getAllDocuments(context: Context):ArrayList<Office> {
 
+            val sharedPreferences = context.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+            val path = sharedPreferences!!.getString("title", "hieu.pdf").substring(
+                0,
+                sharedPreferences!!.getString("title", "hieu.pdf").lastIndexOf(".")
+            )
+            val file =
+                File(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
+            if (file.exists()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    val  mediaScanIntent =  Intent(
+                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    val contentUri = Uri.fromFile(file.absoluteFile); //out is your file you saved/deleted/moved/copied
+                    mediaScanIntent.setData(contentUri);
+                    context.sendBroadcast(mediaScanIntent);
+                } else {
+                    context.sendBroadcast( Intent(
+                        Intent.ACTION_MEDIA_MOUNTED,
+                        Uri.parse("file://"
+                                + Environment.getExternalStorageDirectory())));
+                }
+//                updateContentProvider(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
 
+            }
             val arr = ArrayList<Office>();
             val contentResolver = context.contentResolver
             val uri: Uri = MediaStore.Files.getContentUri("external")
@@ -212,6 +235,7 @@ class Helper {
             }
             val config = builder.build()
             SimpleReaderActivity.openDocument(context, Uri.parse(path),config)
+
             Toast.makeText(context,path.substring(path.lastIndexOf('/')+1 ,path.lastIndexOf('.')),Toast.LENGTH_SHORT).show()
 //            val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
 //            intent.data = Uri.fromFile(File(File(path).name.e))
