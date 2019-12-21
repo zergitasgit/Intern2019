@@ -432,7 +432,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
             "ppt" -> {
-                for (office in arrOffice) {
+                for (office in arrFilter) {
                     if (office.title.endsWith(".ppt") || office.title.endsWith(".pptx") || office.title.endsWith(
                             ".PPTX"
                         )
