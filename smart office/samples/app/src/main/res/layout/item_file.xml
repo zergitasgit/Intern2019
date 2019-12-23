@@ -26,6 +26,7 @@
 
         <TextView
             android:id="@+id/tv_name"
+            android:fontFamily="@font/regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
@@ -33,6 +34,7 @@
 
         <TextView
             android:id="@+id/tv_size"
+            android:fontFamily="@font/regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#FF7d7d7d"

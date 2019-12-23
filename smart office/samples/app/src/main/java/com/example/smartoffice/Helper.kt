@@ -1,5 +1,6 @@
 package com.example.smartoffice
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -8,9 +9,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.provider.Settings.Global.getString
 import android.view.WindowManager
 import android.webkit.MimeTypeMap
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.startActivity
 import com.example.smartoffice.`object`.Office
 import com.pdftron.demo.app.SimpleReaderActivity
 import com.pdftron.pdf.config.PDFViewCtrlConfig
@@ -236,11 +240,40 @@ class Helper {
             val config = builder.build()
             SimpleReaderActivity.openDocument(context, Uri.parse(path),config)
 
-            Toast.makeText(context,path.substring(path.lastIndexOf('/')+1 ,path.lastIndexOf('.')),Toast.LENGTH_SHORT).show()
 //            val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
 //            intent.data = Uri.fromFile(File(File(path).name.e))
 //            sendBroadcast(intent)
 
+        }
+        fun rateAppClick(context: Context) {
+            val uri = Uri.parse("market://details?id=" + context.packageName)
+            val goToMarket = Intent(Intent.ACTION_VIEW, uri)
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            try {
+                context.startActivity(goToMarket)
+            } catch (e: ActivityNotFoundException) {
+                context.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + context.packageName)
+                    )
+                )
+            }
+
+        }
+        fun shareApp(context: Context){
+            try {
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.type = "text/plain"
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
+                var shareMessage = "\nLet me recommend you this application\n\n"
+                shareMessage =
+                    shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n"
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+                shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(Intent.createChooser(shareIntent, "choose one"))
+            } catch (e: Exception) { //e.toString();
+            }
         }
 
 

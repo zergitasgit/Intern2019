@@ -5,11 +5,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.media.MediaScannerConnection
-import android.net.Uri
-import android.os.*
+import android.os.AsyncTask
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -95,8 +96,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
-
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
 
         if (sharedPreferences!!.getBoolean("permission", false)) {
@@ -106,6 +105,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     hideKeybroad()
                     showFilterRv(dbOffice.getPDFRecently().toList())
                     tv_title.text = "History"
+                    mTreeSteps++
+                    ganFilPath()
                 }
                 R.id.nav_view -> {
                     hideKeybroad()
@@ -117,58 +118,69 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
                 }
+                R.id.nav_share -> {
+                    Helper.shareApp(this)
+
+                }
+                R.id.nav_rate -> {
+                    Helper.shareApp(this)
+                }
             }
+
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
     private fun setUpSearch() {
+
         iv_search.setOnClickListener {
 
+            if (sharedPreferences!!.getBoolean("permission", false)) {
+                iv_search.visibility = View.GONE
+                ed_search.visibility = View.VISIBLE
+                tv_title.visibility = View.GONE
+                isSearch = true
+                ed_search.requestFocus()
+                val imm: InputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(ed_search, InputMethodManager.SHOW_IMPLICIT)
+                ed_search.addTextChangedListener(object : TextWatcher {
+                    @SuppressLint("DefaultLocale")
+                    override fun afterTextChanged(p0: Editable?) {
+                        if (!TextUtils.isEmpty(p0!!.toString())) {
+                            iv_search_logic.visibility = View.VISIBLE
+                            iv_search_logic.setImageDrawable(resources.getDrawable(R.drawable.close))
+                            iv_search_logic.setOnClickListener {
+                                ed_search.text.clear()
 
+                            }
 
-            iv_search.visibility = View.GONE
-            ed_search.visibility = View.VISIBLE
-            tv_title.visibility = View.GONE
-            isSearch = true
-            ed_search.requestFocus()
-            val imm: InputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(ed_search, InputMethodManager.SHOW_IMPLICIT)
-            ed_search.addTextChangedListener(object : TextWatcher {
-                @SuppressLint("DefaultLocale")
-                override fun afterTextChanged(p0: Editable?) {
-                    if (!TextUtils.isEmpty(p0!!.toString())) {
-                        iv_search_logic.visibility = View.VISIBLE
-                        iv_search_logic.setImageDrawable(resources.getDrawable(R.drawable.close))
-                        iv_search_logic.setOnClickListener {
-                            ed_search.text.clear()
-
+                        } else {
+                            iv_search_logic.visibility = View.GONE
                         }
-
-                    } else {
-                        iv_search_logic.visibility = View.GONE
-                    }
 //                    arrFilter = Helper.getAllDocuments(this@MainActivity)
-                    arrSearch.clear()
-                    for (office in arrFilter) {
-                        if (office.title.toLowerCase().contains(p0.toString().toLowerCase())) {
-                            arrSearch.add(office)
+                        arrSearch.clear()
+                        for (office in arrFilter) {
+                            if (office.title.toLowerCase().contains(p0.toString().toLowerCase())) {
+                                arrSearch.add(office)
+                            }
                         }
+                        val list = arrSearch.sortedWith(compareBy { it.title })
+                        showRv(list)
+
+                        ganFilPath()
                     }
-                    val list = arrSearch.sortedWith(compareBy { it.title })
-                    showRv(list)
-                }
 
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    }
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
+                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    }
 
-            })
+                })
 
+            }
         }
 
     }
@@ -181,8 +193,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun setUpFilter() {
+
         iv_filter.setOnClickListener {
-            showListPopupWindow(it)
+            if (sharedPreferences!!.getBoolean("permission", false)) {
+                showListPopupWindow(it)
+            }
         }
     }
 
@@ -191,6 +206,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         rv.layoutManager = LinearLayoutManager(this)
         fileAdapter = FilesAdapter(this, arr, object : FilesAdapter.Listener {
             override fun onClick(title: String, size: String, path: String, isFolder: Boolean) {
+                hideKeybroad()
+                clearText()
+                ed_search.text.clear()
+
                 if (isFolder) {
                     if (title == "All Documents") {
                         mTreeSteps++
@@ -269,7 +288,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         File(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
 
                     if (file.exists()) {
-                        Toast.makeText(this@MainActivity, "co", Toast.LENGTH_SHORT).show()
                         updateContentProvider(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
 
                     }
@@ -296,16 +314,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             mTreeSteps--
 
             Load(getPreviousPath()!!, false).execute()
-
+            if (TextUtils.isEmpty(ed_search.text.toString())) {
+               clearText()
+            } else {
+            }
             return
         } else {
             if (ed_search.hasFocus()) {
-                ed_search.visibility = View.GONE
-                tv_title.visibility = View.VISIBLE
-                iv_search.visibility = View.VISIBLE
-                iv_search_logic.visibility = View.GONE
-                ed_search.text.clear()
-                Load(pathFile!!, false).execute()
+
+                    clearText()
 
             } else {
                 super.onBackPressed()
@@ -315,6 +332,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
 
+    }
+    private fun clearText(){
+        ed_search.visibility = View.GONE
+        tv_title.visibility = View.VISIBLE
+        iv_search.visibility = View.VISIBLE
+        iv_search_logic.visibility = View.GONE
     }
 
     private fun getPreviousPath(): String? {
@@ -329,12 +352,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun showListPopupWindow(anchor: View) {
         val listPopupItems = ArrayList<ItemMain>()
-        listPopupItems.add(ItemMain("All",R.drawable.ic_all))
-        listPopupItems.add(ItemMain("Pdf",R.drawable.ic_pdf))
-        listPopupItems.add(ItemMain("Word",R.drawable.ic_word))
-        listPopupItems.add(ItemMain("Text",R.drawable.ic_txt))
-        listPopupItems.add(ItemMain("Excel",R.drawable.ic_excel))
-        listPopupItems.add(ItemMain("Power point",R.drawable.ic_ppt))
+        listPopupItems.add(ItemMain("All", R.drawable.ic_all))
+        listPopupItems.add(ItemMain("Pdf", R.drawable.ic_pdf))
+        listPopupItems.add(ItemMain("Word", R.drawable.ic_word))
+        listPopupItems.add(ItemMain("Text", R.drawable.ic_txt))
+        listPopupItems.add(ItemMain("Excel", R.drawable.ic_excel))
+        listPopupItems.add(ItemMain("Power point", R.drawable.ic_ppt))
 
 
         val listPopupWindow = createListPopupWindow(anchor, listPopupItems)
@@ -461,6 +484,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                val intent = Intent(this@MainActivity,DislayOfficeActicity::class.java)
 //                intent.putExtra("path",path)
 //                startActivity(intent)
+
                 Helper.openSimpleReaderActivity(this@MainActivity, path)
                 if (dbOffice.checkPath(path)) {
                     dbOffice.updateHistory(path, System.currentTimeMillis())

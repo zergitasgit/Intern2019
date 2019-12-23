@@ -23,11 +23,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="70dp"
-                    android:textSize="15dp"
+                    android:layout_marginRight="80dp"
+                    android:textSize="17dp"
                     android:ellipsize="start"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:lines="1"
+                    android:text="Smart Office"
+                    android:textStyle="bold"
+                    android:textColor="#fff"
+                    android:fontFamily="@font/bold"
                     android:layout_centerVertical="true"
                     android:id="@+id/tv-title">
 
@@ -45,8 +49,9 @@
                 </EditText>
                 <ImageView
                     android:id="@+id/iv_search"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="50dp"
                     android:src="@drawable/ic_search"

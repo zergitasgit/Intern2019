@@ -13,7 +13,7 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="Smart Office"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
