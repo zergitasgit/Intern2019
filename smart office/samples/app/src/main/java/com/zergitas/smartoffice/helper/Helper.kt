@@ -37,7 +37,6 @@ class Helper {
             )
             val file =
                 File(Environment.getExternalStorageDirectory().absolutePath + "/" + path  + ".pdf")
-//
             if (file.exists()) {
                 context.updateContentProvider(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
             }

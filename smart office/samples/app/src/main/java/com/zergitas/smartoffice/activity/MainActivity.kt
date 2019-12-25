@@ -351,12 +351,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 super.onBackPressed()
 
             }
-
         }
 
-
     }
-
 
     private fun clearText() {
         ed_search.visibility = View.GONE
