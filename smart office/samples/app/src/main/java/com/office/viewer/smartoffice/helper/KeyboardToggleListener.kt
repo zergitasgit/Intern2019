@@ -1,4 +1,4 @@
-package com.zergitas.smartoffice.helper
+package com.office.viewer.smartoffice.helper
 
 import android.util.TypedValue
 import android.view.View

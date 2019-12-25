@@ -1,4 +1,4 @@
-package com.zergitas.smartoffice.activity
+package com.office.viewer.smartoffice.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -21,16 +21,16 @@ import androidx.appcompat.widget.ListPopupWindow
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zergitas.smartoffice.helper.Helper
-import com.zergitas.smartoffice.helper.Helper.Companion.convertToPx
-import com.zergitas.smartoffice.ItemMain
-import com.zergitas.smartoffice.helper.KeyboardToggleListener
-import com.zergitas.smartoffice.`object`.Office
-import com.zergitas.smartoffice.adapter.FilesAdapter
-import com.zergitas.smartoffice.adapter.PopupFilterAdapter
-import com.zergitas.smartoffice.db.DBOffice
+import com.office.viewer.smartoffice.helper.Helper
+import com.office.viewer.smartoffice.helper.Helper.Companion.convertToPx
+import com.office.viewer.ItemMain
+import com.office.viewer.smartoffice.helper.KeyboardToggleListener
+import com.office.viewer.smartoffice.`object`.Office
+import com.office.viewer.smartoffice.adapter.FilesAdapter
+import com.office.viewer.smartoffice.adapter.PopupFilterAdapter
+import com.office.viewer.smartoffice.db.DBOffice
 import com.google.android.material.navigation.NavigationView
-import com.zergitas.smartoffice.R
+import com.office.viewer.smartoffice.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*

@@ -1,4 +1,4 @@
-package com.zergitas.smartoffice
+package com.office.viewer
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.zergitas.smartoffice.`object`
+package com.office.viewer.smartoffice.`object`
 
 class Office( var title : String,
               var size : String,

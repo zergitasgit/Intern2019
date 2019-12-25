@@ -1,4 +1,4 @@
-package com.zergitas.smartoffice.helper
+package com.office.viewer.smartoffice.helper
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -6,19 +6,18 @@ import android.content.Intent
 import android.database.Cursor
 import android.media.MediaScannerConnection
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.WindowManager
 import android.webkit.MimeTypeMap
-import com.zergitas.smartoffice.`object`.Office
+import com.office.viewer.smartoffice.`object`.Office
 import com.pdftron.demo.app.SimpleReaderActivity
 import com.pdftron.pdf.config.PDFViewCtrlConfig
 import com.pdftron.pdf.config.ToolManagerBuilder
 import com.pdftron.pdf.config.ViewerConfig
 import com.pdftron.pdf.utils.Utils
-import com.zergitas.smartoffice.BuildConfig
-import com.zergitas.smartoffice.R
+import com.office.viewer.smartoffice.BuildConfig
+import com.office.viewer.smartoffice.R
 import java.io.File
 import java.io.FilenameFilter
 

@@ -1,4 +1,4 @@
-package com.zergitas.smartoffice.adapter
+package com.office.viewer.smartoffice.adapter
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import com.zergitas.smartoffice.ItemMain
-import com.zergitas.smartoffice.R
+import com.office.viewer.ItemMain
+import com.office.viewer.smartoffice.R
 import kotlinx.android.synthetic.main.item_menu.view.*
 
 class PopupFilterAdapter(private val context: Context,
