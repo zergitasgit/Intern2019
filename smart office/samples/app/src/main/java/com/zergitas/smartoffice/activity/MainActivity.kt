@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     hideKeybroad()
                     showFilterRv(dbOffice.getPDFRecently().toList())
-                    tv_title.text = "History"
+                    tv_title.text = getString(R.string.history)
                     mTreeSteps++
                     ganFilPath()
                 }
@@ -536,41 +536,45 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             arrOffice.clear()
 
             if (!isAll) {
-                val files = Helper.getFiles(path)
-                for (i in files!!.indices) {
-                    if (!files[i].isFile && !files[i].name.startsWith(".")) {
-                        arrOffice.add(
-                            Office(
-                                files[i].name,
-                                Helper.getSize(files[i]),
-                                files[i].absolutePath,
-                                true
-                            )
-                        )
+                if (File(path).exists()) {
+                    val files = Helper.getFiles(path)
 
-                    }
-                    val name = files[i].name
-                    if (files[i].isFile && name.endsWith(".pdf") || name.endsWith(".PDF") || name.endsWith(
-                            ".txt"
-                        ) || name.endsWith(".doc") ||
-                        name.endsWith(".docx") || name.endsWith(".DOC") || name.endsWith(".DOCX") || name.endsWith(
-                            ".xls"
-                        ) ||
-                        name.endsWith(".xlsx") ||
-                        name.endsWith(".XLSX") || name.endsWith(".ppt") || name.endsWith(".pptx") || name.endsWith(
-                            "PPTX"
-                        )
-                    ) {
-                        arrOffice.add(
-                            Office(
-                                files[i].name,
-                                Helper.getSize(files[i]),
-                                files[i].absolutePath,
-                                false
+                    for (i in files!!.indices) {
+                        if (!files[i].isFile && !files[i].name.startsWith(".")) {
+                            arrOffice.add(
+                                Office(
+                                    files[i].name,
+                                    Helper.getSize(files[i]),
+                                    files[i].absolutePath,
+                                    true
+                                )
                             )
-                        )
+
+                        }
+                        val name = files[i].name
+                        if (files[i].isFile && name.endsWith(".pdf") || name.endsWith(".PDF") || name.endsWith(
+                                ".txt"
+                            ) || name.endsWith(".doc") ||
+                            name.endsWith(".docx") || name.endsWith(".DOC") || name.endsWith(".DOCX") || name.endsWith(
+                                ".xls"
+                            ) ||
+                            name.endsWith(".xlsx") ||
+                            name.endsWith(".XLSX") || name.endsWith(".ppt") || name.endsWith(".pptx") || name.endsWith(
+                                "PPTX"
+                            )
+                        ) {
+                            arrOffice.add(
+                                Office(
+                                    files[i].name,
+                                    Helper.getSize(files[i]),
+                                    files[i].absolutePath,
+                                    false
+                                )
+                            )
+                        }
                     }
                 }
+
             } else {
 
 
