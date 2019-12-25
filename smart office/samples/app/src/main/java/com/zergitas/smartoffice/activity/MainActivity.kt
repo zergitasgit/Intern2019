@@ -538,7 +538,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (!isAll) {
                 if (File(path).exists()) {
                     val files = Helper.getFiles(path)
-
                     for (i in files!!.indices) {
                         if (!files[i].isFile && !files[i].name.startsWith(".")) {
                             arrOffice.add(
