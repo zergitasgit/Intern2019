@@ -1,4 +1,4 @@
-package com.example.smartoffice
+package com.zergitas.smartoffice
 
 import org.junit.Test
 

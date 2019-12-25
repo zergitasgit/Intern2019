@@ -1,4 +1,4 @@
-package com.example.smartoffice.`object`
+package com.zergitas.smartoffice.`object`
 
 class Office( var title : String,
               var size : String,

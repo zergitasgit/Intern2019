@@ -18,12 +18,12 @@
 
     <string name="diff_title">Compare files</string>
     <string name="diff_msg">Quickly spot differences between pages</string>
-    <string name="file_view">File View</string>
-    <string name="history">History</string>
-    <string name="rate">Rate</string>
-    <string name="share">Share</string>
-    <string name="navi">Simple-Easy-Useful-Convenient</string>
-    <string name="search">Search</string>
-    <string name="permiss">Permission</string>
-    <string name="all">All</string>
+    <string name="file_view">Xem tập tin</string>
+    <string name="history">Lịch sử</string>
+    <string name="rate">Đánh giá</string>
+    <string name="share">Chia sẻ</string>
+    <string name="navi">Đơn giản-Dễ dàng-Hữu ích-Thuận tiện</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="permiss">Cấp quyền</string>
+    <string name="all">Tất cả</string>
 </resources>

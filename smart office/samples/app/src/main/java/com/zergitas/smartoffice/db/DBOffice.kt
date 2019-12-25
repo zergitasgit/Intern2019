@@ -1,11 +1,11 @@
-package com.example.smartoffice.db
+package com.zergitas.smartoffice.db
 
 import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.smartoffice.`object`.Office
+import com.zergitas.smartoffice.`object`.Office
 
 class DBOffice(
     private val context: Context,

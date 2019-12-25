@@ -1,12 +1,12 @@
-package com.example.smartoffice.adapter
+package com.zergitas.smartoffice.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.smartoffice.R
-import com.example.smartoffice.`object`.Office
+import com.zergitas.smartoffice.`object`.Office
+import com.zergitas.smartoffice.R
 import kotlinx.android.synthetic.main.item_file.view.*
 import java.io.File
 

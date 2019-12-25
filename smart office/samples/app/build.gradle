@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion myCompileSdkVersion
     defaultConfig {
-        applicationId "com.example.smartoffice"
+        applicationId "com.zergitas.smartoffice"
         minSdkVersion myMinSdkVersion
         targetSdkVersion myTargetSdkVersion
         multiDexEnabled true

@@ -1,4 +1,4 @@
-package com.example.smartoffice
+package com.zergitas.smartoffice.helper
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -9,22 +9,21 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.provider.Settings.Global.getString
 import android.view.WindowManager
 import android.webkit.MimeTypeMap
-import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.startActivity
-import com.example.smartoffice.`object`.Office
+import com.zergitas.smartoffice.`object`.Office
 import com.pdftron.demo.app.SimpleReaderActivity
 import com.pdftron.pdf.config.PDFViewCtrlConfig
 import com.pdftron.pdf.config.ToolManagerBuilder
 import com.pdftron.pdf.config.ViewerConfig
 import com.pdftron.pdf.utils.Utils
+import com.zergitas.smartoffice.BuildConfig
+import com.zergitas.smartoffice.R
 import java.io.File
 import java.io.FilenameFilter
 
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class Helper {
     companion object {
         private const val orderBy = MediaStore.Files.FileColumns.DATE_ADDED + " DESC"
@@ -37,23 +36,13 @@ class Helper {
                 sharedPreferences!!.getString("title", "hieu.pdf").lastIndexOf(".")
             )
             val file =
-                File(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
+                File(Environment.getExternalStorageDirectory().absolutePath + "/" + path  + ".pdf")
+//
             if (file.exists()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    val  mediaScanIntent =  Intent(
-                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    val contentUri = Uri.fromFile(file.absoluteFile); //out is your file you saved/deleted/moved/copied
-                    mediaScanIntent.setData(contentUri);
-                    context.sendBroadcast(mediaScanIntent);
-                } else {
-                    context.sendBroadcast( Intent(
-                        Intent.ACTION_MEDIA_MOUNTED,
-                        Uri.parse("file://"
-                                + Environment.getExternalStorageDirectory())));
-                }
-//                updateContentProvider(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
-
+                context.updateContentProvider(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
             }
+
+
             val arr = ArrayList<Office>();
             val contentResolver = context.contentResolver
             val uri: Uri = MediaStore.Files.getContentUri("external")
@@ -82,11 +71,15 @@ class Helper {
 
             val mimes: MutableList<String> = ArrayList()
             for (ext in extensions) {
-                mimes.add(MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext))
+                if (ext !=null) {
+                    mimes.add(MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext.toLowerCase()))
+                }
             }
 
             val cursor: Cursor?
-            cursor = contentResolver!!.query(uri, columns, null, null, orderBy)
+            cursor = contentResolver!!.query(uri, columns, null, null,
+                orderBy
+            )
             if (cursor != null) {
                 val mimeColumnIndex: Int = cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE)
                 val pathColumnIndex: Int = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
@@ -94,14 +87,29 @@ class Helper {
                     val mimeType: String? = cursor.getString(mimeColumnIndex)
                     val filePath: String = cursor.getString(pathColumnIndex)
                     if (mimeType != null && mimes.contains(mimeType)) { // handle cursor
-                        makeFile(cursor)
-                        arr.add(makeFile(cursor))
+                        makeFile(
+                            cursor
+                        )
+                        arr.add(
+                            makeFile(
+                                cursor
+                            )
+                        )
 
                     } else { // need to check extension, because the Mime Type is null
-                        val extension: String = getExtensionByPath(filePath)
+                        val extension: String =
+                            getExtensionByPath(
+                                filePath
+                            )
                         if (extensions.contains(extension)) { // handle cursor
-                            makeFile(cursor)
-                            arr.add(makeFile(cursor))
+                            makeFile(
+                                cursor
+                            )
+                            arr.add(
+                                makeFile(
+                                    cursor
+                                )
+                            )
                         }
                     }
                 }
@@ -125,10 +133,16 @@ class Helper {
             var mimeType = cursor.getString(mimeColumnIndex)
             var type = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
             if (type == null) {
-                type = getExtensionByPath(filePath)
+                type =
+                    getExtensionByPath(
+                        filePath
+                    )
                 mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(type)
             }
-            val office = Office(filePath.substring(filePath.lastIndexOf("/")+1), getSizeAll(fileSize.toLong()),filePath,false)
+            val office = Office(filePath.substring(filePath.lastIndexOf("/")+1),
+                getSizeAll(
+                    fileSize.toLong()
+                ),filePath,false)
             return office
         }
         private fun  getExtensionByPath(path:String):String{
@@ -140,7 +154,15 @@ class Helper {
             return result!!
         }
         fun getFiles(dir: String): List<File>? {
-            return getFiles(dir, null)
+            return getFiles(
+                dir,
+                null
+            )
+        }
+        fun Context.updateContentProvider(vararg path: String) {
+            MediaScannerConnection.scanFile(this,
+                path, null
+            ) { _, _ -> }
         }
 
         private fun getFiles(dir: String, matchRegex: String?): List<File>? {

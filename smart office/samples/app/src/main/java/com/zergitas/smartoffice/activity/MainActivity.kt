@@ -1,4 +1,4 @@
-package com.example.smartoffice.activity
+package com.zergitas.smartoffice.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -7,17 +7,13 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.media.MediaScannerConnection
-import android.os.AsyncTask
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -25,15 +21,16 @@ import androidx.appcompat.widget.ListPopupWindow
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.smartoffice.Helper
-import com.example.smartoffice.Helper.Companion.convertToPx
-import com.example.smartoffice.ItemMain
-import com.example.smartoffice.R
-import com.example.smartoffice.`object`.Office
-import com.example.smartoffice.adapter.FilesAdapter
-import com.example.smartoffice.adapter.PopupFilterAdapter
-import com.example.smartoffice.db.DBOffice
+import com.zergitas.smartoffice.helper.Helper
+import com.zergitas.smartoffice.helper.Helper.Companion.convertToPx
+import com.zergitas.smartoffice.ItemMain
+import com.zergitas.smartoffice.helper.KeyboardToggleListener
+import com.zergitas.smartoffice.`object`.Office
+import com.zergitas.smartoffice.adapter.FilesAdapter
+import com.zergitas.smartoffice.adapter.PopupFilterAdapter
+import com.zergitas.smartoffice.db.DBOffice
 import com.google.android.material.navigation.NavigationView
+import com.zergitas.smartoffice.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -48,7 +45,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var pathFile: String? = null
     private var fileAllDoc = ArrayList<File>()
     var isAllDoc = false
-    var arrSearch = ArrayList<Office>();
+    var arrSearch = ArrayList<Office>()
     var arrOffice = ArrayList<Office>()
     var isSearch = false
     var sharedPreferences: SharedPreferences? = null
@@ -67,6 +64,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setUp()
         setUpSearch()
         setUpFilter()
+        this.addKeyboardToggleListener {
+            rl.viewTreeObserver.addOnGlobalLayoutListener {
+                Handler().postDelayed({
+                     val heightDiff = rl.rootView.height - rl.height
+                    if (heightDiff > 100) {
+                    } else {
+                        if (TextUtils.isEmpty(ed_search.text.toString())) {
+                            clearText()
+                        }
+                    }
+                }, 500)
+
+
+
+            }
+
+
+        }
 
 
     }
@@ -75,7 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     @SuppressLint("WrongConstant", "CommitPrefEdits")
     private fun setUp() {
 //
-        sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
         edit = sharedPreferences!!.edit()
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -206,10 +221,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         rv.layoutManager = LinearLayoutManager(this)
         fileAdapter = FilesAdapter(this, arr, object : FilesAdapter.Listener {
             override fun onClick(title: String, size: String, path: String, isFolder: Boolean) {
-                hideKeybroad()
-                clearText()
-                ed_search.text.clear()
-
                 if (isFolder) {
                     if (title == "All Documents") {
                         mTreeSteps++
@@ -230,7 +241,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     } else {
                         dbOffice.insertOffice(title, size, path, System.currentTimeMillis())
                     }
-                    edit!!.putString("title", title);
+                    edit!!.putString("title", title)
                     edit!!.apply()
 
 
@@ -251,7 +262,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (Build.VERSION.SDK_INT >= 23) {
             requestPermissions(perms, 3)
         } else {
-            edit!!.putBoolean("permission", true);
+            edit!!.putBoolean("permission", true)
             edit!!.apply()
             Helper.createFolder()
             Load(Environment.getExternalStorageDirectory().absolutePath, false)
@@ -271,7 +282,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             3 -> {
 
                 if (grantResults[0] == 0) {
-                    edit!!.putBoolean("permission", true);
+                    edit!!.putBoolean("permission", true)
                     edit!!.apply()
                     btn_perm.visibility = View.GONE
                     rl_per.visibility = View.GONE
@@ -282,7 +293,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
                     val path = sharedPreferences!!.getString("title", "hieu.pdf").substring(
                         0,
-                        sharedPreferences!!.getString("title", "hieu.pdf").lastIndexOf(".")
+                        sharedPreferences.getString("title", "hieu.pdf").lastIndexOf(".")
                     )
                     val file =
                         File(Environment.getExternalStorageDirectory().absolutePath + "/" + path + ".pdf")
@@ -309,21 +320,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    private fun Activity.addKeyboardToggleListener(onKeyboardToggleAction: (shown: Boolean) -> Unit): KeyboardToggleListener? {
+        val root = findViewById<View>(android.R.id.content)
+        val listener = KeyboardToggleListener(
+            root,
+            onKeyboardToggleAction
+        )
+        return root?.viewTreeObserver?.run {
+            addOnGlobalLayoutListener(listener)
+            listener
+        }
+    }
+
     override fun onBackPressed() {
         if (mTreeSteps > 0) {
             mTreeSteps--
-
             Load(getPreviousPath()!!, false).execute()
             if (TextUtils.isEmpty(ed_search.text.toString())) {
-               clearText()
+
+                clearText()
             } else {
             }
             return
         } else {
+
             if (ed_search.hasFocus()) {
-
-                    clearText()
-
+                clearText()
+//                ed_search.text.clear()
             } else {
                 super.onBackPressed()
 
@@ -333,7 +356,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     }
-    private fun clearText(){
+
+
+    private fun clearText() {
         ed_search.visibility = View.GONE
         tv_title.visibility = View.VISIBLE
         iv_search.visibility = View.VISIBLE
@@ -352,7 +377,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun showListPopupWindow(anchor: View) {
         val listPopupItems = ArrayList<ItemMain>()
-        listPopupItems.add(ItemMain("All", R.drawable.ic_all))
+        listPopupItems.add(ItemMain(getString(R.string.all), R.drawable.ic_all))
         listPopupItems.add(ItemMain("Pdf", R.drawable.ic_pdf))
         listPopupItems.add(ItemMain("Word", R.drawable.ic_word))
         listPopupItems.add(ItemMain("Text", R.drawable.ic_txt))
@@ -491,7 +516,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 } else {
                     dbOffice.insertOffice(title, size, path, System.currentTimeMillis())
                 }
-                edit!!.putString("title", title);
+                edit!!.putString("title", title)
                 edit!!.apply()
 
 
@@ -554,7 +579,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             list = arrOffice.sortedWith(compareBy { it.title })
             for (i in list!!.indices) {
                 if (list!![i].title == "All Documents") {
-                    Collections.swap(list, i, 0);
+                    Collections.swap(list, i, 0)
                 }
             }
 
@@ -567,7 +592,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onPostExecute(result: Void?) {
             //
             // Hide ProgressDialog here
-            if (progressDialog != null && progressDialog!!.isShowing()) {
+            if (progressDialog != null && progressDialog!!.isShowing) {
                 progressDialog!!.dismiss()
 
             }
@@ -595,6 +620,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if ( progressDialog!=null && progressDialog!!.isShowing ){
+            progressDialog!!.cancel()
+        }
+    }
+
 
     private fun hideKeybroad() {
 //        ed_search.requestFocus()

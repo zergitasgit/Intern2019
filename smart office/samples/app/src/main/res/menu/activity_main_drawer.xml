@@ -4,22 +4,22 @@
     tools:showIn="navigation_view">
         <item
             android:id="@+id/nav_view"
-            android:title="File view"
+            android:title="@string/file_view"
             android:icon="@drawable/ic_folder_view"
             android:fontFamily="@font/regular"/>
         <item
             android:id="@+id/nav_his"
-            android:title="History"
+            android:title="@string/history"
             android:icon="@drawable/ic_history"
             android:fontFamily="@font/regular"/>
         <item
             android:id="@+id/nav_rate"
-            android:title="Rate"
+            android:title="@string/rate"
             android:icon="@drawable/ic_rate"
             android:fontFamily="@font/regular"/>
         <item
             android:id="@+id/nav_share"
-            android:title="Share"
+            android:title="@string/share"
             android:icon="@drawable/ic_share"
             android:fontFamily="@font/regular"/>
 
