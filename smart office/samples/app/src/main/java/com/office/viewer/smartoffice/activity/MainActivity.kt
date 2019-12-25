@@ -14,6 +14,7 @@ import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -66,9 +67,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setUpFilter()
         this.addKeyboardToggleListener {
             rl.viewTreeObserver.addOnGlobalLayoutListener {
+
                 Handler().postDelayed({
                      val heightDiff = rl.rootView.height - rl.height
-                    if (heightDiff > 100) {
+                    if (heightDiff > 300) {
                     } else {
                         if (TextUtils.isEmpty(ed_search.text.toString())) {
                             clearText()
