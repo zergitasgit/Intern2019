@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         this.addKeyboardToggleListener {
             rl.viewTreeObserver.addOnGlobalLayoutListener {
 
-                
+
                 Handler().postDelayed({
                      val heightDiff = rl.rootView.height - rl.height
                     if (heightDiff > 300) {

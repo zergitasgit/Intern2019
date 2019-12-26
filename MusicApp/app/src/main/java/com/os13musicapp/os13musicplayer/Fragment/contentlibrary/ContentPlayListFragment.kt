@@ -365,7 +365,7 @@ class ContentPlayListFragment : Fragment() {
             dialog.rv_dialog_add_song.layoutManager = LinearLayoutManager(context)
             adapterAdd = AdapterAddSong(context, arraySongAdd, object : AdapterAddSong.ItemSongListener {
                 override fun onClick(pos: Int) {
-                    arraySongAdd.get(pos).ischeck = !arraySongAdd.get(pos).ischeck
+                    arraySongAdd[pos].ischeck = !arraySongAdd.get(pos).ischeck
                     adapterAdd!!.notifyDataSetChanged()
                 }
 
