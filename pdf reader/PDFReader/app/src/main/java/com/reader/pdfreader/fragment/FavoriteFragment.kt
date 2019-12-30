@@ -1,4 +1,4 @@
-package com.document.pdfviewer.fragment
+package com.reader.pdfreader.fragment
 
 
 import android.content.*
@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.document.pdfviewer.`object`.ItemMain
 import com.document.pdfviewer.`object`.PDF
 import com.document.pdfviewer.db.DbPDF
-import com.document.pdfviewer.fragment.DislayPDFFragment.Companion.dbPdf
 import com.reader.pdfreader.R
 import com.reader.pdfreader.adapter.PDFAdapter
+import com.reader.pdfreader.fragment.DislayPDFFragment.Companion.dbPdf
 import kotlinx.android.synthetic.main.fragment_favorite.*
 import kotlinx.android.synthetic.main.fragment_favorite.view.*
 import java.io.File
@@ -56,11 +56,24 @@ class FavoriteFragment : Fragment() {
 
         adapter = PDFAdapter(context!!, arr, object : PDFAdapter.ItemListener {
             override fun onClick(path: String, favorite: Int, name: String, date: String, size: String) {
+
+                dbPdf!!.updateHistory(path, System.currentTimeMillis())
+
+                val intent = Intent("HISTORY")
+                context!!.sendBroadcast(intent)
             }
 
         }, object : PDFAdapter.MenuItemListener {
             override fun onClick(position: Int, favorite: Int, name: String, path: String, date: String, size: String) {
-                checkFa(path,favorite)
+                if (arr[position].favorite == 0) {
+                    arr[position].favorite = 1
+                    dbPdf!!.updateFavorite(path, 1)
+                } else {
+                    arr[position].favorite = 0
+                    dbPdf!!.updateFavorite(path, 0)
+                }
+                val intent = Intent("FAVORITE")
+                context!!.sendBroadcast(intent)
             }
 
         })
@@ -97,6 +110,7 @@ class FavoriteFragment : Fragment() {
 
     }
 
+
     private fun dislaySearch(string: String?) {
         arrFileSearch.clear()
         for (pdf in arr) {
@@ -112,7 +126,7 @@ class FavoriteFragment : Fragment() {
 
         }, object : PDFAdapter.MenuItemListener {
             override fun onClick(position: Int, favorite: Int, name: String, path: String, date: String, size: String) {
-                checkFa(path,favorite)
+
             }
 
         })
@@ -120,13 +134,13 @@ class FavoriteFragment : Fragment() {
 
 
     }
-    private fun checkFa(path:String,check:Int){
-        if (check==0){
-            dbPdf!!.updateFavorite(path,1)
-        }else{
-            dbPdf!!.updateFavorite(path,0)
-        }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        context!!.unregisterReceiver(brSearch)
+        context!!.unregisterReceiver(brFav)
     }
+
 
 
 }

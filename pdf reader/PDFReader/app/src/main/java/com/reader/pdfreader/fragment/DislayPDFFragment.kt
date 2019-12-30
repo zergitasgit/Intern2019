@@ -1,6 +1,7 @@
-package com.document.pdfviewer.fragment
+package com.reader.pdfreader.fragment
 
 
+import android.annotation.SuppressLint
 import android.content.*
 import android.os.Bundle
 import android.os.Environment
@@ -38,6 +39,7 @@ class DislayPDFFragment : Fragment() {
         var dbPdf: DbPDF? = null
     }
 
+    @SuppressLint("CommitPrefEdits")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +47,8 @@ class DislayPDFFragment : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_dislay_pdf, container, false)
         context!!.registerReceiver(broadcastReceiver, IntentFilter("SEARCH"))
+        context!!.registerReceiver(brFav, IntentFilter("FAVORITE"))
+        context!!.registerReceiver(brName, IntentFilter("NAME"))
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         editor = sharedPreferences?.edit()
 
@@ -65,13 +69,6 @@ class DislayPDFFragment : Fragment() {
         }
 
 
-
-
-
-
-
-
-
         if (dbPdf!!.getPdf().size > 0) {
             arrFile = dbPdf!!.getPdf()
         }
@@ -90,17 +87,46 @@ class DislayPDFFragment : Fragment() {
 
             val action = p1?.action
             val string = p1?.extras?.getString("string")
-            if (string!!.isEmpty() || string.isEmpty()) {
-                recycleView()
-            }
+
+//                recycleView()
+
 
             if (action!!.equals("SEARCH", ignoreCase = true)) {
                 dislaySearch(string)
+//                Toast.makeText(context,string,Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+    private var brFav = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+
+            val action = p1?.action
+
+            if (action!!.equals("FAVORITE", ignoreCase = true)) {
+                arrFile = dbPdf!!.getPdf()
+                recycleView()
+            }
+        }
+
+    }
+    private var brName = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+
+            val action = p1?.action
+
+            if (action!!.equals("NAME", ignoreCase = true)) {
+
+                val list = arrFile.sortWith(compareBy{ it.name})
+                arrFile.clear()
+                arrFile.addAll(list)
+                recycleView()
             }
         }
 
     }
 
+    @SuppressLint("DefaultLocale")
     private fun dislaySearch(string: String?) {
         arrFileSearch.clear()
         for (pdf in arrFile) {
@@ -192,6 +218,7 @@ class DislayPDFFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         context!!.unregisterReceiver(broadcastReceiver)
+        context!!.unregisterReceiver(brFav)
     }
 
     override fun onStop() {
@@ -202,8 +229,6 @@ class DislayPDFFragment : Fragment() {
 
     private fun getFile(dir: File): ArrayList<PDF> {
 //
-
-
         val listFile = dir.listFiles()
 
         if (listFile != null) {
@@ -213,7 +238,6 @@ class DislayPDFFragment : Fragment() {
                     getFile(listFile[i])
                 } else {// add path of  files to your arraylist for later use
                     if (listFile[i].name.endsWith(".pdf")) {
-
                         //Do what ever u want
                         val pdf = PDF(
                             listFile[i].name,
@@ -250,6 +274,8 @@ class DislayPDFFragment : Fragment() {
         val sdf = SimpleDateFormat("MM/dd/yyyy")
         return sdf.format(file.lastModified())
     }
+
+
 
 
 }
