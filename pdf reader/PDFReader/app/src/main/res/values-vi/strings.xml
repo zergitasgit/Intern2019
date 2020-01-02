@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PDF Reader</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="name">Theo tên</string>
+    <string name="date">Theo thời gian</string>
+    <string name="size">Theo kích cỡ</string>
+</resources>

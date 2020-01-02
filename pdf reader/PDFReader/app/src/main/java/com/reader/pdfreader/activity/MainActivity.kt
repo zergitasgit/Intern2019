@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -16,8 +17,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.fragment.app.Fragment
-import com.document.pdfviewer.`object`.ItemMain
 import com.reader.pdfreader.R
+import com.reader.pdfreader.`object`.ItemMain
 import com.reader.pdfreader.adapter.ItemMainAdapter
 import com.reader.pdfreader.adapter.TabAdapter
 import com.reader.pdfreader.fragment.DislayPDFFragment
@@ -25,16 +26,21 @@ import com.reader.pdfreader.fragment.FavoriteFragment
 import com.reader.pdfreader.fragment.RecentlyFragment
 import com.reader.pdfreader.helper.KeyboardToggleListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_file.*
 
 class MainActivity : AppCompatActivity() {
     var arrFragment = ArrayList<Fragment>()
     var arrIcon = ArrayList<Int>()
     var pos: Int? = null
     var tabAdapter: TabAdapter? = null
+    var sharedPreferences : SharedPreferences?=null
+    var edit :SharedPreferences.Editor?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        edit = sharedPreferences!!.edit()
         handlePermission()
         setUpToolBar()
         this.addKeyboardToggleListener {
@@ -45,12 +51,13 @@ class MainActivity : AppCompatActivity() {
                     val heightDiff = rl.rootView.height - rl.height
                     if (heightDiff > 300) {
                     } else {
-
-                        iv_search.visibility = View.VISIBLE
-                        ed_search.visibility = View.GONE
-                        tv_title.visibility = View.VISIBLE
-                        iv_search_logic.visibility = View.GONE
-                        ed_search.text.clear()
+                        if (TextUtils.isEmpty(ed_search.text.toString())) {
+                            iv_search.visibility = View.VISIBLE
+                            ed_search.visibility = View.GONE
+                            tv_title.visibility = View.VISIBLE
+                            iv_search_logic.visibility = View.GONE
+                            ed_search.text.clear()
+                        }
 
                     }
                 }, 500)
@@ -111,19 +118,32 @@ class MainActivity : AppCompatActivity() {
         toolbar.title = "PDF Reader"
     }
 
+    override fun onBackPressed() {
+        if(ed_search.hasFocus()){
+            iv_search.visibility = View.VISIBLE
+            ed_search.visibility = View.GONE
+            tv_title.visibility = View.VISIBLE
+            iv_search_logic.visibility = View.GONE
+            ed_search.text.clear()
+        }else{
+            super.onBackPressed()
+        }
+
+    }
+
     private fun setUpViewPager() {
         tabAdapter = TabAdapter(this, arrFragment, arrIcon, supportFragmentManager)
         tabAdapter!!.addViewFragment(
             DislayPDFFragment(),
-            R.drawable.tab_pdf
+            R.drawable.ic_file
         )
         tabAdapter!!.addViewFragment(
             RecentlyFragment(),
-            R.drawable.tab_history
+            R.drawable.ic_recent
         )
         tabAdapter!!.addViewFragment(
             FavoriteFragment(),
-            R.drawable.tab_favorite
+            R.drawable.ic_fav
         )
         viewpager.offscreenPageLimit = 3
         viewpager.adapter = tabAdapter
@@ -178,6 +198,10 @@ class MainActivity : AppCompatActivity() {
         iv_filter.setOnClickListener {
             showListPopupWindow(it)
         }
+        iv_folder.setOnClickListener {
+            val intent = Intent(this,BrowseFilesActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 
@@ -195,9 +219,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun showListPopupWindow(anchor: View) {
         val listPopupItems = ArrayList<ItemMain>()
-        listPopupItems.add(ItemMain(resources.getString(R.string.name), R.drawable.radio_off))
-        listPopupItems.add(ItemMain(resources.getString(R.string.dateP), R.drawable.radio_off))
-        listPopupItems.add(ItemMain(resources.getString(R.string.size), R.drawable.radio_off))
+        listPopupItems.add(ItemMain(resources.getString(R.string.name), R.drawable.ic_tick))
+        listPopupItems.add(ItemMain(resources.getString(R.string.date), R.drawable.ic_tick))
+        listPopupItems.add(ItemMain(resources.getString(R.string.size), R.drawable.ic_tick))
+        val list =  listOf("name","date","size")
+        for (i in list.indices){
+            if (list[i] == sharedPreferences!!.getString("sort","")){
+                listPopupItems[i].image = R.drawable.ic_tick_click
+            }
+        }
 
 
         val listPopupWindow = createListPopupWindow(anchor, listPopupItems)
@@ -216,25 +246,34 @@ class MainActivity : AppCompatActivity() {
                     0 -> {
                         val intent = Intent("NAME")
                         sendBroadcast(intent)
+                        popup.dismiss()
+                        edit!!.putString("sort","name")
+                        edit!!.apply()
+
                     }
                     1 -> {
-
+                        val intent = Intent("DATE")
+                        sendBroadcast(intent)
+                        popup.dismiss()
+                        edit!!.putString("sort","date")
+                        edit!!.apply()
                     }
                     2 -> {
-
+                        val intent = Intent("SIZE")
+                        sendBroadcast(intent)
+                        popup.dismiss()
+                        edit!!.putString("sort","size")
+                        edit!!.apply()
                     }
-                    3 -> {
 
-
-                    }
                 }
 //                showListPopupWindow(it)
             }
 
         })
         popup.anchorView = anchor
-        popup.width = convertToPx(150)
-        popup.height = convertToPx(150)
+        popup.width = convertToPx(180)
+        popup.height = convertToPx(160)
         popup.setAdapter(adapter)
         return popup
     }

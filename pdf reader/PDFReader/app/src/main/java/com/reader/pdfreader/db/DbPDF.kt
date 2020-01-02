@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.document.pdfviewer.`object`.PDF
+import com.reader.pdfreader.`object`.PDF
 
 class DbPDF(private val context: Context,
             factory: SQLiteDatabase.CursorFactory?)
@@ -19,7 +19,7 @@ class DbPDF(private val context: Context,
                     + COLUMN_ID + " INTEGER PRIMARY KEY," +
                     COLUMN_NAME
                     + " TEXT," + COLUMN_DATE + " TEXT," + COLUMN_SIZE + " TEXT," +
-                    COLUMN_PATH + " TEXT," + COLUMN_HISTORY + " REAL, " +
+                    COLUMN_PATH + " TEXT," + COLUMN_HISTORY + " REAL, " +  COLUMN_SORT + " REAL,"+
                     COLUMN_FAVORITE + " INTEGER" + ")")
 
             p0!!.execSQL(CREATE_PRODUCTS_TABLE)
@@ -44,8 +44,9 @@ class DbPDF(private val context: Context,
         val COLUMN_PATH = "path"
         val COLUMN_HISTORY = "history"
         val COLUMN_FAVORITE = "favorite"
+        val COLUMN_SORT = "sort"
     }
-    fun insertSong(name: String, date: String, size: String, path: String, history: Long, favorite:Int) {
+    fun insertSong(name: String, date: String, size: String, path: String, history: Long,sort:Long, favorite:Int) {
         val values = ContentValues()
         values.put(COLUMN_NAME, name)
         values.put(COLUMN_DATE, date)
@@ -53,6 +54,7 @@ class DbPDF(private val context: Context,
         values.put(COLUMN_PATH, path)
         values.put(COLUMN_HISTORY, history)
         values.put(COLUMN_FAVORITE, favorite)
+        values.put(COLUMN_SORT, sort)
         val db = this.writableDatabase
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -67,7 +69,7 @@ class DbPDF(private val context: Context,
 
                 var pdf = PDF(cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("date")),
                     cursor.getString(cursor.getColumnIndex("size")),
-                    cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("history")),
+                    cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("history")),cursor.getLong(cursor.getColumnIndex("sort")),
                     cursor.getInt(cursor.getColumnIndex("favorite")))
 //
                 arr.add(pdf)
@@ -99,7 +101,7 @@ class DbPDF(private val context: Context,
 
             var pdf = PDF(cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("date")),
                 cursor.getString(cursor.getColumnIndex("size")),
-                cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("history")),
+                cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("history")),cursor.getLong(cursor.getColumnIndex("sort")),
                 cursor.getInt(cursor.getColumnIndex("favorite")))
 //
             arr.add(pdf)
@@ -133,9 +135,9 @@ class DbPDF(private val context: Context,
         while (!cursor.isAfterLast) {
 
             var pdf = PDF(cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("date")),
-                    cursor.getString(cursor.getColumnIndex("size")),
-                    cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("history")),
-                    cursor.getInt(cursor.getColumnIndex("favorite")))
+                cursor.getString(cursor.getColumnIndex("size")),
+                cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("history")),cursor.getLong(cursor.getColumnIndex("sort")),
+                cursor.getInt(cursor.getColumnIndex("favorite")))
 //
             if(pdf.history>0) {
                 arr.add(pdf)
@@ -152,9 +154,9 @@ class DbPDF(private val context: Context,
         while (!cursor.isAfterLast) {
 
             var pdf = PDF(cursor.getString(cursor.getColumnIndex("name")), cursor.getString(cursor.getColumnIndex("date")),
-                    cursor.getString(cursor.getColumnIndex("size")),
-                    cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("history")),
-                    cursor.getInt(cursor.getColumnIndex("favorite")))
+                cursor.getString(cursor.getColumnIndex("size")),
+                cursor.getString(cursor.getColumnIndex("path")), cursor.getLong(cursor.getColumnIndex("history")),cursor.getLong(cursor.getColumnIndex("sort")),
+                cursor.getInt(cursor.getColumnIndex("favorite")))
 //
             arr.add(pdf)
             cursor.moveToNext()

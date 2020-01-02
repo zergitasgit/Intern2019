@@ -1,20 +1,19 @@
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="70dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl">
+    android:id="@+id/rl_item">
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/ic_pdf"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
-        android:id="@+id/iv_pdf"
+        android:id="@+id/iv"
         />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/iv_pdf"
+        android:layout_toRightOf="@+id/iv"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="100dp"
         android:orientation="vertical">
@@ -22,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_name"
-            android:textSize="15dp"
             android:fontFamily="@font/dam"
+            android:textSize="15dp"
             android:textColor="#000"
             android:maxLines="1"/>
         <LinearLayout
@@ -48,15 +47,6 @@
 
 
     </LinearLayout>
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_like"
-        android:id="@+id/iv_pop_menu"
-        android:padding="11dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="15dp"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"

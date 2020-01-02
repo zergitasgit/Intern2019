@@ -11,13 +11,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.document.pdfviewer.`object`.PDF
 import com.pdftron.pdf.utils.Utils.getResources
 import com.reader.pdfreader.R
+import com.reader.pdfreader.`object`.PDF
 import kotlinx.android.synthetic.main.adapter_pdf.view.*
 
 class PDFAdapter(private val context: Context,
-                 private var arr : ArrayList<PDF>,
+                 private var arr : List<PDF>,
                  private val listener: ItemListener,
                  private val listenerMenu: MenuItemListener
                  ) : RecyclerView.Adapter<PDFAdapter.ViewHolder>(){
@@ -48,7 +48,7 @@ class PDFAdapter(private val context: Context,
         if(pdf.favorite==1){
             Glide
                 .with(context)
-                .load(R.drawable.ic_on)
+                .load(R.drawable.ic_like_click)
                 .thumbnail(0.5f)
                 .transition(
                     DrawableTransitionOptions()
@@ -59,7 +59,7 @@ class PDFAdapter(private val context: Context,
         }else{
             Glide
                 .with(context)
-                .load(R.drawable.ic_off)
+                .load(R.drawable.ic_like)
                 .thumbnail(0.5f)
                 .transition(
                     DrawableTransitionOptions()

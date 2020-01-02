@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import com.document.pdfviewer.`object`.ItemMain
 import com.reader.pdfreader.R
+import com.reader.pdfreader.`object`.ItemMain
 import kotlinx.android.synthetic.main.item_menu.view.*
 
 class ItemMainAdapter(private val context: Context,

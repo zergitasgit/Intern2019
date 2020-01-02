@@ -2,19 +2,23 @@ package com.reader.pdfreader.fragment
 
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.*
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.document.pdfviewer.`object`.PDF
 import com.document.pdfviewer.db.DbPDF
 import com.reader.pdfreader.R
+import com.reader.pdfreader.`object`.PDF
 import com.reader.pdfreader.adapter.PDFAdapter
+import com.reader.pdfreader.helper.Helper
+import com.reader.pdfreader.helper.Helper.Companion.getModifile
+import com.reader.pdfreader.helper.Helper.Companion.getSize
 import kotlinx.android.synthetic.main.fragment_dislay_pdf.*
 import kotlinx.android.synthetic.main.fragment_dislay_pdf.view.*
 import java.io.File
@@ -34,7 +38,7 @@ class DislayPDFFragment : Fragment() {
     var arrFileSearch = ArrayList<PDF>()
     var sharedPreferences: SharedPreferences? = null
     var editor: SharedPreferences.Editor? = null
-
+    private var progressDialog: ProgressDialog? = null
     companion object {
         var dbPdf: DbPDF? = null
     }
@@ -46,40 +50,103 @@ class DislayPDFFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_dislay_pdf, container, false)
-        context!!.registerReceiver(broadcastReceiver, IntentFilter("SEARCH"))
-        context!!.registerReceiver(brFav, IntentFilter("FAVORITE"))
-        context!!.registerReceiver(brName, IntentFilter("NAME"))
+        val intent = IntentFilter()
+        intent.addAction("SEARCH")
+        intent.addAction("FAVORITEF")
+        intent.addAction("FAVORITER")
+        intent.addAction("NAME")
+        intent.addAction("DATE")
+        intent.addAction("SIZE")
+        context!!.registerReceiver(broadcastReceiver, intent)
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         editor = sharedPreferences?.edit()
 
-        dbPdf = DbPDF(context!!, null)
-
-        arrFile.clear()
-        getFile(Environment.getExternalStorageDirectory().absoluteFile)
-        if (dbPdf!!.getPdf().size != arrFile.size) {
-            for (pdf in arrFile)
-                dbPdf!!.insertSong(
-                    pdf.name,
-                    pdf.date,
-                    pdf.size,
-                    pdf.path,
-                    pdf.history,
-                    pdf.favorite
-                )
-        }
 
 
-        if (dbPdf!!.getPdf().size > 0) {
-            arrFile = dbPdf!!.getPdf()
-        }
-        v.rv_pdf.layoutManager = LinearLayoutManager(context)
 
         return v
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recycleView()
+        Load().execute()
+
+    }
+    inner class Load() : AsyncTask<Void,Int,Void>(){
+        override fun doInBackground(vararg p0: Void): Void? {
+            dbPdf = DbPDF(context!!, null)
+            arrFile.clear()
+            getFile(Environment.getExternalStorageDirectory().absoluteFile)
+            if (dbPdf!!.getPdf().size == 0) {
+                for (pdf in arrFile)
+                    dbPdf!!.insertSong(
+                        pdf.name,
+                        pdf.date,
+                        pdf.size,
+                        pdf.path,
+                        pdf.history,
+                        pdf.sort,
+                        pdf.favorite
+                    )
+            }
+            if(arrFile.size> dbPdf!!.getPdf().size) {
+                for (pdf in arrFile) {
+                    if (!dbPdf!!.checkPath(pdf.path)) {
+                        dbPdf!!.insertSong(
+                            pdf.name,
+                            pdf.date,
+                            pdf.size,
+                            pdf.path,
+                            pdf.history,
+                            pdf.sort,
+                            pdf.favorite
+                        )
+                    }
+                }
+            }
+
+
+            if (dbPdf!!.getPdf().size > 0) {
+                arrFile = dbPdf!!.getPdf()
+
+
+            }
+            return null
+
+        }
+
+        override fun onPostExecute(result: Void?) {
+            if (progressDialog != null && progressDialog!!.isShowing) {
+                progressDialog!!.dismiss()
+
+            }
+            rv_pdf.layoutManager = LinearLayoutManager(context)
+            sort()
+        }
+
+        override fun onPreExecute() {
+            progressDialog = ProgressDialog(context)
+            progressDialog!!.setCancelable(true)
+            progressDialog!!.isIndeterminate = false
+            progressDialog!!.setMessage("Loading...")
+            progressDialog!!.max = 100
+            progressDialog!!.show()
+        }
+
+        override fun onProgressUpdate(vararg values: Int?) {
+            super.onProgressUpdate(*values)
+            progressDialog!!.progress = values[0]!!.inv()
+        }
+
+    }
+
+    private fun sort() {
+        when (sharedPreferences!!.getString("sort", "")) {
+            "name" -> recycleView(arrFile.sortedWith(compareBy { it.name }))
+            "date" -> recycleView(arrFile.sortedWith(compareBy { it.date }))
+            "size" -> recycleView(arrFile.sortedWith(compareBy { it.sort }))
+            ""  -> recycleView(arrFile)
+        }
     }
 
     private var broadcastReceiver = object : BroadcastReceiver() {
@@ -90,41 +157,39 @@ class DislayPDFFragment : Fragment() {
 
 //                recycleView()
 
-
             if (action!!.equals("SEARCH", ignoreCase = true)) {
                 dislaySearch(string)
 //                Toast.makeText(context,string,Toast.LENGTH_SHORT).show()
-            }
-        }
-
-    }
-    private var brFav = object : BroadcastReceiver() {
-        override fun onReceive(p0: Context?, p1: Intent?) {
-
-            val action = p1?.action
-
-            if (action!!.equals("FAVORITE", ignoreCase = true)) {
+            } else if (action.equals("FAVORITER", ignoreCase = true) || action.equals(
+                    "FAVORITEF",
+                    ignoreCase = true
+                )
+            ) {
                 arrFile = dbPdf!!.getPdf()
-                recycleView()
+                sort()
+            } else if (action.equals("NAME", ignoreCase = true)) {
+
+                val list = arrFile.sortedWith(compareBy { it.name })
+
+
+                recycleView(list)
+            } else if (action.equals("DATE", ignoreCase = true)) {
+
+                val list = arrFile.sortedWith(compareBy { it.date })
+
+
+                recycleView(list)
+            } else if (action.equals("SIZE", ignoreCase = true)) {
+
+                val list = arrFile.sortedWith(compareBy { it.sort })
+
+
+                recycleView(list)
             }
         }
 
     }
-    private var brName = object : BroadcastReceiver() {
-        override fun onReceive(p0: Context?, p1: Intent?) {
 
-            val action = p1?.action
-
-            if (action!!.equals("NAME", ignoreCase = true)) {
-
-                val list = arrFile.sortWith(compareBy{ it.name})
-                arrFile.clear()
-                arrFile.addAll(list)
-                recycleView()
-            }
-        }
-
-    }
 
     @SuppressLint("DefaultLocale")
     private fun dislaySearch(string: String?) {
@@ -144,7 +209,11 @@ class DislayPDFFragment : Fragment() {
                 date: String,
                 size: String
             ) {
+                dbPdf!!.updateHistory(path, System.currentTimeMillis())
 
+                val intent = Intent("HISTORY")
+                context!!.sendBroadcast(intent)
+                Helper.openSimpleReaderActivity(context!!,path)
             }
 
         }, object : PDFAdapter.MenuItemListener {
@@ -156,6 +225,15 @@ class DislayPDFFragment : Fragment() {
                 date: String,
                 size: String
             ) {
+                if (arrFileSearch[position].favorite == 0) {
+                    arrFileSearch[position].favorite = 1
+                    dbPdf!!.updateFavorite(path, 1)
+                } else {
+                    arrFileSearch[position].favorite = 0
+                    dbPdf!!.updateFavorite(path, 0)
+                }
+                val intent = Intent("FAVORITED")
+                context!!.sendBroadcast(intent)
 
             }
 
@@ -164,8 +242,8 @@ class DislayPDFFragment : Fragment() {
 
     }
 
-    private fun recycleView() {
-        val adapter = PDFAdapter(context!!, arrFile, object : PDFAdapter.ItemListener {
+    private fun recycleView(list: List<PDF>) {
+        val adapter = PDFAdapter(context!!, list, object : PDFAdapter.ItemListener {
             override fun onClick(
                 path: String,
                 favorite: Int,
@@ -178,6 +256,7 @@ class DislayPDFFragment : Fragment() {
 
                 val intent = Intent("HISTORY")
                 context!!.sendBroadcast(intent)
+                Helper.openSimpleReaderActivity(context!!,path)
             }
 
         }, object : PDFAdapter.MenuItemListener {
@@ -189,15 +268,16 @@ class DislayPDFFragment : Fragment() {
                 date: String,
                 size: String
             ) {
-                if (arrFile[position].favorite == 0) {
-                    arrFile[position].favorite = 1
+                if (list[position].favorite == 0) {
+                    list[position].favorite = 1
                     dbPdf!!.updateFavorite(path, 1)
                 } else {
-                    arrFile[position].favorite = 0
+                    list[position].favorite = 0
                     dbPdf!!.updateFavorite(path, 0)
                 }
-                val intent = Intent("FAVORITE")
+                val intent = Intent("FAVORITED")
                 context!!.sendBroadcast(intent)
+
 
 
             }
@@ -207,23 +287,18 @@ class DislayPDFFragment : Fragment() {
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        if (sharedPreferences!!.getBoolean("clickFavorite", false)) {
-            arrFile = dbPdf!!.getPdf()
-            recycleView()
-        }
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        if (sharedPreferences!!.getBoolean("clickFavorite", false)) {
+//            arrFile = dbPdf!!.getPdf()
+//            recycleView(arrFile)
+//        }
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
         context!!.unregisterReceiver(broadcastReceiver)
-        context!!.unregisterReceiver(brFav)
-    }
 
-    override fun onStop() {
-        super.onStop()
-//
     }
 
 
@@ -237,7 +312,7 @@ class DislayPDFFragment : Fragment() {
                 if (listFile[i].isDirectory) {// if its a directory need to get the files under that directory
                     getFile(listFile[i])
                 } else {// add path of  files to your arraylist for later use
-                    if (listFile[i].name.endsWith(".pdf")) {
+                    if (listFile[i].name.endsWith(".pdf") && !listFile[i].name.startsWith(".")) {
                         //Do what ever u want
                         val pdf = PDF(
                             listFile[i].name,
@@ -245,7 +320,7 @@ class DislayPDFFragment : Fragment() {
                             getSize(listFile[i]),
                             listFile[i].absolutePath,
                             0,
-                            0
+                            listFile[i].length(),0
                         )
                         arrFile.add(pdf)
                     }
@@ -254,25 +329,6 @@ class DislayPDFFragment : Fragment() {
             }
         }
         return arrFile
-    }
-
-    private fun getSize(file: File): String {
-        var size = file.length() // Get size and convert bytes into Kb.
-        var suffix = ""
-        if (size >= 1024) {
-            suffix = "KB";
-            size /= 1024;
-            if (size >= 1024) {
-                suffix = "MB";
-                size /= 1024;
-            }
-        }
-        return size.toString() + suffix
-    }
-
-    private fun getModifile(file: File): String {
-        val sdf = SimpleDateFormat("MM/dd/yyyy")
-        return sdf.format(file.lastModified())
     }
 
 
