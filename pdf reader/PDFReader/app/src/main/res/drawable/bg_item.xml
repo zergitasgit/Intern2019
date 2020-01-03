@@ -3,5 +3,5 @@
     <item android:state_pressed="true"
         android:drawable="@drawable/item_click" />
     <item  android:state_focused="false"
-        android:drawable="@drawable/item" />
+        android:drawable="@drawable/item_folder" />
 </selector>
