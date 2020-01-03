@@ -228,6 +228,7 @@ class MainActivity : AppCompatActivity() {
             })
         }
         iv_filter.setOnClickListener {
+            con.visibility = View.VISIBLE
             showListPopupWindow(it)
 
             val intent = Intent("POPUP")
@@ -320,7 +321,7 @@ class MainActivity : AppCompatActivity() {
 
         popup!!.setOnDismissListener {
 
-
+            con.visibility = View.GONE
 
 
         }
