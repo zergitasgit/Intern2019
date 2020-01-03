@@ -5,9 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.reader.pdfreader.R
 import com.reader.pdfreader.`object`.Office
 import kotlinx.android.synthetic.main.item_file.view.*
+import kotlinx.android.synthetic.main.item_file.view.iv
+import kotlinx.android.synthetic.main.item_file.view.rl_item
+import kotlinx.android.synthetic.main.item_menu.view.*
 import java.io.File
 
 class FilesAdapter (private var context: Context,
@@ -26,9 +31,27 @@ class FilesAdapter (private var context: Context,
         val office = arr[position]
         holder.tvName.text = office.title
         if (office.isFolder){
-            holder.iv_file.setImageResource(R.drawable.ic_folder_2)
+            Glide
+                .with(context)
+                .load(R.drawable.ic_folder_2)
+                .thumbnail(0.5f)
+                .transition(
+                    DrawableTransitionOptions()
+                        .crossFade()
+                )
+                .into(holder.iv_file)
+
         }else{
-            holder.iv_file.setImageResource(R.drawable.ic_pdf)
+            Glide
+                .with(context)
+                .load(R.drawable.ic_pdf)
+                .thumbnail(0.5f)
+                .transition(
+                    DrawableTransitionOptions()
+                        .crossFade()
+                )
+                .into(holder.iv_file)
+
         }
         holder.tvDate.text = office.date
         holder.tvSize.text = office.size

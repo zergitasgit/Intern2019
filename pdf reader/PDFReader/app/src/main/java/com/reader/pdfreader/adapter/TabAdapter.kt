@@ -7,6 +7,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.reader.pdfreader.R
 import kotlinx.android.synthetic.main.tab_item.view.*
 
@@ -25,7 +27,15 @@ class TabAdapter(private var context:Context,
 
     fun getTabView(position: Int): View {
         val view = LayoutInflater.from(context).inflate(R.layout.tab_item, null)
-        view.iv_tab.setImageResource(arrIcon.get(position))
+        Glide
+            .with(context)
+            .load(arrIcon[position])
+            .thumbnail(0.5f)
+            .transition(
+                DrawableTransitionOptions()
+                    .crossFade()
+            )
+            .into(view.iv_tab)
         return view
     }
 

@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.reader.pdfreader.R
 import com.reader.pdfreader.`object`.ItemMain
 import kotlinx.android.synthetic.main.item_menu.view.*
+import kotlinx.android.synthetic.main.tab_item.view.*
 
 class ItemMainAdapter(private val context: Context,
                       private var arr: ArrayList<ItemMain>,
@@ -17,7 +20,16 @@ class ItemMainAdapter(private val context: Context,
         view.rl_item.setOnClickListener {
             listener.onClick(p0)
         }
-        view.iv.setImageResource(arr[p0].image)
+        Glide
+            .with(context)
+            .load(arr[p0].image)
+            .thumbnail(0.5f)
+            .transition(
+                DrawableTransitionOptions()
+                    .crossFade()
+            )
+            .into(view.iv)
+//        view.iv.setImageResource(arr[p0].image)
         view.tv.text = arr[p0].string
         return view
     }
