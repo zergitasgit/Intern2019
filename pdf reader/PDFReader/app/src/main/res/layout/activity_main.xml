@@ -9,6 +9,7 @@
     >
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/contener"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="match_parent">
@@ -17,6 +18,7 @@
             android:layout_height="wrap_content"
             android:background="#fff"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+
             app:elevation="0dp">
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -118,8 +120,6 @@
                 >
             </com.google.android.material.tabs.TabLayout>
         </com.google.android.material.appbar.AppBarLayout>
-
-
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
@@ -127,21 +127,23 @@
             android:background="#fff"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
+        <RelativeLayout
+            android:id="@+id/rl_per"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg"
+            android:visibility="gone"
+            android:layout_marginTop="104dp"
+            >
 
+        </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    <RelativeLayout
-        android:id="@+id/rl_per"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        >
 
-    </RelativeLayout>
     <Button
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:background="@color/colorPrimary"
-        android:text="Cấp quyền"
+        android:background="@drawable/bg_btn"
+        android:text="@string/permiss"
         android:textColor="#fff"
         android:layout_centerInParent="true"
         android:id="@+id/btn_perm"

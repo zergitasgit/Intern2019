@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity() {
             3/*200*/ -> {
                 if (grantResults[0] == 0) {
                     btn_perm.visibility = View.GONE
+                    rl_per.visibility = View.GONE
                     setUpViewPager()
                     setTabView()
                     setUpSearch()
@@ -102,6 +103,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     btn_perm.visibility = View.VISIBLE
                     rl_per.visibility = View.VISIBLE
+
                     btn_perm.setOnClickListener {
                         handlePermission()
                     }
@@ -274,6 +276,7 @@ class MainActivity : AppCompatActivity() {
         popup.anchorView = anchor
         popup.width = convertToPx(180)
         popup.height = convertToPx(160)
+        popup.setBackgroundDrawable(resources.getDrawable(R.drawable.popup))
         popup.setAdapter(adapter)
         return popup
     }

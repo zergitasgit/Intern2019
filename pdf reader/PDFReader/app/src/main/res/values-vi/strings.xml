@@ -5,4 +5,5 @@
     <string name="name">Theo tên</string>
     <string name="date">Theo thời gian</string>
     <string name="size">Theo kích cỡ</string>
+    <string name="permiss">Cấp quyền</string>
 </resources>

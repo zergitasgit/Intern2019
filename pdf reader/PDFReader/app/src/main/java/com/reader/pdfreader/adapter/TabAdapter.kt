@@ -26,7 +26,6 @@ class TabAdapter(private var context:Context,
     fun getTabView(position: Int): View {
         val view = LayoutInflater.from(context).inflate(R.layout.tab_item, null)
         view.iv_tab.setImageResource(arrIcon.get(position))
-
         return view
     }
 

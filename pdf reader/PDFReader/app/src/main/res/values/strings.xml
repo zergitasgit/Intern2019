@@ -4,4 +4,5 @@
     <string name="name">By name</string>
     <string name="date">By date</string>
     <string name="size">By size</string>
+    <string name="permiss">Permission</string>
 </resources>
