@@ -13,6 +13,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ListPopupWindow
@@ -26,19 +27,26 @@ import com.reader.pdfreader.fragment.FavoriteFragment
 import com.reader.pdfreader.fragment.RecentlyFragment
 import com.reader.pdfreader.helper.KeyboardToggleListener
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_file.*
 
 class MainActivity : AppCompatActivity() {
     var arrFragment = ArrayList<Fragment>()
     var arrIcon = ArrayList<Int>()
     var pos: Int? = null
     var tabAdapter: TabAdapter? = null
-    var sharedPreferences : SharedPreferences?=null
-    var edit :SharedPreferences.Editor?=null
+    var sharedPreferences: SharedPreferences? = null
+    var edit: SharedPreferences.Editor? = null
+
+
+    companion object {
+        var popup: ListPopupWindow? = null
+        var check = false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        popup = ListPopupWindow(this)
+
         sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
         edit = sharedPreferences!!.edit()
         handlePermission()
@@ -121,31 +129,53 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(ed_search.hasFocus()){
+        if (ed_search.hasFocus()) {
             iv_search.visibility = View.VISIBLE
             ed_search.visibility = View.GONE
             tv_title.visibility = View.VISIBLE
             iv_search_logic.visibility = View.GONE
             ed_search.text.clear()
-        }else{
-            super.onBackPressed()
+        } else {
+            if (popup!!.isShowing) {
+                popup!!.dismiss()
+            } else {
+                super.onBackPressed()
+            }
         }
 
     }
+
+        override fun onResume() {
+        super.onResume()
+//            val intent = Intent("POPUP")
+//            intent.putExtra("show",false)
+//            sendBroadcast(intent)
+    }
+    fun set() {
+            if(popup!!.isShowing) {
+                popup!!.dismiss()
+
+            }
+
+
+
+
+    }
+
 
     private fun setUpViewPager() {
         tabAdapter = TabAdapter(this, arrFragment, arrIcon, supportFragmentManager)
         tabAdapter!!.addViewFragment(
             DislayPDFFragment(),
-            R.drawable.ic_file
+            R.drawable.tab_pdf
         )
         tabAdapter!!.addViewFragment(
             RecentlyFragment(),
-            R.drawable.ic_recent
+            R.drawable.tab_history
         )
         tabAdapter!!.addViewFragment(
             FavoriteFragment(),
-            R.drawable.ic_fav
+            R.drawable.tab_favorite
         )
         viewpager.offscreenPageLimit = 3
         viewpager.adapter = tabAdapter
@@ -199,9 +229,16 @@ class MainActivity : AppCompatActivity() {
         }
         iv_filter.setOnClickListener {
             showListPopupWindow(it)
+
+            val intent = Intent("POPUP")
+
+                intent.putExtra("show",true)
+            check =true
+
+            sendBroadcast(intent)
         }
         iv_folder.setOnClickListener {
-            val intent = Intent(this,BrowseFilesActivity::class.java)
+            val intent = Intent(this, BrowseFilesActivity::class.java)
             startActivity(intent)
         }
     }
@@ -224,9 +261,9 @@ class MainActivity : AppCompatActivity() {
         listPopupItems.add(ItemMain(resources.getString(R.string.name), R.drawable.ic_tick))
         listPopupItems.add(ItemMain(resources.getString(R.string.date), R.drawable.ic_tick))
         listPopupItems.add(ItemMain(resources.getString(R.string.size), R.drawable.ic_tick))
-        val list =  listOf("name","date","size")
-        for (i in list.indices){
-            if (list[i] == sharedPreferences!!.getString("sort","")){
+        val list = listOf("name", "date", "size")
+        for (i in list.indices) {
+            if (list[i] == sharedPreferences!!.getString("sort", "")) {
                 listPopupItems[i].image = R.drawable.ic_tick_click
             }
         }
@@ -234,6 +271,7 @@ class MainActivity : AppCompatActivity() {
 
         val listPopupWindow = createListPopupWindow(anchor, listPopupItems)
         listPopupWindow.show()
+
     }
 
 
@@ -241,30 +279,30 @@ class MainActivity : AppCompatActivity() {
         anchor: View,
         items: ArrayList<ItemMain>
     ): ListPopupWindow {
-        val popup = ListPopupWindow(this)
+
         val adapter = ItemMainAdapter(this, items, object : ItemMainAdapter.ItemListener {
             override fun onClick(position: Int) {
                 when (position) {
                     0 -> {
                         val intent = Intent("NAME")
                         sendBroadcast(intent)
-                        popup.dismiss()
-                        edit!!.putString("sort","name")
+                        popup!!.dismiss()
+                        edit!!.putString("sort", "name")
                         edit!!.apply()
 
                     }
                     1 -> {
                         val intent = Intent("DATE")
                         sendBroadcast(intent)
-                        popup.dismiss()
-                        edit!!.putString("sort","date")
+                        popup!!.dismiss()
+                        edit!!.putString("sort", "date")
                         edit!!.apply()
                     }
                     2 -> {
                         val intent = Intent("SIZE")
                         sendBroadcast(intent)
-                        popup.dismiss()
-                        edit!!.putString("sort","size")
+                        popup!!.dismiss()
+                        edit!!.putString("sort", "size")
                         edit!!.apply()
                     }
 
@@ -273,12 +311,21 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-        popup.anchorView = anchor
-        popup.width = convertToPx(180)
-        popup.height = convertToPx(160)
-        popup.setBackgroundDrawable(resources.getDrawable(R.drawable.popup))
-        popup.setAdapter(adapter)
-        return popup
+        popup!!.anchorView = anchor
+        popup!!.width = convertToPx(180)
+        popup!!.height = convertToPx(160)
+        popup!!.setBackgroundDrawable(resources.getDrawable(R.drawable.popup))
+        popup!!.setAdapter(adapter)
+
+
+        popup!!.setOnDismissListener {
+
+
+
+
+        }
+
+        return popup!!
     }
 
     private fun convertToPx(dp: Int): Int {

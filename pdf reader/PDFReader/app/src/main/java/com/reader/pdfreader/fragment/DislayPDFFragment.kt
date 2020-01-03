@@ -10,19 +10,19 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.document.pdfviewer.db.DbPDF
 import com.reader.pdfreader.R
 import com.reader.pdfreader.`object`.PDF
+import com.reader.pdfreader.activity.MainActivity
 import com.reader.pdfreader.adapter.PDFAdapter
 import com.reader.pdfreader.helper.Helper
 import com.reader.pdfreader.helper.Helper.Companion.getModifile
 import com.reader.pdfreader.helper.Helper.Companion.getSize
 import kotlinx.android.synthetic.main.fragment_dislay_pdf.*
-import kotlinx.android.synthetic.main.fragment_dislay_pdf.view.*
 import java.io.File
-import java.text.SimpleDateFormat
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -39,8 +39,14 @@ class DislayPDFFragment : Fragment() {
     var sharedPreferences: SharedPreferences? = null
     var editor: SharedPreferences.Editor? = null
     private var progressDialog: ProgressDialog? = null
+    var showPo=false
+    var i =0
+    var brPo:BroadcastReceiver?=null
+
     companion object {
         var dbPdf: DbPDF? = null
+
+
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -57,6 +63,7 @@ class DislayPDFFragment : Fragment() {
         intent.addAction("NAME")
         intent.addAction("DATE")
         intent.addAction("SIZE")
+        intent.addAction("POPUP")
         context!!.registerReceiver(broadcastReceiver, intent)
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         editor = sharedPreferences?.edit()
@@ -72,7 +79,8 @@ class DislayPDFFragment : Fragment() {
         Load().execute()
 
     }
-    inner class Load() : AsyncTask<Void,Int,Void>(){
+
+    inner class Load() : AsyncTask<Void, Int, Void>() {
         override fun doInBackground(vararg p0: Void): Void? {
             dbPdf = DbPDF(context!!, null)
             arrFile.clear()
@@ -89,7 +97,7 @@ class DislayPDFFragment : Fragment() {
                         pdf.favorite
                     )
             }
-            if(arrFile.size> dbPdf!!.getPdf().size) {
+            if (arrFile.size > dbPdf!!.getPdf().size) {
                 for (pdf in arrFile) {
                     if (!dbPdf!!.checkPath(pdf.path)) {
                         dbPdf!!.insertSong(
@@ -145,7 +153,7 @@ class DislayPDFFragment : Fragment() {
             "name" -> recycleView(arrFile.sortedWith(compareBy { it.name }))
             "date" -> recycleView(arrFile.sortedWith(compareBy { it.date }))
             "size" -> recycleView(arrFile.sortedWith(compareBy { it.sort }))
-            ""  -> recycleView(arrFile)
+            "" -> recycleView(arrFile)
         }
     }
 
@@ -154,6 +162,7 @@ class DislayPDFFragment : Fragment() {
 
             val action = p1?.action
             val string = p1?.extras?.getString("string")
+
 
 //                recycleView()
 
@@ -185,10 +194,17 @@ class DislayPDFFragment : Fragment() {
 
 
                 recycleView(list)
+            } else if (action.equals("POPUP", ignoreCase = true)) {
+                var show = p1!!.extras.getBoolean("show")
+
+                showPo = show
+
+
             }
         }
 
     }
+
 
 
     @SuppressLint("DefaultLocale")
@@ -209,11 +225,20 @@ class DislayPDFFragment : Fragment() {
                 date: String,
                 size: String
             ) {
-                dbPdf!!.updateHistory(path, System.currentTimeMillis())
 
-                val intent = Intent("HISTORY")
-                context!!.sendBroadcast(intent)
-                Helper.openSimpleReaderActivity(context!!,path)
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo = false
+
+
+                } else {
+                    dbPdf!!.updateHistory(path, System.currentTimeMillis())
+
+                    val intent = Intent("HISTORY")
+                    context!!.sendBroadcast(intent)
+                    Helper.openSimpleReaderActivity(context!!, path)
+
+                }
             }
 
         }, object : PDFAdapter.MenuItemListener {
@@ -225,16 +250,23 @@ class DislayPDFFragment : Fragment() {
                 date: String,
                 size: String
             ) {
-                if (arrFileSearch[position].favorite == 0) {
-                    arrFileSearch[position].favorite = 1
-                    dbPdf!!.updateFavorite(path, 1)
-                } else {
-                    arrFileSearch[position].favorite = 0
-                    dbPdf!!.updateFavorite(path, 0)
-                }
-                val intent = Intent("FAVORITED")
-                context!!.sendBroadcast(intent)
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo = false
 
+
+                } else {
+                    if (arrFileSearch[position].favorite == 0) {
+                        arrFileSearch[position].favorite = 1
+                        dbPdf!!.updateFavorite(path, 1)
+                    } else {
+                        arrFileSearch[position].favorite = 0
+                        dbPdf!!.updateFavorite(path, 0)
+                    }
+                    val intent = Intent("FAVORITED")
+                    context!!.sendBroadcast(intent)
+
+                }
             }
 
         })
@@ -252,12 +284,25 @@ class DislayPDFFragment : Fragment() {
                 size: String
             ) {
 
-                dbPdf!!.updateHistory(path, System.currentTimeMillis())
+//
 
-                val intent = Intent("HISTORY")
-                context!!.sendBroadcast(intent)
-                Helper.openSimpleReaderActivity(context!!,path)
+//
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo=false
+
+
+                } else {
+                    dbPdf!!.updateHistory(path, System.currentTimeMillis())
+
+                    val intent = Intent("HISTORY")
+                    context!!.sendBroadcast(intent)
+                    Helper.openSimpleReaderActivity(context!!, path)
+                }
+
+
             }
+
 
         }, object : PDFAdapter.MenuItemListener {
             override fun onClick(
@@ -268,19 +313,26 @@ class DislayPDFFragment : Fragment() {
                 date: String,
                 size: String
             ) {
-                if (list[position].favorite == 0) {
-                    list[position].favorite = 1
-                    dbPdf!!.updateFavorite(path, 1)
-                } else {
-                    list[position].favorite = 0
-                    dbPdf!!.updateFavorite(path, 0)
-                }
-                val intent = Intent("FAVORITED")
-                context!!.sendBroadcast(intent)
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo=false
 
+
+                } else {
+                    if (list[position].favorite == 0) {
+                        list[position].favorite = 1
+                        dbPdf!!.updateFavorite(path, 1)
+                    } else {
+                        list[position].favorite = 0
+                        dbPdf!!.updateFavorite(path, 0)
+                    }
+                    val intent = Intent("FAVORITED")
+                    context!!.sendBroadcast(intent)
+                }
 
 
             }
+
 
         })
         rv_pdf.adapter = adapter
@@ -320,7 +372,7 @@ class DislayPDFFragment : Fragment() {
                             getSize(listFile[i]),
                             listFile[i].absolutePath,
                             0,
-                            listFile[i].length(),0
+                            listFile[i].length(), 0
                         )
                         arrFile.add(pdf)
                     }
@@ -330,8 +382,6 @@ class DislayPDFFragment : Fragment() {
         }
         return arrFile
     }
-
-
 
 
 }

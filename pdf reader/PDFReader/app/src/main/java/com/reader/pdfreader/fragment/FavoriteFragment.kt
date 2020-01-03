@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.document.pdfviewer.db.DbPDF
 import com.reader.pdfreader.R
 import com.reader.pdfreader.`object`.PDF
+import com.reader.pdfreader.activity.MainActivity
 import com.reader.pdfreader.adapter.PDFAdapter
 import com.reader.pdfreader.fragment.DislayPDFFragment.Companion.dbPdf
 import com.reader.pdfreader.helper.Helper
@@ -33,6 +34,7 @@ class FavoriteFragment : Fragment() {
     var arrFileSearch = ArrayList<PDF>()
     var sharedPreferences: SharedPreferences? = null
     var editor: SharedPreferences.Editor? = null
+    var showPo=false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +48,7 @@ class FavoriteFragment : Fragment() {
         intent.addAction("NAME")
         intent.addAction("DATE")
         intent.addAction("SIZE")
+        intent.addAction("POPUP")
         context!!.registerReceiver(broadcastReceiver, intent)
 
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
@@ -82,12 +85,18 @@ class FavoriteFragment : Fragment() {
                 date: String,
                 size: String
             ) {
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo=false
 
-                dbPdf!!.updateHistory(path, System.currentTimeMillis())
 
-                val intent = Intent("HISTORY")
-                context!!.sendBroadcast(intent)
-                Helper.openSimpleReaderActivity(context!!,path)
+                } else {
+                    dbPdf!!.updateHistory(path, System.currentTimeMillis())
+
+                    val intent = Intent("HISTORY")
+                    context!!.sendBroadcast(intent)
+                    Helper.openSimpleReaderActivity(context!!, path)
+                }
             }
 
         }, object : PDFAdapter.MenuItemListener {
@@ -99,15 +108,22 @@ class FavoriteFragment : Fragment() {
                 date: String,
                 size: String
             ) {
-                if (arr[position].favorite == 0) {
-                    arr[position].favorite = 1
-                    dbPdf!!.updateFavorite(path, 1)
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo=false
+
+
                 } else {
-                    arr[position].favorite = 0
-                    dbPdf!!.updateFavorite(path, 0)
+                    if (arr[position].favorite == 0) {
+                        arr[position].favorite = 1
+                        dbPdf!!.updateFavorite(path, 1)
+                    } else {
+                        arr[position].favorite = 0
+                        dbPdf!!.updateFavorite(path, 0)
+                    }
+                    val intent = Intent("FAVORITEF")
+                    context!!.sendBroadcast(intent)
                 }
-                val intent = Intent("FAVORITEF")
-                context!!.sendBroadcast(intent)
             }
 
         })
@@ -144,6 +160,12 @@ class FavoriteFragment : Fragment() {
                 val list = arr.sortedWith(compareBy { it.sort })
 
                 recycleview(list)
+            }else if (action.equals("POPUP", ignoreCase = true)) {
+                var show = p1!!.extras.getBoolean("show")
+
+                showPo = show
+
+
             }
         }
 
@@ -168,12 +190,18 @@ class FavoriteFragment : Fragment() {
                 date: String,
                 size: String
             ) {
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo=false
 
-                dbPdf!!.updateHistory(path, System.currentTimeMillis())
 
-                val intent = Intent("HISTORY")
-                context!!.sendBroadcast(intent)
-                Helper.openSimpleReaderActivity(context!!,path)
+                } else {
+                    dbPdf!!.updateHistory(path, System.currentTimeMillis())
+
+                    val intent = Intent("HISTORY")
+                    context!!.sendBroadcast(intent)
+                    Helper.openSimpleReaderActivity(context!!, path)
+                }
             }
 
         }, object : PDFAdapter.MenuItemListener {
@@ -185,15 +213,22 @@ class FavoriteFragment : Fragment() {
                 date: String,
                 size: String
             ) {
-                if (arrFileSearch[position].favorite == 0) {
-                    arrFileSearch[position].favorite = 1
-                    dbPdf!!.updateFavorite(path, 1)
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo=false
+
+
                 } else {
-                    arrFileSearch[position].favorite = 0
-                    dbPdf!!.updateFavorite(path, 0)
+                    if (arrFileSearch[position].favorite == 0) {
+                        arrFileSearch[position].favorite = 1
+                        dbPdf!!.updateFavorite(path, 1)
+                    } else {
+                        arrFileSearch[position].favorite = 0
+                        dbPdf!!.updateFavorite(path, 0)
+                    }
+                    val intent = Intent("FAVORITEF")
+                    context!!.sendBroadcast(intent)
                 }
-                val intent = Intent("FAVORITEF")
-                context!!.sendBroadcast(intent)
 
             }
 

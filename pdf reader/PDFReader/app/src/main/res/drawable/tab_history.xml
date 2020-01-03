@@ -1,0 +1,6 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/ic_recent" android:state_selected="false" />
+    <item android:drawable="@drawable/c_recent_click" android:state_selected="true" />
+
+</selector>

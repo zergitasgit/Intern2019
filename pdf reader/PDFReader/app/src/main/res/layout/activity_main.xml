@@ -6,19 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rl"
+
     >
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/contener"
         android:layout_width="match_parent"
         android:layout_weight="1"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#ebebeb">
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-
             app:elevation="0dp">
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -66,16 +66,19 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginRight="90dp"
                         android:src="@drawable/ic_search"
+                        android:background="@drawable/bg_folder"
                         android:layout_centerVertical="true">
 
                     </ImageView>
                     <ImageView
                         android:id="@+id/iv_search_logic"
-                        android:layout_width="13dp"
-                        android:layout_height="13dp"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
                         android:layout_alignParentEnd="true"
+                        android:padding="2dp"
                         android:layout_marginRight="93dp"
                         android:src="@drawable/close"
+                        android:background="@drawable/bg_folder"
                         android:layout_centerVertical="true"
                         android:visibility="gone">
 
@@ -87,7 +90,8 @@
                         android:id="@+id/iv_folder"
                         android:src="@drawable/ic_folder"
                         android:layout_toLeftOf="@+id/iv_filter"
-                        android:layout_centerVertical="true">
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_folder">
 
                     </ImageView>
                     <ImageView
@@ -98,13 +102,12 @@
                         android:layout_centerVertical="true"
                         android:layout_alignParentEnd="true"
                         android:padding="11dp"
+                        android:background="@drawable/bg_folder"
                         android:layout_marginRight="5dp">
 
                     </ImageView>
                 </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
-
-
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/sliding_tabs"
@@ -113,10 +116,8 @@
                 app:tabGravity="fill"
                 app:tabMode="fixed"
                 android:elevation="0dp"
-                app:tabIndicatorColor="#fff"
                 android:background="@drawable/bg_gradient"
-
-
+                app:tabIndicatorColor="#ffa9ad"
                 >
             </com.google.android.material.tabs.TabLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -124,7 +125,6 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#fff"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
         <RelativeLayout

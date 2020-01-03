@@ -1,7 +1,8 @@
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="70dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_item">
+    android:id="@+id/rl_item"
+    android:background="@drawable/bg_item">
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -50,7 +51,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E0E0E0"
+        android:background="#9E9E9E"
         android:layout_alignParentBottom="true"
         >
     </FrameLayout>

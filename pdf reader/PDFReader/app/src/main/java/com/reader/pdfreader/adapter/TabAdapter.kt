@@ -27,15 +27,7 @@ class TabAdapter(private var context:Context,
 
     fun getTabView(position: Int): View {
         val view = LayoutInflater.from(context).inflate(R.layout.tab_item, null)
-        Glide
-            .with(context)
-            .load(arrIcon[position])
-            .thumbnail(0.5f)
-            .transition(
-                DrawableTransitionOptions()
-                    .crossFade()
-            )
-            .into(view.iv_tab)
+        view.iv_tab.setImageResource(arrIcon[position])
         return view
     }
 
