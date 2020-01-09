@@ -73,7 +73,7 @@
                 </ImageView>
 
                 <ImageView
-                    android:id="@+id/iv_filter"
+                    android:id="@+id/iv_menu"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
@@ -106,5 +106,13 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
         />
+    <RelativeLayout
+        android:id="@+id/con"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#90000000"
+        android:visibility="gone">
+
+    </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

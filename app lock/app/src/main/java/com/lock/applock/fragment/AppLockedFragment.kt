@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lock.applock.R
 import com.lock.applock.`object`.App
+import com.lock.applock.activity.MainActivity
 import com.lock.applock.adapter.AppAdapter
+import com.lock.applock.adapter.AppLockAdapter
 import com.lock.applock.db.DbApp
 import kotlinx.android.synthetic.main.fragment_dislay_app.*
 import kotlinx.android.synthetic.main.fragment_app_locked.view.*
@@ -26,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_app_locked.view.*
  */
 class AppLockedFragment : Fragment() {
     var arr = ArrayList<App>()
-    var adapter: AppAdapter? = null
+    var adapter: AppLockAdapter? = null
     var arrFileSearch = ArrayList<App>()
     var sharedPreferences: SharedPreferences? = null
     var editor: SharedPreferences.Editor? = null
@@ -40,6 +42,7 @@ class AppLockedFragment : Fragment() {
         val intent = IntentFilter()
         intent.addAction("SEARCH")
         intent.addAction("LOCKED")
+        intent.addAction("POPUP")
         context!!.registerReceiver(broadcastReceiver, intent)
 
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
@@ -66,19 +69,19 @@ class AppLockedFragment : Fragment() {
 
     private fun recycleview(arr: ArrayList<App>) {
 
-        adapter = AppAdapter(context!!, arr, object : AppAdapter.ItemListener {
+        adapter = AppLockAdapter(context!!, arr, object : AppLockAdapter.ItemListener {
 
             override fun onClick(position: Int,packageName:String) {
-                if (arr[position].isLock == 0) {
-                    arr[position].isLock = 1
-                    dbApp!!.updateLock(packageName, 1)
-                } else {
-                    arr[position].isLock = 0
-                    dbApp!!.updateLock(packageName, 0)
-                }
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo = false
 
-                val intent = Intent("LOCKEDAPP")
-                context!!.sendBroadcast(intent)
+
+                } else {
+                    dbApp!!.updateLock(packageName, 0)
+                    val intent = Intent("LOCKEDAPP")
+                    context!!.sendBroadcast(intent)
+                }
             }
             
         })
@@ -102,7 +105,12 @@ class AppLockedFragment : Fragment() {
                  recycleview(arr)
 
 
-             }
+             }else if (action.equals("POPUP", ignoreCase = true)) {
+                val show = p1.extras.getBoolean("show")
+
+                showPo = show
+
+            }
         }
 
     }
@@ -118,9 +126,18 @@ class AppLockedFragment : Fragment() {
         }
 //        arrFile = arrFileSearch
 
-        var adapter = AppAdapter(context!!, arrFileSearch, object : AppAdapter.ItemListener {
+        var adapter = AppLockAdapter(context!!, arrFileSearch, object : AppLockAdapter.ItemListener {
             override fun onClick(position: Int,packageName:String) {
-                
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo = false
+
+
+                } else {
+                    dbApp!!.updateLock(packageName, 0)
+                    val intent = Intent("LOCKEDAPP")
+                    context!!.sendBroadcast(intent)
+                }
             }
 
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -67,47 +68,124 @@
         </LinearLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:background="#303030"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/ll_password"
+        android:id="@+id/ll_pattern"
         android:visibility="visible">
 
         <ImageView
             android:id="@+id/profile_image"
             android:layout_width="84dp"
             android:layout_height="84dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="104dp"
-            android:src="@drawable/ic_launcher_background"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="104dp"/>
 
         <TextView
             android:id="@+id/tv_pass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/profile_image"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="36dp"
             android:fontFamily="sans-serif-thin"
             android:gravity="center"
-            android:text="Creat a pattern"
+            android:text="Creat a Pattern"
             android:textColor="@color/white"
-            android:textSize="19sp"/>
+            android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/tv_pass_wrong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="36dp"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:text="Pattern Wrong"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
 
         <com.andrognito.patternlockview.PatternLockView
             android:id="@+id/patter_lock_view"
             android:layout_width="280dp"
             android:layout_height="280dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="290dp"
             app:aspectRatio="square"
             app:aspectRatioEnabled="true"
             app:dotAnimationDuration="150"
             app:dotCount="3"/>
 
-    </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mine_shaft"
+        android:id="@+id/rl_pin"
+        tools:context="com.andrognito.pinlockviewapp.SampleActivity">
+
+        <ImageView
+            android:id="@+id/iv_pin"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="104dp">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/tv_pass_pin"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_pin"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="36dp"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:text="Creat a Pin"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_pass_pin_wrong"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_pin"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="36dp"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center"
+            android:text="Pin Wrong"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <com.andrognito.pinlockview.IndicatorDots
+            android:id="@+id/indicator_dots_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="290dp" />
+
+        <com.andrognito.pinlockview.PinLockView
+            android:id="@+id/pin_lock_view_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/indicator_dots_pin"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            app:keypadButtonSize="72dp"
+            app:keypadShowDeleteButton="true"
+            app:keypadTextColor="@color/white"
+            app:keypadTextSize="18dp"
+            app:keypadHorizontalSpacing="20dp"
+            app:keypadVerticalSpacing="20dp"
+            app:keypadDeleteButtonPressedColor="#4aa8ff"/>
+    </RelativeLayout>
 
 
 

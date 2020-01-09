@@ -17,10 +17,13 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.andrognito.patternlockview.PatternLockView
 import com.andrognito.patternlockview.listener.PatternLockViewListener
 import com.andrognito.patternlockview.utils.PatternLockUtils
 import com.andrognito.patternlockview.utils.ResourceUtils
+import com.andrognito.pinlockview.IndicatorDots
+import com.andrognito.pinlockview.PinLockListener
 import com.andrognito.rxpatternlockview.RxPatternLockView
 import com.andrognito.rxpatternlockview.events.PatternLockCompleteEvent
 import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent
@@ -46,17 +49,19 @@ class SplashActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Settings.canDrawOverlays(this) && hasUsageStatsPermission()) {
-                ll_password.visibility = View.VISIBLE
+
                 ll_per.visibility = View.GONE
-                setUpPassword()
+                setup()
 
             } else {
-                ll_password.visibility = View.GONE
+                ll_pattern.visibility=View.GONE
+                rl_pin.visibility = View.GONE
                 ll_per.visibility = View.VISIBLE
                 checkPermission()
             }
         }else{
-            setUpPassword()
+            setup()
+
         }
 
     }
@@ -65,18 +70,49 @@ class SplashActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Settings.canDrawOverlays(this) && hasUsageStatsPermission()) {
-                ll_password.visibility = View.VISIBLE
+                setup()
                 ll_per.visibility = View.GONE
-                setUpPassword()
+
 
             } else {
-                ll_password.visibility = View.GONE
+                ll_pattern.visibility=View.GONE
+                rl_pin.visibility = View.GONE
                 ll_per.visibility = View.VISIBLE
                 checkPermission()
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
 
+    }
+    override fun onStop() {
+        super.onStop()
+        if(tv_pass.text == "Creat a Pattern \n (Again)" && tv_pass.visibility==View.VISIBLE){
+            edit!!.putString(
+                "pattern",
+                ""
+            )
+            edit!!.apply()
+            tv_pass.text = "Creat a Pattern"
+        }
+        if(tv_pass_pin.text == "Creat a Pin \n (Again)" && tv_pass_pin.visibility ==View.VISIBLE){
+            edit!!.putString(
+                "pattern",
+                ""
+            )
+            edit!!.apply()
+            tv_pass.text = "Creat a Pin"
+        }
+    }
+    fun setup(){
+        if(sharedPreferences!!.getBoolean("pin",false)){
+            ll_pattern.visibility=View.GONE
+            rl_pin.visibility = View.VISIBLE
+            setUpPin()
+        }else {
+            ll_pattern.visibility=View.VISIBLE
+            rl_pin.visibility = View.GONE
+            setUpPassword()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -119,6 +155,9 @@ class SplashActivity : AppCompatActivity() {
 
     @SuppressLint("CheckResult")
     private fun setUpPassword() {
+        if(sharedPreferences!!.getString("pattern", "")!=""){
+            tv_pass.text ="Enter Pattern"
+        }
         patter_lock_view.dotCount = 3
         patter_lock_view.dotNormalSize = ResourceUtils.getDimensionInPx(
             this,
@@ -185,17 +224,6 @@ class SplashActivity : AppCompatActivity() {
             })
     }
 
-    override fun onStop() {
-        super.onStop()
-        if(tv_pass.text == "Creat a pattern \n (Again)"){
-            edit!!.putString(
-                "pattern",
-                ""
-            )
-            edit!!.apply()
-            tv_pass.text = "Creat a pattern"
-        }
-    }
 
     private var mPatternLockViewListener = object : PatternLockViewListener {
         override fun onComplete(pattern: MutableList<PatternLockView.Dot>?) {
@@ -205,7 +233,8 @@ class SplashActivity : AppCompatActivity() {
                     pattern
                 )
             ) {
-                tv_pass.text = "Creat a pattern"
+                tv_pass.visibility = View.GONE
+                tv_pass.text = "Creat a Pattern"
                 val intent = Intent(this@SplashActivity, MainActivity::class.java)
                 startActivity(intent)
                 edit!!.putString(
@@ -221,7 +250,10 @@ class SplashActivity : AppCompatActivity() {
                         PatternLockUtils.patternToString(patter_lock_view, pattern)
                     )
                     edit!!.apply()
-                    tv_pass.text = "Creat a pattern \n (Again)"
+                    tv_pass.text = "Creat a Pattern \n (Again)"
+                }else{
+                    tv_pass_wrong.visibility = View.VISIBLE
+                    tv_pass.visibility = View.GONE
                 }
                 Handler().postDelayed({
                     patter_lock_view!!.clearPattern()
@@ -239,7 +271,62 @@ class SplashActivity : AppCompatActivity() {
         }
 
         override fun onProgress(progressPattern: MutableList<PatternLockView.Dot>?) {
+            tv_pass_wrong.visibility = View.GONE
+            tv_pass.visibility = View.VISIBLE
         }
 
+    }
+    private fun setUpPin(){
+        if(sharedPreferences!!.getString("pattern", "")!=""){
+            tv_pass_pin.text ="Enter Pin"
+        }
+        pin_lock_view_pin.attachIndicatorDots(indicator_dots_pin)
+        pin_lock_view_pin.setPinLockListener(mPinLockListener)
+        pin_lock_view_pin.pinLength = 4
+        pin_lock_view_pin.textColor = ContextCompat.getColor(this, R.color.white)
+
+        indicator_dots_pin.indicatorType = IndicatorDots.IndicatorType.FILL_WITH_ANIMATION
+    }
+    private val mPinLockListener: PinLockListener = object : PinLockListener {
+        override fun onComplete(pin: String) {
+            if (sharedPreferences!!.getString("pattern", "") == pin
+
+            ) {
+                tv_pass_pin.visibility = View.GONE
+                tv_pass_pin.text = "Creat a Pin"
+                val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                startActivity(intent)
+                edit!!.putString(
+                    "pattern",
+                    pin
+                )
+                edit!!.apply()
+
+            } else {
+                if (sharedPreferences!!.getString("pattern", "") == "") {
+                    edit!!.putString(
+                        "pattern",
+                        pin
+                    )
+                    edit!!.apply()
+                    tv_pass.text = "Creat a Pin \n (Again)"
+                }else{
+                    tv_pass_pin_wrong.visibility = View.VISIBLE
+                    tv_pass_pin.visibility = View.GONE
+                }
+                Handler().postDelayed({
+                    pin_lock_view_pin.resetPinLockView()
+                }, 500)
+
+            }
+        }
+
+        override fun onEmpty() {
+        }
+
+        override fun onPinChange(pinLength: Int, intermediatePin: String) {
+            tv_pass_pin_wrong.visibility = View.GONE
+            tv_pass_pin.visibility = View.VISIBLE
+        }
     }
 }

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lock.applock.R
 import com.lock.applock.`object`.App
+import com.lock.applock.activity.MainActivity
 import com.lock.applock.adapter.AppAdapter
 import com.lock.applock.db.DbApp
 import com.lock.applock.helper.GetListApp
@@ -33,16 +34,10 @@ class DislayAppFragment : Fragment() {
     var sharedPreferences: SharedPreferences? = null
     var editor: SharedPreferences.Editor? = null
     private var progressDialog: ProgressDialog? = null
-    var showPo = false
     var i = 0
     var brPo: BroadcastReceiver? = null
     var dbApp: DbApp? = null
-
-//    companion object {
-//        var dbPdf: DbPDF? = null
-//
-//
-//    }
+    var showPo = false
 
     @SuppressLint("CommitPrefEdits")
     override fun onCreateView(
@@ -54,6 +49,7 @@ class DislayAppFragment : Fragment() {
         val intent = IntentFilter()
         intent.addAction("SEARCH")
         intent.addAction("LOCKEDAPP")
+        intent.addAction("POPUP")
         context!!.registerReceiver(broadcastReceiver, intent)
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         editor = sharedPreferences?.edit()
@@ -164,6 +160,11 @@ class DislayAppFragment : Fragment() {
                  arrApp = dbApp!!.getApp()
                  recycleView(arrApp)
 
+            }else if (action.equals("POPUP", ignoreCase = true)) {
+                val show = p1.extras.getBoolean("show")
+
+                showPo = show
+
             }
 
         }
@@ -182,15 +183,22 @@ class DislayAppFragment : Fragment() {
 
             val adapter = AppAdapter(context!!, arrFileSearch, object : AppAdapter.ItemListener {
                 override fun onClick(position: Int,packageName:String) {
-                    if (arrFileSearch[position].isLock == 0) {
-                        arrFileSearch[position].isLock = 1
-                        dbApp!!.updateLock(packageName, 1)
+                    if (showPo) {
+                        (activity as MainActivity).set()
+                        showPo = false
+
+
                     } else {
-                        arrFileSearch[position].isLock = 0
-                        dbApp!!.updateLock(packageName, 0)
+                        if (arrFileSearch[position].isLock == 0) {
+                            arrFileSearch[position].isLock = 1
+                            dbApp!!.updateLock(packageName, 1)
+                        } else {
+                            arrFileSearch[position].isLock = 0
+                            dbApp!!.updateLock(packageName, 0)
+                        }
+                        val intent = Intent("LOCKED")
+                        context!!.sendBroadcast(intent)
                     }
-                    val intent = Intent("LOCKED")
-                    context!!.sendBroadcast(intent)
                 }
             })
             rv_app.adapter = adapter
@@ -202,16 +210,24 @@ class DislayAppFragment : Fragment() {
 
 
                 override fun onClick(position: Int,packageName:String) {
-                    if (list[position].isLock == 0) {
-                        list[position].isLock = 1
-                        dbApp!!.updateLock(packageName, 1)
-                    } else {
-                        list[position].isLock = 0
-                        dbApp!!.updateLock(packageName, 0)
-                    }
 
-                    val intent = Intent("LOCKED")
-                    context!!.sendBroadcast(intent)
+                    if (showPo) {
+                        (activity as MainActivity).set()
+                        showPo = false
+
+
+                    } else {
+                        if (list[position].isLock == 0) {
+                            list[position].isLock = 1
+                            dbApp!!.updateLock(packageName, 1)
+                        } else {
+                            list[position].isLock = 0
+                            dbApp!!.updateLock(packageName, 0)
+                        }
+
+                        val intent = Intent("LOCKED")
+                        context!!.sendBroadcast(intent)
+                    }
                 }
             })
             rv_app.adapter = adapter
