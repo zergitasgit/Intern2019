@@ -12,15 +12,14 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.lock.applock.R
 import com.lock.applock.`object`.App
 import com.lock.applock.activity.SplashActivity
 import com.lock.applock.db.DbApp
-import kotlinx.android.synthetic.main.window_manager.view.*
 import java.util.*
+
 
 class LockService : Service() {
     var params: WindowManager.LayoutParams? = null
@@ -33,16 +32,19 @@ class LockService : Service() {
     var windowManager: WindowManager? = null
     var pakageName = ArrayList<App>()
     var dbApp: DbApp? = null
-    var currentApp = ""
-    var previousApp = ""
+
     var timer: Timer? = null
+    companion object{
+        var currentApp = ""
+        var previousApp = ""
+    }
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
+    override fun onCreate() {
+        super.onCreate()
         dbApp = DbApp(applicationContext, null)
         pakageName = dbApp!!.getLocked()
         val intent = IntentFilter()
@@ -52,8 +54,12 @@ class LockService : Service() {
         applicationContext.registerReceiver(broadcastReceiver, intent)
         setUp()
         createNotificationChannel()
-        timer = Timer("LockServices")
-        timer!!.schedule(updateTask, 1000L, 1000L)
+    }
+
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+
 
 
 
@@ -81,13 +87,15 @@ class LockService : Service() {
             if (action!!.equals("PAKAGENAME", ignoreCase = true)) {
                 var lock = p1.extras?.getBoolean("lock")
                 if (lock!!) {
-                    popupView!!.ll_pattern.visibility = View.VISIBLE
-                    windowManager!!.updateViewLayout(popupView, params)
+//                    popupView!!.ll_pattern.visibility = View.VISIBLE
+//                    windowManager!!.updateViewLayout(popupView, params)
+//                    Toast.makeText(applicationContext,"true",Toast.LENGTH_SHORT).show()
 
 
                 } else {
-                    popupView!!.ll_pattern.visibility = View.GONE
-                    windowManager!!.updateViewLayout(popupView, params)
+//                    popupView!!.ll_pattern.visibility = View.GONE
+//                    windowManager!!.updateViewLayout(popupView, params)
+//                    Toast.makeText(applicationContext,"false",Toast.LENGTH_SHORT).show()
                 }
 //                Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show()
             } else if (action.equals("LOCKED", ignoreCase = true) || action.equals(
@@ -103,7 +111,6 @@ class LockService : Service() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -119,7 +126,7 @@ class LockService : Service() {
             manager?.createNotificationChannel(serviceChannel)
         }
         val notificationIntent = Intent(this, SplashActivity::class.java)
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         val pendingIntent = PendingIntent.getActivity(
             this,
             100, notificationIntent, 0
@@ -138,27 +145,34 @@ class LockService : Service() {
 
     private val updateTask: TimerTask = object : TimerTask() {
         override fun run() {
+
             val intent = Intent("PAKAGENAME")
 
             if (isConcernedAppIsInForeground() && currentApp != packageName) {
-                Log.d("isConcernedAppIsInFrgnd", "true")
+                Log.d("isConcernedAppIsInFrgnd", currentApp)
                 if (!currentApp.matches(previousApp.toRegex())) {
+                 previousApp = currentApp
                     intent.putExtra("lock", true)
 
+                }else{
+//                    Log.d("isConcernedAppIsInFrgnd", "false")
                 }
 
 
             } else {
                 intent.putExtra("lock", false)
 
-                Log.d("isConcernedAppIsInFrgnd", "false")
+                Log.d("isConcernedAppIsInFrgnd", currentApp)
+                previousApp =""
             }
-            applicationContext.sendBroadcast(intent)
+
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     fun setUp() {
+        timer = Timer("LockServices")
+        timer!!.schedule(updateTask, 0, 1000L)
+
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -223,12 +237,13 @@ class LockService : Service() {
                     mpackageName = ""
                 } else {
                     mpackageName = runningTask[runningTask.lastKey()]!!.packageName
+                    currentApp = mpackageName
 
                 }
             }
             var i = 0
             while (pakageName != null && i < pakageName.size) {
-                Log.d("AppCheckService", "pakageName Size" + pakageName.size)
+//                Log.d("AppCheckService", "pakageName Size" + pakageName.size)
                 if (mpackageName == pakageName[i].packagename) {
                     currentApp =
                         pakageName[i].packagename
@@ -239,4 +254,5 @@ class LockService : Service() {
         }
         return false
     }
+
 }

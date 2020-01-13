@@ -1,10 +1,14 @@
 package com.lock.applock.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.hardware.fingerprint.FingerprintManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -14,23 +18,26 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ListPopupWindow
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import co.infinum.goldfinger.Goldfinger
-import co.infinum.goldfinger.Goldfinger.PromptParams
 import com.lock.applock.service.LockService
 import com.lock.applock.R
 import com.lock.applock.`object`.ItemMain
 import com.lock.applock.adapter.ItemMainAdapter
 import com.lock.applock.adapter.TabAdapter
+import com.lock.applock.fingerprint.FingerprintHandler
+import com.lock.applock.helper.Helper
+import com.lock.applock.helper.Helper.Companion.cipher
+import com.lock.applock.helper.Helper.Companion.cipherInit
 import com.lock.applock.helper.KeyboardToggleListener
 import com.reader.pdfreader.fragment.AppLockedFragment
 import com.reader.pdfreader.fragment.DislayAppFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private var goldfinger: Goldfinger? = null
     var arrFragment = ArrayList<Fragment>()
     var arrIcon = ArrayList<String>()
     var tabAdapter: TabAdapter? = null
@@ -51,11 +58,16 @@ class MainActivity : AppCompatActivity() {
         } else {
             this.startService(serviceIntent)
         }
+
         popup = ListPopupWindow(this)
 
         sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
         edit = sharedPreferences!!.edit()
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(sharedPreferences!!.getBoolean("finger",false)) {
+                fingerprint()
+            }
+        }
 
 
         setUpViewPager()
@@ -200,6 +212,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun showListPopupWindow(anchor: View) {
         val listPopupItems = ArrayList<ItemMain>()
         listPopupItems.add(ItemMain("Change lock", R.drawable.close))
@@ -208,18 +221,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             listPopupItems.add(ItemMain("Fingerprint", R.drawable.lock_click))
 
-                goldfinger = Goldfinger.Builder(this)
-                    .logEnabled(true)
-                    .build()
-            if (goldfinger!!.canAuthenticate()) {
-                goldfinger!!.authenticate(buildPromptParams(), object : Goldfinger.Callback {
-                    override fun onError(e: Exception) {}
-                    override fun onResult(result: Goldfinger.Result) {
-                        if (result.type() == Goldfinger.Type.SUCCESS)
-                            Toast.makeText(this@MainActivity, "dung", Toast.LENGTH_SHORT).show()
-                    }
-                })
-            }
+
         }
 
         listPopupItems.add(ItemMain("Dark mode", R.drawable.lock_click))
@@ -248,6 +250,7 @@ class MainActivity : AppCompatActivity() {
 
                     }
                     1 -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (sharedPreferences!!.getBoolean("finger", false)) {
                             adapter!!.updateFinger(it, false)
                             edit!!.putBoolean("finger", false)
@@ -257,6 +260,9 @@ class MainActivity : AppCompatActivity() {
                             adapter!!.updateFinger(it, true)
                             edit!!.putBoolean("finger", true)
                             edit!!.apply()
+                        }
+                        }else{
+                            Toast.makeText(this@MainActivity,"thiet bi khong ho tro van tay",Toast.LENGTH_SHORT).show()
                         }
 
                     }
@@ -287,13 +293,44 @@ class MainActivity : AppCompatActivity() {
         // Convert the dps to pixels, based on density scale
         return (dp * scale + 0.5f).toInt()
     }
-     fun buildPromptParams(): PromptParams {
-        return PromptParams.Builder(this)
-            .title("Payment")
-            .description("Authenticate Fingerprint to proceed with payment") /* Device credentials can be used here */ //            .deviceCredentialsAllowed(true)
-            .negativeButtonText("Cancel")
-            .build()
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun fingerprint(){
+        val keyguardManager = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+        val fingerprintManager =
+            getSystemService(FINGERPRINT_SERVICE) as FingerprintManager
+
+
+        // Check whether the device has a Fingerprint sensor.
+        if (!fingerprintManager.isHardwareDetected) {
+           Toast.makeText(this,"Your Device does not have a Fingerprint Sensor",Toast.LENGTH_SHORT).show()
+        } else { // Checks whether fingerprint permission is set on manifest
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.USE_FINGERPRINT
+                ) !== PackageManager.PERMISSION_GRANTED
+            ) {
+                Toast.makeText(this,"Fingerprint authentication permission not enabled",Toast.LENGTH_SHORT).show()
+            } else { // Check whether at least one fingerprint is registered
+                if (!fingerprintManager.hasEnrolledFingerprints()) {
+                    Toast.makeText(this,"Register at least one fingerprint in Settings",Toast.LENGTH_SHORT).show()
+
+                } else { // Checks whether lock screen security is enabled or not
+                    if (!keyguardManager.isKeyguardSecure) {
+                        Toast.makeText(this,"Lock screen security not enabled in Settings",Toast.LENGTH_SHORT).show()
+                    } else {
+                        Helper.generateKey()
+                        if (cipherInit()) {
+                            val cryptoObject: FingerprintManager.CryptoObject =
+                                FingerprintManager.CryptoObject(cipher!!)
+                            val helper = FingerprintHandler(this)
+                            helper.startAuth(fingerprintManager, cryptoObject)
+                        }
+                    }
+                }
+            }
+        }
     }
+
 
 
 }
