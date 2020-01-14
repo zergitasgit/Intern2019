@@ -12,12 +12,14 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.lock.applock.R
 import com.lock.applock.`object`.App
 import com.lock.applock.activity.SplashActivity
 import com.lock.applock.db.DbApp
+import kotlinx.android.synthetic.main.window_manager.view.*
 import java.util.*
 
 
@@ -34,10 +36,14 @@ class LockService : Service() {
     var dbApp: DbApp? = null
 
     var timer: Timer? = null
-    companion object{
+
+    companion object {
         var currentApp = ""
         var previousApp = ""
+        var mpackageName = ""
+
     }
+
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
     }
@@ -58,9 +64,6 @@ class LockService : Service() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
-
-
 
 
         return START_STICKY
@@ -87,15 +90,13 @@ class LockService : Service() {
             if (action!!.equals("PAKAGENAME", ignoreCase = true)) {
                 var lock = p1.extras?.getBoolean("lock")
                 if (lock!!) {
-//                    popupView!!.ll_pattern.visibility = View.VISIBLE
-//                    windowManager!!.updateViewLayout(popupView, params)
-//                    Toast.makeText(applicationContext,"true",Toast.LENGTH_SHORT).show()
+                    popupView!!.ll_pattern.visibility = View.VISIBLE
+                    windowManager!!.updateViewLayout(popupView, params)
 
 
                 } else {
-//                    popupView!!.ll_pattern.visibility = View.GONE
-//                    windowManager!!.updateViewLayout(popupView, params)
-//                    Toast.makeText(applicationContext,"false",Toast.LENGTH_SHORT).show()
+                    popupView!!.ll_pattern.visibility = View.GONE
+                    windowManager!!.updateViewLayout(popupView, params)
                 }
 //                Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show()
             } else if (action.equals("LOCKED", ignoreCase = true) || action.equals(
@@ -148,23 +149,19 @@ class LockService : Service() {
 
             val intent = Intent("PAKAGENAME")
 
-            if (isConcernedAppIsInForeground() && currentApp != packageName) {
-                Log.d("isConcernedAppIsInFrgnd", currentApp)
-                if (!currentApp.matches(previousApp.toRegex())) {
-                 previousApp = currentApp
-                    intent.putExtra("lock", true)
+            if (isConcernedAppIsInForeground()) {
+                intent.putExtra("lock", true)
 
-                }else{
-//                    Log.d("isConcernedAppIsInFrgnd", "false")
-                }
+                Log.d("isConcernedAppIsInFrgnd", "true")
 
 
             } else {
+                mpackageName=" "
                 intent.putExtra("lock", false)
 
-                Log.d("isConcernedAppIsInFrgnd", currentApp)
-                previousApp =""
+                Log.d("isConcernedAppIsInFrgnd", "false")
             }
+            applicationContext.sendBroadcast(intent)
 
         }
     }
@@ -220,7 +217,6 @@ class LockService : Service() {
                 }
             }
         } else {
-            var mpackageName = manager.runningAppProcesses[0].processName
             val usage =
                 applicationContext.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
             val time = System.currentTimeMillis()
@@ -237,19 +233,28 @@ class LockService : Service() {
                     mpackageName = ""
                 } else {
                     mpackageName = runningTask[runningTask.lastKey()]!!.packageName
-                    currentApp = mpackageName
 
                 }
+                Log.d("AppCheckService", "pakageName " + mpackageName)
             }
-            var i = 0
-            while (pakageName != null && i < pakageName.size) {
-//                Log.d("AppCheckService", "pakageName Size" + pakageName.size)
-                if (mpackageName == pakageName[i].packagename) {
-                    currentApp =
-                        pakageName[i].packagename
+//            var i = 0
+//            while (pakageName != null && i < pakageName.size) {
+////                Log.d("AppCheckService", "pakageName Size" + pakageName.size)
+//                if (mpackageName == pakageName[i].packagename) {
+//                    currentApp =
+//                        pakageName[i].packagename
+//                    return true
+//                }
+//                i++
+//            }
+            for (i in pakageName) {
+                if (mpackageName == i.packagename && mpackageName !=packageName) {
+                    mpackageName = i.packagename
                     return true
                 }
-                i++
+            }
+            if(mpackageName=="android"){
+                return true
             }
         }
         return false
