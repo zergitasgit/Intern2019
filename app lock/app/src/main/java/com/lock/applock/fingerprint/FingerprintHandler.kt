@@ -8,17 +8,19 @@ import android.content.pm.PackageManager
 import android.hardware.fingerprint.FingerprintManager
 import android.os.Build
 import android.os.CancellationSignal
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.lock.applock.R
+import com.lock.applock.activity.MainActivity
 
 @RequiresApi(Build.VERSION_CODES.M)
 class FingerprintHandler(private var context: Context) :
     FingerprintManager.AuthenticationCallback() {
-
+    var cancellationSignal : CancellationSignal?=null
 
     // Constructor
 
@@ -26,7 +28,7 @@ class FingerprintHandler(private var context: Context) :
         manager: FingerprintManager,
         cryptoObject: FingerprintManager.CryptoObject?
     ) {
-        val cancellationSignal = CancellationSignal()
+         cancellationSignal = CancellationSignal()
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.USE_FINGERPRINT
@@ -35,26 +37,35 @@ class FingerprintHandler(private var context: Context) :
             return
         }
         manager.authenticate(cryptoObject, cancellationSignal, 0, this, null)
+
     }
 
     override fun onAuthenticationError(errMsgId: Int, errString: CharSequence) {
-        this.update("$errString")
+
+
+
     }
 
     override fun onAuthenticationHelp(helpMsgId: Int, helpString: CharSequence) {
-        this.update("$helpString")
+
     }
 
     override fun onAuthenticationFailed() {
-        this.update("Fingerprint Authentication failed.")
+
+        Toast.makeText(context,"Fingerprint Authentication failed.",Toast.LENGTH_SHORT).show()
     }
 
     override fun onAuthenticationSucceeded(result: FingerprintManager.AuthenticationResult?) {
-        this.update("dung")
+        this.update()
     }
 
-    private  fun update(e: String) {
-        Toast.makeText(context,e,Toast.LENGTH_SHORT).show()
-    }
+    private  fun update() {
+
+            val intent = Intent("FINGER")
+
+            context.sendBroadcast(intent)
+        }
+//        Toast.makeText(context,"ji",Toast.LENGTH_SHORT).show()
+
 
 }

@@ -1,6 +1,7 @@
 package com.lock.applock.activity
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
@@ -67,6 +68,9 @@ class PinActivity : AppCompatActivity() {
                 edit!!.putBoolean("pin", true)
                 edit!!.apply()
                 onBackPressed()
+                val intent = Intent("CHANGE")
+                intent.putExtra("pattern",false)
+                sendBroadcast(intent)
 
             } else {
                 if (sharedPreferences!!.getString("passwordNew", "") == "") {

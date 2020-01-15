@@ -51,7 +51,7 @@ class ItemMainAdapter(private val context: Context,
         if(isFinger) {
             Glide
                 .with(context)
-                .load(R.drawable.lock_click)
+                .load(R.drawable.ic_on)
                 .thumbnail(0.5f)
                 .transition(
                     DrawableTransitionOptions()
@@ -62,7 +62,7 @@ class ItemMainAdapter(private val context: Context,
         }else{
             Glide
                 .with(context)
-                .load(R.drawable.lock)
+                .load(R.drawable.ic_off)
                 .thumbnail(0.5f)
                 .transition(
                     DrawableTransitionOptions()

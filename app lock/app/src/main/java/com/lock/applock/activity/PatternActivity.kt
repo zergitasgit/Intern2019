@@ -2,6 +2,7 @@ package com.lock.applock.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
@@ -145,6 +146,9 @@ class PatternActivity : AppCompatActivity() {
                 edit!!.putBoolean("pin",false)
                 edit!!.apply()
                 onBackPressed()
+                val intent = Intent("CHANGE")
+                intent.putExtra("pattern",true)
+                sendBroadcast(intent)
 
             } else {
                 if (sharedPreferences!!.getString("passwordNew", "") == "") {

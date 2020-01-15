@@ -17,6 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_gradient"
             android:layout_alignParentStart="true">
 
             <RelativeLayout
@@ -91,8 +92,9 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:elevation="0dp"
+            android:background="#0b183c"
             app:tabGravity="fill"
-            app:tabIndicatorColor="#ffa9ad"
+            app:tabIndicatorColor="#4aa8ff"
             app:tabMode="fixed"
             >
 

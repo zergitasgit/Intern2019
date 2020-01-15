@@ -57,6 +57,7 @@ class SplashActivity : AppCompatActivity() {
                 ll_pattern.visibility=View.GONE
                 rl_pin.visibility = View.GONE
                 ll_per.visibility = View.VISIBLE
+                container.visibility = View.VISIBLE
                 checkPermission()
             }
         }else{
@@ -64,6 +65,16 @@ class SplashActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        setUpFinger()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -86,7 +97,7 @@ class SplashActivity : AppCompatActivity() {
     }
     override fun onStop() {
         super.onStop()
-        if(tv_pass.text == "Creat a Pattern \n (Again)" && tv_pass.visibility==View.VISIBLE){
+        if(tv_pass.text == "Creat a Pattern \n (Again)"){
             edit!!.putString(
                 "pattern",
                 ""
@@ -94,7 +105,7 @@ class SplashActivity : AppCompatActivity() {
             edit!!.apply()
             tv_pass.text = "Creat a Pattern"
         }
-        if(tv_pass_pin.text == "Creat a Pin \n (Again)" && tv_pass_pin.visibility ==View.VISIBLE){
+        if(tv_pass_pin.text == "Creat a Pin \n (Again)"){
             edit!!.putString(
                 "pattern",
                 ""
@@ -104,6 +115,15 @@ class SplashActivity : AppCompatActivity() {
         }
     }
     fun setup(){
+        if(sharedPreferences!!.getString("pattern", "")==""){
+            container.visibility = View.VISIBLE
+        }else{
+            container.visibility = View.GONE
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            startActivity(intent)
+
+        }
+
         if(sharedPreferences!!.getBoolean("pin",false)){
             ll_pattern.visibility=View.GONE
             rl_pin.visibility = View.VISIBLE
@@ -114,7 +134,13 @@ class SplashActivity : AppCompatActivity() {
             setUpPassword()
         }
     }
-
+//    fun setUpFinger(){
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if(sharedPreferences!!.getBoolean("finger",false)) {
+//                fingerprint(this)
+//            }
+//        }
+//    }
     @RequiresApi(Build.VERSION_CODES.M)
     private fun checkPermission() {
         rl_draw.setOnClickListener {
@@ -234,7 +260,7 @@ class SplashActivity : AppCompatActivity() {
                 )
             ) {
                 tv_pass.visibility = View.GONE
-                tv_pass.text = "Creat a Pattern"
+                tv_pass.text = "Enter Pattern"
                 val intent = Intent(this@SplashActivity, MainActivity::class.java)
                 startActivity(intent)
                 edit!!.putString(
@@ -242,6 +268,7 @@ class SplashActivity : AppCompatActivity() {
                     PatternLockUtils.patternToString(patter_lock_view, pattern)
                 )
                 edit!!.apply()
+                patter_lock_view!!.clearPattern()
 
             } else {
                 if (sharedPreferences!!.getString("pattern", "") == "") {
@@ -293,7 +320,7 @@ class SplashActivity : AppCompatActivity() {
 
             ) {
                 tv_pass_pin.visibility = View.GONE
-                tv_pass_pin.text = "Creat a Pin"
+                tv_pass_pin.text = "Enter Pin"
                 val intent = Intent(this@SplashActivity, MainActivity::class.java)
                 startActivity(intent)
                 edit!!.putString(
@@ -301,6 +328,7 @@ class SplashActivity : AppCompatActivity() {
                     pin
                 )
                 edit!!.apply()
+                pin_lock_view_pin.resetPinLockView()
 
             } else {
                 if (sharedPreferences!!.getString("pattern", "") == "") {
@@ -329,4 +357,7 @@ class SplashActivity : AppCompatActivity() {
             tv_pass_pin.visibility = View.VISIBLE
         }
     }
+
+
+
 }

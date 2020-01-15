@@ -2,41 +2,88 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.SplashActivity">
+    android:visibility="gone"
+    tools:context=".activity.SplashActivity"
+    android:background="@drawable/bg">
 
+
+    <LinearLayout
+        android:id="@+id/ll_per"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="104dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/icon_bg"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:text="App Lock"
+            android:textColor="#fff"
+            android:textSize="20dp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:text="Protect your apps - Protect your secret !"
+            android:layout_marginBottom="10dp"
+            android:textColor="#fff">
+
+        </TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="100dp"
-            android:id="@+id/ll_per"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:layout_height="270dp"
+            android:orientation="vertical"
+            android:layout_margin="30dp"
+            android:background="@drawable/bg_rl_per">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="You need to give some permissions"
+                android:text="You need to give some permissions to the"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:textColor="#fff"
+                android:layout_marginTop="30dp">
 
-                ></TextView>
+            </TextView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="to the AppLock for Sercurity Policies"></TextView>
+                android:text="AppLock for Sercurity Policies"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:layout_marginBottom="10dp"
+                android:textSize="15dp">
+
+            </TextView>
 
             <RelativeLayout
                 android:id="@+id/rl_draw"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="20dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="100dp"
+
                 android:background="@drawable/bg_per">
 
                 <TextView
@@ -44,37 +91,59 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
+                    android:textColor="#EBEBEB"
                     android:text="Permit drawing over other app">
 
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="19dp"
+                    android:text=">"
+                    android:textColor="#EBEBEB">
                 </TextView>
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_use"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="20dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/bg_per">
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textColor="#EBEBEB"
+                    android:layout_margin="10dp"
                     android:text="Permit accsing usege starts">
 
                 </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="19dp"
+                    android:text=">"
+                    android:textColor="#EBEBEB">
+                </TextView>
             </RelativeLayout>
         </LinearLayout>
+    </LinearLayout>
 
 
-    <RelativeLayout
-        android:background="#303030"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ll_pattern"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#303030"
         android:orientation="vertical"
-        android:id="@+id/ll_pattern"
         android:visibility="visible">
 
         <ImageView
@@ -82,7 +151,7 @@
             android:layout_width="84dp"
             android:layout_height="84dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="104dp"/>
+            android:layout_marginTop="104dp" />
 
         <TextView
             android:id="@+id/tv_pass"
@@ -95,7 +164,8 @@
             android:gravity="center"
             android:text="Creat a Pattern"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/tv_pass_wrong"
             android:layout_width="wrap_content"
@@ -106,9 +176,9 @@
             android:fontFamily="sans-serif-thin"
             android:gravity="center"
             android:text="Pattern Wrong"
-            android:visibility="gone"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <com.andrognito.patternlockview.PatternLockView
             android:id="@+id/patter_lock_view"
@@ -119,14 +189,15 @@
             app:aspectRatio="square"
             app:aspectRatioEnabled="true"
             app:dotAnimationDuration="150"
-            app:dotCount="3"/>
+            app:dotCount="3" />
 
     </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/rl_pin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mine_shaft"
-        android:id="@+id/rl_pin"
         tools:context="com.andrognito.pinlockviewapp.SampleActivity">
 
         <ImageView
@@ -150,6 +221,7 @@
             android:text="Creat a Pin"
             android:textColor="@color/white"
             android:textSize="16sp" />
+
         <TextView
             android:id="@+id/tv_pass_pin_wrong"
             android:layout_width="256dp"
@@ -160,9 +232,9 @@
             android:fontFamily="sans-serif-thin"
             android:gravity="center"
             android:text="Pin Wrong"
-            android:visibility="gone"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <com.andrognito.pinlockview.IndicatorDots
             android:id="@+id/indicator_dots_pin"
@@ -179,14 +251,13 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             app:keypadButtonSize="72dp"
+            app:keypadDeleteButtonPressedColor="#4aa8ff"
+            app:keypadHorizontalSpacing="20dp"
             app:keypadShowDeleteButton="true"
             app:keypadTextColor="@color/white"
             app:keypadTextSize="18dp"
-            app:keypadHorizontalSpacing="20dp"
-            app:keypadVerticalSpacing="20dp"
-            app:keypadDeleteButtonPressedColor="#4aa8ff"/>
+            app:keypadVerticalSpacing="20dp" />
     </RelativeLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
