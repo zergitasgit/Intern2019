@@ -97,21 +97,21 @@ class SplashActivity : AppCompatActivity() {
     }
     override fun onStop() {
         super.onStop()
-        if(tv_pass.text == "Creat a Pattern \n (Again)"){
+        if(tv_pass_again_splash.text == resources.getString(R.string.again) && tv_pass_again_splash.visibility == View.VISIBLE){
             edit!!.putString(
                 "pattern",
                 ""
             )
             edit!!.apply()
-            tv_pass.text = "Creat a Pattern"
+            tv_pass_again_splash.text = ""
         }
-        if(tv_pass_pin.text == "Creat a Pin \n (Again)"){
+        if(tv_pass_pin_again_splash.text == resources.getString(R.string.again) && tv_pass_pin_again_splash.visibility == View.VISIBLE){
             edit!!.putString(
                 "pattern",
                 ""
             )
             edit!!.apply()
-            tv_pass.text = "Creat a Pin"
+            tv_pass_pin_again_splash.text = ""
         }
     }
     fun setup(){
@@ -260,7 +260,9 @@ class SplashActivity : AppCompatActivity() {
                 )
             ) {
                 tv_pass.visibility = View.GONE
-                tv_pass.text = "Enter Pattern"
+
+                tv_pass_again_splash.visibility = View.GONE
+                tv_pass.text = resources.getString(R.string.draw_pattern)
                 val intent = Intent(this@SplashActivity, MainActivity::class.java)
                 startActivity(intent)
                 edit!!.putString(
@@ -277,10 +279,12 @@ class SplashActivity : AppCompatActivity() {
                         PatternLockUtils.patternToString(patter_lock_view, pattern)
                     )
                     edit!!.apply()
-                    tv_pass.text = "Creat a Pattern \n (Again)"
+                    tv_pass.text = resources.getString(R.string.creat_pattern)
+                    tv_pass_again_splash.text = resources.getString(R.string.again)
                 }else{
                     tv_pass_wrong.visibility = View.VISIBLE
                     tv_pass.visibility = View.GONE
+                    tv_pass_again_splash.visibility = View.GONE
                 }
                 Handler().postDelayed({
                     patter_lock_view!!.clearPattern()
@@ -300,6 +304,7 @@ class SplashActivity : AppCompatActivity() {
         override fun onProgress(progressPattern: MutableList<PatternLockView.Dot>?) {
             tv_pass_wrong.visibility = View.GONE
             tv_pass.visibility = View.VISIBLE
+            tv_pass_again_splash.visibility = View.VISIBLE
         }
 
     }
@@ -320,7 +325,8 @@ class SplashActivity : AppCompatActivity() {
 
             ) {
                 tv_pass_pin.visibility = View.GONE
-                tv_pass_pin.text = "Enter Pin"
+                tv_pass_again_splash.visibility = View.GONE
+                tv_pass_pin.text = resources.getString(R.string.enter_pin)
                 val intent = Intent(this@SplashActivity, MainActivity::class.java)
                 startActivity(intent)
                 edit!!.putString(
@@ -337,10 +343,12 @@ class SplashActivity : AppCompatActivity() {
                         pin
                     )
                     edit!!.apply()
-                    tv_pass.text = "Creat a Pin \n (Again)"
+                    tv_pass.text = resources.getString(R.string.creat_pattern)
+                    tv_pass_pin_again_splash.text = resources.getString(R.string.again)
                 }else{
                     tv_pass_pin_wrong.visibility = View.VISIBLE
                     tv_pass_pin.visibility = View.GONE
+                    tv_pass_pin_again_splash.visibility = View.GONE
                 }
                 Handler().postDelayed({
                     pin_lock_view_pin.resetPinLockView()
@@ -355,6 +363,7 @@ class SplashActivity : AppCompatActivity() {
         override fun onPinChange(pinLength: Int, intermediatePin: String) {
             tv_pass_pin_wrong.visibility = View.GONE
             tv_pass_pin.visibility = View.VISIBLE
+            tv_pass_pin_again_splash.visibility = View.VISIBLE
         }
     }
 

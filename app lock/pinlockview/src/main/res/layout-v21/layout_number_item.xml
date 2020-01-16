@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@drawable/bg"/>
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:background="@drawable/bg_pin"/>
 
 </LinearLayout>

@@ -38,23 +38,28 @@ class PatternActivity : AppCompatActivity() {
         setContentView(R.layout.activity_pattern)
         sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
         edit = sharedPreferences!!.edit()
+
         setUpPassword()
 
     }
     override fun onStop() {
         super.onStop()
-        if(tv_pass.text == "Creat a Pattern \n (Again)"){
+        if(tv_pass_again.visibility == View.VISIBLE){
             edit!!.putString(
                 "passwordNew",
                 ""
             )
             edit!!.apply()
-            tv_pass.text = "Creat a Pattern"
+            tv_pass.text = resources.getString(R.string.creat_pattern)
+            tv_pass_again.visibility= View.GONE
         }
     }
 
     @SuppressLint("CheckResult")
     private fun setUpPassword() {
+        iv_back.setOnClickListener {
+            onBackPressed()
+        }
         edit!!.putString(
             "passwordNew",
             ""
@@ -78,6 +83,13 @@ class PatternActivity : AppCompatActivity() {
         patter_lock_view.setViewMode(PatternLockView.PatternViewMode.CORRECT)
         patter_lock_view.dotAnimationDuration = 150
         patter_lock_view.pathEndAnimationDuration = 100
+        if (sharedPreferences!!.getBoolean("dark",false)){
+            con_pattern.setBackgroundResource(R.drawable.bg_dark)
+
+        }else{
+            con_pattern.setBackgroundResource(R.drawable.bg)
+
+        }
         patter_lock_view.correctStateColor = ResourceUtils.getColor(
             this,
             R.color.white
@@ -136,7 +148,7 @@ class PatternActivity : AppCompatActivity() {
                     pattern
                 )
             ) {
-                tv_pass.text = "Creat a Pattern"
+                tv_pass.text = resources.getString(R.string.creat_pattern)
                 edit!!.putString(
                     "pattern", PatternLockUtils.patternToString(patter_lock_view, pattern)
                 )
@@ -157,10 +169,12 @@ class PatternActivity : AppCompatActivity() {
                         PatternLockUtils.patternToString(patter_lock_view, pattern)
                     )
                     edit!!.apply()
-                    tv_pass.text = "Creat a Pattern \n (Again)"
+//                    tv_pass.text = "Creat a Pattern \n (Again)"
+                    tv_pass_again.text = resources.getString(R.string.again)
                 }else{
                     tv_pass.visibility = View.GONE
                     tv_pass_wrong_pattern.visibility = View.VISIBLE
+                    tv_pass_again.visibility = View.GONE
                 }
                 Handler().postDelayed({
                     patter_lock_view!!.clearPattern()
@@ -180,6 +194,7 @@ class PatternActivity : AppCompatActivity() {
         override fun onProgress(progressPattern: MutableList<PatternLockView.Dot>?) {
             tv_pass.visibility = View.VISIBLE
             tv_pass_wrong_pattern.visibility = View.GONE
+            tv_pass_again.visibility = View.VISIBLE
         }
 
     }

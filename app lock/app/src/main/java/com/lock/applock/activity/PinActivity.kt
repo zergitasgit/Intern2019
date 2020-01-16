@@ -28,22 +28,31 @@ class PinActivity : AppCompatActivity() {
         setContentView(R.layout.activity_pin)
         sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
         edit = sharedPreferences!!.edit()
+        if (sharedPreferences!!.getBoolean("dark",false)){
+            con_pin.setBackgroundResource(R.drawable.bg_dark)
+        }else{
+            con_pin.setBackgroundResource(R.drawable.bg)
+        }
         setUp()
     }
 
     override fun onStop() {
         super.onStop()
-        if (tv_pass.text == "Creat a Pin \n (Again)") {
+        if (tv_pass_again.visibility == View.VISIBLE) {
             edit!!.putString(
                 "passwordNew",
                 ""
             )
             edit!!.apply()
-            tv_pass.text = "Creat a Pin"
+            tv_pass.text = resources.getString(R.string.craet_pin)
+            tv_pass_again.visibility = View.GONE
         }
     }
 
     private fun setUp() {
+        iv_back.setOnClickListener {
+            onBackPressed()
+        }
         edit!!.putString(
             "passwordNew",
             ""
@@ -62,7 +71,7 @@ class PinActivity : AppCompatActivity() {
             if (sharedPreferences!!.getString("passwordNew", "") ==
                 pin
             ) {
-                tv_pass.text = "Creat a Pin"
+                tv_pass.text = resources.getString(R.string.craet_pin)
                 edit!!.putString("pattern", pin)
                 edit!!.putString("passwordNew", "")
                 edit!!.putBoolean("pin", true)
@@ -76,11 +85,12 @@ class PinActivity : AppCompatActivity() {
                 if (sharedPreferences!!.getString("passwordNew", "") == "") {
                     edit!!.putString("passwordNew", pin)
                     edit!!.apply()
-                    tv_pass.text = "Creat a Pin \n (Again)"
+
+                    tv_pass_again.text = resources.getString(R.string.again)
                 } else {
                     tv_pass.visibility = View.GONE
                     tv_pass_wrong_pin.visibility = View.VISIBLE
-
+                    tv_pass_again.visibility = View.GONE
                 }
                 Handler().postDelayed({
                     pin_lock_view.resetPinLockView()
@@ -94,6 +104,7 @@ class PinActivity : AppCompatActivity() {
         override fun onPinChange(pinLength: Int, intermediatePin: String) {
             tv_pass.visibility = View.VISIBLE
             tv_pass_wrong_pin.visibility = View.GONE
+            tv_pass_again.visibility = View.VISIBLE
         }
     }
 }

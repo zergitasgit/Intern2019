@@ -8,5 +8,6 @@
         android:layout_height="wrap_content"
         android:textColor="@drawable/bg_text"
         android:textSize="14dp"
+        android:fontFamily="@font/dam"
         android:id="@+id/tv_tab"/>
 </RelativeLayout>

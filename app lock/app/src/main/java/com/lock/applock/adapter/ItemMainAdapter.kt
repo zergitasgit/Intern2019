@@ -71,4 +71,28 @@ class ItemMainAdapter(private val context: Context,
                 .into(view.iv)
         }
     }
+    fun updateDark(view :View,dark: Boolean){
+        if(dark) {
+            Glide
+                .with(context)
+                .load(R.drawable.ic_on)
+                .thumbnail(0.5f)
+                .transition(
+                    DrawableTransitionOptions()
+                        .crossFade()
+                )
+                .into(view.iv)
+
+        }else{
+            Glide
+                .with(context)
+                .load(R.drawable.ic_off)
+                .thumbnail(0.5f)
+                .transition(
+                    DrawableTransitionOptions()
+                        .crossFade()
+                )
+                .into(view.iv)
+        }
+    }
 }

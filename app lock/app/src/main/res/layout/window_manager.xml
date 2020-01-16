@@ -5,13 +5,14 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     android:visibility="gone">
 
     <RelativeLayout
         android:id="@+id/ll_pattern"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#303030"
+
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -20,18 +21,19 @@
             android:layout_width="84dp"
             android:layout_height="84dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="104dp" />
+            android:layout_marginTop="104dp"
+            />
 
         <TextView
             android:id="@+id/tv_pass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/profile_image"
+            android:layout_below="@+id/iv_pattern"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="36dp"
-            android:fontFamily="sans-serif-thin"
+            android:fontFamily="@font/dam"
             android:gravity="center"
-            android:text="Creat a Pattern"
+            android:text="@string/creat_pattern"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -39,12 +41,12 @@
             android:id="@+id/tv_pass_wrong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/profile_image"
+            android:layout_below="@+id/iv_pattern"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="36dp"
-            android:fontFamily="sans-serif-thin"
+            android:fontFamily="@font/dam"
             android:gravity="center"
-            android:text="Pattern Wrong"
+            android:text="@string/pattern_wrong"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:visibility="gone" />
@@ -58,6 +60,7 @@
             app:aspectRatio="square"
             app:aspectRatioEnabled="true"
             app:dotAnimationDuration="150"
+
             app:dotCount="3" />
 
 
@@ -67,7 +70,7 @@
         android:id="@+id/rl_pin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/mine_shaft"
+
         tools:context="com.andrognito.pinlockviewapp.SampleActivity">
 
         <ImageView
@@ -76,7 +79,6 @@
             android:layout_height="84dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="104dp">
-
         </ImageView>
 
         <TextView
@@ -86,9 +88,9 @@
             android:layout_below="@+id/iv_pin"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="36dp"
-            android:fontFamily="sans-serif-thin"
+            android:fontFamily="@font/dam"
             android:gravity="center"
-            android:text="Creat a Pin"
+            android:text="@string/craet_pin"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -99,9 +101,9 @@
             android:layout_below="@+id/iv_pin"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="36dp"
-            android:fontFamily="sans-serif-thin"
+            android:fontFamily="@font/dam"
             android:gravity="center"
-            android:text="Pin Wrong"
+            android:text="@string/pin_wrong"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:visibility="gone" />
@@ -119,14 +121,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/indicator_dots_pin"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            app:keypadButtonSize="72dp"
+            android:layout_marginTop="25dp"
+            app:keypadButtonSize="54dp"
             app:keypadDeleteButtonPressedColor="#4aa8ff"
-            app:keypadHorizontalSpacing="20dp"
+            app:keypadHorizontalSpacing="30dp"
             app:keypadShowDeleteButton="true"
             app:keypadTextColor="@color/white"
             app:keypadTextSize="18dp"
-            app:keypadVerticalSpacing="20dp" />
+            app:keypadVerticalSpacing="30dp" />
     </RelativeLayout>
 
     <RelativeLayout

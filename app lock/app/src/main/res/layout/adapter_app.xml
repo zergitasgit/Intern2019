@@ -5,8 +5,8 @@
 
     >
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
         android:id="@+id/iv"
@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_name"
             android:textSize="15dp"
+            android:fontFamily="@font/thuong"
             android:textColor="#000"
             android:maxLines="1"/>
     </LinearLayout>

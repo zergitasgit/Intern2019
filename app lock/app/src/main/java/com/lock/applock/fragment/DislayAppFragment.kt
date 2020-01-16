@@ -38,6 +38,7 @@ class DislayAppFragment : Fragment() {
     var brPo: BroadcastReceiver? = null
     var dbApp: DbApp? = null
     var showPo = false
+    var adapter : AppAdapter?=null
 
     @SuppressLint("CommitPrefEdits")
     override fun onCreateView(
@@ -50,6 +51,7 @@ class DislayAppFragment : Fragment() {
         intent.addAction("SEARCH")
         intent.addAction("LOCKEDAPP")
         intent.addAction("POPUP")
+        intent.addAction("DARK")
         context!!.registerReceiver(broadcastReceiver, intent)
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         editor = sharedPreferences?.edit()
@@ -68,6 +70,7 @@ class DislayAppFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         GetListApp(context!!,this).execute()
+        updateDark()
 
     }
 
@@ -165,6 +168,15 @@ class DislayAppFragment : Fragment() {
 
                 showPo = show
 
+            }else if (action.equals("DARK", ignoreCase = true)) {
+                var dark = p1.extras.getBoolean("dark")
+                if(dark) {
+                    rl_display.setBackgroundResource(R.color.dark)
+                }else{
+                    rl_display.setBackgroundResource(R.color.normal)
+                }
+                adapter!!.notifyDataSetChanged()
+
             }
 
         }
@@ -206,7 +218,7 @@ class DislayAppFragment : Fragment() {
         }
 
         private fun recycleView(list: ArrayList<App>) {
-            val adapter = AppAdapter(context!!, list, object : AppAdapter.ItemListener {
+          adapter = AppAdapter(context!!, list, object : AppAdapter.ItemListener {
 
 
                 override fun onClick(position: Int,packageName:String) {
@@ -237,7 +249,13 @@ class DislayAppFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         context!!.unregisterReceiver(broadcastReceiver)
-
+    }
+    fun updateDark(){
+        if (sharedPreferences!!.getBoolean("dark",false)){
+            rl_display.setBackgroundResource(R.color.dark)
+        }else{
+            rl_display.setBackgroundResource(R.color.normal)
+        }
 
     }
 

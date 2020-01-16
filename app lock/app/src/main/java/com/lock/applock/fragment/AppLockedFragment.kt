@@ -15,8 +15,10 @@ import com.lock.applock.activity.MainActivity
 import com.lock.applock.adapter.AppAdapter
 import com.lock.applock.adapter.AppLockAdapter
 import com.lock.applock.db.DbApp
+import kotlinx.android.synthetic.main.fragment_app_locked.*
 import kotlinx.android.synthetic.main.fragment_dislay_app.*
 import kotlinx.android.synthetic.main.fragment_app_locked.view.*
+import kotlinx.android.synthetic.main.fragment_dislay_app.rv_app
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,10 +45,12 @@ class AppLockedFragment : Fragment() {
         intent.addAction("SEARCH")
         intent.addAction("LOCKED")
         intent.addAction("POPUP")
+        intent.addAction("DARK")
         context!!.registerReceiver(broadcastReceiver, intent)
 
         sharedPreferences = context!!.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         editor = sharedPreferences?.edit()
+
 
         return view
     }
@@ -57,10 +61,11 @@ class AppLockedFragment : Fragment() {
         arr = dbApp!!.getLocked()
         if(arr.size == 0){
             arr.add(App("App Lock","com.lock.applock","",1))
+//            dbApp!!.insertApp("App Lock","com.lock.applock",1)
         }
         view.rv_app.layoutManager = LinearLayoutManager(context)
         recycleview(arr)
-
+        updateDark()
 
 
     }
@@ -110,6 +115,15 @@ class AppLockedFragment : Fragment() {
 
                 showPo = show
 
+            }else if (action.equals("DARK", ignoreCase = true)) {
+                var dark = p1.extras.getBoolean("dark")
+                if(dark) {
+                    rl_lock.setBackgroundResource(R.color.dark)
+                }else{
+                    rl_lock.setBackgroundResource(R.color.normal)
+                }
+                adapter!!.notifyDataSetChanged()
+
             }
         }
 
@@ -151,6 +165,14 @@ class AppLockedFragment : Fragment() {
         super.onDestroy()
         context!!.unregisterReceiver(broadcastReceiver)
 
+
+    }
+    fun updateDark(){
+        if (sharedPreferences!!.getBoolean("dark",false)){
+            rl_lock.setBackgroundResource(R.color.dark)
+        }else{
+            rl_lock.setBackgroundResource(R.color.normal)
+        }
 
     }
 

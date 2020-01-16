@@ -19,6 +19,6 @@
         android:layout_centerVertical="true"
         android:textSize="15dp"
         android:textColor="#424242"
-        android:textStyle="bold"
+        android:fontFamily="@font/thuong"
         android:layout_margin="15dp"/>
 </RelativeLayout>

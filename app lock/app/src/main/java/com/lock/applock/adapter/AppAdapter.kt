@@ -1,6 +1,8 @@
 package com.lock.applock.adapter
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +12,19 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.lock.applock.R
 import com.lock.applock.`object`.App
 import kotlinx.android.synthetic.main.adapter_app.view.*
+import kotlinx.android.synthetic.main.adapter_app.view.iv
+import kotlinx.android.synthetic.main.adapter_app.view.iv_pop_menu
+import kotlinx.android.synthetic.main.adapter_app_lock.view.*
 
 class AppAdapter(private val context: Context,
                  private var arr : ArrayList<App>,
                  private val listener: ItemListener
 ) : RecyclerView.Adapter<AppAdapter.ViewHolder>(){
+    var sharedPreferences: SharedPreferences? = null
+    var edit: SharedPreferences.Editor? = null
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
+        sharedPreferences = context.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        edit = sharedPreferences!!.edit()
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_app,p0,false))
 
     }
@@ -58,6 +67,13 @@ class AppAdapter(private val context: Context,
                         .crossFade()
                 )
                 .into(itemView.iv)
+            if (sharedPreferences!!.getBoolean("dark",false)){
+                itemView.tv_name.setTextColor(Color.parseColor("#FFFFFF"))
+            }else{
+                itemView.tv_name.setTextColor(Color.parseColor("#000000"))
+            }
+
+
         }
         fun bindData(locked:Int){
             if(locked==1) {
@@ -82,6 +98,7 @@ class AppAdapter(private val context: Context,
                     .into(itemView.iv_pop_menu)
             }
         }
+
 
 
     }

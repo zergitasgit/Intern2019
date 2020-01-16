@@ -2,11 +2,30 @@
     <string name="app_name">AppLock</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_fingerprint">One-touch Sign In</string>
-    <string name="desc_fingerprint">Please place your fingertip on the scanner to verify your identity</string>
-    <string name="note">(Fingerprint sign in makes your app login much faster. Your device should have at least one fingerprint registered in device settings)</string>
-    <string name="title_activity_home">Fingerprint</string>
-    <string name="activity_home_desc">You have successfully logged in with fingerprint authentication</string>
-    <string name="activity_home_note">Close and re-open the app to see the fingerprint auth screen again</string>
+    <string name="app">App</string>
+    <string name="app_lock">App Locked</string>
+    <string name="change_lock">Change lock</string>
+    <string name="finger">Fingerprint</string>
+    <string name="dark">Dark mode</string>
+    <string name="craet_pin">Creat a Pin</string>
+    <string name="creat_pattern">Creat a Pattern</string>
+    <string name="creat_pattern_again">Creat a Pattern \n ( Again )</string>
+    <string name="creat_pin_again">Creat a Pin \n ( Again )</string>
+    <string name="pin_wrong">Pin Wrong</string>
+    <string name="pattern_wrong">Pattern Wrong</string>
+    <string name="again">( Again )</string>
+    <string name="protect">Protect your apps - Protect your secret !</string>
+    <string name="you_need">You need to give some permissions to the</string>
+    <string name="app_for">AppLock for Sercurity Policies</string>
+    <string name="per_draw">Permit drawing over other app</string>
+    <string name="per_use">Permit accessing usage starts</string>
+    <string name="enter_pin">Enter Pin</string>
+    <string name="draw_pattern">Draw Pattern</string>
+    <string name="choose">Choose a lock style</string>
+    <string name="your_dive">Your Device does not have a Fingerprint Sensor</string>
+    <string name="enable">Fingerprint authentication permission not enabled</string>
+    <string name="regiter">Register at least one fingerprint in Settings</string>
+    <string name="lock_screen">Lock screen security not enabled in Settings</string>
+    <string name="erro">The device does not support fingerprints</string>
+
 </resources>

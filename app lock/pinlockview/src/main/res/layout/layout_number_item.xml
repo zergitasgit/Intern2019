@@ -10,6 +10,6 @@
         android:id="@+id/button"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:background="@drawable/bg"/>
+        android:background="@drawable/bg_pin"/>
 
 </LinearLayout>

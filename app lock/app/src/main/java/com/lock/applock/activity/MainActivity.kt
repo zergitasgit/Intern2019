@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ListPopupWindow
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.lock.applock.R
 import com.lock.applock.`object`.ItemMain
@@ -46,12 +47,12 @@ class MainActivity : AppCompatActivity() {
 
 
 
-//        val serviceIntent = Intent(this, LockService::class.java)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            this.startForegroundService(serviceIntent)
-//        } else {
-//            this.startService(serviceIntent)
-//        }
+        val serviceIntent = Intent(this, LockService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.startForegroundService(serviceIntent)
+        } else {
+            this.startService(serviceIntent)
+        }
         popup = ListPopupWindow(this)
 
         sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         setUpViewPager()
         setTabView()
         setUpSearch()
+        updateDark()
 
 
 
@@ -121,11 +123,11 @@ class MainActivity : AppCompatActivity() {
         tabAdapter = TabAdapter(this, arrFragment, arrIcon, supportFragmentManager)
         tabAdapter!!.addViewFragment(
             DislayAppFragment(),
-            "App"
+            resources.getString(R.string.app)
         )
         tabAdapter!!.addViewFragment(
             AppLockedFragment(),
-            "App locked"
+            resources.getString(R.string.app_lock)
         )
 
         viewpager.offscreenPageLimit = 2
@@ -212,16 +214,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun showListPopupWindow(anchor: View) {
         val listPopupItems = ArrayList<ItemMain>()
-        listPopupItems.add(ItemMain("Change lock", R.drawable.close))
+        listPopupItems.add(ItemMain(resources.getString(R.string.change_lock), R.drawable.close))
         if (!sharedPreferences!!.getBoolean("finger", false)) {
-            listPopupItems.add(ItemMain("Fingerprint", R.drawable.ic_off))
+            listPopupItems.add(ItemMain(resources.getString(R.string.finger), R.drawable.ic_off))
         } else {
-            listPopupItems.add(ItemMain("Fingerprint", R.drawable.ic_on))
+            listPopupItems.add(ItemMain(resources.getString(R.string.finger), R.drawable.ic_on))
 
 
         }
+        if (!sharedPreferences!!.getBoolean("dark", false)) {
+            listPopupItems.add(ItemMain(resources.getString(R.string.dark), R.drawable.ic_off))
+        }else{
+            listPopupItems.add(ItemMain(resources.getString(R.string.dark), R.drawable.ic_on))
 
-        listPopupItems.add(ItemMain("Dark mode", R.drawable.ic_off))
+        }
 //
 
 
@@ -264,13 +270,32 @@ class MainActivity : AppCompatActivity() {
                         } else {
                             Toast.makeText(
                                 this@MainActivity,
-                                "thiet bi khong ho tro van tay",
+                                resources.getString(R.string.erro),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
 
                     }
                     2 -> {
+                        val intent = Intent("DARK")
+                        if (!sharedPreferences!!.getBoolean("dark", false)) {
+                            edit!!.putBoolean("dark",true)
+                            edit!!.apply()
+                            adapter!!.updateDark(it,true)
+                            intent.putExtra("dark",true)
+                            sliding_tabs.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab_dark)
+                            toolbar.background =ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient_dark)
+
+                        }else{
+                            edit!!.putBoolean("dark",false)
+                            edit!!.apply()
+                            adapter!!.updateDark(it,false)
+                            intent.putExtra("dark",false)
+                            sliding_tabs.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab)
+                            toolbar.background =ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient)
+                        }
+                        sendBroadcast(intent)
+                        popup!!.dismiss()
 
                     }
 
@@ -296,6 +321,16 @@ class MainActivity : AppCompatActivity() {
         val scale = resources.displayMetrics.density
         // Convert the dps to pixels, based on density scale
         return (dp * scale + 0.5f).toInt()
+    }
+    fun updateDark(){
+        if (sharedPreferences!!.getBoolean("dark",false)){
+            sliding_tabs.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab_dark)
+            toolbar.background =ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient_dark)
+        }else{
+            sliding_tabs.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab)
+            toolbar.background =ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient)
+        }
+
     }
 
 

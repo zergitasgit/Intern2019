@@ -44,6 +44,7 @@ class FingerprintHandler(private var context: Context) :
 
 
 
+
     }
 
     override fun onAuthenticationHelp(helpMsgId: Int, helpString: CharSequence) {
@@ -52,7 +53,6 @@ class FingerprintHandler(private var context: Context) :
 
     override fun onAuthenticationFailed() {
 
-        Toast.makeText(context,"Fingerprint Authentication failed.",Toast.LENGTH_SHORT).show()
     }
 
     override fun onAuthenticationSucceeded(result: FingerprintManager.AuthenticationResult?) {
