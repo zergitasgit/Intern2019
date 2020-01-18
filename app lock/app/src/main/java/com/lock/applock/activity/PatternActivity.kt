@@ -21,7 +21,6 @@ import com.andrognito.rxpatternlockview.events.PatternLockCompoundEvent
 import com.lock.applock.R
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_pattern.*
-import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.android.synthetic.main.activity_splash.patter_lock_view
 import kotlinx.android.synthetic.main.activity_splash.tv_pass
 
@@ -42,16 +41,17 @@ class PatternActivity : AppCompatActivity() {
         setUpPassword()
 
     }
+
     override fun onStop() {
         super.onStop()
-        if(tv_pass_again.visibility == View.VISIBLE){
+        if (tv_pass_again.visibility == View.VISIBLE) {
             edit!!.putString(
                 "passwordNew",
                 ""
             )
             edit!!.apply()
             tv_pass.text = resources.getString(R.string.creat_pattern)
-            tv_pass_again.visibility= View.GONE
+            tv_pass_again.visibility = View.GONE
         }
     }
 
@@ -83,10 +83,10 @@ class PatternActivity : AppCompatActivity() {
         patter_lock_view.setViewMode(PatternLockView.PatternViewMode.CORRECT)
         patter_lock_view.dotAnimationDuration = 150
         patter_lock_view.pathEndAnimationDuration = 100
-        if (sharedPreferences!!.getBoolean("dark",false)){
+        if (sharedPreferences!!.getBoolean("dark", false)) {
             con_pattern.setBackgroundResource(R.drawable.bg_dark)
 
-        }else{
+        } else {
             con_pattern.setBackgroundResource(R.drawable.bg)
 
         }
@@ -143,7 +143,10 @@ class PatternActivity : AppCompatActivity() {
     private var mPatternLockViewListener = object : PatternLockViewListener {
         override fun onComplete(pattern: MutableList<PatternLockView.Dot>?) {
 
-            if (sharedPreferences!!.getString("passwordNew", "") == PatternLockUtils.patternToString(
+            if (sharedPreferences!!.getString(
+                    "passwordNew",
+                    ""
+                ) == PatternLockUtils.patternToString(
                     patter_lock_view,
                     pattern
                 )
@@ -155,11 +158,11 @@ class PatternActivity : AppCompatActivity() {
                 edit!!.putString(
                     "passwordNew", ""
                 )
-                edit!!.putBoolean("pin",false)
+                edit!!.putBoolean("pin", false)
                 edit!!.apply()
                 onBackPressed()
                 val intent = Intent("CHANGE")
-                intent.putExtra("pattern",true)
+                intent.putExtra("pattern", true)
                 sendBroadcast(intent)
 
             } else {
@@ -171,7 +174,7 @@ class PatternActivity : AppCompatActivity() {
                     edit!!.apply()
 //                    tv_pass.text = "Creat a Pattern \n (Again)"
                     tv_pass_again.text = resources.getString(R.string.again)
-                }else{
+                } else {
                     tv_pass.visibility = View.GONE
                     tv_pass_wrong_pattern.visibility = View.VISIBLE
                     tv_pass_again.visibility = View.GONE

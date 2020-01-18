@@ -7,8 +7,8 @@
     <string name="change_lock">Change lock</string>
     <string name="finger">Fingerprint</string>
     <string name="dark">Dark mode</string>
-    <string name="craet_pin">Creat a Pin</string>
-    <string name="creat_pattern">Creat a Pattern</string>
+    <string name="craet_pin">Creat a new pin to lock</string>
+    <string name="creat_pattern">Creat a new pattern to lock</string>
     <string name="creat_pattern_again">Creat a Pattern \n ( Again )</string>
     <string name="creat_pin_again">Creat a Pin \n ( Again )</string>
     <string name="pin_wrong">Pin Wrong</string>

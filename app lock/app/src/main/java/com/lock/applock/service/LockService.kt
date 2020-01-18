@@ -21,7 +21,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -43,7 +42,6 @@ import com.lock.applock.`object`.App
 import com.lock.applock.activity.SplashActivity
 import com.lock.applock.db.DbApp
 import com.lock.applock.fingerprint.FingerprintHandler
-import com.lock.applock.helper.Helper
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.window_manager.view.*
 import java.io.IOException
@@ -97,8 +95,8 @@ class LockService : Service() {
         sharedPreferences = applicationContext.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         edit = sharedPreferences!!.edit()
         pakageName = dbApp!!.getLocked()
-        if(pakageName.size == 0){
-            pakageName.add(App("App Lock","com.lock.applock","",1))
+        if (pakageName.size == 0) {
+            pakageName.add(App("App Lock", "com.lock.applock", "", 1))
 //            dbApp!!.insertApp("App Lock","com.lock.applock",1)
         }
         val intent = IntentFilter()
@@ -187,7 +185,7 @@ class LockService : Service() {
                             }
                             i = 1
                         }
-                        if (k>0) {
+                        if (k > 0) {
 
                             popupView!!.container.visibility = View.VISIBLE
 
@@ -288,7 +286,7 @@ class LockService : Service() {
 
 
     }
-
+// update package name mỡi giây
     private val updateTask: TimerTask = object : TimerTask() {
         override fun run() {
 
@@ -310,7 +308,7 @@ class LockService : Service() {
 
         }
     }
-
+// khởi tạo windowmanager
     fun setUp() {
         timer = Timer("LockServices")
         timer!!.schedule(updateTask, 0, 500L)
@@ -359,7 +357,7 @@ class LockService : Service() {
             setUpPassword()
         }
     }
-
+//khởi tạo vân tay
     fun setUpFinger() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (sharedPreferences!!.getBoolean("finger", false)) {
@@ -368,7 +366,7 @@ class LockService : Service() {
         }
     }
 
-
+// kiểm tra package name ứng dụng
     fun isConcernedAppIsInForeground(): Boolean {
         val manager =
             getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -379,14 +377,13 @@ class LockService : Service() {
                 val componentInfo = task[0].topActivity
                 mpackageName = componentInfo.packageName
                 for (i in pakageName) {
-                    if (mpackageName != packageName){
+                    if (mpackageName != packageName) {
                         k++
                     }
 
                     if (mpackageName == i.packagename) {
 //                    mpackageName = i.packagename
                         return true
-
 
 
                     }
@@ -413,14 +410,13 @@ class LockService : Service() {
 //
 
             for (i in pakageName) {
-                if (mpackageName != packageName){
+                if (mpackageName != packageName) {
                     k++
                 }
 
                 if (mpackageName == i.packagename) {
 //                    mpackageName = i.packagename
                     return true
-
 
 
                 }
@@ -433,7 +429,7 @@ class LockService : Service() {
         }
         return false
     }
-
+// khóa bằng Pattern
     @SuppressLint("CheckResult")
     private fun setUpPassword() {
 
@@ -557,7 +553,7 @@ class LockService : Service() {
         }
 
     }
-
+//Khóa bằng pin
     private fun setUpPin() {
 
         popupView!!.tv_pass_pin.text = resources.getString(R.string.enter_pin)
@@ -598,6 +594,7 @@ class LockService : Service() {
             popupView!!.tv_pass_pin.text = resources.getString(R.string.enter_pin)
         }
     }
+// kiểm tra vân tay
     @TargetApi(Build.VERSION_CODES.M)
     fun generateKey() {
         try {
@@ -665,9 +662,11 @@ class LockService : Service() {
             false
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
-    fun fingerprint(context:Context,check:Boolean):Boolean{
-        val keyguardManager = context.getSystemService(AppCompatActivity.KEYGUARD_SERVICE) as KeyguardManager
+    fun fingerprint(context: Context, check: Boolean): Boolean {
+        val keyguardManager =
+            context.getSystemService(AppCompatActivity.KEYGUARD_SERVICE) as KeyguardManager
         val fingerprintManager =
             context.getSystemService(AppCompatActivity.FINGERPRINT_SERVICE) as FingerprintManager
 
@@ -686,7 +685,7 @@ class LockService : Service() {
                 } else { // Checks whether lock screen security is enabled or not
                     if (!keyguardManager.isKeyguardSecure) {
                     } else {
-                        if(check) {
+                        if (check) {
                             generateKey()
                             if (cipherInit()) {
                                 val cryptoObject: FingerprintManager.CryptoObject =
@@ -695,7 +694,7 @@ class LockService : Service() {
                                 helper.startAuth(fingerprintManager, cryptoObject)
 
                             }
-                        }else{
+                        } else {
 
                         }
                         return true

@@ -11,15 +11,15 @@ import com.lock.applock.R
 import com.lock.applock.`object`.ItemMain
 import kotlinx.android.synthetic.main.item_menu.view.*
 
-import kotlinx.android.synthetic.main.tab_item.view.*
-
-class ItemMainAdapter(private val context: Context,
-                      private var arr: ArrayList<ItemMain>,
-                      private val listener: ItemListener) : BaseAdapter()  {
+class ItemMainAdapter(
+    private val context: Context,
+    private var arr: ArrayList<ItemMain>,
+    private val listener: ItemListener
+) : BaseAdapter() {
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
         val view = LayoutInflater.from(context).inflate(R.layout.item_menu, null)
         view.rl_item.setOnClickListener {
-            listener.onClick(p0,it)
+            listener.onClick(p0, it)
         }
         Glide
             .with(context)
@@ -42,13 +42,14 @@ class ItemMainAdapter(private val context: Context,
         return 0
     }
 
-    override fun getCount(): Int =arr.size
+    override fun getCount(): Int = arr.size
 
     interface ItemListener {
-        fun onClick(position : Int, it: View)
+        fun onClick(position: Int, it: View)
     }
-    fun updateFinger(view :View,isFinger: Boolean){
-        if(isFinger) {
+
+    fun updateFinger(view: View, isFinger: Boolean) {
+        if (isFinger) {
             Glide
                 .with(context)
                 .load(R.drawable.ic_on)
@@ -59,7 +60,7 @@ class ItemMainAdapter(private val context: Context,
                 )
                 .into(view.iv)
 
-        }else{
+        } else {
             Glide
                 .with(context)
                 .load(R.drawable.ic_off)
@@ -71,8 +72,9 @@ class ItemMainAdapter(private val context: Context,
                 .into(view.iv)
         }
     }
-    fun updateDark(view :View,dark: Boolean){
-        if(dark) {
+
+    fun updateDark(view: View, dark: Boolean) {
+        if (dark) {
             Glide
                 .with(context)
                 .load(R.drawable.ic_on)
@@ -83,7 +85,7 @@ class ItemMainAdapter(private val context: Context,
                 )
                 .into(view.iv)
 
-        }else{
+        } else {
             Glide
                 .with(context)
                 .load(R.drawable.ic_off)

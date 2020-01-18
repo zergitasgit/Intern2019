@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-
         val serviceIntent = Intent(this, LockService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(serviceIntent)
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         updateDark()
 
 
-
+// xử lý edit search khi bàn phím ẩn
         this.addKeyboardToggleListener {
             contener.viewTreeObserver.addOnGlobalLayoutListener {
 
@@ -93,11 +92,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onRestart() {
-//        super.onRestart()
-//        val intent = Intent(this, SplashActivity::class.java)
-//        startActivity(intent)
-//    }
 
 
     override fun onBackPressed() {
@@ -117,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
+// khởi tạo view pager
     private fun setUpViewPager() {
         setSupportActionBar(toolbar)
         tabAdapter = TabAdapter(this, arrFragment, arrIcon, supportFragmentManager)
@@ -134,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         viewpager.adapter = tabAdapter
 
     }
-
+// khởi tạo tablayout
     private fun setTabView() {
         sliding_tabs.setupWithViewPager(viewpager)
         for (i in 0 until sliding_tabs.tabCount) {
@@ -143,7 +137,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
+// xử lý search
     private fun setUpSearch() {
         iv_search.setOnClickListener {
             iv_search.visibility = View.GONE
@@ -198,7 +192,7 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-
+// kiểm tra độ cao của view
     private fun Activity.addKeyboardToggleListener(onKeyboardToggleAction: (shown: Boolean) -> Unit): KeyboardToggleListener? {
         val root = findViewById<View>(android.R.id.content)
         val listener = KeyboardToggleListener(
@@ -211,7 +205,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
+// hiển thị popup menu
     private fun showListPopupWindow(anchor: View) {
         val listPopupItems = ArrayList<ItemMain>()
         listPopupItems.add(ItemMain(resources.getString(R.string.change_lock), R.drawable.close))
@@ -224,7 +218,7 @@ class MainActivity : AppCompatActivity() {
         }
         if (!sharedPreferences!!.getBoolean("dark", false)) {
             listPopupItems.add(ItemMain(resources.getString(R.string.dark), R.drawable.ic_off))
-        }else{
+        } else {
             listPopupItems.add(ItemMain(resources.getString(R.string.dark), R.drawable.ic_on))
 
         }
@@ -279,20 +273,26 @@ class MainActivity : AppCompatActivity() {
                     2 -> {
                         val intent = Intent("DARK")
                         if (!sharedPreferences!!.getBoolean("dark", false)) {
-                            edit!!.putBoolean("dark",true)
+                            edit!!.putBoolean("dark", true)
                             edit!!.apply()
-                            adapter!!.updateDark(it,true)
-                            intent.putExtra("dark",true)
-                            sliding_tabs.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab_dark)
-                            toolbar.background =ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient_dark)
+                            adapter!!.updateDark(it, true)
+                            intent.putExtra("dark", true)
+                            sliding_tabs.background =
+                                ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab_dark)
+                            toolbar.background = ContextCompat.getDrawable(
+                                this@MainActivity,
+                                R.drawable.bg_gradient_dark
+                            )
 
-                        }else{
-                            edit!!.putBoolean("dark",false)
+                        } else {
+                            edit!!.putBoolean("dark", false)
                             edit!!.apply()
-                            adapter!!.updateDark(it,false)
-                            intent.putExtra("dark",false)
-                            sliding_tabs.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab)
-                            toolbar.background =ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient)
+                            adapter!!.updateDark(it, false)
+                            intent.putExtra("dark", false)
+                            sliding_tabs.background =
+                                ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab)
+                            toolbar.background =
+                                ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient)
                         }
                         sendBroadcast(intent)
                         popup!!.dismiss()
@@ -322,13 +322,18 @@ class MainActivity : AppCompatActivity() {
         // Convert the dps to pixels, based on density scale
         return (dp * scale + 0.5f).toInt()
     }
-    fun updateDark(){
-        if (sharedPreferences!!.getBoolean("dark",false)){
-            sliding_tabs.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab_dark)
-            toolbar.background =ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient_dark)
-        }else{
-            sliding_tabs.background = ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab)
-            toolbar.background =ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient)
+// dark mode
+    fun updateDark() {
+        if (sharedPreferences!!.getBoolean("dark", false)) {
+            sliding_tabs.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab_dark)
+            toolbar.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient_dark)
+        } else {
+            sliding_tabs.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_tab)
+            toolbar.background =
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.bg_gradient)
         }
 
     }

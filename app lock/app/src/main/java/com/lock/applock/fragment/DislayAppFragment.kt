@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lock.applock.R
@@ -38,7 +37,7 @@ class DislayAppFragment : Fragment() {
     var brPo: BroadcastReceiver? = null
     var dbApp: DbApp? = null
     var showPo = false
-    var adapter : AppAdapter?=null
+    var adapter: AppAdapter? = null
 
     @SuppressLint("CommitPrefEdits")
     override fun onCreateView(
@@ -60,7 +59,7 @@ class DislayAppFragment : Fragment() {
         progressDialog!!.isIndeterminate = false
         progressDialog!!.setMessage("Loading...")
         progressDialog!!.max = 100
-        dbApp = DbApp(context!!,null)
+        dbApp = DbApp(context!!, null)
 
 
 
@@ -69,28 +68,31 @@ class DislayAppFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        GetListApp(context!!,this).execute()
+        GetListApp(context!!, this).execute()
         updateDark()
 
     }
 
-
+    // xử lý load bằng AsyncTask
     fun onPost() {
         if (progressDialog != null && progressDialog!!.isShowing) {
-                progressDialog!!.dismiss()
+            progressDialog!!.dismiss()
 
-            }
+        }
 
 
     }
-    fun onPre(){
+
+    fun onPre() {
         progressDialog!!.show()
 
     }
-    fun onUp(vararg values: Int?){
+
+    fun onUp(vararg values: Int?) {
         progressDialog!!.progress = values[0]!!.inv()
     }
-    fun onDoing(list: ArrayList<App>): ArrayList<App>{
+
+    fun onDoing(list: ArrayList<App>): ArrayList<App> {
         arrApp.clear()
         if (dbApp!!.getApp().size == 0) {
             for (app in list)
@@ -112,9 +114,9 @@ class DislayAppFragment : Fragment() {
                 }
             }
         }
-        if(list.size < dbApp!!.getApp().size){
-            for(app in dbApp!!.getApp()){
-                if(!checkPathNho(list,app.packagename)){
+        if (list.size < dbApp!!.getApp().size) {
+            for (app in dbApp!!.getApp()) {
+                if (!checkPathNho(list, app.packagename)) {
                     dbApp!!.deleteApp(app.packagename)
                 }
 
@@ -123,15 +125,18 @@ class DislayAppFragment : Fragment() {
         }
 
 
-        if ( dbApp!!.getApp().size > 0) {
+        if (dbApp!!.getApp().size > 0) {
             arrApp = dbApp!!.getApp()
         }
         return arrApp
 
+
     }
-    private fun checkPathNho(list: ArrayList<App>, pagkageName:String):Boolean{
-        for(app in list){
-            if(pagkageName == app.packagename) return true
+
+    //kiểm tra packgae name có trùng hay không
+    private fun checkPathNho(list: ArrayList<App>, pagkageName: String): Boolean {
+        for (app in list) {
+            if (pagkageName == app.packagename) return true
         }
         return false
 
@@ -157,22 +162,21 @@ class DislayAppFragment : Fragment() {
                 dislaySearch(string)
 //                Toast.makeText(context,string,Toast.LENGTH_SHORT).show()
             } else if (action.equals("LOCKEDAPP", ignoreCase = true)
-                )
-             {
+            ) {
 //                arrFile = dbPdf!!.getPdf()
-                 arrApp = dbApp!!.getApp()
-                 recycleView(arrApp)
+                arrApp = dbApp!!.getApp()
+                recycleView(arrApp)
 
-            }else if (action.equals("POPUP", ignoreCase = true)) {
+            } else if (action.equals("POPUP", ignoreCase = true)) {
                 val show = p1.extras.getBoolean("show")
 
                 showPo = show
 
-            }else if (action.equals("DARK", ignoreCase = true)) {
+            } else if (action.equals("DARK", ignoreCase = true)) {
                 var dark = p1.extras.getBoolean("dark")
-                if(dark) {
+                if (dark) {
                     rl_display.setBackgroundResource(R.color.dark)
-                }else{
+                } else {
                     rl_display.setBackgroundResource(R.color.normal)
                 }
                 adapter!!.notifyDataSetChanged()
@@ -183,77 +187,78 @@ class DislayAppFragment : Fragment() {
     }
 
 
-        @SuppressLint("DefaultLocale")
-        private fun dislaySearch(string: String?) {
-            arrFileSearch.clear()
-            for (pdf in arrApp) {
-                if (pdf.name.toLowerCase().contains(string!!.toLowerCase())) {
-                    arrFileSearch.add(pdf)
-                }
+    @SuppressLint("DefaultLocale")
+    private fun dislaySearch(string: String?) {
+        arrFileSearch.clear()
+        for (pdf in arrApp) {
+            if (pdf.name.toLowerCase().contains(string!!.toLowerCase())) {
+                arrFileSearch.add(pdf)
             }
+        }
 //        arrFile = arrFileSearch
 
-            val adapter = AppAdapter(context!!, arrFileSearch, object : AppAdapter.ItemListener {
-                override fun onClick(position: Int,packageName:String) {
-                    if (showPo) {
-                        (activity as MainActivity).set()
-                        showPo = false
+        val adapter = AppAdapter(context!!, arrFileSearch, object : AppAdapter.ItemListener {
+            override fun onClick(position: Int, packageName: String) {
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo = false
 
 
+                } else {
+                    if (arrFileSearch[position].isLock == 0) {
+                        arrFileSearch[position].isLock = 1
+                        dbApp!!.updateLock(packageName, 1)
                     } else {
-                        if (arrFileSearch[position].isLock == 0) {
-                            arrFileSearch[position].isLock = 1
-                            dbApp!!.updateLock(packageName, 1)
-                        } else {
-                            arrFileSearch[position].isLock = 0
-                            dbApp!!.updateLock(packageName, 0)
-                        }
-                        val intent = Intent("LOCKED")
-                        context!!.sendBroadcast(intent)
+                        arrFileSearch[position].isLock = 0
+                        dbApp!!.updateLock(packageName, 0)
                     }
+                    val intent = Intent("LOCKED")
+                    context!!.sendBroadcast(intent)
                 }
-            })
-            rv_app.adapter = adapter
+            }
+        })
+        rv_app.adapter = adapter
 
-        }
+    }
 
-        private fun recycleView(list: ArrayList<App>) {
-          adapter = AppAdapter(context!!, list, object : AppAdapter.ItemListener {
-
-
-                override fun onClick(position: Int,packageName:String) {
-
-                    if (showPo) {
-                        (activity as MainActivity).set()
-                        showPo = false
+    private fun recycleView(list: ArrayList<App>) {
+        adapter = AppAdapter(context!!, list, object : AppAdapter.ItemListener {
 
 
+            override fun onClick(position: Int, packageName: String) {
+
+                if (showPo) {
+                    (activity as MainActivity).set()
+                    showPo = false
+
+
+                } else {
+                    if (list[position].isLock == 0) {
+                        list[position].isLock = 1
+                        dbApp!!.updateLock(packageName, 1)
                     } else {
-                        if (list[position].isLock == 0) {
-                            list[position].isLock = 1
-                            dbApp!!.updateLock(packageName, 1)
-                        } else {
-                            list[position].isLock = 0
-                            dbApp!!.updateLock(packageName, 0)
-                        }
-
-                        val intent = Intent("LOCKED")
-                        context!!.sendBroadcast(intent)
+                        list[position].isLock = 0
+                        dbApp!!.updateLock(packageName, 0)
                     }
+
+                    val intent = Intent("LOCKED")
+                    context!!.sendBroadcast(intent)
                 }
-            })
-            rv_app.adapter = adapter
-        }
+            }
+        })
+        rv_app.adapter = adapter
+    }
 
 
     override fun onDestroy() {
         super.onDestroy()
         context!!.unregisterReceiver(broadcastReceiver)
     }
-    fun updateDark(){
-        if (sharedPreferences!!.getBoolean("dark",false)){
+
+    fun updateDark() {
+        if (sharedPreferences!!.getBoolean("dark", false)) {
             rl_display.setBackgroundResource(R.color.dark)
-        }else{
+        } else {
             rl_display.setBackgroundResource(R.color.normal)
         }
 

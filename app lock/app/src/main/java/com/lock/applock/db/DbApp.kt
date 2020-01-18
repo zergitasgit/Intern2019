@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.lock.applock.`object`.App
 
-class DbApp (private val context: Context,
-factory: SQLiteDatabase.CursorFactory?)
-: SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
+class DbApp(
+    private val context: Context,
+    factory: SQLiteDatabase.CursorFactory?
+) : SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
     override fun onCreate(p0: SQLiteDatabase?) {
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("hieu", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("hieu", Context.MODE_PRIVATE)
         val edit: SharedPreferences.Editor = sharedPreferences.edit()
         if (!sharedPreferences.getBoolean("saved", false)) {
             val CREATE_PRODUCTS_TABLE = ("CREATE TABLE " +
@@ -42,7 +44,8 @@ factory: SQLiteDatabase.CursorFactory?)
         val COLUMN_FAVORITE = "favorite"
 
     }
-    fun insertApp(name: String, packageName: String, favorite:Int) {
+
+    fun insertApp(name: String, packageName: String, favorite: Int) {
         val values = ContentValues()
         values.put(COLUMN_NAME, name)
         values.put(COLUMN_PACKAGENAME, packageName)
@@ -51,6 +54,7 @@ factory: SQLiteDatabase.CursorFactory?)
         db.insert(TABLE_NAME, null, values)
         db.close()
     }
+
     fun getApp(): ArrayList<App> {
         var arr: ArrayList<App> = ArrayList()
         val db = this.writableDatabase
@@ -59,9 +63,12 @@ factory: SQLiteDatabase.CursorFactory?)
 
         while (!cursor.isAfterLast) {
 
-            var app = App(cursor.getString(cursor.getColumnIndex("name")),cursor.getString(cursor.getColumnIndex("package")),
+            var app = App(
+                cursor.getString(cursor.getColumnIndex("name")),
+                cursor.getString(cursor.getColumnIndex("package")),
                 "",
-                cursor.getInt(cursor.getColumnIndex("favorite")))
+                cursor.getInt(cursor.getColumnIndex("favorite"))
+            )
 //
             arr.add(app)
             cursor.moveToNext()
@@ -69,7 +76,8 @@ factory: SQLiteDatabase.CursorFactory?)
 
         return arr
     }
-//    fun updateHistory(path: String, time: Long) {
+
+    //    fun updateHistory(path: String, time: Long) {
 //        val contentValues = ContentValues()
 //        val db = this.readableDatabase
 //        contentValues.put(COLUMN_HISTORY, time)
@@ -83,6 +91,7 @@ factory: SQLiteDatabase.CursorFactory?)
         db.update(TABLE_NAME, contentValues, "package = '$packageName'", null)
         return
     }
+
     fun checkPath(packageName: String): Boolean {
         var arr: ArrayList<App> = ArrayList()
         val db = this.writableDatabase
@@ -90,19 +99,23 @@ factory: SQLiteDatabase.CursorFactory?)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
 
-            var app = App(cursor.getString(cursor.getColumnIndex("name")),cursor.getString(cursor.getColumnIndex("package")),
+            var app = App(
+                cursor.getString(cursor.getColumnIndex("name")),
+                cursor.getString(cursor.getColumnIndex("package")),
                 "",
-                cursor.getInt(cursor.getColumnIndex("favorite")))
+                cursor.getInt(cursor.getColumnIndex("favorite"))
+            )
 //
             arr.add(app)
             cursor.moveToNext()
         }
-        if (arr.size>0){
+        if (arr.size > 0) {
             return true
         }
         return false
     }
-//    fun updateName(path: String, name: String) {
+
+    //    fun updateName(path: String, name: String) {
 //        val contentValues = ContentValues()
 //        val db = this.readableDatabase
 //        contentValues.put(COLUMN_NAME, name)
@@ -141,15 +154,19 @@ factory: SQLiteDatabase.CursorFactory?)
         val cursor = db.rawQuery("SELECT * FROM app WHERE favorite = 1 ", null)
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
-            var app = App(cursor.getString(cursor.getColumnIndex("name")),cursor.getString(cursor.getColumnIndex("package")),
+            var app = App(
+                cursor.getString(cursor.getColumnIndex("name")),
+                cursor.getString(cursor.getColumnIndex("package")),
                 "",
-                cursor.getInt(cursor.getColumnIndex("favorite")))
+                cursor.getInt(cursor.getColumnIndex("favorite"))
+            )
 //
             arr.add(app)
             cursor.moveToNext()
         }
         return arr
     }
+
     fun deleteApp(packageName: String): Boolean {
         // Gets the data repository in write mode
         val db = writableDatabase

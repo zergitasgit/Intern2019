@@ -12,11 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lock.applock.R
 import com.lock.applock.`object`.App
 import com.lock.applock.activity.MainActivity
-import com.lock.applock.adapter.AppAdapter
 import com.lock.applock.adapter.AppLockAdapter
 import com.lock.applock.db.DbApp
 import kotlinx.android.synthetic.main.fragment_app_locked.*
-import kotlinx.android.synthetic.main.fragment_dislay_app.*
 import kotlinx.android.synthetic.main.fragment_app_locked.view.*
 import kotlinx.android.synthetic.main.fragment_dislay_app.rv_app
 
@@ -34,8 +32,8 @@ class AppLockedFragment : Fragment() {
     var arrFileSearch = ArrayList<App>()
     var sharedPreferences: SharedPreferences? = null
     var editor: SharedPreferences.Editor? = null
-    var showPo=false
-    var dbApp :DbApp?=null
+    var showPo = false
+    var dbApp: DbApp? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,10 +55,10 @@ class AppLockedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dbApp = DbApp(context!!,null)
+        dbApp = DbApp(context!!, null)
         arr = dbApp!!.getLocked()
-        if(arr.size == 0){
-            arr.add(App("App Lock","com.lock.applock","",1))
+        if (arr.size == 0) {
+            arr.add(App("App Lock", "com.lock.applock", "", 1))
 //            dbApp!!.insertApp("App Lock","com.lock.applock",1)
         }
         view.rv_app.layoutManager = LinearLayoutManager(context)
@@ -71,12 +69,12 @@ class AppLockedFragment : Fragment() {
     }
 
 
-
+    //khởi tạo recycleview
     private fun recycleview(arr: ArrayList<App>) {
 
         adapter = AppLockAdapter(context!!, arr, object : AppLockAdapter.ItemListener {
 
-            override fun onClick(position: Int,packageName:String) {
+            override fun onClick(position: Int, packageName: String) {
                 if (showPo) {
                     (activity as MainActivity).set()
                     showPo = false
@@ -88,7 +86,7 @@ class AppLockedFragment : Fragment() {
                     context!!.sendBroadcast(intent)
                 }
             }
-            
+
         })
         rv_app.adapter = adapter
     }
@@ -103,23 +101,22 @@ class AppLockedFragment : Fragment() {
             if (action!!.equals("SEARCH", ignoreCase = true)) {
 //                Toast.makeText(context, "hi", Toast.LENGTH_SHORT).show()
                 dislaySearch(string)
-            } else if (action.equals("LOCKED", ignoreCase = true)  )
-             {
-                 arr = dbApp!!.getLocked()
-                 rv_app.layoutManager = LinearLayoutManager(context)
-                 recycleview(arr)
+            } else if (action.equals("LOCKED", ignoreCase = true)) {
+                arr = dbApp!!.getLocked()
+                rv_app.layoutManager = LinearLayoutManager(context)
+                recycleview(arr)
 
 
-             }else if (action.equals("POPUP", ignoreCase = true)) {
+            } else if (action.equals("POPUP", ignoreCase = true)) {
                 val show = p1.extras.getBoolean("show")
 
                 showPo = show
 
-            }else if (action.equals("DARK", ignoreCase = true)) {
+            } else if (action.equals("DARK", ignoreCase = true)) {
                 var dark = p1.extras.getBoolean("dark")
-                if(dark) {
+                if (dark) {
                     rl_lock.setBackgroundResource(R.color.dark)
-                }else{
+                } else {
                     rl_lock.setBackgroundResource(R.color.normal)
                 }
                 adapter!!.notifyDataSetChanged()
@@ -129,7 +126,7 @@ class AppLockedFragment : Fragment() {
 
     }
 
-
+    //hiển thị search
     @SuppressLint("DefaultLocale")
     private fun dislaySearch(string: String?) {
         arrFileSearch.clear()
@@ -140,22 +137,23 @@ class AppLockedFragment : Fragment() {
         }
 //        arrFile = arrFileSearch
 
-        var adapter = AppLockAdapter(context!!, arrFileSearch, object : AppLockAdapter.ItemListener {
-            override fun onClick(position: Int,packageName:String) {
-                if (showPo) {
-                    (activity as MainActivity).set()
-                    showPo = false
+        var adapter =
+            AppLockAdapter(context!!, arrFileSearch, object : AppLockAdapter.ItemListener {
+                override fun onClick(position: Int, packageName: String) {
+                    if (showPo) {
+                        (activity as MainActivity).set()
+                        showPo = false
 
 
-                } else {
-                    dbApp!!.updateLock(packageName, 0)
-                    val intent = Intent("LOCKEDAPP")
-                    context!!.sendBroadcast(intent)
+                    } else {
+                        dbApp!!.updateLock(packageName, 0)
+                        val intent = Intent("LOCKEDAPP")
+                        context!!.sendBroadcast(intent)
+                    }
                 }
-            }
 
 
-        })
+            })
         rv_app.adapter = adapter
 
 
@@ -167,10 +165,12 @@ class AppLockedFragment : Fragment() {
 
 
     }
-    fun updateDark(){
-        if (sharedPreferences!!.getBoolean("dark",false)){
+
+    // dark mode
+    fun updateDark() {
+        if (sharedPreferences!!.getBoolean("dark", false)) {
             rl_lock.setBackgroundResource(R.color.dark)
-        }else{
+        } else {
             rl_lock.setBackgroundResource(R.color.normal)
         }
 

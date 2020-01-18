@@ -3,8 +3,8 @@ package com.lock.applock.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.lock.applock.R
 import kotlinx.android.synthetic.main.activity_change_lock.*
 
@@ -18,17 +18,17 @@ class ChangeLockActivity : AppCompatActivity() {
         edit = sharedPreferences!!.edit()
         iv_pin.setOnClickListener {
 
-            val intent = Intent(this,PinActivity::class.java)
+            val intent = Intent(this, PinActivity::class.java)
             startActivity(intent)
         }
         iv_pattern.setOnClickListener {
 
-            val intent = Intent(this,PatternActivity::class.java)
+            val intent = Intent(this, PatternActivity::class.java)
             startActivity(intent)
         }
-        if (sharedPreferences!!.getBoolean("dark",false)){
+        if (sharedPreferences!!.getBoolean("dark", false)) {
             con.setBackgroundResource(R.drawable.bg_dark)
-        }else{
+        } else {
             con.setBackgroundResource(R.drawable.bg)
         }
 
@@ -39,11 +39,11 @@ class ChangeLockActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (sharedPreferences!!.getBoolean("pin",false)){
+        if (sharedPreferences!!.getBoolean("pin", false)) {
 
             iv_tick_pin.setImageResource(R.drawable.ic_tick)
             iv_tick_pattern.setImageResource(R.drawable.ic_tick_no)
-        }else{
+        } else {
             iv_tick_pattern.setImageResource(R.drawable.ic_tick)
             iv_tick_pin.setImageResource(R.drawable.ic_tick_no)
             iv_tick_pattern.setImageResource(R.drawable.ic_tick)

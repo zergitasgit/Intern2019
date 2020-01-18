@@ -28,9 +28,9 @@ class PinActivity : AppCompatActivity() {
         setContentView(R.layout.activity_pin)
         sharedPreferences = getSharedPreferences("hieu", Context.MODE_PRIVATE)
         edit = sharedPreferences!!.edit()
-        if (sharedPreferences!!.getBoolean("dark",false)){
+        if (sharedPreferences!!.getBoolean("dark", false)) {
             con_pin.setBackgroundResource(R.drawable.bg_dark)
-        }else{
+        } else {
             con_pin.setBackgroundResource(R.drawable.bg)
         }
         setUp()
@@ -78,7 +78,7 @@ class PinActivity : AppCompatActivity() {
                 edit!!.apply()
                 onBackPressed()
                 val intent = Intent("CHANGE")
-                intent.putExtra("pattern",false)
+                intent.putExtra("pattern", false)
                 sendBroadcast(intent)
 
             } else {

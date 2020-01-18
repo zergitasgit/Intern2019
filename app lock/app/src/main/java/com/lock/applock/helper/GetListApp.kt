@@ -6,15 +6,17 @@ import android.content.pm.PackageManager
 import android.os.AsyncTask
 import com.lock.applock.`object`.App
 import com.reader.pdfreader.fragment.DislayAppFragment
-import kotlin.collections.ArrayList
 
 
-class GetListApp(private var context: Context,
-                 private var fragment: DislayAppFragment) : AsyncTask<Void, Int, ArrayList<App>>() {
+class GetListApp(
+    private var context: Context,
+    private var fragment: DislayAppFragment
+) : AsyncTask<Void, Int, ArrayList<App>>() {
     override fun doInBackground(vararg p0: Void?): ArrayList<App> {
         val list = getListOfInstalledApp(context)
         return fragment.onDoing(list)
     }
+
     private fun getListOfInstalledApp(context: Context): ArrayList<App> {
         val packageManager = context.packageManager
         val installedApps =
@@ -27,7 +29,7 @@ class GetListApp(private var context: Context,
                 val appInfo: ApplicationInfo? = null
                 try {
                     if (null != packageManager.getLaunchIntentForPackage(p.packageName)) {
-                        if(p.packageName==context.packageName) {
+                        if (p.packageName == context.packageName) {
                             val app = App(
                                 p.applicationInfo.loadLabel(packageManager).toString(),
                                 p.packageName,
@@ -37,7 +39,7 @@ class GetListApp(private var context: Context,
                             )
 
                             installedApps.add(app)
-                        }else{
+                        } else {
                             val app = App(
                                 p.applicationInfo.loadLabel(packageManager).toString(),
                                 p.packageName,
@@ -73,7 +75,6 @@ class GetListApp(private var context: Context,
         super.onProgressUpdate(*values)
         fragment.onUp(*values)
     }
-
 
 
 }

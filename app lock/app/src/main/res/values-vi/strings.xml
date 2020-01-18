@@ -7,10 +7,10 @@
     <string name="change_lock">Thay đổi khóa</string>
     <string name="finger">Vân tay</string>
     <string name="dark">Chế độ tối</string>
-    <string name="craet_pin">Tạo một mã pin</string>
-    <string name="creat_pattern">Tạo một mẫu</string>
-    <string name="creat_pattern_again">Tạo một mẫu \n ( Again )</string>
-    <string name="creat_pin_again">Tại một mã pin \n ( Again )</string>
+    <string name="craet_pin">Tạo một mã pin mới để khóa </string>
+    <string name="creat_pattern">Tạo một mẫu mới để khóa </string>
+    <string name="creat_pattern_again">Tạo một mẫu mới để khóa  \n ( Again )</string>
+    <string name="creat_pin_again">Tạo một mã pin mới để khóa  \n ( Again )</string>
     <string name="pin_wrong">Pin Sai</string>
     <string name="pattern_wrong">Mẫu Sai</string>
     <string name="again">( Lại )</string>

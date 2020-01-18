@@ -1,26 +1,19 @@
 package com.lock.applock.fingerprint
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.fingerprint.FingerprintManager
 import android.os.Build
 import android.os.CancellationSignal
-import android.util.Log
-import android.view.View
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import com.lock.applock.R
-import com.lock.applock.activity.MainActivity
 
 @RequiresApi(Build.VERSION_CODES.M)
 class FingerprintHandler(private var context: Context) :
     FingerprintManager.AuthenticationCallback() {
-    var cancellationSignal : CancellationSignal?=null
+    var cancellationSignal: CancellationSignal? = null
 
     // Constructor
 
@@ -28,7 +21,7 @@ class FingerprintHandler(private var context: Context) :
         manager: FingerprintManager,
         cryptoObject: FingerprintManager.CryptoObject?
     ) {
-         cancellationSignal = CancellationSignal()
+        cancellationSignal = CancellationSignal()
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.USE_FINGERPRINT
@@ -41,8 +34,6 @@ class FingerprintHandler(private var context: Context) :
     }
 
     override fun onAuthenticationError(errMsgId: Int, errString: CharSequence) {
-
-
 
 
     }
@@ -59,12 +50,12 @@ class FingerprintHandler(private var context: Context) :
         this.update()
     }
 
-    private  fun update() {
+    private fun update() {
 
-            val intent = Intent("FINGER")
+        val intent = Intent("FINGER")
 
-            context.sendBroadcast(intent)
-        }
+        context.sendBroadcast(intent)
+    }
 //        Toast.makeText(context,"ji",Toast.LENGTH_SHORT).show()
 
 
